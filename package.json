@@ -1,0 +1,26 @@
+{
+  "name": "era.js",
+  "version": "0.1.0",
+  "description": "A Era-like Game Engine.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/Era.js.git"
+  },
+  "keywords": [
+    "era",
+    "electron"
+  ],
+  "author": "Miswanting",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/miswanting/Era.js/issues"
+  },
+  "homepage": "https://github.com/miswanting/Era.js#readme",
+  "devDependencies": {
+    "electron": "^2.0.2"
+  }
+}
