@@ -1,13 +1,24 @@
 # coding:utf-8
-import src.game as game
-game.init()
-game.p("测试文字")
-game.p("测试不换行")
-game.pl("测试换行")
-game.p("测试文字")
-game.pw("测试等待")
-game.plw("测试换行等待")
-game.pcmd("输出命令", next)
+import src.game as g
 
 
-def next():
+def intro():
+    g.new_page()
+    g.pl('请选择主角的创建方式')
+    g.pl()  # 空单独一行
+    g.plcmd("使用游戏默认初始角色", default_start)
+
+
+def load():
+    pass
+
+
+def default_start():
+    pass
+
+
+g.init()
+g.pl('EraLife')
+g.pl()  # 空单独一行
+g.plcmd("开始游戏", g.goto, intro)
+g.plcmd("读取游戏", g.goto, load)
