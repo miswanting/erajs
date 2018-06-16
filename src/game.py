@@ -10,6 +10,7 @@ conn = None
 isConnected = False
 break_type = 0
 cmd_list = []
+gui_tree = []
 
 
 def init():
@@ -55,6 +56,10 @@ def parsePackage(package):
     elif package['type'] == 'mouse_down':
         global break_type
         break_type = package['value']
+    elif package['type'] == 'cmd_return':
+        for each in cmd_list:
+            if package['value'] == each[0]:
+                each[1](each[2], each[3])
 
 
 def send(package):
@@ -83,7 +88,7 @@ def p(text):
     send(package)
 
 
-def pl(text):
+def pl(text=''):
     package = {
         'type': 'pl',
         'value': text
@@ -110,9 +115,41 @@ def plw(text):
 
 
 def pcmd(text, func):
-    cmd_list.append((text, func))
+    cmd_list.append((text, func, arg, kw))
     package = {
         'type': 'pcmd',
         'value': text
     }
     send(package)
+
+
+def plcmd(text, func, arg=(), kw={}):
+    cmd_list.append((text, func, arg, kw))
+    package = {
+        'type': 'plcmd',
+        'value': text
+    }
+    send(package)
+
+
+def new_page():
+    package = {
+        'type': 'new_page'
+    }
+    send(package)
+
+
+def goto(func, arg=(), kw={}):
+    if not isinstance(arg, tuple):
+        arg = (arg,)
+    gui_tree.append((func, arg, kw))
+    func(*arg, **kw)
+
+
+def back():
+    gui_tree.pop()
+    repeat()
+
+
+def repeat():
+    gui_tree[-1][0](*gui_tree[-1][1], **gui_tree[-1][2])
