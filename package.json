@@ -2,7 +2,7 @@
   "name": "era.js",
   "version": "0.1.0",
   "description": "A Era-like Game Engine.",
-  "main": "src/main.js",
+  "main": "engine/main.js",
   "scripts": {
     "test": "electron ."
   },

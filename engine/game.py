@@ -1,7 +1,11 @@
 # coding:utf-8
+import os
+import sys
 import time
 import json
+import random
 import socket
+import hashlib
 import threading
 
 HOST = ''
@@ -11,9 +15,19 @@ isConnected = False
 break_type = 0
 cmd_list = []
 gui_tree = []
+data = {}
 
 
 def init():
+    if getattr(sys, 'frozen', False):
+        # frozen
+        dir_ = os.path.dirname(sys.executable)
+        gamepath = os.path.dirname(dir_)
+    else:
+        # unfrozen
+        dir_ = os.path.dirname(os.path.realpath(__file__))
+        gamepath = os.path.dirname(os.path.dirname(dir_))
+    sys.path.append(gamepath)
     global isConnected
     # 运行Server
 
@@ -59,7 +73,7 @@ def parsePackage(package):
     elif package['type'] == 'cmd_return':
         for each in cmd_list:
             if package['value'] == each[0]:
-                each[1](each[2], each[3])
+                each[1](*each[2], **each[3])
 
 
 def send(package):
@@ -105,7 +119,7 @@ def pw(text):
     wait()
 
 
-def plw(text):
+def plw(text=''):
     package = {
         'type': 'plw',
         'value': text
@@ -114,7 +128,7 @@ def plw(text):
     wait()
 
 
-def pcmd(text, func):
+def pcmd(text, func, *arg, **kw):
     cmd_list.append((text, func, arg, kw))
     package = {
         'type': 'pcmd',
@@ -123,7 +137,7 @@ def pcmd(text, func):
     send(package)
 
 
-def plcmd(text, func, arg=(), kw={}):
+def plcmd(text, func, *arg, **kw):
     cmd_list.append((text, func, arg, kw))
     package = {
         'type': 'plcmd',
@@ -139,9 +153,7 @@ def new_page():
     send(package)
 
 
-def goto(func, arg=(), kw={}):
-    if not isinstance(arg, tuple):
-        arg = (arg,)
+def goto(func, *arg, **kw):
     gui_tree.append((func, arg, kw))
     func(*arg, **kw)
 
@@ -153,3 +165,9 @@ def back():
 
 def repeat():
     gui_tree[-1][0](*gui_tree[-1][1], **gui_tree[-1][2])
+
+
+def get_hash():
+    m = hashlib.md5()
+    m.update(str(random.random()).encode("utf-8"))
+    return m.hexdigest().upper()
