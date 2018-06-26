@@ -42,7 +42,10 @@ def init():
             with conn:
                 print('[FINE]已连接上：', addr)
                 while True:
-                    data = conn.recv(4096)
+                    try:
+                        data = conn.recv(4096)
+                    except expression as e:
+                        pass
                     if not data:
                         break
                     print("[DEBG]接收：", data)
@@ -84,7 +87,7 @@ def send(package):
                          sort_keys=True).encode())
 
 
-def wait():
+def wait_for_break():
     global break_type
     while True:
         if break_type == 1:
@@ -94,38 +97,15 @@ def wait():
             break
 
 
-def p(text):
+def p(text='', line=False, wait=False):
     package = {
         'type': 'p',
-        'value': text
+        'value': text,
+        'line': line
     }
     send(package)
-
-
-def pl(text=''):
-    package = {
-        'type': 'pl',
-        'value': text
-    }
-    send(package)
-
-
-def pw(text):
-    package = {
-        'type': 'pw',
-        'value': text
-    }
-    send(package)
-    wait()
-
-
-def plw(text=''):
-    package = {
-        'type': 'plw',
-        'value': text
-    }
-    send(package)
-    wait()
+    if wait:
+        wait_for_break()
 
 
 def pcmd(text, func, *arg, **kw):
