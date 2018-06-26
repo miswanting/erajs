@@ -20,7 +20,5 @@
     "url": "https://github.com/miswanting/Era.js/issues"
   },
   "homepage": "https://github.com/miswanting/Era.js#readme",
-  "devDependencies": {
-    "electron": "^2.0.2"
-  }
+  "devDependencies": {}
 }

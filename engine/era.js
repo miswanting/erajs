@@ -12,7 +12,7 @@ function doPackage(package) {
         send(package)
     }
     if (package['type'] == 'p') {
-        game.p(package['value'])
+        game.p(package)
     }
     if (package['type'] == 'pl') {
         game.pl(package['value'])
@@ -73,40 +73,27 @@ ipcRenderer.on('package', (event, data) => {
     }
 })
 game = {
-    'p': function (text) {
+    'p': function (package) {
         // 检查是否存在当前页。如果没有，创建之。
         if ($(".current-page").length == 0) {
             newPage()
         }
-        // 检查是否存在当前行。如果没有，创建之。
-        if ($(".current-line").length == 0) {
-            newLine()
-        }
-        // 将文字添加到当前行的末尾。
-        $(".current-line").append(text)
-        // $("#list").append($("<div></div>").text(text).css("display", "inline-block"))
-        // $("#list").append("<div style='display: inline-block'>" + text + "</div>")
-    },
-    'pl': function (text) {
-        // 检查是否存在当前页。如果没有，创建之。
-        if ($(".current-page").length == 0) {
-            newPage()
-        }
-        // 检查是否存在当前行。如果有，关闭之；如果没有，创建并关闭之。
-        if (text == '') {
-            newLine()
-            $(".current-line").append('<br />')
+        if (package['line']) {
+            if (package['value'] == '') {
+                newLine()
+                $(".current-line").append('<br />')
+            } else {
+                newLine()
+                $(".current-line").append(package['value'])
+            }
+            $(".current-line").removeClass("current-line")
         } else {
-            newLine()
-            $(".current-line").append(text)
+            if ($(".current-line").length == 0) {
+                newLine()
+            }
+            // 将文字添加到当前行的末尾。
+            $(".current-line").append(package['value'])
         }
-        $(".current-line").removeClass("current-line")
-    },
-    'pw': function (text) {
-        game.p(text)
-    },
-    'plw': function (text) {
-        game.pl(text)
     },
     'pcmd': function (text) {
         // 检查是否存在当前页。如果没有，创建之。
