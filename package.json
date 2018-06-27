@@ -21,35 +21,7 @@
   },
   "homepage": "https://github.com/miswanting/Era.js#readme",
   "devDependencies": {
-    "electron-prebuilt-compile": "2.0.3"
-  },
-  "config": {
-    "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {},
-      "electronWinstallerConfig": {
-        "name": ""
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "miswanting",
-        "name": "Era.js"
-      },
-      "windowsStoreConfig": {
-        "packageName": ""
-      }
-    }
+    "electron": "^2.0.3",
+    "electron-packager": "^12.1.0"
   }
 }
