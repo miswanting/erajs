@@ -1,5 +1,5 @@
 @echo off
 title Server
-python script.py
+python Game.py
 pause
 exit

@@ -97,11 +97,12 @@ def wait_for_break():
             break
 
 
-def p(text='', line=False, wait=False):
+def p(text='', line=False, wait=False, align='left'):
     package = {
         'type': 'p',
         'value': text,
-        'line': line
+        'line': line,
+        'align': align
     }
     send(package)
     if wait:
