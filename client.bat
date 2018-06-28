@@ -2,6 +2,6 @@
 title Client
 chcp 65001
 cls
-electron .
+.\node_modules\.bin\electron .
 pause
 exit
