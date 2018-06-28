@@ -51,9 +51,12 @@ function newLine() {
         $(".current-line").removeClass("current-line")
     }
     let newLine = $("<p></p>")
-    newLine.addClass("my-0 current-line")
+    newLine.addClass("my-0 clearfix current-line")
     newLine.css("word-break", "break-all")
     $(".current-page").append(newLine)
+    let leftAlign = $("<p></p>")
+    let rightAlign = $("<p></p>")
+    $(".current-line").append(newLine)
 }
 ipcRenderer.on('package', (event, data) => {
     // console.log(data)
