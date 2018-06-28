@@ -2,11 +2,9 @@
 
 # Era.js
 
-Era.js 是一个以**Python为游戏脚本语言的**、基于[Electron](electronjs.org)，[GraphQL](graphql.org)等技术开发的次世代`类Era`文字游戏引擎。
+Era.js 是一个以**Python为游戏脚本语言的**、基于[Electron](https://electronjs.org/)，[GraphQL](https://graphql.org/)等技术开发的次世代`类Era`富文本游戏引擎。
 
-[官网](miswanting.github.io/Era.js/)｜[文档](/miswanting/Era.js/wiki)｜[计划](/miswanting/Era.js/projects)｜[支持](/miswanting/Era.js/issues)
-
-[TOC]
+[官网](https://miswanting.github.io/Era.js/)｜[文档](https://github.com/miswanting/Era.js/wiki)｜[计划](https://github.com/miswanting/Era.js/projects)｜[支持](https://github.com/miswanting/Era.js/issues)
 
 ## 开发理念
 
@@ -27,3 +25,6 @@ Era.js 是一个以**Python为游戏脚本语言的**、基于[Electron](electro
   - 引擎面向游戏开发友好、面向修改友好；
   - 排版、图片、视频、音频等功能将在未来得到游戏引擎原生支持。
 
+## 鸣谢
+
+感谢[qsjl11](https://github.com/qsjl11)的[pyera](https://github.com/qsjl11/pyera)为本项目提供了cx_Freeze路径代码和API名称的参考；
