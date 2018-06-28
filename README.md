@@ -1,48 +1,29 @@
+（以下内容为开发目标，当前填坑进度以实物为准）
+
 # Era.js
+
+Era.js 是一个以**Python为游戏脚本语言的**、基于[Electron](electronjs.org)，[GraphQL](graphql.org)等技术开发的次世代`类Era`文字游戏引擎。
+
+[官网](miswanting.github.io/Era.js/)｜[文档](/miswanting/Era.js/wiki)｜[计划](/miswanting/Era.js/projects)｜[支持](/miswanting/Era.js/issues)
 
 [TOC]
 
-## 文档
+## 开发理念
 
+- 充分利用HTML5技术，打造绚丽、整齐、内容丰富、充满设计感的游戏前端；
+- 审慎地设置API，让游戏开发者能够更少地操心与内容和游戏性无关的事物；
+- 全部代码跨平台；
+- 开发环境、打包和部署一定要简单可靠；
+- 对二次开发友好；
+- 原则上不砍掉任何所使用的技术所提供的功能。
 
+## 引擎特性
 
-## 显示层级
-
-- div(root)
-  - div(list): Page Manager
-    - div(page): Line Manager
-      - p
-        - text
-        - div(word)
-        - progressbar
-    - div(page)
-
-## 系统层级
-
-### Server
-
-### Client
-
-## API（game）
-
-- [x] init
-- [x] p（输出文字（不换行，不等待））
-- [x] pl（输出文字（换行，不等待））
-- [ ] pw（输出文字（不换行，等待））
-- [ ] plw（输出文字（换行，等待））
-- [ ] pcmd（输出命令）
-- [ ] plcmd（输出命令）
-- [ ] pline（输出一条隔断线）
-- [ ] new_page
-- [ ] s（等待输入（输入后不换页））
-- [ ] sp（等待输入（输入后换页））
-- [ ] cls（清屏（换页））
-- [ ] clear（清屏（全部））
-- [ ] data（数据输入输出）
-- [ ] save（保存game.data）
-- [ ] load（载入game.data）
-- [ ] goto（前进到子界面）
-- [ ] back（返回到父界面）
-- [ ] repeat（重新显示当前界面）
-- [ ] yesOrNo
+- 易于游玩
+  - 游戏界面与游戏操作均继承于原Era类游戏，并在其基础上进行了相当程度上的优化，弥补了原Era类游戏引擎的系统缺陷，并对界面操作逻辑进行了改进；
+  - 完全适配HTML5富文本显示。
+- 易于开发
+  - API设计直观、简洁而全面；
+  - 引擎面向游戏开发友好、面向修改友好；
+  - 排版、图片、视频、音频等功能将在未来得到游戏引擎原生支持。
 
