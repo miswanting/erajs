@@ -14,15 +14,6 @@ function doPackage(package) {
     if (package['type'] == 'p') {
         game.p(package)
     }
-    if (package['type'] == 'pl') {
-        game.pl(package['value'])
-    }
-    if (package['type'] == 'pw') {
-        game.pw(package['value'])
-    }
-    if (package['type'] == 'plw') {
-        game.plw(package['value'])
-    }
     if (package['type'] == 'pcmd') {
         game.pcmd(package['value'])
     }
