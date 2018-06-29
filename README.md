@@ -1,10 +1,13 @@
 （以下内容为开发目标，当前填坑进度以[计划](https://github.com/miswanting/Era.js/projects)中显示的进度为准）
 
+[官网](https://miswanting.github.io/Era.js/)｜[文档](https://github.com/miswanting/Era.js/wiki)｜[计划](https://github.com/miswanting/Era.js/projects)｜[支持](https://github.com/miswanting/Era.js/issues)
+
+
 # Era.js
 
 Era.js 是一个以**Python为游戏脚本语言的**、基于[Electron](https://electronjs.org/)，[GraphQL](https://graphql.org/)等技术开发的次世代`类Era`富文本游戏引擎。
 
-[官网](https://miswanting.github.io/Era.js/)｜[文档](https://github.com/miswanting/Era.js/wiki)｜[计划](https://github.com/miswanting/Era.js/projects)｜[支持](https://github.com/miswanting/Era.js/issues)
+[![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases)[![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases)[![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases)[![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
 ## 开发理念
 
