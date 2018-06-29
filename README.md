@@ -1,4 +1,4 @@
-（以下内容为开发目标，当前填坑进度以实物为准）
+（以下内容为开发目标，当前填坑进度以[计划](https://github.com/miswanting/Era.js/projects)中显示的进度为准）
 
 # Era.js
 
