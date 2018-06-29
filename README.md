@@ -30,4 +30,4 @@ Era.js 是一个以**Python为游戏脚本语言的**、基于[Electron](https:/
 
 ## 鸣谢
 
-感谢[qsjl11](https://github.com/qsjl11)的[pyera](https://github.com/qsjl11/pyera)为本项目提供了cx_Freeze路径修正代码和API名称的参考；
+感谢[qsjl11](https://github.com/qsjl11)的[pyera](https://github.com/qsjl11/pyera)为本项目提供了灵感和API名称的参考；
