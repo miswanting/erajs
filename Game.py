@@ -20,7 +20,7 @@ def default_start():
 
 
 g.init()
-g.p('EraLife', True)
+g.h1('EraLife')
 g.p(line=True)
 g.cmd("开始游戏", g.goto, True, intro)
 g.cmd("读取游戏", g.goto, True, load)

@@ -139,6 +139,28 @@ def cmd(text, func, line=False, *arg, **kw):
     _send(package)
 
 
+def h1(text):
+    package = {
+        'type': 'h1',
+        'value': text
+    }
+    _send(package)
+
+
+def progress(now, max=100, length=100):
+    package = {
+        'type': 'progress',
+        'now': now,
+        'max': max,
+        'length': length
+    }
+    _send(package)
+
+
+def mode(name='plain', *arg, **kw):
+    pass
+
+
 def new_page():
     package = {
         'type': 'new_page'

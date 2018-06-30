@@ -17,6 +17,12 @@ function doPackage(package) {
     if (package['type'] == 'cmd') {
         game.cmd(package['value'], package['line'])
     }
+    if (package['type'] == 'h1') {
+        game.h1(package)
+    }
+    if (package['type'] == 'progress') {
+        game.progress(package)
+    }
     if (package['type'] == 'new_page') {
         newPage()
     }
@@ -111,6 +117,39 @@ game = {
             send(package)
         })
         $(".current-line").append(newButton)
+    },
+    'h1': function (package) {
+        // 检查是否存在当前页。如果没有，创建之。
+        if ($(".current-page").length == 0) {
+            newPage()
+        }
+        newLine()
+        let new_h1 = $("<h1></h1>")
+        new_h1.append(package['value'])
+        $(".current-line").append(new_h1)
+        $(".current-line").removeClass("current-line")
+    },
+    'progress': function (package) {
+        let now = package['now']
+        let max = package['max']
+        let length = package['length']
+        // 检查是否存在当前页。如果没有，创建之。
+        if ($(".current-page").length == 0) {
+            newPage()
+        }
+        // 检查是否存在当前行。如果没有，创建之。
+        if ($(".current-line").length == 0) {
+            newLine()
+        }
+        let progress_container = $("<div></div>")
+        progress_container.addClass("progress mx-1")
+        progress_container.css("width", length.toString() + "px")
+        progress_container.css("height", "100%")
+        let progress_bar = $("<div></div>")
+        progress_bar.addClass("progress-bar")
+        progress_bar.css("width", (now / max * 100).toString() + "%")
+        progress_container.append(progress_bar)
+        $(".current-line").append(progress_container)
     }
 }
 $(document).ready(function () {
