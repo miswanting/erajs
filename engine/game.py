@@ -118,22 +118,21 @@ def wait_for_break():
             break
 
 
-def p(text='', line=False, wait=False, align='left'):
+def p(text='', line=False, wait=False):
     package = {
         'type': 'p',
         'value': text,
-        'line': line,
-        'align': align
+        'line': line
     }
     send(package)
     if wait:
         wait_for_break()
 
 
-def pcmd(text, func, line=False, *arg, **kw):
+def cmd(text, func, line=False, *arg, **kw):
     cmd_list.append((text, func, arg, kw))
     package = {
-        'type': 'pcmd',
+        'type': 'cmd',
         'value': text,
         'line': line
     }

@@ -7,7 +7,7 @@ def intro():
     g.new_page()
     g.p('请选择主角的创建方式', True)
     g.p(line=True)
-    g.plcmd("使用游戏默认初始角色", default_start)
+    g.cmd("使用游戏默认初始角色", default_start)
 
 
 def load():
@@ -22,5 +22,5 @@ def default_start():
 g.init()
 g.p('EraLife', True)
 g.p(line=True)
-g.pcmd("开始游戏", g.goto, True, intro)
-g.pcmd("读取游戏", g.goto, True, load)
+g.cmd("开始游戏", g.goto, True, intro)
+g.cmd("读取游戏", g.goto, True, load)

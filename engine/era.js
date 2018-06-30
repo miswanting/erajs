@@ -14,11 +14,8 @@ function doPackage(package) {
     if (package['type'] == 'p') {
         game.p(package)
     }
-    if (package['type'] == 'pcmd') {
-        game.pcmd(package['value'], package['line'])
-    }
-    if (package['type'] == 'plcmd') {
-        game.plcmd(package['value'])
+    if (package['type'] == 'cmd') {
+        game.cmd(package['value'], package['line'])
     }
     if (package['type'] == 'new_page') {
         newPage()
@@ -89,7 +86,7 @@ game = {
             $(".current-line").append(package['value'])
         }
     },
-    'pcmd': function (text, line) {
+    'cmd': function (text, line) {
         // 检查是否存在当前页。如果没有，创建之。
         if ($(".current-page").length == 0) {
             newPage()
