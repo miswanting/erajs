@@ -22,6 +22,7 @@ def init():
     _fix_path()
     _load_data()
     _run_server()
+    # _start_client()
 
 
 def _fix_path():
@@ -85,6 +86,10 @@ def _run_server():
         }
         _send(package)
         time.sleep(0.1)
+
+
+def _start_client():
+    pass
 
 
 def _parse_package(package):

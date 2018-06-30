@@ -149,6 +149,7 @@ game = {
         }
         newLine()
         let new_h1 = $("<h1></h1>")
+        new_h1.addClass('m-0')
         new_h1.append(package['value'])
         $(".current-line").append(new_h1)
         $(".current-line").removeClass("current-line")
