@@ -19,6 +19,12 @@ data = {}
 
 
 def init():
+    fix_path()
+    load_data()
+    run_server()
+
+
+def fix_path():
     if getattr(sys, 'frozen', False):
         # frozen
         dir_ = os.path.dirname(sys.executable)
@@ -28,8 +34,23 @@ def init():
         dir_ = os.path.dirname(os.path.realpath(__file__))
         gamepath = os.path.dirname(os.path.dirname(dir_))
     sys.path.append(gamepath)
-    global isConnected
+
+
+def load_data():
+    global data
+    for root, dirs, files in os.walk('data'):
+        for file in files:
+            key = root[2:].replace('\\', '.')
+            print(key)
+            # key += '.'+os.path.basename(file)
+            # ext=os.path.splitext(file)
+            # value =os.path.splitext
+            # data[]
+
+
+def run_server():
     # 运行Server
+    global isConnected
 
     def server():
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -109,20 +130,12 @@ def p(text='', line=False, wait=False, align='left'):
         wait_for_break()
 
 
-def pcmd(text, func, *arg, **kw):
+def pcmd(text, func, line=False, *arg, **kw):
     cmd_list.append((text, func, arg, kw))
     package = {
         'type': 'pcmd',
-        'value': text
-    }
-    send(package)
-
-
-def plcmd(text, func, *arg, **kw):
-    cmd_list.append((text, func, arg, kw))
-    package = {
-        'type': 'plcmd',
-        'value': text
+        'value': text,
+        'line': line
     }
     send(package)
 

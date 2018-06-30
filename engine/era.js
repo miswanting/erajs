@@ -15,7 +15,7 @@ function doPackage(package) {
         game.p(package)
     }
     if (package['type'] == 'pcmd') {
-        game.pcmd(package['value'])
+        game.pcmd(package['value'], package['line'])
     }
     if (package['type'] == 'plcmd') {
         game.plcmd(package['value'])
@@ -89,7 +89,7 @@ game = {
             $(".current-line").append(package['value'])
         }
     },
-    'pcmd': function (text) {
+    'pcmd': function (text, line) {
         // 检查是否存在当前页。如果没有，创建之。
         if ($(".current-page").length == 0) {
             newPage()
@@ -99,33 +99,12 @@ game = {
             newLine()
         }
         // 将按钮添加到当前行的末尾。
+        if (line) {
+            newLine()
+        }
         let newButton = $("<div></div>")
         newButton.append(text)
         newButton.addClass("d-inline-flex mx-1 px-1 bg-primary text-white")
-        newButton.css("cursor", "pointer")
-        newButton.click(function () {
-            package = {
-                'type': 'pcmd_return',
-                'value': $(this).text()
-            }
-            send(package)
-        })
-        $(".current-line").append(newButton)
-    },
-    'plcmd': function (text) {
-        // 检查是否存在当前页。如果没有，创建之。
-        if ($(".current-page").length == 0) {
-            newPage()
-        }
-        // 检查是否存在当前行。如果没有，创建之。
-        if ($(".current-line").length == 0) {
-            newLine()
-        }
-        // 将按钮添加到当前行的末尾。
-        newLine()
-        let newButton = $("<div></div>")
-        newButton.append(text)
-        newButton.addClass("d-inline-flex px-1 bg-primary text-white")
         newButton.css("cursor", "pointer")
         newButton.click(function () {
             package = {
@@ -135,7 +114,7 @@ game = {
             send(package)
         })
         $(".current-line").append(newButton)
-    },
+    }
 }
 $(document).ready(function () {
     $("#root").mousedown(function (event) {
