@@ -71,13 +71,6 @@ ipcRenderer.on('package', (event, data) => {
 })
 game = {
     'p': function (package) {
-        // 如果value有，输出
-        // 如果value没有，或line有，换行
-        // 如果value是空，则换行
-        // 否则直接输出。
-        // 1. 输出什么
-        // 2. 是否换行
-        // 检查是否存在当前页。如果没有，创建之。
         if ($(".current-page").length == 0) {
             newPage()
         }
@@ -94,27 +87,6 @@ game = {
         if (text == '' || package.line) {
             $(".current-line").removeClass("current-line")
         }
-        /////////////////////////////////////////////
-        // // 检查是否存在当前页。如果没有，创建之。
-        // if ($(".current-page").length == 0) {
-        //     newPage()
-        // }
-        // if (package['line']) {
-        //     if (package['value'] == '') {
-        //         newLine()
-        //         $(".current-line").append('<br />')
-        //     } else {
-        //         newLine()
-        //         $(".current-line").append(package['value'])
-        //     }
-        //     $(".current-line").removeClass("current-line")
-        // } else {
-        //     if ($(".current-line").length == 0) {
-        //         newLine()
-        //     }
-        //     // 将文字添加到当前行的末尾。
-        //     $(".current-line").append(package['value'])
-        // }
     },
     'cmd': function (text, line) {
         // 检查是否存在当前页。如果没有，创建之。
@@ -124,11 +96,10 @@ game = {
         // 检查是否存在当前行。如果没有，创建之。
         if ($(".current-line").length == 0) {
             newLine()
-        }
-        // 将按钮添加到当前行的末尾。
-        if (line) {
+        } else if (line) {
             newLine()
         }
+        // 将按钮添加到当前行的末尾。
         let newButton = $("<div></div>")
         newButton.append(text)
         newButton.addClass("d-inline-flex mx-1 px-1 bg-primary text-white")
