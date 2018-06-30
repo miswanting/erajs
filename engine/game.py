@@ -19,12 +19,12 @@ data = {}
 
 
 def init():
-    fix_path()
-    load_data()
-    run_server()
+    _fix_path()
+    _load_data()
+    _run_server()
 
 
-def fix_path():
+def _fix_path():
     if getattr(sys, 'frozen', False):
         # frozen
         dir_ = os.path.dirname(sys.executable)
@@ -36,7 +36,7 @@ def fix_path():
     sys.path.append(gamepath)
 
 
-def load_data():
+def _load_data():
     global data
     for root, dirs, files in os.walk('data'):
         for file in files:
@@ -48,7 +48,7 @@ def load_data():
             # data[]
 
 
-def run_server():
+def _run_server():
     # 运行Server
     global isConnected
 
@@ -71,7 +71,7 @@ def run_server():
                         break
                     print("[DEBG]接收：", data)
                     package = json.loads(data.decode())
-                    parsePackage(package)
+                    _parse_package(package)
                     # conn.send(data)
     t = threading.Thread(name='socket', target=server)
     t.start()
@@ -83,11 +83,11 @@ def run_server():
         package = {
             'type': 'test'
         }
-        send(package)
+        _send(package)
         time.sleep(0.1)
 
 
-def parsePackage(package):
+def _parse_package(package):
     if package['type'] == 'test':
         global isConnected
         isConnected = True
@@ -100,7 +100,7 @@ def parsePackage(package):
                 each[1](*each[2], **each[3])
 
 
-def send(package):
+def _send(package):
     print("[DEBG]发送：", package)
     # conn.send(json.dumps(package, ensure_ascii=False,
     #                      sort_keys=True, indent=4).encode())
@@ -108,7 +108,7 @@ def send(package):
                          sort_keys=True).encode())
 
 
-def wait_for_break():
+def _wait_for_break():
     global break_type
     while True:
         if break_type == 1:
@@ -124,9 +124,9 @@ def p(text='', line=False, wait=False):
         'value': text,
         'line': line
     }
-    send(package)
+    _send(package)
     if wait:
-        wait_for_break()
+        _wait_for_break()
 
 
 def cmd(text, func, line=False, *arg, **kw):
@@ -136,14 +136,14 @@ def cmd(text, func, line=False, *arg, **kw):
         'value': text,
         'line': line
     }
-    send(package)
+    _send(package)
 
 
 def new_page():
     package = {
         'type': 'new_page'
     }
-    send(package)
+    _send(package)
 
 
 def goto(func, *arg, **kw):
