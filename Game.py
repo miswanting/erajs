@@ -6,7 +6,7 @@ import src.lib_base as base
 def intro():
     g.new_page()
     g.p('请选择主角的创建方式', True)
-    g.p(line=True)
+    g.p()
     g.cmd("使用游戏默认初始角色", default_start)
 
 
@@ -23,4 +23,4 @@ g.init()
 g.h1('EraLife')
 g.p()
 g.cmd("开始游戏", g.goto, True, intro)
-g.cmd("读取游戏", g.goto, True, load)
+g.cmd("读取游戏", g.goto, True, base.gui_load)
