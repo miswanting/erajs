@@ -21,8 +21,8 @@ data = {}
 def init():
     _fix_path()
     _load_data()
+    _start_client()
     _run_server()
-    # _start_client()
 
 
 def _fix_path():
@@ -57,6 +57,7 @@ def _run_server():
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((HOST, PORT))
             s.listen(1)
+            print('[FINE]服务器地址：{}:{}'.format(HOST, PORT))
             global conn
             conn, addr = s.accept()
             global isConnected
@@ -89,7 +90,7 @@ def _run_server():
 
 
 def _start_client():
-    pass
+    os.system('start client.bat')
 
 
 def _parse_package(package):

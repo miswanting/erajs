@@ -4,7 +4,7 @@
   "description": "A Era-like Game Engine.",
   "main": "engine/main.js",
   "scripts": {
-    "test": "electron ."
+    "test": "./node_modules/.bin/electron ."
   },
   "repository": {
     "type": "git",
