@@ -1,7 +1,36 @@
-language: python
-python:
-  - "3.6"
-install:
-  - pip install -r requirements.txt
-script:
-  - pytest
+sudo: false
+dist: trusty
+
+rvm:
+  - 2.2
+  - 2.3
+
+env:
+  - FOO=foo
+  - FOO=bar
+  
+script: echo $FOO
+
+jobs:
+  include:
+    - stage: deploy
+      script: echo Deploy
+      # Keep in mind to overwrite these here
+      rvm: 2.3
+      env: FOO=foo
+
+matrix:
+  include:
+    - language: python
+      python: 3.6
+      before_script:
+        - cd backend/tests
+      script:
+        - python -m unittest discover
+
+    - language: node_js
+      node_js: 10
+      before_script:
+        - cd android/AppName
+      script:
+        - ./gradlew build connectedCheck
