@@ -51,6 +51,11 @@ function createWindow() {
         // 取消引用 window 对象，如果你的应用支持多窗口的话，
         // 通常会把多个 window 对象存放在一个数组里面，
         // 与此同时，你应该删除相应的元素。
+        console.log('[DEBG]检测到窗口关闭');
+        package = {
+            'type': 'close_window'
+        }
+        client.write(JSON.stringify(package));
         win = null
     })
     connect()
