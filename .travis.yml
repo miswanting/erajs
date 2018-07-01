@@ -6,7 +6,7 @@ matrix:
     - language: python
       python: 3.7-dev
       script:
-        - pytest-3
+        - pytest
 
     - language: node_js
       node_js: 10
