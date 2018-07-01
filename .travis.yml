@@ -4,15 +4,17 @@ dist: trusty
 matrix:
   include:
     - language: python
-      python: 3.6
-      before_script:
-        - cd backend/tests
+      python: 3.7-dev
+      before_install:
+        - sudo apt install python3-pip
+      install:
+        - pip3 install -r requirements.txt
       script:
-        - python -m unittest discover
+        - python3 Game.py
 
     - language: node_js
       node_js: 10
-      before_script:
-        - cd android/AppName
+      install:
+        - npm i
       script:
-        - ./gradlew build connectedCheck
+        - npm test

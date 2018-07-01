@@ -1,1 +1,1 @@
-cx_Freeze
+cx_freeze==5.1.1
