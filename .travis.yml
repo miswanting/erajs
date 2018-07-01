@@ -5,16 +5,10 @@ matrix:
   include:
     - language: python
       python: 3.7-dev
-      before_install:
-        - sudo apt install python3-pip
-      install:
-        - pip3 install -r requirements.txt
       script:
-        - python3 Game.py
+        - pytest-3
 
     - language: node_js
       node_js: 10
-      install:
-        - npm i
       script:
-        - npm test
+        - jest

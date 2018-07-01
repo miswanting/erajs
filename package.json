@@ -22,6 +22,7 @@
   "homepage": "https://github.com/miswanting/Era.js#readme",
   "devDependencies": {
     "electron": "^2.0.3",
-    "electron-packager": "^12.1.0"
+    "electron-packager": "^12.1.0",
+    "jest": "^23.2.0"
   }
 }
