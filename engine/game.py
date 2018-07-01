@@ -65,14 +65,14 @@ def _run_server():
             with conn:
                 print('[FINE]已连接上：', addr)
                 while True:
-                    try:
-                        data = conn.recv(4096)
-                    except expression as e:
-                        pass
+                    data = conn.recv(4096)
                     if not data:
                         break
                     print("[DEBG]接收：", data)
                     package = json.loads(data.decode())
+                    if package['type'] == 'close_window':
+                        print("[DEBG]客户端关闭！")
+                        break
                     _parse_package(package)
                     # conn.send(data)
     t = threading.Thread(name='socket', target=server)
