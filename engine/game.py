@@ -7,6 +7,7 @@ import json
 import random
 import socket
 import hashlib
+import graphene
 import threading
 import configparser
 
@@ -226,3 +227,13 @@ def get_hash():
     m = hashlib.md5()
     m.update(str(random.random()).encode("utf-8"))
     return m.hexdigest().upper()
+
+
+class Query(graphene.ObjectType):
+    hello = graphene.String(name=graphene.String(default_value="stranger"))
+
+    def resolve_hello(self, info, name):
+        return 'Hello ' + name
+
+
+gql = graphene.Schema(Query)
