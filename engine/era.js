@@ -1,6 +1,8 @@
 const {
     ipcRenderer
 } = require('electron')
+let mode = ['plain']
+let mode_cache = []
 
 function send(package) {
     console.log('[DEBG]发送：', JSON.stringify(package));
@@ -26,6 +28,9 @@ function doPackage(package) {
     if (package['type'] == 'new_page') {
         newPage()
     }
+    if (package['type'] == 'mode') {
+        game.mode(package)
+    }
 }
 
 function newPage() {
@@ -43,14 +48,28 @@ function newPage() {
 function newLine() {
     // 关闭全部激活行
     $(".current-line").removeClass("current-line")
-    // 创建一个新行并激活
-    let newLine = $("<p></p>")
-    newLine.addClass("my-0 current-line")
-    newLine.css("word-break", "break-all")
-    $(".current-page").append(newLine)
-    // let leftAlign = $("<p></p>")
-    // let rightAlign = $("<p></p>")
-    $(".current-line").append(newLine)
+    console.log(mode);
+
+    if (mode[0] == 'plain') {
+        // 创建一个新行并激活
+        let newLine = $("<p></p>")
+        newLine.addClass("my-0 current-line")
+        newLine.css("word-break", "break-all")
+        $(".current-page").append(newLine)
+    } else if (mode[0] == ['grid']) {
+        // 创建一个新块并激活
+        console.log(mode_cache[0] % mode[1]);
+        if (mode_cache[0] % mode[1] == 0) {
+            let newRow = $("<div></div>")
+            newRow.addClass("row")
+            console.log($(".container-fluid"));
+            $(".container-fluid").last().append(newRow)
+        }
+        let newLine = $("<div></div>")
+        newLine.addClass("col d-flex justify-content-center px-0 current-line")
+        $(".row").last().append(newLine)
+        mode_cache[0] += 1
+    }
 }
 ipcRenderer.on('package', (event, data) => {
     // console.log(data)
@@ -134,14 +153,28 @@ game = {
             newLine()
         }
         let progress_container = $("<div></div>")
-        progress_container.addClass("progress mx-1")
+        progress_container.addClass("progress align-middle mx-1")
         progress_container.css("width", length.toString() + "px")
-        progress_container.css("height", "100%")
+        // progress_container.css("height", "100%")
+        progress_container.css("display", "inline-block")
         let progress_bar = $("<div></div>")
-        progress_bar.addClass("progress-bar")
+        progress_bar.addClass("progress-bar h-100")
         progress_bar.css("width", (now / max * 100).toString() + "%")
         progress_container.append(progress_bar)
         $(".current-line").append(progress_container)
+    },
+    'mode': function (package) {
+        mode = package.value
+        if ($(".current-page").length == 0) {
+            newPage()
+        }
+        $(".current-line").removeClass("current-line")
+        if (mode[0] == 'grid') {
+            mode_cache = [0]
+            let newContainer = $("<div></div>")
+            newContainer.addClass("container-fluid px-0")
+            $(".current-page").append(newContainer)
+        }
     }
 }
 $(document).ready(function () {
