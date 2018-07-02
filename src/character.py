@@ -91,6 +91,7 @@ def default_character():
     character = init_character()
     character['姓名'] = random.choice(g.data['姓名库']['中文']['姓'])
     character['姓名'] += random.choice(g.data['姓名库']['中文']['男名'])
+    character['系统称呼'] = '你'
     return character
 
 
