@@ -1,5 +1,6 @@
 # coding:utf-8
 import os
+import csv
 import sys
 import time
 import json
@@ -7,6 +8,7 @@ import random
 import socket
 import hashlib
 import threading
+import configparser
 
 HOST = ''
 PORT = 50012
@@ -16,6 +18,7 @@ break_type = 0
 cmd_list = []
 gui_tree = []
 data = {}
+error = None
 
 
 def init():
@@ -38,15 +41,34 @@ def _fix_path():
 
 
 def _load_data():
+    # 支持json、csv、cfg/config/ini
     global data
     for root, dirs, files in os.walk('data'):
         for file in files:
-            key = root[2:].replace('\\', '.')
-            print(key)
-            # key += '.'+os.path.basename(file)
-            # ext=os.path.splitext(file)
-            # value =os.path.splitext
-            # data[]
+            if len(root) == 4:
+                key = file.split('.')[0]
+            else:
+                key = root[5:].replace('\\', '.')
+                key += '.' + file.split('.')[0]
+            ext = file.split('.')[1]
+            # 载入文件
+            if ext in ['cfg', 'ini', 'config']:
+                config = configparser.ConfigParser()
+                config.read(root+'\\'+file)
+                d = dict(config._sections)
+                for k in d:
+                    d[k] = dict(d[k])
+                data[key] = d
+            elif ext == 'csv':
+                with open(root+'\\'+file, newline='', encoding='utf-8') as f:
+                    reader = csv.reader(f)
+                    new_list = []
+                    for row in reader:
+                        new_list.append(row)
+                    data[key] = new_list
+            elif ext == 'json':
+                with open(root+'\\'+file, 'r', encoding='utf-8') as f:
+                    data[key] = json.loads(''.join(f.readlines()))
 
 
 def _run_server():
@@ -55,33 +77,45 @@ def _run_server():
 
     def server():
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind((HOST, PORT))
-            s.listen(1)
-            print('[FINE]服务器地址：{}:{}'.format(HOST, PORT))
-            global conn
-            conn, addr = s.accept()
-            global isConnected
-            isConnected = True
-            with conn:
-                print('[FINE]已连接上：', addr)
-                while True:
-                    data = conn.recv(4096)
-                    if not data:
-                        break
-                    print("[DEBG]接收：", data)
-                    package = json.loads(data.decode())
-                    if package['type'] == 'close_window':
-                        print("[DEBG]客户端关闭！")
-                        break
-                    _parse_package(package)
-                    # conn.send(data)
+            try:
+                s.bind((HOST, PORT))
+                s.listen(1)
+                print('[FINE]服务器地址：{}:{}'.format(HOST, PORT))
+                global conn
+                conn, addr = s.accept()
+                global isConnected
+                isConnected = True
+                with conn:
+                    print('[FINE]已连接上：', addr)
+                    while True:
+                        data = conn.recv(4096)
+                        if not data:
+                            break
+                        print("[DEBG]接收：", data)
+                        package = json.loads(data.decode())
+                        if package['type'] == 'close_window':
+                            print("[DEBG]客户端关闭！")
+                            break
+                        _parse_package(package)
+                        # conn.send(data)
+            except OSError as e:
+                if e.errno == 10048:
+                    global error
+                    error = 10048
+                    exit()
+                    # return
+
     t = threading.Thread(name='socket', target=server)
     t.start()
     while not isConnected:
         time.sleep(0.1)
+        if error == 10048:
+            break
     # 测试连接畅通度
     isConnected = False
     while not isConnected:
+        # if error == 10048:
+        #     break
         package = {
             'type': 'test'
         }
