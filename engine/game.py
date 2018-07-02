@@ -170,7 +170,7 @@ def p(text='', isolate=False, wait=False):
         _wait_for_break()
 
 
-def cmd(text, func, line=False, *arg, **kw):
+def cmd(text, func,  *arg, line=False, **kw):
     cmd_list.append((text, func, arg, kw))
     package = {
         'type': 'cmd',
@@ -199,7 +199,11 @@ def progress(now, max=100, length=100):
 
 
 def mode(name='plain', *arg, **kw):
-    pass
+    package = {
+        'type': 'mode',
+        'value': [name, *arg]
+    }
+    _send(package)
 
 
 def new_page():
