@@ -10,8 +10,8 @@ import src.time as ti
 
 def intro():
     g.new_page()
-    g.p('请选择主角的创建方式', True)
-    g.p()
+    g.p('请选择主角的创建方式')
+    g.p(isolate=True)
     g.cmd("使用游戏默认初始角色", default_start)
 
 
@@ -30,12 +30,14 @@ def default_start():
 def gui_main():
     g.new_page()
     g.p(ti.get_full_time())
-    g.p(' ')
+    g.p('　金钱：')
     g.p(character.get_player()['金钱'])
+    g.p()
+    g.p(character.get_player()['系统称呼'])
 
 
 g.init()
 g.h1('EraLife')
-g.p()
+g.p(isolate=True)
 g.cmd("开始游戏", g.goto, True, intro)
 g.cmd("读取游戏", g.goto, True, base.gui_load)

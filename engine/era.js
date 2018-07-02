@@ -41,15 +41,15 @@ function newPage() {
 }
 
 function newLine() {
-    if ($(".current-line").length != 0) {
-        $(".current-line").removeClass("current-line")
-    }
+    // 关闭全部激活行
+    $(".current-line").removeClass("current-line")
+    // 创建一个新行并激活
     let newLine = $("<p></p>")
     newLine.addClass("my-0 current-line")
     newLine.css("word-break", "break-all")
     $(".current-page").append(newLine)
-    let leftAlign = $("<p></p>")
-    let rightAlign = $("<p></p>")
+    // let leftAlign = $("<p></p>")
+    // let rightAlign = $("<p></p>")
     $(".current-line").append(newLine)
 }
 ipcRenderer.on('package', (event, data) => {
@@ -75,15 +75,12 @@ game = {
             newPage()
         }
         let text = package.value.toString()
-        if (text == '' || package.line || $(".current-line").length == 0) {
+        if (text == '' || package.isolate || $(".current-line").length == 0) {
             newLine()
         }
-        if (text == '') {
-            $(".current-line").append('<br />')
-        } else {
-            $(".current-line").append(text)
-        }
-        if (text == '' || package.line) {
+        $(".current-line").append(text)
+        if (package.isolate) {
+            $(".current-line").append('<br>')
             $(".current-line").removeClass("current-line")
         }
     },

@@ -159,11 +159,11 @@ def _wait_for_break():
             break
 
 
-def p(text='', line=False, wait=False):
+def p(text='', isolate=False, wait=False):
     package = {
         'type': 'p',
         'value': text,
-        'line': line
+        'isolate': isolate
     }
     _send(package)
     if wait:
