@@ -1,7 +1,11 @@
 # coding:utf-8
+# import gettext
 import engine.game as g
 import src.lib_base as base
-import src.lib_era as era
+import src.character as character
+import src.time as ti
+
+# _ = gettext.gettext
 
 
 def intro():
@@ -17,8 +21,17 @@ def load():
 
 def default_start():
     g.data['人物库'] = []
-    g.data['人物库'].append(era.default_character())
-    print(g.data)
+    player = character.default_character()
+    player['系统身份'] = '主角'
+    g.data['人物库'].append(player)
+    g.goto(gui_main)
+
+
+def gui_main():
+    g.new_page()
+    g.p(ti.get_full_time())
+    g.p(' ')
+    g.p(character.get_player()['金钱'])
 
 
 g.init()

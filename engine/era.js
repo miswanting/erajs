@@ -74,9 +74,8 @@ game = {
         if ($(".current-page").length == 0) {
             newPage()
         }
-        let text = package.value
-        if (text == '' || package.line) {
-            $(".current-line").removeClass("current-line")
+        let text = package.value.toString()
+        if (text == '' || package.line || $(".current-line").length == 0) {
             newLine()
         }
         if (text == '') {

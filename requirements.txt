@@ -1,2 +1,3 @@
 cx_freeze
 pytest
+graphene
