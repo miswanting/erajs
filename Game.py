@@ -1,6 +1,7 @@
 # coding:utf-8
 import engine.game as g
 import src.lib_base as base
+import src.lib_era as era
 
 
 def intro():
@@ -15,7 +16,8 @@ def load():
 
 
 def default_start():
-    g.data['人物库'] = [base.default_character()]
+    g.data['人物库'] = []
+    g.data['人物库'].append(era.default_character())
     print(g.data)
 
 

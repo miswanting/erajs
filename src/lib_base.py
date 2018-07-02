@@ -1,7 +1,3 @@
-def default_character():
-    pass
-
-
 def gui_save():
     pass
 
