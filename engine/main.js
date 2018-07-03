@@ -6,6 +6,7 @@ const {
 const net = require('net')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+// import devtools from '@vue/devtools'
 let win
 let client
 
@@ -59,6 +60,9 @@ function createWindow() {
         win = null
     })
     connect()
+    // if (process.env.NODE_ENV === 'development') {
+    //     devtools.connect()
+    // }
 }
 
 // Electron 会在初始化后并准备
