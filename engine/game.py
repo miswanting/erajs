@@ -217,6 +217,7 @@ def new_page():
         'type': 'new_page'
     }
     _send(package)
+    cmd_list.clear()
 
 
 def goto(func, *arg, **kw):
