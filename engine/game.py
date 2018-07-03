@@ -204,10 +204,11 @@ def progress(now, max=100, length=100):
     _send(package)
 
 
-def mode(name='plain', *arg, **kw):
+def mode(value='plain', *arg, **kw):
     package = {
         'type': 'mode',
-        'value': [name, *arg]
+        'value': value,
+        'arg': arg
     }
     _send(package)
 
