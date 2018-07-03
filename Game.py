@@ -33,9 +33,9 @@ def gui_main():
     g.p()
     my = cha.get_player()
     g.p(my['系统称呼'])
-    g.p('　等级：')
+    g.p('　等级:')
     g.p(my['等级'])
-    g.p('　金钱：')
+    g.p('　金钱:')
     g.p(my['金钱'])
     g.p()
     g.p('体力:')
@@ -68,6 +68,7 @@ def gui_main():
 
 
 def gui_profile_list():
+    g.new_page()
     for each in g.data['人物库']:
         g.cmd(each['姓名'], g.goto, gui_profile)
 
