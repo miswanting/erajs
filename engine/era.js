@@ -3,12 +3,50 @@ const {
 } = require('electron')
 let mode = ['plain']
 let mode_cache = []
-
+// 侦听鼠标
+$(document).ready(function () {
+    $("#root").mousedown(function (event) {
+        console.log(event.which);
+        if (event.which == 1) {
+            package = {
+                'type': 'mouse_down',
+                'value': 1
+            }
+            send(package)
+        }
+        if (event.which == 3) {
+            package = {
+                'type': 'mouse_down',
+                'value': 3
+            }
+            send(package)
+        }
+    })
+});
+// 接受信息
+ipcRenderer.on('package', (event, data) => {
+    // console.log(data)
+    data = data.toString().split('}{')
+    for (let i = 0; i < data.length; i++) {
+        if (i != data.length - 1) {
+            data[i] += '}'
+        }
+        if (i != 0) {
+            data[i] = '{' + data[i]
+        }
+    }
+    for (let i = 0; i < data.length; i++) {
+        console.log('[DEBG]接收：', data[i]);
+        package = JSON.parse(data[i])
+        doPackage(package)
+    }
+})
+// 发射信息
 function send(package) {
     console.log('[DEBG]发送：', JSON.stringify(package));
     ipcRenderer.send('package', JSON.stringify(package))
 }
-
+// 处理信息
 function doPackage(package) {
     if (package['type'] == 'test') {
         send(package)
@@ -32,20 +70,16 @@ function doPackage(package) {
         game.mode(package.value[0], package.value.slice(1))
     }
 }
-
+// 新建页面
 function newPage() {
-    if ($(".current-line").length != 0) {
-        $(".current-line").removeClass("current-line")
-    }
-    if ($(".current-page").length != 0) {
-        $(".current-page").removeClass("current-page")
-    }
+    $(".current-line").removeClass("current-line")
+    $(".current-page").removeClass("current-page")
     let newPage = $("<div></div>")
     newPage.addClass("shadow-sm m-2 p-2 current-page")
     $("#list").append(newPage)
     game.mode('plain')
 }
-
+// 新建“行”
 function newLine() {
     // 关闭全部激活行
     $(".current-line").removeClass("current-line")
@@ -72,23 +106,7 @@ function newLine() {
         mode_cache[0] += 1
     }
 }
-ipcRenderer.on('package', (event, data) => {
-    // console.log(data)
-    data = data.toString().split('}{')
-    for (let i = 0; i < data.length; i++) {
-        if (i != data.length - 1) {
-            data[i] += '}'
-        }
-        if (i != 0) {
-            data[i] = '{' + data[i]
-        }
-    }
-    for (let i = 0; i < data.length; i++) {
-        console.log('[DEBG]接收：', data[i]);
-        package = JSON.parse(data[i])
-        doPackage(package)
-    }
-})
+
 game = {
     'p': function (package) {
         if ($(".current-page").length == 0) {
@@ -164,7 +182,7 @@ game = {
         progress_container.append(progress_bar)
         $(".current-line").append(progress_container)
     },
-    'mode': function (name, value=null) {
+    'mode': function (name, value = null) {
         if ($(".current-page").length == 0) {
             newPage()
         }
@@ -182,22 +200,3 @@ game = {
         }
     }
 }
-$(document).ready(function () {
-    $("#root").mousedown(function (event) {
-        console.log(event.which);
-        if (event.which == 1) {
-            package = {
-                'type': 'mouse_down',
-                'value': 1
-            }
-            send(package)
-        }
-        if (event.which == 3) {
-            package = {
-                'type': 'mouse_down',
-                'value': 3
-            }
-            send(package)
-        }
-    })
-});
