@@ -4,7 +4,8 @@
   "description": "A Era-like Game Engine.",
   "main": "engine/main.js",
   "scripts": {
-    "test": "./node_modules/.bin/electron ."
+    "start": "webpack --config .\\config\\webpack.config.js",
+    "test": "electron ."
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,9 @@
     "jquery": "^3.3.1",
     "popper.js": "^1.14.3",
     "react": "^16.4.1",
-    "typescript": "^2.9.2"
+    "react-dom": "^16.4.1",
+    "typescript": "^2.9.2",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8"
   }
 }
