@@ -5,7 +5,9 @@
   "main": "engine/main.js",
   "scripts": {
     "start": "webpack --config .\\config\\webpack.config.js",
-    "test": "electron ."
+    "test": "electron .",
+    "tsc": ".\\node_modules\\.bin\\tsc -p .\\config\\tsconfig.json",
+    "build": "babel src -d lib"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,9 @@
   },
   "homepage": "https://github.com/miswanting/Era.js#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.1.1",
     "electron": "^2.0.3",
     "electron-packager": "^12.1.0",
@@ -30,7 +35,6 @@
     "popper.js": "^1.14.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "typescript": "^2.9.2",
     "webpack": "^4.14.0",
     "webpack-cli": "^3.0.8"
   }
