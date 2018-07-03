@@ -8,7 +8,7 @@ matrix:
       install:
         - pip install -r .\config\requirements.txt
       script:
-        - pytest .\config\test_.py
+        - pytest .\config\test.py
 
     - language: node_js
       node_js: 10
