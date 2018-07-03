@@ -29,7 +29,7 @@ function doPackage(package) {
         newPage()
     }
     if (package['type'] == 'mode') {
-        game.mode(package)
+        game.mode(package.value[0], package.value.slice(1))
     }
 }
 
@@ -43,6 +43,7 @@ function newPage() {
     let newPage = $("<div></div>")
     newPage.addClass("shadow-sm m-2 p-2 current-page")
     $("#list").append(newPage)
+    game.mode('plain')
 }
 
 function newLine() {
@@ -163,13 +164,17 @@ game = {
         progress_container.append(progress_bar)
         $(".current-line").append(progress_container)
     },
-    'mode': function (package) {
-        mode = package.value
+    'mode': function (name, value=null) {
         if ($(".current-page").length == 0) {
             newPage()
         }
         $(".current-line").removeClass("current-line")
-        if (mode[0] == 'grid') {
+        if (name == 'plain') {
+            mode = [name]
+            mode_cache = null
+        }
+        if (name == 'grid') {
+            mode = [name, value]
             mode_cache = [0]
             let newContainer = $("<div></div>")
             newContainer.addClass("container-fluid px-0")
