@@ -93,12 +93,18 @@ def _run_server():
                         if not data:
                             break
                         print("[DEBG]接收：", data)
-                        package = json.loads(data.decode())
-                        if package['type'] == 'close_window':
-                            print("[DEBG]客户端关闭！")
-                            break
-                        _parse_package(package)
-                        # conn.send(data)
+                        data = data.decode().split('}{')
+                        for i in range(len(data)):
+                            if not i == 0:
+                                data[i] = '}' + data[i]
+                            if not i == len(data) - 1:
+                                data[i] = data[i] + '}'
+                        for each in data:
+                            package = json.loads(each)
+                            if package['type'] == 'close_window':
+                                print("[DEBG]客户端关闭！")
+                                break
+                            _parse_package(package)
             except OSError as e:
                 if e.errno == 10048:
                     global error
