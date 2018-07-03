@@ -53,7 +53,7 @@ function newLine() {
     if (mode[0] == 'plain') {
         // 创建一个新行并激活
         let newLine = $("<p></p>")
-        newLine.addClass("my-0 current-line")
+        newLine.addClass("text-dark my-0 current-line")
         newLine.css("word-break", "break-all")
         $(".current-page").append(newLine)
     } else if (mode[0] == ['grid']) {
@@ -61,7 +61,7 @@ function newLine() {
         console.log(mode_cache[0] % mode[1]);
         if (mode_cache[0] % mode[1] == 0) {
             let newRow = $("<div></div>")
-            newRow.addClass("row")
+            newRow.addClass("row text-dark")
             console.log($(".container-fluid"));
             $(".container-fluid").last().append(newRow)
         }
@@ -117,7 +117,7 @@ game = {
         // 将按钮添加到当前行的末尾。
         let newButton = $("<div></div>")
         newButton.append(text)
-        newButton.addClass("d-inline-flex mx-1 px-1 bg-primary text-white")
+        newButton.addClass("d-inline-flex mx-1 px-1 bg-light text-dark")
         newButton.css("cursor", "pointer")
         newButton.click(function () {
             package = {
@@ -153,12 +153,12 @@ game = {
             newLine()
         }
         let progress_container = $("<div></div>")
-        progress_container.addClass("progress align-middle mx-1")
+        progress_container.addClass("progress bg-light align-middle mx-1")
         progress_container.css("width", length.toString() + "px")
         // progress_container.css("height", "100%")
         progress_container.css("display", "inline-block")
         let progress_bar = $("<div></div>")
-        progress_bar.addClass("progress-bar h-100")
+        progress_bar.addClass("progress-bar bg-dark h-100")
         progress_bar.css("width", (now / max * 100).toString() + "%")
         progress_container.append(progress_bar)
         $(".current-line").append(progress_container)
