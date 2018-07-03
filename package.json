@@ -4,9 +4,9 @@
   "description": "A Era-like Game Engine.",
   "main": "engine/main.js",
   "scripts": {
-    "start": "webpack --config .\\config\\webpack.config.js",
+    "start": "webpack --config ./config/webpack.config.js",
     "test": "electron .",
-    "tsc": ".\\node_modules\\.bin\\tsc -p .\\config\\tsconfig.json",
+    "tsc": "./node_modules/.bin/tsc -p ./config/tsconfig.json",
     "build": "babel src -d lib"
   },
   "repository": {
