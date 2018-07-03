@@ -5,8 +5,10 @@ matrix:
   include:
     - language: python
       python: 3.7-dev
+      install:
+        - pip install -r .\config\requirements.txt
       script:
-        - pytest
+        - pytest .\config\test_.py
 
     - language: node_js
       node_js: 10

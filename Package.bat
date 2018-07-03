@@ -1,7 +1,7 @@
 @echo off
 
 start .\node_modules\.bin\electron-packager --overwrite .
-python setup.py build
+python .\config\setup.py build
 
 ping -n 10 localhost > nul
 
