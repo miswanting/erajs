@@ -5,7 +5,7 @@
 
 # Era.js
 
-Era.js 是一个以 **Python为游戏脚本语言的**、基于[Electron](https://electronjs.org/)，[GraphQL](https://graphql.org/)等技术开发的次世代`类Era`富文本游戏引擎。
+Era.js 是一个由 [TypeScript](https://www.typescriptlang.org/) 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于[Electron](https://electronjs.org/) 应用平台、 [React](https://reactjs.org/) 前端引擎和 [Bootstrap](https://getbootstrap.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
 
 [![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Travis](https://img.shields.io/travis/miswanting/Era.js.svg)](https://travis-ci.org/miswanting/Era.js) [![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases) [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
