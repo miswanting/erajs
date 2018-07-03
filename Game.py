@@ -60,17 +60,20 @@ def gui_main():
     g.p()
     g.cmd('和神秘人聊天', g.goto, intro)
     g.p()
-    g.cmd('保存', g.goto, intro)
+    g.cmd('保存', g.goto, base.gui_save)
     g.p()
-    g.cmd('读取', g.goto, intro)
+    g.cmd('读取', g.goto, base.gui_load)
     g.p()
     g.cmd('设置', g.goto, intro)
 
 
 def gui_profile_list():
     g.new_page()
+    g.p('人物档案')
+    g.p()
     for each in g.data['人物库']:
-        g.cmd(each['姓名'], g.goto, gui_profile)
+        g.cmd(each['姓名'], g.goto, gui_profile, True)
+    g.cmd('返回', g.back, line=True)
 
 
 def gui_profile():
