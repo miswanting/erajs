@@ -155,6 +155,7 @@ function h1(package) {
     new_h1.addClass('m-0')
     new_h1.append(package['value'])
     $(".line").last().append(new_h1)
+    newLine()
     // $(".current-line").removeClass("current-line")
 }
 
