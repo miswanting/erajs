@@ -11,7 +11,8 @@ import src.time as ti
 def intro():
     g.new_page()
     g.p('请选择主角的创建方式')
-    g.p(isolate=True)
+    g.p()
+    g.p()
     g.cmd("使用游戏默认初始角色", default_start)
 
 
@@ -65,6 +66,8 @@ def gui_main():
     g.cmd('读取', g.goto, base.gui_load)
     g.p()
     g.cmd('设置', g.goto, intro)
+    g.p()
+    g.p(' ')
 
 
 def gui_profile_list():
@@ -73,6 +76,7 @@ def gui_profile_list():
     g.p()
     for each in g.data['人物库']:
         g.cmd(each['姓名'], g.goto, gui_profile, True)
+    g.p()
     g.cmd('返回', g.back, line=True)
 
 
@@ -82,6 +86,8 @@ def gui_profile():
 
 g.init()
 g.h1('EraLife')
-g.p(isolate=True)
-g.cmd("开始游戏", g.goto, intro, line=True)
-g.cmd("读取游戏", g.goto, base.gui_load, line=True)
+g.p()
+g.p()
+g.cmd("开始游戏", g.goto, intro)
+g.p()
+g.cmd("读取游戏", g.goto, base.gui_load)

@@ -73,23 +73,23 @@ function doPackage(package) {
 }
 // 新建页面
 function newPage() {
-    $(".current-line").removeClass("current-line")
-    $(".current-page").removeClass("current-page")
+    // $(".current-line").removeClass("current-line")
+    // $(".current-page").removeClass("current-page")
     let newPage = $("<div></div>")
-    newPage.addClass("shadow-sm m-2 p-2 current-page")
+    newPage.addClass("shadow-sm m-2 p-2 page")
     $("#list").append(newPage)
     mode('plain')
 }
 // 新建“行”
 function newLine() {
     // 关闭全部激活行
-    $(".current-line").removeClass("current-line")
+    // $(".current-line").removeClass("current-line")
     if (sys.mode == 'plain') {
         // 创建一个新行并激活
         let newLine = $("<p></p>")
-        newLine.addClass("text-dark my-0 current-line")
+        newLine.addClass("text-dark my-0 line")
         newLine.css("word-break", "break-all")
-        $(".current-page").append(newLine)
+        $(".page").last().append(newLine)
     } else if (sys.mode == 'grid') {
         // 创建一个新块并激活
         if (sys.mode_cache % sys.mode_arg == 0) {
@@ -98,39 +98,39 @@ function newLine() {
             $(".container-fluid").last().append(newRow)
         }
         let newLine = $("<div></div>")
-        newLine.addClass("col d-flex justify-content-center px-0 current-line")
+        newLine.addClass("col d-flex justify-content-center px-0 line")
         $(".row").last().append(newLine)
         sys.mode_cache += 1
     }
 }
 
 function p(package) {
-    if ($(".current-page").length == 0) {
+    if ($(".page").length == 0) {
         newPage()
     }
     let text = package.value.toString()
-    if (text == '' || package.isolate || $(".current-line").length == 0) {
+    if ($(".page").last().find('.line').length == 0) {
         newLine()
     }
-    $(".current-line").append(text)
-    if (package.isolate) {
-        $(".current-line").append('<br>')
-        $(".current-line").removeClass("current-line")
+    if (text == '') {
+        if ($('.page').last().find('.line').last()[0].innerHTML == '') {
+            $('.page').last().find('.line').last().append('<br>')
+        }
+        newLine()
+    } else {
+        if (text == ' ') {
+            text = '&nbsp;'
+        }
+        $(".line").last().append(text)
     }
 }
 
 function cmd(package) {
     // 检查是否存在当前页。如果没有，创建之。
-    if ($(".current-page").length == 0) {
+    if ($(".page").length == 0) {
         newPage()
     }
-    // 检查是否存在当前行。如果没有，创建之。
-    if ($(".current-line").length == 0) {
-        newLine()
-    } else if (package.line) {
-        newLine()
-    }
-    // 将按钮添加到当前行的末尾。
+    // 将按钮添加到最后行的末尾。
     let newButton = $("<div></div>")
     newButton.append(package.value)
     newButton.addClass("d-inline-flex mx-1 px-1 bg-light text-dark")
@@ -138,24 +138,24 @@ function cmd(package) {
     newButton.click(function () {
         package = {
             'type': 'cmd_return',
-            'value': $(this).text()
+            'hash': package.hash
         }
         send(package)
     })
-    $(".current-line").append(newButton)
+    $(".line").last().append(newButton)
 }
 
 function h1(package) {
     // 检查是否存在当前页。如果没有，创建之。
-    if ($(".current-page").length == 0) {
+    if ($(".page").length == 0) {
         newPage()
     }
     newLine()
     let new_h1 = $("<h1></h1>")
     new_h1.addClass('m-0')
     new_h1.append(package['value'])
-    $(".current-line").append(new_h1)
-    $(".current-line").removeClass("current-line")
+    $(".line").last().append(new_h1)
+    // $(".current-line").removeClass("current-line")
 }
 
 function progress(package) {
@@ -163,11 +163,11 @@ function progress(package) {
     let max = package['max']
     let length = package['length']
     // 检查是否存在当前页。如果没有，创建之。
-    if ($(".current-page").length == 0) {
+    if ($(".page").length == 0) {
         newPage()
     }
     // 检查是否存在当前行。如果没有，创建之。
-    if ($(".current-line").length == 0) {
+    if ($(".page").last().find('.line').length == 0) {
         newLine()
     }
     let progress_container = $("<div></div>")
@@ -179,15 +179,15 @@ function progress(package) {
     progress_bar.addClass("progress-bar bg-dark h-100")
     progress_bar.css("width", (now / max * 100).toString() + "%")
     progress_container.append(progress_bar)
-    $(".current-line").append(progress_container)
+    $('.page').last().find('.line').last().append(progress_container)
 }
 
 function mode(value, arg = null) {
     console.log(value, arg);
-    if ($(".current-page").length == 0) {
+    if ($(".page").length == 0) {
         newPage()
     }
-    $(".current-line").removeClass("current-line")
+    // $(".current-line").removeClass("current-line")
     if (value == 'plain') {
         sys.mode = 'plain'
         sys.mode_cache = null
@@ -198,6 +198,7 @@ function mode(value, arg = null) {
         sys.mode_cache = 0
         let newContainer = $("<div></div>")
         newContainer.addClass("container-fluid px-0")
-        $(".current-page").append(newContainer)
+        $(".page").last().append(newContainer)
+        newLine()
     }
 }
