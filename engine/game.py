@@ -2,6 +2,7 @@
 import os
 import csv
 import sys
+import glob
 import time
 import json
 import random
@@ -175,7 +176,7 @@ def p(text='', wait=False):
         _wait_for_break()
 
 
-def cmd(text, func,  *arg, **kw):
+def cmd(text, func, *arg, **kw):
     hash = get_hash()
     cmd_list.append((hash, func, arg, kw))
     package = {
@@ -239,3 +240,24 @@ def get_hash():
     m = hashlib.md5()
     m.update(str(random.random()).encode("utf-8"))
     return m.hexdigest().upper()
+
+
+def show_save_file():
+    for file in glob.glob('save/*.save'):
+        pass
+    return glob.glob('save/*.save')
+
+
+def save_save_file(order, name=''):
+    for f in glob.glob("save/{}.*.save".format(order)):
+        os.remove(f)
+    with open('save/{}.{}.save'.format(order, name), 'w', encoding='utf-8') as f:
+        global data
+        f.write(json.dumps(data, ensure_ascii=False))
+
+
+def load_save_file(order):
+    file_name = glob.glob("save/{}.*.save".format(order))[0]
+    with open(file_name, 'r', encoding='utf-8') as f:
+        global data
+        data = json.loads(''.join(f.readlines()))
