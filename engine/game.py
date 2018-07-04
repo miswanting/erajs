@@ -143,7 +143,7 @@ def _parse_package(package):
         break_type = package['value']
     elif package['type'] == 'cmd_return':
         for each in cmd_list:
-            if package['value'] == each[0]:
+            if package['hash'] == each[0]:
                 each[1](*each[2], **each[3])
 
 
@@ -165,23 +165,23 @@ def _wait_for_break():
             break
 
 
-def p(text='', isolate=False, wait=False):
+def p(text='', wait=False):
     package = {
         'type': 'p',
-        'value': text,
-        'isolate': isolate
+        'value': text
     }
     _send(package)
     if wait:
         _wait_for_break()
 
 
-def cmd(text, func,  *arg, line=False, **kw):
-    cmd_list.append((text, func, arg, kw))
+def cmd(text, func,  *arg, **kw):
+    hash = get_hash()
+    cmd_list.append((hash, func, arg, kw))
     package = {
         'type': 'cmd',
         'value': text,
-        'line': line
+        'hash': hash
     }
     _send(package)
 
@@ -226,12 +226,12 @@ def goto(func, *arg, **kw):
     func(*arg, **kw)
 
 
-def back():
+def back(*arg, **kw):
     gui_tree.pop()
     repeat()
 
 
-def repeat():
+def repeat(*arg, **kw):
     gui_tree[-1][0](*gui_tree[-1][1], **gui_tree[-1][2])
 
 
@@ -239,13 +239,3 @@ def get_hash():
     m = hashlib.md5()
     m.update(str(random.random()).encode("utf-8"))
     return m.hexdigest().upper()
-
-
-class Query(graphene.ObjectType):
-    hello = graphene.String(name=graphene.String(default_value="stranger"))
-
-    def resolve_hello(self, info, name):
-        return 'Hello ' + name
-
-
-gql = graphene.Schema(Query)
