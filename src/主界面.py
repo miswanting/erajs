@@ -25,7 +25,7 @@ def gui_main():
     g.progress(my['精力'], my['精力上限'])
     g.p('({}/{})'.format(my['精力'], my['精力上限']))
     g.mode('grid', 5)
-    g.cmd('外出探险', g.goto, base.gui_save)
+    g.cmd('外出探险', g.goto, g.src['探险'].explore)
     g.p()
     g.cmd('市场', g.goto, base.gui_save)
     g.p()
@@ -33,7 +33,7 @@ def gui_main():
     g.p()
     g.cmd('装备管理', g.goto, base.gui_save)
     g.p()
-    g.cmd('休息', g.goto, base.gui_save)
+    g.cmd('休息', g.goto, rest)
     g.p()
     g.cmd('和神秘人聊天', g.goto, base.gui_save)
     g.p()
@@ -44,3 +44,14 @@ def gui_main():
     g.cmd('设置', g.goto, base.gui_save)
     g.p()
     g.p(' ')
+
+
+def rest():
+    g.new_page()
+    # 当天深夜
+    g.p('一夜无事', True)
+    g.p('')
+    g.src['time'].tick()
+    g.p('你起了个大早', True)
+    # 次日清晨
+    g.back()
