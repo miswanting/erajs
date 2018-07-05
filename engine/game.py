@@ -287,3 +287,14 @@ def title(text):
         'value': text
     }
     _send(package)
+
+
+def get_item(key, value, itemList=[]):
+    if itemList == []:
+        global item
+        itemList = item
+    item_list = []
+    for each in itemList:
+        if each[key] == value:
+            item_list.append(each)
+    return item_list

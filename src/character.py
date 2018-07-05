@@ -9,11 +9,21 @@ def init():
 def give_birth(person):
     if person['系统身份'] == '玩家':
         g.data['社会']['玩家'] = person['hash']
+    if person['系统身份'] == '敌人':
+        g.data['社会']['对方'].append(person['hash'])
     g.data['人物库'].append(person)
 
 
-def get_new_enemy():
-    return
+def generate_enemy():
+    e = init_character()
+    e['系统身份'] = '敌人'
+    e['姓名'] = generate_name('女')
+    e['种族'] = random.choice(g.get_item('type', '种族'))['名称']
+    return e
+
+
+def generate_name(男女, 中外='外'):
+    return random.choice(g.data['姓名库']['外文']['女名'])
 
 
 def init_character():
@@ -39,6 +49,7 @@ def init_character():
         '妻子': [],
         '朋友': [],
         '仇人': [],
+        '智力': 0,
         '宝珠': [],
         '属性': [],
         '刻印': [],
@@ -109,7 +120,8 @@ def default_character():
 
 
 def get_person(key, value):
+    person_list = []
     for person in g.data['人物库']:
         if person[key] == value:
-            return person
-    return False
+            person_list.append(person)
+    return person_list
