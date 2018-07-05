@@ -51,24 +51,20 @@ function send(package) {
 function doPackage(package) {
     if (package['type'] == 'test') {
         send(package)
-    }
-    if (package['type'] == 'p') {
+    } else if (package['type'] == 'p') {
         p(package)
-    }
-    if (package['type'] == 'cmd') {
+    } else if (package['type'] == 'cmd') {
         cmd(package)
-    }
-    if (package['type'] == 'h1') {
+    } else if (package['type'] == 'h1') {
         h1(package)
-    }
-    if (package['type'] == 'progress') {
+    } else if (package['type'] == 'progress') {
         progress(package)
-    }
-    if (package['type'] == 'new_page') {
+    } else if (package['type'] == 'new_page') {
         newPage()
-    }
-    if (package['type'] == 'mode') {
+    } else if (package['type'] == 'mode') {
         mode(package.value, package.arg)
+    } else if (package['type'] == 'title') {
+        title(package)
     }
 }
 // 新建页面
@@ -202,4 +198,8 @@ function mode(value, arg = null) {
         $(".page").last().append(newContainer)
         newLine()
     }
+}
+
+function title(package) {
+    $('title').text(package.value)
 }

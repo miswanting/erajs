@@ -280,3 +280,11 @@ def load_save_file(order):
     with open(file_name, 'r', encoding='utf-8') as f:
         global data
         data = json.loads(''.join(f.readlines()))
+
+
+def title(text):
+    package = {
+        'type': 'title',
+        'value': text
+    }
+    _send(package)

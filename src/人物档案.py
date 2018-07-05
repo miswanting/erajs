@@ -6,10 +6,10 @@ def gui_profile_list():
     g.p('人物档案')
     g.p()
     for each in g.data['人物库']:
-        g.cmd(each['姓名'], g.goto, gui_profile, True)
-    g.p()
-    g.cmd('返回', g.back, line=True)
+        g.cmd(each['姓名'], g.goto, gui_profile, each['hash'])
+        g.p()
+    g.cmd('返回', g.back)
 
 
-def gui_profile():
-    pass
+def gui_profile(hash):
+    print(hash)
