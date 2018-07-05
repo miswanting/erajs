@@ -8,7 +8,7 @@ def gui_main():
     g.new_page()
     g.p(ti.get_full_time())
     g.p()
-    my = cha.get_person('系统身份', '玩家')
+    my = cha.get_person('系统身份', '玩家')[0]
     g.p(my['系统称呼'])
     g.p('　等级:')
     g.p(my['等级'])
