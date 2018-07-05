@@ -50,7 +50,9 @@ def gui_load(success_func):
 
 def gui_new_save(order):
     def yes(*arg):
-        g.save_save_file(order, g.get_hash())
+        name = '第{}{}'.format(g.src['time'].get_total(),
+                              g.src['time'].get_time())
+        g.save_save_file(order, name)
         g.back()
         g.back()
 
@@ -65,7 +67,9 @@ def gui_new_save(order):
 
 def gui_to_save(order):
     def yes(*arg):
-        g.save_save_file(order, g.get_hash())
+        name = '第{}{}'.format(g.src['time'].get_total(),
+                              g.src['time'].get_time())
+        g.save_save_file(order, name)
         g.back()
         g.back()
 
@@ -90,7 +94,7 @@ def gui_to_load(order, success_func):
     g.p('你将加载存档{}'.format(order))
     g.p()
     g.p()
-    yes_or_no(yes, no,success_func)
+    yes_or_no(yes, no, success_func)
 
 
 def yes_or_no(yes_func, no_func, yes_arg=None, no_arg=None):
