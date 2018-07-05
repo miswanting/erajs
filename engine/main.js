@@ -19,7 +19,6 @@ function connect() {
         // client.write('world!\r\n');
     });
     client.on('data', (data) => {
-        // console.log(data.toString());
         console.log('[DEBG]转发（S->C）：', data.toString());
         win.webContents.send('package', data)
         // client.end();

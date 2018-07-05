@@ -98,39 +98,32 @@ def _run_server():
 
     def server():
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            try:
-                s.bind((HOST, PORT))
-                s.listen(1)
-                print('[FINE]服务器地址：{}:{}'.format(HOST, PORT))
-                global conn
-                conn, addr = s.accept()
-                global isConnected
-                isConnected = True
-                with conn:
-                    print('[FINE]已连接上：', addr)
-                    while True:
-                        data = conn.recv(4096)
-                        if not data:
-                            break
-                        print("[DEBG]接收：", data)
-                        data = data.decode().split('}{')
-                        for i in range(len(data)):
-                            if not i == 0:
-                                data[i] = '}' + data[i]
-                            if not i == len(data) - 1:
-                                data[i] = data[i] + '}'
-                        for each in data:
-                            package = json.loads(each)
-                            if package['type'] == 'close_window':
-                                print("[DEBG]客户端关闭！")
-                                break
-                            _parse_package(package)
-            except OSError as e:
-                if e.errno == 10048:
-                    global error
-                    error = 10048
-                    exit()
-                    # return
+            s.bind((HOST, PORT))
+            s.listen(1)
+            print('[FINE]服务器地址：{}:{}'.format(HOST, PORT))
+            global conn
+            conn, addr = s.accept()
+            print('[FINE]已连接上：', addr)
+            global isConnected
+            isConnected = True
+            while True:
+                data = conn.recv(1024)
+                print("[DEBG]接收：", data)
+                if not data:
+                    continue
+                data = data.decode().split('}{')
+                for i in range(len(data)):
+                    if not i == 0:
+                        data[i] = '}' + data[i]
+                    if not i == len(data) - 1:
+                        data[i] = data[i] + '}'
+                for each in data:
+                    package = json.loads(each)
+                    if package['type'] == 'close_window':
+                        print("[DEBG]客户端关闭！")
+                        break
+                    _parse_package(package)
+            print('[WARN]')
 
     t = threading.Thread(name='socket', target=server)
     t.start()
@@ -155,16 +148,23 @@ def _start_client():
 
 
 def _parse_package(package):
-    if package['type'] == 'test':
-        global isConnected
-        isConnected = True
-    elif package['type'] == 'mouse_down':
-        global break_type
-        break_type = package['value']
-    elif package['type'] == 'cmd_return':
-        for each in cmd_list:
-            if package['hash'] == each[0]:
-                each[1](*each[2], **each[3])
+    def parse(package):
+        print(package)
+        if package['type'] == 'test':
+            global isConnected
+            isConnected = True
+        elif package['type'] == 'mouse_down':
+            global break_type
+            print(break_type.__hash__)
+            break_type = package['value']
+        elif package['type'] == 'cmd_return':
+            for each in cmd_list:
+                if package['hash'] == each[0]:
+                    # BUG: Reported defects -@HYH at 2018-7-5 16:41:57
+                    #
+                    each[1](*each[2], **each[3])
+    t = threading.Thread(target=parse, args=(package,))
+    t.start()
 
 
 def _send(package):
@@ -177,12 +177,19 @@ def _send(package):
 
 def _wait_for_break():
     global break_type
-    while True:
+    print(break_type)
+    # while break_type == 0:
+    #     print('!', break_type)
+    #     time.sleep(0.1)
+    while break_type == 0:
+        # _send({'type': 'test'})
+        # print('!', break_type.__hash__)
         if break_type == 1:
             break_type = 0
             break
         elif break_type == 3:
             break
+        # time.sleep(0.1)
 
 
 def p(text='', wait=False):
@@ -191,7 +198,10 @@ def p(text='', wait=False):
         'value': text
     }
     _send(package)
+    print(text, wait)
     if wait:
+        global break_type
+        break_type = 0
         _wait_for_break()
 
 
