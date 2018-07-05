@@ -11,8 +11,7 @@ def intro():
 
 
 def default_start():
-    g.data['人物库'] = []
     player = cha.default_character()
-    player['系统身份'] = '主角'
-    g.data['人物库'].append(player)
+    player['系统身份'] = '玩家'
+    cha.give_birth(player)
     g.goto(g.src['主界面'].gui_main)

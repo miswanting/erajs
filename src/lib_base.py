@@ -46,6 +46,7 @@ def gui_load(success_func):
               g.goto, gui_to_load, pair[0], success_func)
         g.p()
     g.cmd("返回", g.back)
+    print(g.gui_tree)
 
 
 def gui_new_save(order):
