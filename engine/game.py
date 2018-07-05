@@ -9,6 +9,7 @@ import random
 import socket
 import hashlib
 import graphene
+import importlib
 import threading
 import configparser
 
@@ -19,12 +20,15 @@ isConnected = False
 break_type = 0
 cmd_list = []
 gui_tree = []
+src = {}
 data = {}
+item = []
 error = None
 
 
 def init():
     _fix_path()
+    _load_src()
     _load_data()
     _start_client()
     _run_server()
@@ -42,17 +46,32 @@ def _fix_path():
     sys.path.append(gamepath)
 
 
+def _load_src():
+    global src
+    for root, dirs, files in os.walk('src'):
+        for file in files:
+            if root.split('\\')[-1] == '__pycache__':
+                continue
+            tmp = root.split('\\')[1:]
+            tmp.extend(file.split('.')[:-1])
+            key = '.'.join(tmp)
+            path = 'src.'+key
+            module = importlib.import_module(path)
+            src[key] = module
+    for key in src.keys():
+        if 'init' in dir(src[key]):
+            src[key].init()
+
+
 def _load_data():
     # 支持json、csv、cfg/config/ini
     global data
     for root, dirs, files in os.walk('data'):
         for file in files:
-            if len(root) == 4:
-                key = file.split('.')[0]
-            else:
-                key = root[5:].replace('\\', '.')
-                key += '.' + file.split('.')[0]
-            ext = file.split('.')[1]
+            tmp = root.split('\\')[1:]
+            tmp.extend(file.split('.')[:-1])
+            key = '.'.join(tmp)
+            ext = file.split('.')[-1]
             # 载入文件
             if ext in ['cfg', 'ini', 'config']:
                 config = configparser.ConfigParser()
