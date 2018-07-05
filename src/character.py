@@ -2,6 +2,20 @@ import random
 import engine.game as g
 
 
+def init():
+    g.data['人物库'] = []
+
+
+def give_birth(person):
+    if person['系统身份'] == '玩家':
+        g.data['社会']['玩家'] = person['hash']
+    g.data['人物库'].append(person)
+
+
+def get_new_enemy():
+    return
+
+
 def init_character():
     character = {
         # 灵
@@ -89,14 +103,13 @@ def init_character():
 
 def default_character():
     character = init_character()
-    character['姓名'] = random.choice(g.data['姓名库']['中文']['姓'])
-    character['姓名'] += random.choice(g.data['姓名库']['中文']['男名'])
+    character['姓名'] = random.choice(g.data['姓名库']['外文']['男名'])
     character['系统称呼'] = '你'
     return character
 
 
-def get_player():
-    for character in g.data['人物库']:
-        if character['系统身份'] == '主角':
-            return character
+def get_person(key, value):
+    for person in g.data['人物库']:
+        if person[key] == value:
+            return person
     return False

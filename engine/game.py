@@ -123,7 +123,6 @@ def _run_server():
                         print("[DEBG]客户端关闭！")
                         break
                     _parse_package(package)
-            print('[WARN]')
 
     t = threading.Thread(name='socket', target=server)
     t.start()
@@ -149,15 +148,14 @@ def _start_client():
 
 def _parse_package(package):
     def parse(package):
-        print(package)
         if package['type'] == 'test':
             global isConnected
             isConnected = True
         elif package['type'] == 'mouse_down':
             global break_type
-            print(break_type.__hash__)
             break_type = package['value']
         elif package['type'] == 'cmd_return':
+            break_type = 0
             for each in cmd_list:
                 if package['hash'] == each[0]:
                     # BUG: Reported defects -@HYH at 2018-7-5 16:41:57
@@ -177,19 +175,13 @@ def _send(package):
 
 def _wait_for_break():
     global break_type
-    print(break_type)
-    # while break_type == 0:
-    #     print('!', break_type)
-    #     time.sleep(0.1)
-    while break_type == 0:
-        # _send({'type': 'test'})
-        # print('!', break_type.__hash__)
+    while True:
         if break_type == 1:
             break_type = 0
             break
         elif break_type == 3:
             break
-        # time.sleep(0.1)
+        time.sleep(0.1)
 
 
 def p(text='', wait=False):
@@ -198,10 +190,7 @@ def p(text='', wait=False):
         'value': text
     }
     _send(package)
-    print(text, wait)
     if wait:
-        global break_type
-        break_type = 0
         _wait_for_break()
 
 
