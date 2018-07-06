@@ -11,6 +11,7 @@ def get_items():
     items.append({
         'type': '种族',
         'parent': '',
-        '名称': '人类'
+        '名称': '人类',
+        '攻击力': [10, 15],
     })
     return items

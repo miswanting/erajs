@@ -289,8 +289,8 @@ def title(text):
     _send(package)
 
 
-def get_item(key, value, itemList=[]):
-    if itemList == []:
+def get_item(key, value, itemList=None):
+    if itemList == None:
         global item
         itemList = item
     item_list = []
@@ -298,3 +298,13 @@ def get_item(key, value, itemList=[]):
         if each[key] == value:
             item_list.append(each)
     return item_list
+
+
+def fib(n):
+    n = int(n)
+    if n == 0:
+        return 1
+    elif n == 1:
+        return 1
+    else:
+        return fib(n-2)+fib(n-1)

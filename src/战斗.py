@@ -28,6 +28,7 @@ def get_items():
         g.p(t)
         g.p()
         c.get_person('hash', obj)[0]['体力'] -= 10
+        
     items.append({
         'type': '行动',
         'parent': '战斗',
