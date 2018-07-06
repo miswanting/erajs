@@ -10,7 +10,7 @@ def get_items():
     items = []
     items.append({
         'type': '武器',
-        'parent': '右手',
+        'parent': '手部',
         '量词':'把',
         '名称': '木剑',
         '体力消耗': 10,
