@@ -9,7 +9,6 @@ def explore():
         result = random.choice([fight])()
         if result == 'lose':
             g.p('你狼狈地回家了', True)
-            g.p('{}'.format(g.data['社会']))
             break
     g.src['time'].tick()
     g.back()

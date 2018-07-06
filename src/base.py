@@ -5,6 +5,7 @@ import engine.game as g
 def gui_save():
     g.new_page()
     g.h1('存档')
+    g.p()
     save_list = g.show_save_file()
     display_list = []
     max = 0
@@ -29,7 +30,7 @@ def gui_save():
         else:
             g.cmd('{}.{}'.format(each[0], '-'), g.goto, gui_to_save, each[0])
         g.p()
-    g.cmd('创建新存档', g.goto, gui_new_save, max+1)
+    g.cmd('+创建新存档', g.goto, gui_new_save, max+1)
     g.p()
     g.cmd("返回", g.back)
 
@@ -37,6 +38,7 @@ def gui_save():
 def gui_load(success_func):
     g.new_page()
     g.h1('读档')
+    g.p()
     save_list = g.show_save_file()
     display_list = []
     for each in save_list:

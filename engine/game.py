@@ -308,3 +308,18 @@ def fib(n):
         return 1
     else:
         return fib(n-2)+fib(n-1)
+
+
+def input(text=''):
+    package = {
+        'type': 'input',
+        'value': text
+    }
+    _send(package)
+
+
+def clear_page():
+    package = {
+        'type': 'clear_page'
+    }
+    _send(package)

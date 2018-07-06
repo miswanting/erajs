@@ -1,5 +1,5 @@
 import engine.game as g
-base = g.src['lib_base']
+base = g.src['base']
 ti = g.src['time']
 cha = g.src['character']
 
@@ -27,7 +27,7 @@ def gui_main():
     g.mode('grid', 5)
     g.cmd('外出探险', g.goto, g.src['探险'].explore)
     g.p()
-    g.cmd('市场', g.goto, base.gui_save)
+    g.cmd('市场', g.goto, gui_market)
     g.p()
     g.cmd('人物档案', g.goto, g.src['人物档案'].gui_profile_list)
     g.p()
@@ -55,3 +55,16 @@ def rest():
     g.p('你起了个大早', True)
     # 次日清晨
     g.back()
+
+
+def gui_market():
+    g.new_page()
+    g.h1('市场')
+    g.p()
+    g.p()
+    l_market = g.get_item('type', '商店')
+    for each in l_market:
+        g.cmd(each['名称'], g.goto, each['func'])
+        g.p()
+    g.p()
+    g.cmd('返回', g.back)
