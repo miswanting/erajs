@@ -3,6 +3,7 @@ cha = g.src['character']
 
 
 def intro():
+    g.clear_page()
     g.new_page()
     g.p('请选择主角的创建方式')
     g.p()

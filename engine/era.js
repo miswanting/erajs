@@ -65,13 +65,18 @@ function doPackage(package) {
         mode(package.value, package.arg)
     } else if (package['type'] == 'title') {
         title(package)
+    } else if (package['type'] == 'input') {
+        input(package)
+    }else if (package['type'] == 'clear_page') {
+        clear_page()
     }
 }
 // 新建页面
 function newPage() {
     // $(".current-line").removeClass("current-line")
     // $(".current-page").removeClass("current-page")
-    let newPage = $("<div></div>")
+    $('.page').attr('disabled', 'disabled')
+    let newPage = $("<fieldset></fieldset>")
     newPage.addClass("shadow-sm m-2 p-2 page")
     $("#list").append(newPage)
     mode('plain')
@@ -97,6 +102,12 @@ function newLine() {
         newLine.addClass("col d-flex justify-content-center px-0 line")
         $(".row").last().append(newLine)
         sys.mode_cache += 1
+    } else if (sys.mode == 'cover') {
+        // 创建一个新行并激活
+        let newLine = $("<p></p>")
+        newLine.addClass("d-flex justify-content-center my-0 line")
+        newLine.css("word-break", "break-all")
+        $(".ban").last().append(newLine)
     }
 }
 
@@ -121,17 +132,45 @@ function p(package) {
     }
 }
 
+// function cmd(package) {
+//     // 检查是否存在当前页。如果没有，创建之。
+//     if ($(".page").length == 0) {
+//         newPage()
+//     }
+//     // 将按钮添加到最后行的末尾。
+//     let newButton = $("<div></div>")
+//     newButton.append(package.value)
+//     newButton.addClass("d-inline-flex mx-1 px-1 bg-light text-dark")
+//     newButton.css("cursor", "pointer")
+//     newButton.click(function () {
+//         $(this).unbind("click")
+//         $(this).attr('disabled', 'disabled')
+//         package = {
+//             'type': 'cmd_return',
+//             'hash': package.hash
+//         }
+//         send(package)
+//     })
+//     $(".line").last().append(newButton)
+// }
 function cmd(package) {
     // 检查是否存在当前页。如果没有，创建之。
     if ($(".page").length == 0) {
         newPage()
     }
     // 将按钮添加到最后行的末尾。
-    let newButton = $("<div></div>")
+    let newButton = $("<button></button>")
     newButton.append(package.value)
-    newButton.addClass("d-inline-flex mx-1 px-1 bg-light text-dark")
+    if (sys.mode == 'cover') {
+        newButton.addClass("btn btn-outline-light")
+    }
+    else {
+        newButton.addClass("btn btn-light btn-sm border-0 py-0 px-1")
+    }
     newButton.css("cursor", "pointer")
     newButton.click(function () {
+        // $(this).unbind("click")
+        // $(this).attr('disabled', 'disabled')
         package = {
             'type': 'cmd_return',
             'hash': package.hash
@@ -140,18 +179,18 @@ function cmd(package) {
     })
     $(".line").last().append(newButton)
 }
-
 function h1(package) {
     // 检查是否存在当前页。如果没有，创建之。
     if ($(".page").length == 0) {
         newPage()
     }
-    newLine()
+    if ($(".page").last().find('.line').length == 0) {
+        newLine()
+    }
     let new_h1 = $("<h1></h1>")
     new_h1.addClass('m-0')
     new_h1.append(package['value'])
     $(".line").last().append(new_h1)
-    newLine()
     // $(".current-line").removeClass("current-line")
 }
 
@@ -180,7 +219,8 @@ function progress(package) {
 }
 
 function mode(value, arg = null) {
-    console.log(value, arg);
+    // $(".cover").fadeOut()
+    $(".cover").parent().addClass('invisible')
     if ($(".page").length == 0) {
         newPage()
     }
@@ -188,6 +228,7 @@ function mode(value, arg = null) {
     if (value == 'plain') {
         sys.mode = 'plain'
         sys.mode_cache = null
+        newLine()
     }
     if (value == 'grid') {
         sys.mode = 'grid'
@@ -197,9 +238,48 @@ function mode(value, arg = null) {
         newContainer.addClass("container-fluid px-0")
         $(".page").last().append(newContainer)
         newLine()
+    } if (value == 'cover') {
+        sys.mode = 'cover'
+        sys.mode_arg = arg[0]
+        sys.mode_cache = 0
+        let newCover = $("<div></div>")
+        newCover.addClass("d-flex justify-content-center align-items-center text-white bg-success w-100 h-100 cover")
+        newCover.css('position', 'absolute')
+        newCover.css('top', 0)
+        newCover.css('left', 0)
+        $(".page").last().append(newCover)
+        let newBan = $("<div></div>")
+        newBan.addClass("d-flex flex-column ban")
+        $(".cover").last().append(newBan)
+        newLine()
     }
 }
 
 function title(package) {
     $('title').text(package.value)
+}
+function input(package) {
+    if ($(".page").length == 0) {
+        newPage()
+    }
+    let newInput = $("<input>")
+    newInput.addClass('form-control form-control-sm')
+    newInput.attr('placeholder', package.value)
+    newInput.attr('autofocus', 'autofocus')
+    newInput.keyup(function (e) {
+        if (e.which == 13) {
+            $(this).unbind("keyup")
+            $(this).attr('disabled', 'disabled')
+            // $('input')
+            package = {
+                'type': 'input_return',
+                'value': this.value
+            }
+            send(package)
+        }
+    })
+    $(".line").last().append(newInput)
+}
+function clear_page() {
+    $(".page").remove()
 }

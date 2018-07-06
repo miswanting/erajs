@@ -1,7 +1,8 @@
 const {
     app,
     ipcMain,
-    BrowserWindow
+    BrowserWindow,
+    Menu
 } = require('electron')
 const net = require('net')
 // Keep a global reference of the window object, if you don't, the window will
@@ -45,6 +46,7 @@ function createWindow() {
 
     // 打开开发者工具
     win.webContents.openDevTools()
+    Menu.setApplicationMenu(null)
 
     // 当 window 被关闭，这个事件会被触发。
     win.on('closed', () => {
