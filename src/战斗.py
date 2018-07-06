@@ -13,7 +13,7 @@ def get_items():
     def 可行_轻拳(sub, obj):
         return True
 
-    def 触发_轻拳(sub, obj):
+    def 触发_轻拳(sub, obj, act):
         c.get_person('hash', sub)[0]['耐力'] -= 10
         t = '{}给了{}一记轻拳，造成了10点伤害。'
         sub_name = c.get_person('hash', sub)[0]['姓名']
@@ -28,7 +28,7 @@ def get_items():
         g.p(t)
         g.p()
         c.get_person('hash', obj)[0]['体力'] -= 10
-        
+
     items.append({
         'type': '行动',
         'parent': '战斗',
@@ -41,7 +41,7 @@ def get_items():
     def 可行_重拳(sub, obj):
         return True
 
-    def 触发_重拳(sub, obj):
+    def 触发_重拳(sub, obj, act):
         c.get_person('hash', sub)[0]['耐力'] -= 15
         t = '{}给了{}一记重拳，造成了15点伤害。'
         sub_name = c.get_person('hash', sub)[0]['姓名']

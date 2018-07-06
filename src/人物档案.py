@@ -47,8 +47,11 @@ def gui_overview(hash):
     l.append(p['胸围'])
     l.append(p['腰围'])
     l.append(p['臀围'])
-    l.append(p['罩杯'])
-    g.p('体型:{}　身高:{}cm　体重:{}kg　三围:{}/{}/{}　罩杯:{}'.format(*l))
+    if p['性别'] == '男':
+        g.p('体型:{}　身高:{}cm　体重:{}kg　三围:{}/{}/{}'.format(*l))
+    elif p['性别'] == '女':
+        l.append(p['罩杯'])
+        g.p('体型:{}　身高:{}cm　体重:{}kg　三围:{}/{}/{}　罩杯:{}'.format(*l))
     g.p()
     l = ''
     for each in p['特点']:

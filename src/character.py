@@ -18,6 +18,7 @@ def default_character():
     p = init_character()
     p['姓名'] = random.choice(g.data['姓名库']['外文']['男名'])
     p['系统称呼'] = '你'
+    p['性别'] = '男'
     p['种族'] = random.choice(g.get_item('type', '种族'))['名称']
     return p
 

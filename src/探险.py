@@ -10,6 +10,13 @@ def explore():
         if result == 'lose':
             g.p('你狼狈地回家了', True)
             break
+    c.get_person('系统身份', '玩家')[0]['体力'] = c.get_person('系统身份', '玩家')[0]['体力上限']
+    c.get_person('系统身份', '玩家')[0]['耐力'] = c.get_person('系统身份', '玩家')[0]['耐力上限']
+    c.get_person('系统身份', '玩家')[0]['精力'] = c.get_person('系统身份', '玩家')[0]['精力上限']
+    for i in range(len(c.get_person('系统身份', '玩家')[0]['flag'])):
+        if c.get_person('系统身份', '玩家')[0]['flag'][i] == '死亡':
+            del c.get_person('系统身份', '玩家')[0]['flag'][i]
+            break
     g.src['time'].tick()
     g.back()
 
@@ -72,7 +79,7 @@ def fight():
                         avalible_list.append(each)
                 ###
                 act = random.choice(avalible_list)
-                act['触发'](p_list[i][0], obj)
+                act['触发'](p_list[i][0], obj, act)
                 ###
                 if c.get_person('hash', obj)[0]['体力'] <= 0:
                     c.get_person('hash', obj)[0]['flag'].append('死亡')
