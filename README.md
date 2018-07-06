@@ -5,7 +5,7 @@
 
 # Era.js
 
-Era.js 是一个由 [TypeScript](https://www.typescriptlang.org/) 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于 [Electron](https://electronjs.org/) 应用平台、 [React](https://reactjs.org/) 前端引擎和 [Bootstrap](https://getbootstrap.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
+Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于 [Electron](https://electronjs.org/) 应用平台和 [Bootstrap](https://getbootstrap.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
 
 [![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Travis](https://img.shields.io/travis/miswanting/Era.js.svg)](https://travis-ci.org/miswanting/Era.js) [![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases) [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
@@ -31,12 +31,11 @@ Era.js 是一个由 [TypeScript](https://www.typescriptlang.org/) 构建的、
 
 ## 技术栈
 
-- 内核语言：[TypeScript](https://www.typescriptlang.org/)
+- 内核语言：JavaScript
 - 脚本语言：[Python3](https://www.python.org/)
 - 应用平台：[Electron](https://electronjs.org/)
-- 前端引擎：[React](https://reactjs.org/)
+- 前端工具库：[jQuery](https://jquery.com/)
 - 样式库：[Bootstrap](https://getbootstrap.com/)
-- 捆绑套件：[WebPack](https://webpack.js.org/)
 - 测试套件
   - TypeScript：[Jest](https://jestjs.io/)
   - Python：[pyTest](https://docs.pytest.org/en/latest/)

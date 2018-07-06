@@ -27,21 +27,21 @@ def gui_main():
     g.mode('grid', 5)
     g.cmd('外出探险', g.goto, g.src['探险'].explore)
     g.p()
-    g.cmd('市场', g.goto, gui_market)
+    g.cmd('市场', g.goto, g.src['市场.市场'].gui_market)
     g.p()
     g.cmd('人物档案', g.goto, g.src['人物档案'].gui_profile_list)
     g.p()
-    g.cmd('装备管理', g.goto, base.gui_save)
+    g.cmd('装备管理', g.goto,  g.src['装备'].equip_manage)
     g.p()
     g.cmd('休息', g.goto, rest)
     g.p()
-    g.cmd('和神秘人聊天', g.goto, base.gui_save)
+    g.cmd('和神秘人聊天', g.goto, g.src['神秘人'].chat)
     g.p()
     g.cmd('保存', g.goto, base.gui_save)
     g.p()
     g.cmd('读取', g.goto, base.gui_load, gui_main)
     g.p()
-    g.cmd('设置', g.goto, base.gui_save)
+    g.cmd('设置', g.goto, base.g.src['设置'].config)
     g.p()
     g.p(' ')
 
@@ -55,16 +55,3 @@ def rest():
     g.p('你起了个大早', True)
     # 次日清晨
     g.back()
-
-
-def gui_market():
-    g.new_page()
-    g.h1('市场')
-    g.p()
-    g.p()
-    l_market = g.get_item('type', '商店')
-    for each in l_market:
-        g.cmd(each['名称'], g.goto, each['func'])
-        g.p()
-    g.p()
-    g.cmd('返回', g.back)
