@@ -6,9 +6,9 @@ matrix:
     - language: python
       python: 3.7-dev
       install:
-        - pip install -r .\config\requirements.txt
+        - pip install -r ./config/requirements.txt
       script:
-        - pytest .\config\test.py
+        - pytest ./config/test.py
 
     - language: node_js
       node_js: 10
