@@ -1,6 +1,7 @@
 import random
 import engine.game as g
 c = g.src['character']
+era = g.src['era']
 
 
 def explore():
@@ -82,14 +83,32 @@ def fight():
                 act['触发'](p_list[i][0], obj, act)
                 ###
                 if c.get_person('hash', obj)[0]['体力'] <= 0:
+                    # 防守方死亡
+                    g.p('{}死亡。'.format(era.get_call_name(obj)))
+                    g.p()
                     c.get_person('hash', obj)[0]['flag'].append('死亡')
+                    # 攻击方获得经验值
+                    exp=c.get_person('hash', obj)[0]['等级']*20+20
+                    print(p_list[i][0],our_list,your_list)
+                    if obj in your_list:
+                        for each in era.get_alive(our_list):
+                            c.get_person('hash', each)[0]['经验'] += exp
+                            g.p('{}获得了{}点经验。'.format(
+                                era.get_call_name(each), exp))
+                            g.p()
+                    elif obj in our_list:
+                        for each in era.get_alive(your_list):
+                            c.get_person('hash', each)[0]['经验'] += exp
+                            g.p('{}获得了{}点经验。'.format(
+                                era.get_call_name(each), exp))
+                            g.p()
                 p_list[i][2] += p_list[i][1]
                 # 胜负判定
-                our_alive = 0
+                our_alive=0
                 for each in our_list:
                     if not '死亡' in c.get_person('hash', each)[0]['flag']:
                         our_alive += 1
-                your_alive = 0
+                your_alive=0
                 for each in your_list:
                     if not '死亡' in c.get_person('hash', each)[0]['flag']:
                         your_alive += 1
