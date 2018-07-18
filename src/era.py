@@ -1,5 +1,6 @@
 import engine.game as g
-c = g.src['character']
+print(g.src.keys())
+c = g.src['person']
 
 
 def buy(sth):
@@ -11,10 +12,6 @@ def buy(sth):
     g.p(t, True)
     sb['背包'].append(sth)
     g.back()
-
-
-def enter_battlefield():
-    pass
 
 
 def get_alive(person_list):

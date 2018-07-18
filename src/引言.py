@@ -1,5 +1,5 @@
 import engine.game as g
-cha = g.src['character']
+cha = g.src['person']
 
 
 def intro():
@@ -12,6 +12,9 @@ def intro():
 
 
 def default_start():
+    # 组装世界
+    
+    # 生成默认玩家
     player = cha.default_character()
     player['系统身份'] = '玩家'
     cha.give_birth(player)

@@ -49,15 +49,17 @@ def _fix_path():
 def _load_src():
     global src
     for root, dirs, files in os.walk('src'):
-        for file in files:
+        for each in files:
             if root.split('\\')[-1] == '__pycache__':
                 continue
             tmp = root.split('\\')[1:]
-            tmp.extend(file.split('.')[:-1])
+            tmp.extend(each.split('.')[:-1])
             key = '.'.join(tmp)
             path = 'src.'+key
+            print('加载 {} ... '.format(path), end='')
             module = importlib.import_module(path)
             src[key] = module
+            print('完成！')
     for key in src.keys():
         if 'init' in dir(src[key]):
             src[key].init()

@@ -5,6 +5,10 @@ era = g.src['era']
 
 
 def explore():
+    # 确定自然环境
+    env = random.choice(g.get_item('type', '环境'))
+    g.p('你来到了{}。'.format(env['名称']))
+    g.p()
     g.new_page()
     for i in range(5):
         result = random.choice([fight])()
@@ -23,6 +27,7 @@ def explore():
 
 
 def fight():
+    # 生成环境
     # 生成敌人
     e = c.generate_enemy()
     c.give_birth(e)
@@ -88,8 +93,8 @@ def fight():
                     g.p()
                     c.get_person('hash', obj)[0]['flag'].append('死亡')
                     # 攻击方获得经验值
-                    exp=c.get_person('hash', obj)[0]['等级']*20+20
-                    print(p_list[i][0],our_list,your_list)
+                    exp = c.get_person('hash', obj)[0]['等级']*20+20
+                    print(p_list[i][0], our_list, your_list)
                     if obj in your_list:
                         for each in era.get_alive(our_list):
                             c.get_person('hash', each)[0]['经验'] += exp
@@ -104,11 +109,11 @@ def fight():
                             g.p()
                 p_list[i][2] += p_list[i][1]
                 # 胜负判定
-                our_alive=0
+                our_alive = 0
                 for each in our_list:
                     if not '死亡' in c.get_person('hash', each)[0]['flag']:
                         our_alive += 1
-                your_alive=0
+                your_alive = 0
                 for each in your_list:
                     if not '死亡' in c.get_person('hash', each)[0]['flag']:
                         your_alive += 1
