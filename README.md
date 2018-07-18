@@ -31,17 +31,18 @@ Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python
 
 ## 技术栈
 
-- 内核语言：JavaScript
-- 脚本语言：[Python3](https://www.python.org/)
-- 应用平台：[Electron](https://electronjs.org/)
-- 前端工具库：[jQuery](https://jquery.com/)
-- 样式库：[Bootstrap](https://getbootstrap.com/)
-- 测试套件
-  - TypeScript：[Jest](https://jestjs.io/)
-  - Python：[pyTest](https://docs.pytest.org/en/latest/)
-- 打包套件：
-  - TypeScript：[Electron Packager](https://www.npmjs.com/package/electron-packager)
-  - Python：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
+- 前端语言：[TypeScript](https://www.typescriptlang.org/)
+  - 应用框架：[Electron](https://electronjs.org/)
+  - 前端框架：[React](https://reactjs.org/)
+  - 样式框架：[Bootstrap](https://getbootstrap.com/)
+  - 构建框架：[Gulp](https://gulpjs.com/)
+  - 测试工具：[Jest](https://jestjs.io/)
+  - 捆绑工具：[webpack](https://webpack.js.org/)
+  - 编译工具：[Babel](https://babeljs.io/)
+  - 打包工具：[Electron Packager](https://www.npmjs.com/package/electron-packager)
+- 后端语言：[Python3](https://www.python.org/)
+  - 测试工具：[pyTest](https://docs.pytest.org/en/latest/)
+  - 打包工具：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
 
 ## 鸣谢
 

@@ -20,7 +20,7 @@ def default_character():
     p['系统称呼'] = '你'
     p['性别'] = '男'
     p['种族'] = random.choice(g.get_item('type', '种族'))['名称']
-    return p
+    return pW
 
 
 def give_birth(person):
