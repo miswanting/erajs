@@ -67,7 +67,7 @@ function doPackage(package) {
         title(package)
     } else if (package['type'] == 'input') {
         input(package)
-    }else if (package['type'] == 'clear_page') {
+    } else if (package['type'] == 'clear_page') {
         clear_page()
     }
 }
