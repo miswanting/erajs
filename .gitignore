@@ -63,3 +63,4 @@ build
 engine*.html
 *.pyc
 .vscode
+save/
