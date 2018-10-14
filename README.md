@@ -5,7 +5,7 @@
 
 # Era.js
 
-Era.js 是一个由 [TypeScript](https://www.typescriptlang.org/) 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于[Electron](https://electronjs.org/) 应用平台、 [React](https://reactjs.org/) 前端引擎和 [Bootstrap](https://getbootstrap.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
+Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于 [Electron](https://electronjs.org/) 应用平台和 [Bootstrap](https://getbootstrap.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
 
 [![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Travis](https://img.shields.io/travis/miswanting/Era.js.svg)](https://travis-ci.org/miswanting/Era.js) [![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases) [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
@@ -17,6 +17,7 @@ Era.js 是一个由 [TypeScript](https://www.typescriptlang.org/) 构建的、
 - 开发环境、打包和部署一定要简单可靠；
 - 对二次开发友好；
 - 原则上不砍掉任何所使用的技术所提供的功能。
+- 使用最新的技术。
 
 ## 引擎特性
 
@@ -27,6 +28,21 @@ Era.js 是一个由 [TypeScript](https://www.typescriptlang.org/) 构建的、
   - API 设计直观、简洁而全面；
   - 引擎面向游戏开发友好、面向修改友好；
   - 排版、图片、视频、音频等功能将在未来得到游戏引擎原生支持。
+
+## 技术栈
+
+- 前端语言：[TypeScript](https://www.typescriptlang.org/)
+  - 应用框架：[Electron](https://electronjs.org/)
+  - 前端框架：[React](https://reactjs.org/)
+  - 样式框架：[Bootstrap](https://getbootstrap.com/)
+  - 构建框架：[Gulp](https://gulpjs.com/)
+  - 测试工具：[Jest](https://jestjs.io/)
+  - 捆绑工具：[webpack](https://webpack.js.org/)
+  - 编译工具：[Babel](https://babeljs.io/)
+  - 打包工具：[Electron Packager](https://www.npmjs.com/package/electron-packager)
+- 后端语言：[Python3](https://www.python.org/)
+  - 测试工具：[pyTest](https://docs.pytest.org/en/latest/)
+  - 打包工具：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
 
 ## 鸣谢
 

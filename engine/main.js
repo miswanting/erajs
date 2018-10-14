@@ -1,11 +1,13 @@
 const {
     app,
     ipcMain,
-    BrowserWindow
+    BrowserWindow,
+    Menu
 } = require('electron')
 const net = require('net')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+// import devtools from '@vue/devtools'
 let win
 let client
 
@@ -18,7 +20,6 @@ function connect() {
         // client.write('world!\r\n');
     });
     client.on('data', (data) => {
-        // console.log(data.toString());
         console.log('[DEBG]转发（S->C）：', data.toString());
         win.webContents.send('package', data)
         // client.end();
@@ -36,8 +37,8 @@ function connect() {
 function createWindow() {
     // 创建浏览器窗口。
     win = new BrowserWindow({
-        width: 800,
-        height: 600
+        width: 1024,
+        height: 768
     })
 
     // 然后加载应用的 index.html。
@@ -45,6 +46,7 @@ function createWindow() {
 
     // 打开开发者工具
     win.webContents.openDevTools()
+    Menu.setApplicationMenu(null)
 
     // 当 window 被关闭，这个事件会被触发。
     win.on('closed', () => {
@@ -59,6 +61,9 @@ function createWindow() {
         win = null
     })
     connect()
+    // if (process.env.NODE_ENV === 'development') {
+    //     devtools.connect()
+    // }
 }
 
 // Electron 会在初始化后并准备
