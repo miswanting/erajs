@@ -9,6 +9,7 @@ import runpy
 import random
 import socket
 import hashlib
+import logging
 import importlib
 import threading
 import configparser
@@ -23,6 +24,12 @@ def new_hash():
 class DataEngine:
     data = {}
     pool = []
+
+    def __init__(self):
+        logging.basicConfig(filename='EraLife.log', level=logging.DEBUG)
+
+    def print(self, text):
+        logging.debug(text)
 
     def fix_path(self):
         if getattr(sys, 'frozen', False):
@@ -42,17 +49,23 @@ class DataEngine:
                 "dlc": {},
                 "mod": {},
             },
-            "plugin": {},
+            "class": {},
             "api": {},
             "entity": {},
-            "db": {},
+            "db": {  # 可保存的数据
+                'game': {},
+                'world': {},
+                'person': {},
+            },
+            "act": {},
+            "kojo": {}
         }
         check_folder_list = [
             'config',
             'erajs/plugin',
             'erajs/prototype',
             'dlc',
-            'game',
+            'logic',
             'mod',
             'data',
             'save',
@@ -88,12 +101,12 @@ class DataEngine:
                 'name': save_name,
                 'data': self.data['db']
             }
-            f.write(json.dumps(save_object))
+            f.write(json.dumps(save_object, ensure_ascii=False))
 
     def load_from(self, save_num):
         with open('save/'+str(save_num)+'.save', 'r', encoding='utf-8') as f:
             self.data['db'] = json.loads(''.join(f.readlines()))['data']
-            print('db', self.data['db'])
+            # print('db', self.data['db'])
 
     def add(self, item):
         item['hash'] = new_hash()
@@ -191,7 +204,7 @@ class LoadEngine(DataEngine):
                         print('[DEBG]│  ├─ Loading [{}]...'.format(
                             module_name), end='')
                         with open(every, 'r', encoding='utf8') as target:
-                            sys.argv = [self.data]
+                            sys.argv = [self]
                             exec(''.join(target.readlines()))
                         num_of_loaded_plugins += 1
                         print('OK')
@@ -219,7 +232,7 @@ class LoadEngine(DataEngine):
             print('[DEBG]│  ├─ Loading [{}]...'.format(
                 module_name), end='')
             with open(every, 'r', encoding='utf8') as target:
-                sys.argv = [self.data]
+                sys.argv = [self]
                 exec(''.join(target.readlines()))
             num_of_loaded_script += 1
             print('OK')
@@ -259,7 +272,7 @@ class LoadEngine(DataEngine):
                         print('[DEBG]│  ├─ Loading [{}]...'.format(
                             module_name), end='')
                         with open(every, 'r', encoding='utf8') as target:
-                            sys.argv = [self.data]
+                            sys.argv = [self]
                             exec(''.join(target.readlines()))
                         num_of_loaded_dlcs += 1
                         print('OK')
@@ -299,7 +312,7 @@ class LoadEngine(DataEngine):
                         print('[DEBG]│  ├─ Loading [{}]...'.format(
                             module_name), end='')
                         with open(every, 'r', encoding='utf8') as target:
-                            sys.argv = [self.data]
+                            sys.argv = [self]
                             exec(''.join(target.readlines()))
                         num_of_loaded_mods += 1
                         print('OK')
@@ -335,6 +348,7 @@ class SocketEngine(LoadEngine):
                 except OSError as err:
                     if err.errno == 10061:
                         print('[WARN]前端未启动！')
+                        os._exit(1)
                     else:
                         print(err)
 
@@ -364,12 +378,12 @@ class SocketEngine(LoadEngine):
         self.send(bag)
 
     def send(self, bag):
-        # print("[DEBG]发送：", bag)
+        self.print("[DEBG]发送：{}".format(bag))
         self._conn.send(json.dumps(bag, ensure_ascii=False).encode())
 
     def recv(self):
         data = self._conn.recv(4096)
-        # print("[DEBG]接收：", data)
+        self.print("[DEBG]接收：{}".format(data))
         if not data:
             return
         data = data.decode().split('}{')
@@ -492,6 +506,16 @@ class BagEngine(LockEngine):
             if kw['disabled']:
                 bag['value']['disabled'] = True
             kw.pop('disabled')
+        if 'popup' in kw.keys():
+            bag['value']['popup'] = kw['popup']
+            kw.pop('popup')
+        else:
+            bag['value']['popup'] = ''
+        if 'color' in kw.keys():
+            bag['value']['color'] = kw['color']
+            kw.pop('color')
+        else:
+            bag['value']['color'] = ''
         self._cmd_list.append((hash, func, arg, kw))
         self.send(bag)
         self.unlock()
@@ -508,7 +532,7 @@ class BagEngine(LockEngine):
         }
         self.send(bag)
 
-    def progress(self, now,  max=100, length='100px'):
+    def progress(self, now,  max=100, length=100):
         bag = {
             'type': 'progress',
             'value': {
@@ -521,7 +545,7 @@ class BagEngine(LockEngine):
         }
         self.send(bag)
 
-    def rate(self, now=0,  max=5, func=None):
+    def rate(self, now=0,  max=5, func=None, disabled=True):
         hash = new_hash()
         self._cmd_list.append((hash, func))
         bag = {
@@ -529,7 +553,8 @@ class BagEngine(LockEngine):
             'value': {
                 'now': now,
                 'max': max,
-                'hash': hash
+                'hash': hash,
+                'disabled': disabled
             },
             'from': 'b',
             'to': 'r'
@@ -573,6 +598,22 @@ class BagEngine(LockEngine):
         }
         self.send(bag)
 
+    def chart(self, chart_type, data, width=200, height=200):
+        hash = new_hash()
+        bag = {
+            'type': 'chart',
+            'value': {
+                'type': chart_type,
+                'data': data,
+                'hash': hash,
+                'width': width,
+                'height': height
+            },
+            'from': 'b',
+            'to': 'r'
+        }
+        self.send(bag)
+
     def page(self):
         bag = {
             'type': 'page',
@@ -598,10 +639,11 @@ class BagEngine(LockEngine):
         self._gui_list.append((func, arg, kw))
         func(*arg, **kw)
 
-    def back(self, *arg, **kw):
-        print('[DEBG]BACK: Pop [{}] from [{}]'.format(
-            self._gui_list[-1][0].__name__, self._show_gui_list()))
-        self._gui_list.pop()
+    def back(self, num=1, *arg, **kw):
+        for i in range(num):
+            print('[DEBG]BACK: Pop [{}] from [{}]'.format(
+                self._gui_list[-1][0].__name__, self._show_gui_list()))
+            self._gui_list.pop()
         self.repeat()
 
     def repeat(self, *arg, **kw):
@@ -609,9 +651,26 @@ class BagEngine(LockEngine):
             self._gui_list[-1][0].__name__, self._show_gui_list()))
         self._gui_list[-1][0](*self._gui_list[-1][1], **self._gui_list[-1][2])
 
-    def clear_gui(self):
-        print('[DEBG]CLEAR_GUI: Set [{}] to []'.format(self._show_gui_list()))
-        self._gui_list.clear()
+    def clear_gui(self, num=0):
+        if num == 0:
+            print('[DEBG]CLEAR_GUI: Set [{}] to []'.format(
+                self._show_gui_list()))
+            self._gui_list.clear()
+        else:
+            for i in range(num):
+                print('[DEBG]CLEAR_LAST_GUI: Pop [{}] from [{}]'.format(
+                    self._gui_list[-1][0].__name__, self._show_gui_list()))
+                self._gui_list.pop()
+
+    def exit(self, save=False):
+        bag = {'type': 'exit',
+               'value': {
+                   'save': save
+               },
+               'from': 'b',
+               'to': 'r'
+               }
+        self.send(bag)
 
     def _show_gui_list(self):
         gui_list = []
@@ -620,294 +679,10 @@ class BagEngine(LockEngine):
         return ' → '.join(gui_list)
 
 
-# # 核心技术
-# HOST = 'localhost'
-# PORT = 11994
-# _conn = None
-# _lock_status = [0, 'mouse']
-# _cmd_list = []
-# _gui_list = []
-
-
-# def init():
-#     _fix_path()
-#     _connect_server()
-#     _lock()
-#     _wait_for_unlock()
-
-
-# def init_done():
-#     bag = {'type': 'LOAD_DONE', 'from': 'b', 'to': 'r'}
-#     _send(bag)
-
-
-# def title(text):
-#     bag = {'type': 'title', 'from': 'b', 'to': 'r', 'value': text}
-#     _send(bag)
-
-
-# def t(text='', wait=False):
-#     bag = {'type': 't', 'from': 'b', 'to': 'r', 'value': text}
-#     _send(bag)
-#     if wait and not _lock_passed():
-#         _lock()
-#         _wait_for_unlock()
-
-
-# def b(text, func, *arg, **kw):
-#     global _cmd_list
-#     hash = _get_hash()
-#     _cmd_list.append((hash, func, arg, kw))
-#     bag = {
-#         'type': 'b',
-#         'from': 'b',
-#         'to': 'r',
-#         'value': {
-#             'text': text,
-#             'hash': hash
-#         }
-#     }
-#     _send(bag)
-#     _unlock()
-
-
-# def h(text, rank=1):
-#     bag = {
-#         'type': 'h',
-#         'from': 'b',
-#         'to': 'r',
-#         'value': {
-#             'text': text,
-#             'rank': rank
-#         }
-#     }
-#     _send(bag)
-
-
-# def progress(now, max=100, length=100):
-#     bag = {
-#         'type': 'progress',
-#         'from': 'b',
-#         'to': 'r',
-#         'value': {
-#             'now': now,
-#             'max': max,
-#             'length': length
-#         }
-#     }
-#     _send(bag)
-
-
-# def input(text=''):
-#     package = {'type': 'input', 'value': text}
-#     _send(package)
-#     _lock('input')
-#     _wait_for_unlock()
-
-
-# def page():
-#     bag = {'type': 'page', 'from': 'b', 'to': 'r'}
-#     _send(bag)
-#     global _cmd_list
-#     _cmd_list.clear()
-
-
-# def goto(func, *arg, **kw):
-#     print('[DEBG]GOTO: Append {} in {}'.format(func.__name__, _gui_list))
-#     _gui_list.append((func, arg, kw))
-#     func(*arg, **kw)
-
-
-# def back(*arg, **kw):
-#     print('[DEBG]BACK: Pop {} from {}'.format(
-#         _gui_list[-1][0].__name__, _gui_list))
-#     _gui_list.pop()
-#     repeat()
-
-
-# def repeat(*arg, **kw):
-#     print('[DEBG]REPEAT: Repeat {} in {}'.format(
-#         _gui_list[-1][0].__name__, _gui_list))
-#     _gui_list[-1][0](*_gui_list[-1][1], **_gui_list[-1][2])
-
-
-# def mode(value='plain', *arg, **kw):
-#     bag = {'type': 'mode', 'from': 'b', 'to': 'r', 'value': [value, arg, kw]}
-#     _send(bag)
-
-
-# def clear():
-#     bag = {'type': 'clear', 'from': 'b', 'to': 'r'}
-#     _send(bag)
-
-
-# def _______________________________________________________():
-#     pass
-
-
-# # lock 机制：
-# # _lock_status 是指示当前 lock 状态的变量；
-# # 0：无锁，可锁（默认）；1：有锁，可解锁；-1：无锁，不可锁；
-# #  0：_unlock()        ：与 RENDERER 握手完成，鼠标左键，b；
-# #  1：_lock()          ：开始游戏脚本前，p.wait；
-# # -1：_unlock_forever()：鼠标右键；
-# def _wait_for_unlock():
-#     global _lock_status
-#     while _lock_status[0] == 1:
-#         time.sleep(0.1)
-
-
-# def _is_locked():
-#     global _lock_status
-#     if _lock_status[0] == 1:
-#         return True
-#     else:
-#         return False
-
-
-# def _lock_passed():
-#     global _lock_status
-#     if _lock_status[0] == -1:
-#         return True
-#     else:
-#         return False
-
-
-# def _lock(lock_type='mouse'):
-#     global _lock_status
-#     _lock_status = [1, lock_type]
-
-
-# def _unlock(lock_type='mouse'):
-#     global _lock_status
-#     if lock_type == _lock_status[1]:
-#         _lock_status = [0, lock_type]
-
-
-# def _unlock_forever(lock_type='mouse'):
-#     global _lock_status
-#     if lock_type == _lock_status[1]:
-#         _lock_status = [-1, lock_type]
-
-
-# def _get_hash():
-#     m = hashlib.md5()
-#     m.update(str(random.random()).encode("utf-8"))
-#     return m.hexdigest().upper()
-
-
-# def _fix_path():
-#     if getattr(sys, 'frozen', False):
-#         # frozen
-#         dir_ = os.path.dirname(sys.executable)
-#         gamepath = os.path.dirname(dir_)
-#     else:
-#         # unfrozen
-#         dir_ = os.path.dirname(os.path.realpath(__file__))
-#         gamepath = os.path.dirname(os.path.dirname(dir_))
-#     sys.path.append(gamepath)
-
-
-# def _connect_server():
-#     t = threading.Thread(name='socket', target=_connect)
-#     t.start()
-
-
-# def _connect():
-#     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as c:
-#         global _conn
-#         _conn = c
-#         try:
-#             _conn.connect((HOST, PORT))
-#             print('[DONE]已连接上 MAIN ！')
-#         except OSError as err:
-#             if err.errno == 10061:
-#                 print('[WARN]前端未启动！')
-#             else:
-#                 print(err)
-#         # 传输客户端信息
-#         print('[DEBG]开始与 MAIN 握手…')
-#         syn = {'type': 'syn', 'from': 'b', 'to': 'm'}
-#         _send(syn)
-#         while True:
-#             data = _conn.recv(4096)
-#             print("[DEBG]接收：", data)
-#             if not data:
-#                 continue
-#             data = data.decode().split('}{')
-#             for i in range(len(data)):
-#                 if not i == 0:
-#                     data[i] = '}' + data[i]
-#                 if not i == len(data) - 1:
-#                     data[i] = data[i] + '}'
-#             for each in data:
-#                 bag = json.loads(each)
-#                 if bag['type'] in ['exit', 'quit', 'close']:
-#                     print("[DEBG]服务器即将关闭！")
-#                     break
-#                 _parse_bag(bag)
-
-
-# def _send(bag):
-#     print("[DEBG]发送：", bag)
-#     _conn.send(json.dumps(bag, ensure_ascii=False).encode())
-
-
-# def _parse_bag(bag):
-#     def parse(bag):
-#         if bag['type'] == 'ack':
-#             pass
-#         elif bag['type'] == 'syn':
-#             ack = {'type': 'ack', 'from': 'b', 'to': bag['from'], 'value': bag}
-#             _send(ack)
-#             if bag['from'] == 'm':
-#                 print('[DONE]与 MAIN 握手完成！')
-#                 print('[DEBG]开始与 RENDERER 握手…')
-#                 syn = {'type': 'syn', 'from': 'b', 'to': 'r'}
-#                 _send(syn)
-#             elif bag['from'] == 'r':
-#                 print('[DONE]与 RENDERER 握手完成！')
-#                 _unlock()
-#         elif bag['type'] == 'MOUSE_CLICK':
-#             if bag['value'] == 1:  # 左键
-#                 if _is_locked:
-#                     _unlock()
-#             elif bag['value'] == 3:  # 右键
-#                 if _is_locked:
-#                     _unlock_forever()
-#         elif bag['type'] == 'BUTTON_CLICK':
-#             for each in _cmd_list:
-#                 if bag['value'] == each[0]:
-#                     each[1](*each[2], **each[3])
-
-#     t = threading.Thread(target=parse, args=(bag, ))
-#     t.start()
-
-
 class Engine(BagEngine):
     version = '0.1.0'
 
     def register_api(self):
-        # func_list = [
-        #     self.fix_path,
-        #     self.self_check,
-        #     self.load_config,
-        #     self.register_api,
-        #     self.scan_plugin,
-        #     self.load_plugin,
-        #     self.connect,
-        #     self.send_loaded,
-        #     self.title,
-        #     self.t,
-        #     self.b,
-        #     self.h,
-        #     self.page,
-        #     self.goto,
-        #     self.back,
-        #     self.repeat,
-        #     self.add,
-        #     self.get
-        # ]
         def ban_sys(name):
             if not name[0] == '_':
                 return True

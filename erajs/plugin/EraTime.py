@@ -123,36 +123,37 @@ class EraTime:
         self.data['db']['time']['CURRENT_DAY'] += 0.5
 
 
-def register(data):
-    global EraTime
-    data['plugin']['time'] = EraTime
-    data['entity']['time'] = EraTime(data)
-    if not 'time' in data['db'].keys():
-        data['db']['time'] = {
+def register():
+    global a, EraTime
+    a.data['class']['time'] = EraTime
+    a.data['entity']['time'] = EraTime(a.data)
+    if not 'time' in a.data['db'].keys():
+        a.data['db']['time'] = {
             'CURRENT_DAY': 0
         }
     else:
-        data['entity']['time'].CURRENT_DAY = data['db']['time']['CURRENT_DAY']
+        a.data['entity']['time'].CURRENT_DAY = a.data['db']['time']['CURRENT_DAY']
     # data['entity']['time'].load(data['db']['time'])
     func_list = [
-        data['entity']['time'].get_time,
-        data['entity']['time'].get_day,
-        data['entity']['time'].get_week,
-        data['entity']['time'].get_month,
-        data['entity']['time'].get_season,
-        data['entity']['time'].get_year,
-        data['entity']['time'].get_day_in_week,
-        data['entity']['time'].get_day_in_month,
-        data['entity']['time'].get_day_in_year,
-        data['entity']['time'].get_month_in_year,
-        data['entity']['time'].get_season_in_year,
-        data['entity']['time'].get_sys_time,
-        data['entity']['time'].set_sys_time,
-        data['entity']['time'].get_full_time,
-        data['entity']['time'].tick
+        a.data['entity']['time'].get_time,
+        a.data['entity']['time'].get_day,
+        a.data['entity']['time'].get_week,
+        a.data['entity']['time'].get_month,
+        a.data['entity']['time'].get_season,
+        a.data['entity']['time'].get_year,
+        a.data['entity']['time'].get_day_in_week,
+        a.data['entity']['time'].get_day_in_month,
+        a.data['entity']['time'].get_day_in_year,
+        a.data['entity']['time'].get_month_in_year,
+        a.data['entity']['time'].get_season_in_year,
+        a.data['entity']['time'].get_sys_time,
+        a.data['entity']['time'].set_sys_time,
+        a.data['entity']['time'].get_full_time,
+        a.data['entity']['time'].tick
     ]
     for each in func_list:
-        data['api'][each.__name__] = each
+        a.data['api'][each.__name__] = each
 
 
-register(sys.argv[0])
+a = sys.argv[0]
+register()
