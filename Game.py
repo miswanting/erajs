@@ -59,7 +59,7 @@ def cover():
     a.b('展示页面逻辑', a.goto, ui_gui_logic)
     # 上面这个按钮函数，我们调用了 API 中的 goto 函数，并且将一个新页面的函数作为参数传给了它，
     # 这意味着当玩家点击这个按钮时，a.goto(gui_logic) 语句将会被执行。
-    a.t()  # 换行
+    a.t()  # 换行（换行不只是可以给文字用哦！按钮、评级、进度条等等都可以用的哦！）
     a.b('显示全部控件', a.goto, ui_all_components)
     a.t()  # 换行
     a.b('游戏设置', None, disabled=True)
