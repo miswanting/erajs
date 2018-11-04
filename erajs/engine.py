@@ -52,11 +52,7 @@ class DataEngine:
             "class": {},
             "api": {},
             "entity": {},
-            "db": {  # 可保存的数据
-                'game': {},
-                'world': {},
-                'person': {},
-            },
+            "db": {},  # 可保存的数据
             "act": {},
             "kojo": {}
         }
@@ -466,7 +462,7 @@ class BagEngine(LockEngine):
             elif bag['type'] == 'INPUT_CHANGE':
                 for each in self._cmd_list:
                     if bag['hash'] == each[0]:
-                        each[1](bag['value'])
+                        each[1](bag['value']['value'])
 
         t = threading.Thread(target=parse, args=(bag, ))
         t.start()
