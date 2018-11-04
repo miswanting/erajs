@@ -5,7 +5,9 @@
 # 我们话不多说，先引入Era.js引擎的后端库，如下列语句所示：
 import erajs.api as a
 # import 完毕之后，引擎的全部 API 就已经可以使用了。
-# 但在此之前，我还是推荐你将游戏文件的版本作为变量定义在下面的地方，如：
+import logic.test as t
+# 推荐将游戏逻辑/功能等代码放在【logic/】目录中，再用import导入。
+# 但在此之前，我还是推荐你将游戏文件的版本作为变量定义在这里，如：
 version = '0.1.0'
 # 【推荐】请不要在此处定义任何游戏变量，引擎会有专门的命名空间共开发者储存数据，以方便实现全局调用和获得数据持久性支持。（下文将会详细提到）
 
@@ -56,50 +58,203 @@ def cover():
     # disabled 当该参数为真时，按钮变为不可用的状态
     # popup 鼠标指针移动到按钮上面时，将会弹出的文字
     # color 按钮颜色，值只能为：red，orange，yellow，olive，green，teal，blue，violet，purple，pink，brown，grey，black。
-    a.b('展示页面逻辑', a.goto, ui_gui_logic)
+    a.b('页面逻辑教程', a.goto, ui_gui_logic)
     # 上面这个按钮函数，我们调用了 API 中的 goto 函数，并且将一个新页面的函数作为参数传给了它，
-    # 这意味着当玩家点击这个按钮时，a.goto(gui_logic) 语句将会被执行。
+    # 这意味着当玩家点击这个按钮时，a.goto(ui_gui_logic) 语句将会被执行。
     a.t()  # 换行（换行不只是可以给文字用哦！按钮、评级、进度条等等都可以用的哦！）
-    a.b('显示全部控件', a.goto, ui_all_components)
+    a.b('控件使用教程', a.goto, ui_all_components)
     a.t()  # 换行
-    a.b('游戏设置', None, disabled=True)
+    a.b('游戏数据教程', a.goto, ui_data)
     a.t()  # 换行
-    a.b('退出游戏', a.exit)
+    a.b('引擎模块/游戏脚本（Scripts）/DLC/MOD 教程', a.goto, ui_script)
+    a.t()  # 换行
+    a.b('退出游戏', a.exit)  # 退出程序的方式
 
 
 def ui_gui_logic():
-    pass
+    def change_page(page):
+        # 在这里定义一个简单的换页逻辑
+        a.clear_gui(1)  # 从引擎的界面逻辑中去除掉当前的页面
+        a.goto(page)  # 进入一个新页面，该页面与原页面属于兄弟节点
+
+    def page1():
+        # 当一个子页面完全只属于一个父页面而不需要被其他页面调用时，
+        # 可以将象征这个子页面的函数（如：page1）放在父函数（ui_gui_logic）内。
+        a.page()  # 新建一个页面
+        a.h('第一页')
+        a.t()
+        a.b('返回', a.back)
+        a.b('下一页', change_page, page2)
+        a.b('回到主界面', a.back, num=2)  # 向 back 传递参数 num，可以指定返回到第几个父节点。
+
+    def page2():
+        a.page()  # 新建一个页面
+        a.h('第二页')
+        a.t()
+        a.b('返回', a.back)
+        a.b('上一页', change_page, page1)
+        a.b('下一页', change_page, page3)
+        a.b('回到主界面', a.back, num=2)
+
+    def page3():
+        a.page()  # 新建一个页面
+        a.h('第三页')
+        a.t()
+        a.b('返回', a.back)
+        a.b('上一页', change_page, page2)
+        a.b('回到主界面', a.back, num=2)
+    a.page()  # 新建一个页面
+    a.h('页面逻辑展示')
+    a.t()
+    a.b('第一页', a.goto, page1)
+    a.b('第二页', a.goto, page2)
+    a.b('第三页', a.goto, page3)
+    a.b('刷新', a.repeat)  # 当您需要刷新当前界面以显示某些游戏数据的变化时，请用这个方法。
+    a.b('返回', a.back)
+    a.t()
+    a.b('清屏（慎用（请在使用时组合一下其他界面逻辑））', a.clear)
 
 
 def ui_all_components():
-    pass
+    def button_result():
+        a.page()
+        a.h('作为一个按钮，我被按了。')
+        a.t()
+        a.b('返回', a.back)
 
+    def rate_result(new_rate):
+        print('当前评分为{}分。'.format(new_rate))
 
-def rest():
-    a.tick()
-    a.page()
-    m.rest()
-    a.t('经过了半天。', True)
-    a.repeat()
+    def radio_result(new_ratio):
+        print('现在选中了“{}”。'.format(new_ratio))
 
-
-def save_game():
-    a.page()
-    a.h('保存游戏')
+    def input_result(new_input):
+        print('输入框中的值为：“{}”。'.format(new_input))
+    a.page()  # 新建一个页面
+    a.h('控件一览（包括作为标题的我自己）')
     a.t()
-    a.show_save_to_save()
+    a.t('【我是几个文字】')
+    a.t('【我跟在左边文字后面】')
+    a.t()  # 换行
+    a.t('【我被换行了……】')
+    a.t()  # 再换行
+    a.t('【当你看见我时，你需要点鼠标左键或右键】', True)
+    a.t()  # 再换行
+    a.t('【当你看见我时，你还是需要点鼠标左键或右键】', True)
+    a.t()  # 再换行
+    a.b('我是一个红按钮', a.goto, button_result, color='red')
+    a.b('我是一个不能按的红按钮', a.goto, button_result, color='red', disabled=True)
+    a.b('快拿鼠标戳我！', a.goto, button_result, popup='被你戳到了，好爽~')
+    a.t()
+    a.divider()  # 我是一个分割线
+    a.t()
+    a.t('作为进度条，我当前值为50，总共100，在界面上显示为 200px 长：')
+    a.progress(50, 100, 200)
+    a.t()
+    a.t('如果给这个游戏引擎评分，5分满分，我给4分：')
+    a.rate(4, 5)
+    a.t()
+    a.t('我是一个可以点的评分哦~点击之后请在后端控制台查看效果~（对着当前评分再点击一次可以取消评分哦~（等价于评0分））:')
+    a.rate(2, 5, rate_result, False)
+    a.t()
+    a.t('我是一个单选，目前默认选中第二项（索引为1）修改之后请在后端控制台查看效果:')
+    a.radio(['一', '二', '三'], 1, radio_result)
+    a.t()
+    a.t('我是输入框，修改之后请在后端控制台查看效果:')
+    a.input(input_result)
+    a.t()
+    a.t('以上，就是目前支持的全部控件及用法啦~')
+    a.t()
+    a.t('如果您需要新增，请跟作者联系哦~')
+    a.t()
     a.b('返回', a.back)
 
 
-def quit_game():
-    pass
+def ui_data():
+    def change_rate(new_rate):
+        a.data['db']['rate'] = new_rate
+    a.page()  # 新建一个页面
+    a.h('游戏数据教程')
+    a.t()
+    a.t('游戏的静态数据都保存在【data/】目录中，只要放进去了，且格式匹配，就可以在游戏开始后直接调用。如：')
+    a.t(a.data['data.姓名库']['外文']['男名'][0])
+    a.t()
+    a.t('支持的格式为json，csv，ini，inf，cfg，config等。而且在加载的时候后都已经被自动转换为了Dict等方便的格式。')
+    a.t()
+    a.t('【a.data是游戏引擎的数据核心，类型为Dict。里面定义的变量都可以被全局调用，但不会被保存】')
+    a.t()
+    a.divider()
+    a.t()
+    a.t('【接下来介绍几个特殊的Key】')
+    a.t()
+    a.t('【a.data["data.*"]】存放着【data/】目录下所有的静态数据；')
+    a.t()
+    a.t('【a.data["config.*"]】存放着【config/】目录下所有的设置；')
+    a.t()
+    a.t(
+        '【以上两种KEY使用点语法来对具体文件进行调用，如【data/姓名库.json】文件中的内容保存在【a.data["data.姓名库"]】中')
+    a.t()
+    a.divider()
+    a.t()
+    a.t('【a.data["db"]】中存放着可以被保存和读取的数据。（其他KEY中的数据都不会被保存）')
+    a.t()
+    a.t('演示(请修改，保存，再修改，加载。看数值是否被保存了。)：')
+    a.rate(a.data['db']['rate'], 5, change_rate, False)
+    a.t()
+    a.divider()
+    a.t()
+    a.t('【a.data["class"]】保存着各种Class，属于预留。大家暂时可以忽略。')
+    a.t()
+    a.t('【a.data["api"]】保存着各种API，大家可以在这里加入自定义的API，然后进行全局调用（一般用于引擎插件/Script/DLC/Mod中）。')
+    a.t()
+    a.t('【entity】保存着各种Class的实例，属于预留。大家暂时可以忽略。')
+    a.t()
+    a.divider()
+    a.t()
+    a.b('保存', a.goto, save_game)
+    a.b('加载', a.goto, load_game)
+    a.b('返回', a.back)
+
+
+def ui_script():
+    a.page()
+    a.h('引擎模块/游戏脚本（Scripts）/DLC/MOD 教程')
+    a.t()
+    a.t('你可以普通的调用其他包中的函数（你可以打开【logic/test.py】文件看看）：')
+    a.b('logic', a.goto, t.test_page)
+    a.t()
+    a.t('也可以调用Script中的函数（但是复杂一点）（你可以打开【script/test.py】文件看看）：')
+    a.b('script', a.goto, a.data['api']['test_page'])
+    a.t()
+    a.t('值得一提的是，除了script目录下的文件会自动加载以外，其他目录下如引擎脚本/DLC/MOD等，均需要再config文件中标记开启才能够被自动加载。')
+    a.t()
+    a.t('我们约定：')
+    a.t()
+    a.t('1. 引擎脚本暂时不要开发，有需要可以向我反映；')
+    a.t()
+    a.t('2. DLC仅用于游戏内容/数据增量更新；')
+    a.t()
+    a.t('3. MOD仅用于游戏临时修改；')
+    a.t()
+    a.t('4. Script仅用于游戏小量更新或脚本开发。')
+    a.t()
+    a.b('返回', a.back)
+
+
+def save_game():
+    # 保存游戏界面
+    a.page()
+    a.h('保存游戏')
+    a.t()
+    a.show_save_to_save()  # 显示当前存档以供保存
+    a.b('返回', a.back)
 
 
 def load_game():
     a.page()
     a.h('读取游戏')
     a.t()
-    a.show_save_to_load(load_for_load)
+    a.show_save_to_load(cover)  # 显示当前存档以供加载（参数为加载之后进入哪个界面（最好是根界面））
     a.b('返回', a.back)
 
 
@@ -127,6 +282,10 @@ a.init()
 # 16. 向前端发送加载完成信号，准备显示游戏封面。
 # 至此，游戏引擎初始化完毕！
 # 【注意】API 中的绝大部分函数都应在 init 函数调用之后调用，不然会报错。init 函数只需要执行一次。
+
+#########################################################################
+a.data['db']['rate'] = 3  # 这个语句是用来做保存加载展示用的，作为教程请无视。#
+#########################################################################
 
 # 【第2章 第1节 游戏封面（上）】
 # 在这里，请允许我向您介绍游戏的界面逻辑。
