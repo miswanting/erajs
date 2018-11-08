@@ -5,7 +5,7 @@
 
 # Era.js
 
-Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于 [Electron](https://electronjs.org/) 应用平台和 [Bootstrap](https://getbootstrap.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
+Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于 [Electron](https://electronjs.org/) 应用平台和 [Semantic UI](https://semantic-ui.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
 
 [![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Travis](https://img.shields.io/travis/miswanting/Era.js.svg)](https://travis-ci.org/miswanting/Era.js) [![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases) [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
@@ -34,12 +34,12 @@ Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python
 - 前端语言：[TypeScript](https://www.typescriptlang.org/)
   - 应用框架：[Electron](https://electronjs.org/)
   - 前端框架：[React](https://reactjs.org/)
-  - 样式框架：[Bootstrap](https://getbootstrap.com/)
+  - 样式框架：[Semantic UI](https://semantic-ui.com/)
   - 构建框架：[Gulp](https://gulpjs.com/)
   - 测试工具：[Jest](https://jestjs.io/)
   - 捆绑工具：[webpack](https://webpack.js.org/)
   - 编译工具：[Babel](https://babeljs.io/)
-  - 打包工具：[Electron Packager](https://www.npmjs.com/package/electron-packager)
+  - 打包工具：[Electron Builder](https://www.electron.build/)
 - 后端语言：[Python3](https://www.python.org/)
   - 测试工具：[pyTest](https://docs.pytest.org/en/latest/)
   - 打包工具：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
