@@ -721,7 +721,6 @@ class BagEngine(LockEngine):
         func(*arg, **kw)
 
     def back(self, num=1, *arg, **kw):
-        self.clear_gui(num)
         for i in range(num):
             self.debug('BACK: Pop [{}] from [{}]'.format(
                 self._gui_list[-1][0].__name__, self._show_gui_list()))
