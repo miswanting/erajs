@@ -2,5 +2,5 @@
 title Main
 chcp 65001
 cls
-call "front/era-js.exe"
+call "front/Era.js.exe"
 pause
