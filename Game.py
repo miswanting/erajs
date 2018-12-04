@@ -5,6 +5,8 @@
 # 我们话不多说，先引入Era.js引擎的后端库，如下列语句所示：
 import erajs.api as a
 # import 完毕之后，引擎的全部 API 就已经可以使用了。
+
+# 接下来引入其他自定义代码，这个是自由的，下面的语句只是用于演示。
 import logic.test as t
 # 推荐将游戏逻辑/功能等代码放在【logic/】目录中，再用import导入。
 # 但在此之前，我还是推荐你将游戏文件的版本作为变量定义在这里，如：
@@ -80,16 +82,16 @@ def ui_gui_logic():
     def page1():
         # 当一个子页面完全只属于一个父页面而不需要被其他页面调用时，
         # 可以将象征这个子页面的函数（如：page1）放在父函数（ui_gui_logic）内。
-        a.page()  # 新建一个页面
-        a.h('第一页')
+        a.page(color='#f00')  # 新建一个红色页面
+        a.h('第一页（暨页面着色演示）')
         a.t()
         a.b('返回', a.back)
         a.b('下一页', change_page, page2)
         a.b('回到主界面', a.back, num=2)  # 向 back 传递参数 num，可以指定返回到第几个父节点。
 
     def page2():
-        a.page()  # 新建一个页面
-        a.h('第二页')
+        a.page(color='#0f0')  # 新建一个页面
+        a.h('第二页（暨页面着色演示）')
         a.t()
         a.b('返回', a.back)
         a.b('上一页', change_page, page1)
@@ -97,8 +99,8 @@ def ui_gui_logic():
         a.b('回到主界面', a.back, num=2)
 
     def page3():
-        a.page()  # 新建一个页面
-        a.h('第三页')
+        a.page(color='#00f')  # 新建一个页面
+        a.h('第三页（暨页面着色演示）')
         a.t()
         a.b('返回', a.back)
         a.b('上一页', change_page, page2)
@@ -130,13 +132,20 @@ def ui_all_components():
 
     def input_result(new_input):
         print('输入框中的值为：“{}”。'.format(new_input))
+
+    def dropdown_result(new_dropdown):
+        print('下拉菜单中的值为：“{}”。'.format(new_dropdown))
+
+    def multi_dropdown_result(multi_dropdown):
+        print('下拉菜单中的值为：“{}”。'.format('，'.join(multi_dropdown)))
     a.page()  # 新建一个页面
-    a.h('控件一览（包括作为标题的我自己）')
+    a.h('控件一览（包括作为标题的我自己）', color='#f00', bcolor='#ff0')
     a.t()
     a.t('【我是几个文字】')
     a.t('【我跟在左边文字后面】')
     a.t()  # 换行
     a.t('【我被换行了……】')
+    a.t('而我有色彩', color='#f00', bcolor='#ff0')
     a.t()  # 再换行
     a.t('【当你看见我时，你需要点鼠标左键或右键】', True)
     a.t()  # 再换行
@@ -145,6 +154,7 @@ def ui_all_components():
     a.b('我是一个红按钮', a.goto, button_result, color='red')
     a.b('我是一个不能按的红按钮', a.goto, button_result, color='red', disabled=True)
     a.b('快拿鼠标戳我！', a.goto, button_result, popup='被你戳到了，好爽~')
+    a.b('我是振动器！', a.shake)
     a.t()
     a.divider()  # 我是一个分割线
     a.t()
@@ -161,7 +171,14 @@ def ui_all_components():
     a.radio(['一', '二', '三'], 1, radio_result)
     a.t()
     a.t('我是输入框，修改之后请在后端控制台查看效果:')
-    a.input(input_result)
+    a.input(input_result, '我是默认值哦~')
+    a.t()
+    a.t('我是一个下拉菜单哦！（下拉选择项目并在后端查看效果）:')
+    a.dropdown(['甲', '乙', '丙'], dropdown_result, default='丙')
+    a.t()
+    a.t('我是一个多选下拉菜单哦！（下拉选择多个项目并在后端查看效果）:')
+    a.dropdown(['甲', '乙', '丙', '丁', '戊'], multi_dropdown_result,
+               multiple=True, default='戊')
     a.t()
     a.t('以上，就是目前支持的全部控件及用法啦~')
     a.t()
