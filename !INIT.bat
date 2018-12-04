@@ -1,4 +1,4 @@
 @echo off
 title INIT
-call pip install -r requirements.txt
+call pip install -r require.txt
 pause

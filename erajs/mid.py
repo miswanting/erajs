@@ -86,8 +86,11 @@ class Mid():
     def radio(self, choice_list, default_index=0, func=None):
         return engine.data['api']['radio'](choice_list, default_index, func)
 
-    def input(self, func=None):
-        return engine.data['api']['input'](func)
+    def input(self, func=None, default=''):
+        return engine.data['api']['input'](func, default)
+
+    def dropdown(self, options, func=None, default='', search=False, multiple=False, placeholder='', allowAdditions=False):
+        return engine.data['api']['dropdown'](options, func, default, search, multiple, placeholder, allowAdditions)
 
     def divider(self, text=''):
         return engine.data['api']['divider'](text)
@@ -115,6 +118,9 @@ class Mid():
 
     def append_gui(self, func, *arg, **kw):
         engine.append_gui(func, *arg, **kw)
+
+    def get_gui_list(self):
+        return engine.get_gui_list()
 
     def show_save_to_save(self):
         def save_to(save_num):
@@ -188,8 +194,8 @@ class Mid():
     def exit(self, save=False):
         return engine.exit(save)
 
-    def save_data_to_file(self, dot_path):
-        return engine.save_data_to_file(dot_path)
+    def save_data_to_file(self, dot_path, ext='yaml'):
+        return engine.save_data_to_file(dot_path, ext)
 
     def shake(self, duration=500):
         return engine.shake(duration)

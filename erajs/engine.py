@@ -195,10 +195,10 @@ class DataEngine(DebugEngine):
             data[key] = self.load_file(each)
         return data
 
-    def save_data_to_file(self, dot_path):
+    def save_data_to_file(self, dot_path, ext='yaml'):
         """将一个data文件夹中加载的数据重新保存回去"""
         data = self.data[dot_path]
-        path_to_file = self.dot2path(dot_path, 'yaml')
+        path_to_file = self.dot2path(dot_path, ext)
         self.save_file(data, path_to_file)
 
     def load_file(self, path_to_file):
@@ -246,7 +246,38 @@ class DataEngine(DebugEngine):
                 f.write(json.dumps(data, ensure_ascii=False))
         elif ext == 'yaml':
             with open(path_to_file, 'w', encoding='utf-8') as f:
-                f.write(yaml.dump(data, allow_unicode=True))
+                f.write(yaml.dump(data, allow_unicode=True,
+                                  default_flow_style=False))
+
+    def load_zip_file(self, path_to_file):
+        """给一个路径，获得zip文件中的一切
+        如给一个test.zip
+        返回一个dict：
+        {
+            文件1（点语法）：{
+
+            },
+            文件2（点语法）：[
+
+            ]
+        }
+        """
+        pass
+
+    def save_zip_file(self, data, path_to_file):
+        """给一个路径，保存zip文件
+        如给一个test.zip
+        给一个dict：
+        {
+            文件1（路径）：{
+
+            },
+            文件2（路径）：[
+
+            ]
+        }
+        """
+        pass
 
 
 class LoadEngine(DataEngine):
@@ -536,7 +567,11 @@ class BagEngine(LockEngine):
             elif bag['type'] == 'INPUT_CHANGE':
                 for each in self._cmd_list:
                     if bag['hash'] == each[0]:
-                        each[1](bag['value']['value'])
+                        each[1](bag['value'])
+            elif bag['type'] == 'DROPDOWN_CHANGE':
+                for each in self._cmd_list:
+                    if bag['hash'] == each[0]:
+                        each[1](bag['value'])
 
         t = threading.Thread(target=parse, args=(bag, ))
         t.start()
@@ -654,13 +689,43 @@ class BagEngine(LockEngine):
         }
         self.send(bag)
 
-    def input(self, func=None):
+    def input(self, func=None, default=''):
         hash = new_hash()
         self._cmd_list.append((hash, func))
         bag = {
             'type': 'input',
             'value': {
-                'hash': hash
+                'hash': hash,
+                'default': default
+            },
+            'from': 'b',
+            'to': 'r'
+        }
+        self.send(bag)
+
+    def dropdown(self, options, func=None, default='', search=False, multiple=False, placeholder='', allowAdditions=False):
+        hash = new_hash()
+        self._cmd_list.append((hash, func))
+        new_options = []
+        for each in options:
+            new_options.append({
+                'value': each,
+                'text': each
+            })
+        # default = {
+        #     'value': default,
+        #     'text': default
+        # }
+        bag = {
+            'type': 'dropdown',
+            'value': {
+                'hash': hash,
+                'options': new_options,
+                'default': default,
+                'search': search,
+                'multiple': multiple,
+                'placeholder': placeholder,
+                'allowAdditions': allowAdditions
             },
             'from': 'b',
             'to': 'r'
@@ -749,6 +814,12 @@ class BagEngine(LockEngine):
                 self.debug('CLEAR_LAST_GUI: Pop [{}] from [{}]'.format(
                     self._gui_list[-1][0].__name__, self._show_gui_list()))
                 self._gui_list.pop()
+
+    def get_gui_list(self):
+        gui_list = []
+        for each in self._gui_list:
+            gui_list.append(each[0].__name__)
+        return gui_list
 
     def exit(self, save=False):
         bag = {'type': 'exit',

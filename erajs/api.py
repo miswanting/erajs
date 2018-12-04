@@ -138,7 +138,7 @@ def radio(choice_list, default_index=0, func=None) -> None:
     m.radio(choice_list, default_index, func)
 
 
-def input(func=None) -> None:
+def input(func=None, default='') -> None:
     """
     显示输入框。\n
     func 是返回函数，当输入框的内容被改变时触发，其参数为：\n
@@ -148,7 +148,21 @@ def input(func=None) -> None:
     Tips：可与按钮连用进行自定义文本的输入。\n
     """
     global m
-    m.input(func)
+    m.input(func, default)
+
+
+def dropdown(options, func=None, default='', search=False, multiple=False, placeholder='', allowAdditions=False) -> None:
+    """
+    显示输入框。\n
+    func 是返回函数，当输入框的内容被改变时触发，其参数为：\n
+    {
+        "value": 【改变后的内容】
+    }\n
+    Tips：可与按钮连用进行自定义文本的输入。\n
+    """
+    global m
+    m.dropdown(options, func, default, search,
+               multiple, placeholder, allowAdditions)
 
 
 def divider(text='') -> None:
@@ -217,6 +231,15 @@ def append_gui(func, *arg, **kw) -> None:
     """
     global m
     m.append_gui(func, *arg, **kw)
+
+
+def get_gui_list() -> None:
+    """
+    【界面逻辑函数】\n
+    向界面链的末尾增加一个界面（但不触发）。\n
+    """
+    global m
+    return m.get_gui_list()
 
 
 def show_save_to_save() -> None:
@@ -292,9 +315,9 @@ def new_hash() -> str:
     return m.new_hash()
 
 
-def save_data_to_file(dot_path):
+def save_data_to_file(dot_path, ext='yaml'):
     global m
-    return m.save_data_to_file(dot_path)
+    return m.save_data_to_file(dot_path, ext)
 
 
 def shake(duration=500):
