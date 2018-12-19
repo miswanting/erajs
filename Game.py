@@ -154,7 +154,7 @@ def ui_all_components():
     a.b('我是一个红按钮', a.goto, button_result, color='red')
     a.b('我是一个不能按的红按钮', a.goto, button_result, color='red', disabled=True)
     a.b('快拿鼠标戳我！', a.goto, button_result, popup='被你戳到了，好爽~')
-    a.b('我是振动器！', a.shake)
+    a.b('我是振动器！', a.shake, 100)
     a.t()
     a.divider()  # 我是一个分割线
     a.t()

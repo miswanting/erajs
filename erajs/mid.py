@@ -5,6 +5,8 @@ data = {}
 
 engine = e.Engine()
 
+_ = e._
+
 
 class Mid():
     def __init__(self):
@@ -27,14 +29,15 @@ class Mid():
         engine.info('├─ Transfering Configuration to Server...')
         engine.send_config()
         engine.info('├─ Loading Data Files...')
-        data = engine.load_data(engine.scan('data'))
+        data = engine.load_data(engine.scan('data'), engine.send)
         for each in data.keys():
             engine.data[each] = data[each]
         engine.info('│  └─ Data Files Loaded!')
         engine.info('├─ Scanning Scripts...')
         engine.info('│  └─ {} Scripts Scanned!'.format(engine.scan_script()))
         engine.info('├─ Loading Scripts...')
-        engine.info('│  └─ {} Scripts Loaded!'.format(engine.load_script()))
+        engine.info('│  └─ {} Scripts Loaded!'.format(
+            engine.load_script(engine.send)))
         engine.info('├─ Scanning DLCs...')
         engine.info('│  └─ {} DLCs Scanned!'.format(engine.scan_dlc()))
         engine.info('├─ Loading DLCs...')

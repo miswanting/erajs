@@ -8,6 +8,7 @@ import json
 import runpy
 import random
 import socket
+import gettext
 import hashlib
 import logging
 import importlib
@@ -15,6 +16,8 @@ import threading
 import configparser
 
 import yaml
+
+_ = gettext.gettext
 
 
 def new_hash():
@@ -124,19 +127,10 @@ class DataEngine(DebugEngine):
         return fileList
 
     def save_to(self, save_num, save_name=''):
-        # with open('save/'+str(save_num)+'.save', 'w', encoding='utf-8') as f:
-        #     save_object = {
-        #         'name': save_name,
-        #         'data': self.data['db']
-        #     }
-        #     f.write(json.dumps(save_object, ensure_ascii=False))
         self.save_file(self.data['db'],
                        'save/{}.{}.json'.format(save_num, save_name))
 
     def load_from(self, save_num):
-        # with open('save/'+str(save_num)+'.save', 'r', encoding='utf-8') as f:
-        #     self.data['db'] = json.loads(''.join(f.readlines()))['data']
-        # self.data['db'] = self.load_data()
         save_file_path_list = self.scan('save')
         for each in save_file_path_list:
             if each.split('\\')[-1].split('.')[0] == str(save_num):
@@ -186,12 +180,20 @@ class DataEngine(DebugEngine):
         path = '.'.join(['\\'.join(dot.split('.')), ext])
         return path
 
-    def load_data(self, files):
+    def load_data(self, files, send_func=None):
         data = {}
         for each in files:
             key = self.path2dot(each)[0]
             # 载入文件
             self.info('│  ├─ Loading [{}]...'.format(each))
+            if not send_func == None:
+                bag = {
+                    'type': 'load_text',
+                    'value': 'Data: [ {} ]...'.format(key),
+                    'from': 'b',
+                    'to': 'r'
+                }
+                send_func(bag)
             data[key] = self.load_file(each)
         return data
 
@@ -332,13 +334,21 @@ class LoadEngine(DataEngine):
             script_name_list.append(script_name)
         return len(script_path_list)
 
-    def load_script(self):
+    def load_script(self, send_func=None):
         num_of_loaded_script = 0
         script_path_list = self.scan('script')
         for every in script_path_list:
             module_name = '.'.join(every.replace(
                 '/', '\\').split('\\')[-1].split('.')[0:-1])
             self.info('│  ├─ Loading [{}]...'.format(module_name))
+            if not send_func == None:
+                bag = {
+                    'type': 'load_text',
+                    'value': 'Script: [ {} ]...'.format(module_name),
+                    'from': 'b',
+                    'to': 'r'
+                }
+                send_func(bag)
             with open(every, 'r', encoding='utf8') as target:
                 sys.argv = [self]
                 exec(''.join(target.readlines()))
@@ -572,6 +582,18 @@ class BagEngine(LockEngine):
                 for each in self._cmd_list:
                     if bag['hash'] == each[0]:
                         each[1](bag['value'])
+            elif bag['type'] == 'CMD':
+                def result(data):
+                    bag = {
+                        'type': 'result',
+                        'value': data,
+                        'from': 'b',
+                        'to': 'r'
+                    }
+                    self.send(bag)
+                cmd = bag['value']
+                if cmd[0] == 'fix':
+                    result('OK!')
 
         t = threading.Thread(target=parse, args=(bag, ))
         t.start()
