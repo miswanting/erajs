@@ -181,12 +181,12 @@ def chart(chart_type, data, width=200, height=200) -> None:
     m.chart(chart_type, data, width, height)
 
 
-def clear(last=False) -> None:
+def clear(num=0) -> None:
     """
     清除所有显示。\n
     """
     global m
-    m.clear(last)
+    m.clear(num)
 
 
 def goto(func, *arg, **kw) -> None:

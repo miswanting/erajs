@@ -792,10 +792,10 @@ class BagEngine(LockEngine):
         # global _cmd_list
         self._cmd_list.clear()
 
-    def clear(self, last=False):
+    def clear(self, num=0):
         bag = {'type': 'clear',
                'value': {
-                   'last': last
+                   'num': num
                },
                'from': 'b',
                'to': 'r'}

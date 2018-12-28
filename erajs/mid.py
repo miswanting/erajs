@@ -104,8 +104,8 @@ class Mid():
     def page(self, color='default'):
         engine.page(color)
 
-    def clear(self, last=False):
-        engine.clear(last)
+    def clear(self, num=0):
+        engine.clear(num)
 
     def goto(self, func, *arg, **kw):
         engine.goto(func, *arg, **kw)
