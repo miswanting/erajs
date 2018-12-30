@@ -198,10 +198,10 @@ def goto(func, *arg, **kw) -> None:
     m.goto(func, *arg, **kw)
 
 
-def back(*arg, **kw) -> None:
     """
     【界面逻辑函数】\n
     退回到上一个浏览的页面。\n
+def back(num=1, *arg, **kw) -> None:
     """
     global m
     m.back(*arg, **kw)
