@@ -1,19 +1,19 @@
-ÄãºÃ£¬¸ÐÐ»ÄúÏÂÔØ²¢³¢ÊÔ Era.js ÓÎÏ·ÒýÇæ£¬ÏÖÔÚ£¬ÎÒÃÇÀ´³¢ÊÔÊ×´ÎÆô¶¯°É£º
+ä½ å¥½ï¼Œæ„Ÿè°¢æ‚¨ä¸‹è½½å¹¶å°è¯• Era.js æ¸¸æˆå¼•æ“Žï¼ŒçŽ°åœ¨ï¼Œæˆ‘ä»¬æ¥å°è¯•é¦–æ¬¡å¯åŠ¨å§ï¼š
 
-¡¾Ò»¡¢Ê×´ÎÆô¶¯¡¿
-£¨ÇëÈ·±£ÄúÒÑ¾­½âÑ¹ÍêËùÓÐÎÄ¼þ£¡£©
-£¨ÇëÈ·±£ÄúÒÑÅäÖÃºÃ Python3 µÄ¿ª·¢»·¾³£¡£¨ÔÚÃüÁîÌáÊ¾·ûÖÐÊäÈë python ²»±¨´í£©£©
-1. ÔËÐÐ¡¾!INIT.bat¡¿£¬°²×°Python¿ª·¢µÄ±ØÒª¿âÎÄ¼þ£»
-2. ÔËÐÐ¡¾!DEBUG-FRONT.bat¡¿£¬Ö±µ½ÓÎÏ·Ö÷´°¿Úµ¯³ö²¢ÏÔÊ¾¡¾Now, you can start the Game Script Engine.¡¿
-3. ÔËÐÐ¡¾!DEBUG-BACK.bat¡¿£¬È»ºó¾ÍÇë¾¡ÇéÌ½Ë÷°É£¡
-4. ÓÎÏ·Ö÷´°¿ÚËùÏÔÊ¾µÄÄÚÈÝ¾ÍÊÇÎ´À´»áÔÚ½Ì³ÌÖÐÑ§Ï°µÄÄÚÈÝ£¬ËùÒÔ½øÈëµ½ÏÂÒ»Ð¡½Ú°É£¡
+ã€ä¸€ã€é¦–æ¬¡å¯åŠ¨ã€‘
+ï¼ˆè¯·ç¡®ä¿æ‚¨å·²ç»è§£åŽ‹å®Œæ‰€æœ‰æ–‡ä»¶ï¼ï¼‰
+ï¼ˆè¯·ç¡®ä¿æ‚¨å·²é…ç½®å¥½ Python3 çš„å¼€å‘çŽ¯å¢ƒï¼ï¼ˆè®°ä½åŠ¡å¿…å‹¾é€‰å°†Pythonè·¯å¾„åŠ å…¥åˆ°PATHï¼‰ï¼ˆæœ‰å¿…è¦çš„æ—¶å€™è¯·é‡å¯ç³»ç»Ÿï¼‰ï¼ˆåœ¨å‘½ä»¤æç¤ºç¬¦ä¸­è¾“å…¥ python ä¸æŠ¥é”™ï¼‰ï¼‰
+1. è¿è¡Œã€!INIT.batã€‘ï¼Œå®‰è£…Pythonå¼€å‘çš„å¿…è¦åº“æ–‡ä»¶ï¼›
+2. è¿è¡Œã€!DEBUG-FRONT.batã€‘ï¼Œç›´åˆ°æ¸¸æˆä¸»çª—å£å¼¹å‡ºå¹¶æ˜¾ç¤ºã€Now, you can start the Game Script Engine.ã€‘
+3. è¿è¡Œã€!DEBUG-BACK.batã€‘ï¼Œç„¶åŽå°±è¯·å°½æƒ…æŽ¢ç´¢å§ï¼
+4. æ¸¸æˆä¸»çª—å£æ‰€æ˜¾ç¤ºçš„å†…å®¹å°±æ˜¯æœªæ¥ä¼šåœ¨æ•™ç¨‹ä¸­å­¦ä¹ çš„å†…å®¹ï¼Œæ‰€ä»¥è¿›å…¥åˆ°ä¸‹ä¸€å°èŠ‚å§ï¼
 
-¡¾¶þ¡¢²é¿´ÒýÇæ½Ì³Ì¡¿
-ÏÖÔÚ£¬ÄãÓ¦¸ÃÒÑ¾­¶ÔÕû¸ö½Ì³ÌÄÚÈÝÓÐÁËÒ»¸ö´óÖÂµÄÓ¡Ïó£¬½ÓÏÂÀ´ÎÒÃÇ¾ÍÒ»ÆðÈ¥¿´Ò»¿´¾ßÌåÐèÒª±àÐ´Ê²Ã´´úÂë£¬¾ÍÄÜ¹»ÊµÏÖÄã¿´¼ûµÄÐ§¹û°É£¡
-1. ÓÃ¼ÇÊÂ±¾»òÈÎÒâÄãÏ²»¶µÄÎÄ±¾/´úÂë±à¼­Æ÷´ò¿ª¡¾Game.py¡¿ÎÄ¼þ¡£
-2. ÔÄ¶ÁÀïÃæµÄÄÚÈÝ¡£
+ã€äºŒã€æŸ¥çœ‹å¼•æ“Žæ•™ç¨‹ã€‘
+çŽ°åœ¨ï¼Œä½ åº”è¯¥å·²ç»å¯¹æ•´ä¸ªæ•™ç¨‹å†…å®¹æœ‰äº†ä¸€ä¸ªå¤§è‡´çš„å°è±¡ï¼ŒæŽ¥ä¸‹æ¥æˆ‘ä»¬å°±ä¸€èµ·åŽ»çœ‹ä¸€çœ‹å…·ä½“éœ€è¦ç¼–å†™ä»€ä¹ˆä»£ç ï¼Œå°±èƒ½å¤Ÿå®žçŽ°ä½ çœ‹è§çš„æ•ˆæžœå§ï¼
+1. ç”¨è®°äº‹æœ¬æˆ–ä»»æ„ä½ å–œæ¬¢çš„æ–‡æœ¬/ä»£ç ç¼–è¾‘å™¨æ‰“å¼€ã€Game.pyã€‘æ–‡ä»¶ã€‚
+2. é˜…è¯»é‡Œé¢çš„å†…å®¹ã€‚
 
-¡¾Èý¡¢ÓÎÏ·µÄ´ò°üÓë·ÖÏí¡¿
-µ±ÄãµÄÓÎÏ·ÒÑ¾­¿ª·¢Íê±Ï£¬Era.js ÄÚÖÃÁË´ò°ü¹¦ÄÜ£¬ÈÃÄãÄÜ¹»Ò»¼ü´ò°ü¡£
-£¨ÇëÈ·±£ÄúµÄ Python ¿ª·¢»·¾³ÒÑ¾­°²×°ÁË cx_Freeze ¿â£¡£©
-1. ÔËÐÐ¡¾!DEBUG-FRONT.bat¡¿
+ã€ä¸‰ã€æ¸¸æˆçš„æ‰“åŒ…ä¸Žåˆ†äº«ã€‘
+å½“ä½ çš„æ¸¸æˆå·²ç»å¼€å‘å®Œæ¯•ï¼ŒEra.js å†…ç½®äº†æ‰“åŒ…åŠŸèƒ½ï¼Œè®©ä½ èƒ½å¤Ÿä¸€é”®æ‰“åŒ…ã€‚
+ï¼ˆè¯·ç¡®ä¿æ‚¨çš„ Python å¼€å‘çŽ¯å¢ƒå·²ç»å®‰è£…äº† cx_Freeze åº“ï¼ï¼‰
+1. è¿è¡Œã€!DEBUG-FRONT.batã€‘
