@@ -110,8 +110,8 @@ class Mid():
     def goto(self, func, *arg, **kw):
         engine.goto(func, *arg, **kw)
 
-    def back(self, *arg, **kw):
-        engine.back(*arg, **kw)
+    def back(self, num=1, *arg, **kw):
+        engine.back(num, *arg, **kw)
 
     def repeat(self, *arg, **kw):
         engine.repeat(*arg, **kw)
