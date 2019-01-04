@@ -1,9 +1,26 @@
-你好，感谢您下载并尝试 Era.js 游戏引擎，现在，我们来尝试首次启动吧：
+﻿你好，感谢您下载并尝试 Era.js 游戏引擎，现在，我们来尝试首次启动吧：
 
 【一、首次启动】
-（请确保您已经解压完所有文件！）
-（请确保您已配置好 Python3 的开发环境！（记住务必勾选将Python路径加入到PATH）（有必要的时候请重启系统）（在命令提示符中输入 python 不报错））
-1. 运行【!INIT.bat】，安装Python开发的必要库文件；
+■请确保您已配置好 Python3 的开发环境
+　　检查方法：
+　　　　在命令提示符输入以下命令：
+　　　　　　python --version
+　　　　　　　　现象：显示Python的版本，如：Python 3.6.4
+　　　　　　pip --version
+　　　　　　　　现象：显示Python的版本，如：pip 18.1
+　　　　如果显示正常，则您已配置好 Python3 的开发环境；
+　　　　如果报错，请按照下一行的配置方法来配置Python3开发环境。
+　　配置方法：
+　　　　1. 下载Python3
+　　　　　　下载地址：https://www.python.org/downloads/windows/
+　　　　　　点击链接：Latest Python 3 Release
+　　　　2. 安装Python3
+　　　　　　注意：安装时请在安装选项中勾选【将路径添加到PATH】或【将路径添加到环境变量】
+　　　　3. 重启系统
+　　　　4. 用检查方法再次确认Python3开发环境是否已配置好。
+■请确保您已经解压完所有文件
+　　注意：不推荐直接在压缩包中打开任何程序。
+1. 运行【!INIT.bat】，安装Python开发的必要库文件；（该步骤需要连接到网络）
 2. 运行【!DEBUG-FRONT.bat】，直到游戏主窗口弹出并显示【Now, you can start the Game Script Engine.】
 3. 运行【!DEBUG-BACK.bat】，然后就请尽情探索吧！
 4. 游戏主窗口所显示的内容就是未来会在教程中学习的内容，所以进入到下一小节吧！
