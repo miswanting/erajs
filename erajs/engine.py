@@ -64,7 +64,53 @@ class DebugEngine:
         self.logger.critical(text)
 
 
-class DataEngine(DebugEngine):
+class EventEngine(DebugEngine):
+    _listener_list = []
+
+    def add_listener(self, type, listener, hash='', removable=True):
+        new_listener = {
+            'type': type,
+            'listener': listener,
+            'hash': hash,
+            'removable': removable,
+        }
+        self._listener_list.append(new_listener)
+
+    def remove_listener(self, type, listener=None, hash=''):
+        for i, each in enumerate(self._listener_list):
+            if each['type'] == type and each['listener'].__name__ == listener.__name__ and each['hash'] == hash:
+                self._listener_list.pop(i)
+                break
+
+    def remove_all_listeners(self):
+        for each in self._listener_list:
+            if each['removable']:
+                self._listener_list.remove(each)
+
+    def has_listener(self, type):
+        found = False
+        for each in self._listener_list:
+            if each['type'] == type:
+                found = True
+        return found
+
+    def dispatch_event(self, type, target='', value={}):
+        event = {
+            'type': type,
+            'target': target,
+            'value': value,
+        }
+        for each in self._listener_list:
+            if event['type'] == each['type']:
+                t = threading.Thread(
+                    target=each['listener'],
+                    args=(event, ),
+                    kwargs={}
+                )
+                t.start()
+
+
+class DataEngine(EventEngine):
     data = {}
     pool = []
 
@@ -439,7 +485,13 @@ class SocketEngine(LoadEngine):
     isConnected = False
 
     def _parse_bag(self, bag):
-        pass
+        target = ''
+        value = {}
+        if 'hash' in bag:
+            target = bag['hash']
+        if 'value' in bag:
+            value = bag['value']
+        self.dispatch_event(bag['type'], target, value)
 
     def connect(self):
         def core():
@@ -553,50 +605,54 @@ class BagEngine(LockEngine):
     _cmd_list = []
     _gui_list = []
 
-    def _parse_bag(self, bag):
-        def parse(bag):
-            if bag['type'] == 'MOUSE_CLICK':
-                if bag['value'] == 1:  # 左键
-                    if self.is_locked:
-                        self.unlock()
-                elif bag['value'] == 3:  # 右键
-                    if self.is_locked:
-                        self.unlock_forever()
-            elif bag['type'] == 'BUTTON_CLICK':
-                for each in self._cmd_list:
-                    if bag['hash'] == each[0]:
-                        each[1](*each[2], **each[3])
-            elif bag['type'] == 'RATE_CLICK':
-                for each in self._cmd_list:
-                    if bag['hash'] == each[0]:
-                        each[1](bag['value'])
-            elif bag['type'] == 'RADIO_CLICK':
-                for each in self._cmd_list:
-                    if bag['hash'] == each[0]:
-                        each[1](bag['value'])
-            elif bag['type'] == 'INPUT_CHANGE':
-                for each in self._cmd_list:
-                    if bag['hash'] == each[0]:
-                        each[1](bag['value'])
-            elif bag['type'] == 'DROPDOWN_CHANGE':
-                for each in self._cmd_list:
-                    if bag['hash'] == each[0]:
-                        each[1](bag['value'])
-            elif bag['type'] == 'CMD':
-                def result(data):
-                    bag = {
-                        'type': 'result',
-                        'value': data,
-                        'from': 'b',
-                        'to': 'r'
-                    }
-                    self.send(bag)
-                cmd = bag['value']
-                if cmd[0] == 'fix':
-                    result('OK!')
+    # def _parse_bag(self, bag):
+    #     def parse(bag):
+    #         if bag['type'] == 'MOUSE_CLICK':
+    #             if bag['value'] == 1:  # 左键
+    #                 if self.is_locked:
+    #                     self.unlock()
+    #             elif bag['value'] == 3:  # 右键
+    #                 if self.is_locked:
+    #                     self.unlock_forever()
+    #         elif bag['type'] == 'BUTTON_CLICK':
+    #             for each in self._cmd_list:
+    #                 if bag['hash'] == each[0]:
+    #                     each[1](*each[2], **each[3])
+    #         elif bag['type'] == 'RATE_CLICK':
+    #             for each in self._cmd_list:
+    #                 if bag['hash'] == each[0]:
+    #                     each[1](bag['value'])
+    #         elif bag['type'] == 'RADIO_CLICK':
+    #             for each in self._cmd_list:
+    #                 if bag['hash'] == each[0]:
+    #                     each[1](bag['value'])
+    #         elif bag['type'] == 'INPUT_CHANGE':
+    #             for each in self._cmd_list:
+    #                 if bag['hash'] == each[0]:
+    #                     each[1](bag['value'])
+    #         elif bag['type'] == 'DROPDOWN_CHANGE':
+    #             for each in self._cmd_list:
+    #                 if bag['hash'] == each[0]:
+    #                     each[1](bag['value'])
+    #         elif bag['type'] == 'CMD':
+    #             def result(data):
+    #                 bag = {
+    #                     'type': 'result',
+    #                     'value': data,
+    #                     'from': 'b',
+    #                     'to': 'r'
+    #                 }
+    #                 self.send(bag)
+    #             cmd = bag['value']
+    #             if cmd[0] == 'fix':
+    #                 result('OK!')
+    #         else:
+    #             for each in self._cmd_list:
+    #                 if bag['hash'] == each[0]:
+    #                     each[1](bag['value'])
 
-        t = threading.Thread(target=parse, args=(bag, ))
-        t.start()
+    #     t = threading.Thread(target=parse, args=(bag, ))
+    #     t.start()
 
     def title(self, text):
         bag = {
@@ -649,7 +705,12 @@ class BagEngine(LockEngine):
             kw.pop('color')
         else:
             bag['value']['color'] = ''
-        self._cmd_list.append((hash, func, arg, kw))
+
+        def handle_callback(e):
+            if e['target'] == hash:
+                func(*arg, **kw)
+        self.add_listener('BUTTON_CLICK', handle_callback, hash)
+        # self._cmd_list.append((hash, func, arg, kw))
         self.send(bag)
         self.unlock()
 
@@ -682,7 +743,12 @@ class BagEngine(LockEngine):
 
     def rate(self, now=0,  max=5, func=None, disabled=True):
         hash = new_hash()
-        self._cmd_list.append((hash, func))
+
+        def handle_callback(e):
+            if e['target'] == hash:
+                func(e['value'])
+        self.add_listener('RATE_CLICK', handle_callback, hash)
+        # self._cmd_list.append((hash, func))
         bag = {
             'type': 'rate',
             'value': {
@@ -698,7 +764,12 @@ class BagEngine(LockEngine):
 
     def radio(self, choice_list, default_index=0, func=None):
         hash = new_hash()
-        self._cmd_list.append((hash, func))
+
+        def handle_callback(e):
+            if e['target'] == hash:
+                func(e['value'])
+        self.add_listener('RADIO_CLICK', handle_callback, hash)
+        # self._cmd_list.append((hash, func))
         bag = {
             'type': 'radio',
             'value': {
@@ -713,7 +784,12 @@ class BagEngine(LockEngine):
 
     def input(self, func=None, default=''):
         hash = new_hash()
-        self._cmd_list.append((hash, func))
+
+        def handle_callback(e):
+            if e['target'] == hash:
+                func(e['value'])
+        self.add_listener('INPUT_CHANGE', handle_callback, hash)
+        # self._cmd_list.append((hash, func))
         bag = {
             'type': 'input',
             'value': {
@@ -727,7 +803,12 @@ class BagEngine(LockEngine):
 
     def dropdown(self, options, func=None, default='', search=False, multiple=False, placeholder='', allowAdditions=False):
         hash = new_hash()
-        self._cmd_list.append((hash, func))
+
+        def handle_callback(e):
+            if e['target'] == hash:
+                func(e['value'])
+        self.add_listener('DROPDOWN_CHANGE', handle_callback, hash)
+        # self._cmd_list.append((hash, func))
         new_options = []
         for each in options:
             new_options.append({
@@ -780,6 +861,7 @@ class BagEngine(LockEngine):
         self.send(bag)
 
     def page(self, color='default'):
+        self.mode()
         bag = {
             'type': 'page',
             'value': {
@@ -790,7 +872,8 @@ class BagEngine(LockEngine):
         }
         self.send(bag)
         # global _cmd_list
-        self._cmd_list.clear()
+        self.remove_all_listeners()
+        # self._cmd_list.clear()
 
     def clear(self, num=0):
         bag = {'type': 'clear',
@@ -863,6 +946,14 @@ class BagEngine(LockEngine):
                }
         self.send(bag)
 
+    def mode(self, type='default', *arg, **kw):
+        bag = {'type': 'mode',
+               'value': [type, *arg],
+               'from': 'b',
+               'to': 'r'
+               }
+        self.send(bag)
+
     def _show_gui_list(self):
         gui_list = []
         for each in self._gui_list:
@@ -872,6 +963,32 @@ class BagEngine(LockEngine):
 
 class Engine(BagEngine):
     version = '0.1.0'
+
+    def __init__(self):
+        super().__init__()
+
+        def handle_lock(e):
+            if e['value'] == 1:  # 左键
+                if self.is_locked:
+                    self.unlock()
+            elif e['value'] == 3:  # 右键
+                if self.is_locked:
+                    self.unlock_forever()
+        self.add_listener('MOUSE_CLICK', handle_lock, removable=False)
+
+        def handle_cmd(e):
+            def result(data):
+                bag = {
+                    'type': 'result',
+                    'value': data,
+                    'from': 'b',
+                    'to': 'r'
+                }
+                self.send(bag)
+            cmd = e['value']
+            if cmd[0] == 'fix':
+                result('OK!')
+        self.add_listener('CMD', handle_cmd, removable=False)
 
     def register_api(self):
         def ban_sys(name):

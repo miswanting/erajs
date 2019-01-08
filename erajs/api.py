@@ -275,7 +275,7 @@ def back(num=1, *arg, **kw) -> None:
         返回到上num个界面。默认为上一个界面。
     """
     global m
-    m.back(num=1, *arg, **kw)
+    m.back(num, *arg, **kw)
 
 
 def repeat(*arg, **kw) -> None:
@@ -329,12 +329,12 @@ def show_save_to_load(func_after_load) -> None:
     m.show_save_to_load(func_after_load)
 
 
-def mode(name, *arg, **kw) -> None:
+def mode(type, *arg, **kw) -> None:
     """【开发中】【系统：变更显示/排版模式】\n
     变更显示/排版模式。\n
     """
     global m
-    pass
+    m.mode(type, *arg, **kw)
 
 
 def exit(save=False) -> None:

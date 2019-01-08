@@ -203,5 +203,8 @@ class Mid():
     def shake(self, duration=500):
         return engine.shake(duration)
 
+    def mode(self, type, *arg, **kw):
+        return engine.mode(type, *arg, **kw)
+
 
 mid = Mid()
