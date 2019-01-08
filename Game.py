@@ -34,7 +34,6 @@ def cover():
 
     # 接下来就是显示页面标题：
     a.h('Erajs-Tutorial v{}'.format(version))
-    a.h
     # 上面调用了 API 中的 h(head) 函数，是用来显示页面标题的（其实就是字号比较大的文字啦！），其用法为：
     # a.h(text)
 
