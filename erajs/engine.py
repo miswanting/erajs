@@ -861,7 +861,6 @@ class BagEngine(LockEngine):
         self.send(bag)
 
     def page(self, color='default'):
-        self.mode()
         bag = {
             'type': 'page',
             'value': {
@@ -874,6 +873,7 @@ class BagEngine(LockEngine):
         # global _cmd_list
         self.remove_all_listeners()
         # self._cmd_list.clear()
+        self.mode()
 
     def clear(self, num=0):
         bag = {'type': 'clear',
