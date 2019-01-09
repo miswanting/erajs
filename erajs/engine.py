@@ -83,9 +83,11 @@ class EventEngine(DebugEngine):
                 break
 
     def remove_all_listeners(self):
+        new_listener_list = []
         for each in self._listener_list:
-            if each['removable']:
-                self._listener_list.remove(each)
+            if not each['removable']:
+                new_listener_list.append(each)
+        self._listener_list = new_listener_list
 
     def has_listener(self, type):
         found = False
@@ -870,9 +872,7 @@ class BagEngine(LockEngine):
             'to': 'r'
         }
         self.send(bag)
-        # global _cmd_list
         self.remove_all_listeners()
-        # self._cmd_list.clear()
         self.mode()
 
     def clear(self, num=0):
