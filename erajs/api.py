@@ -128,6 +128,33 @@ def b(text: str, func: callable, *arg, **kw) -> None:
     m.b(text, func, *arg, **kw)
 
 
+def l(text: str, func: callable, *arg, **kw) -> None:
+    """【控件：按钮】\n
+    向当前页面的最后一行的末尾插入按钮。\n
+    text: str
+        按钮上的文本。
+    func: callable
+        返回函数。
+        当按钮按下时，返回函数被触发，且其执行效果类似于 func(*arg, **kw)；
+    color: str
+        设置按钮颜色。颜色名可从 https://www.w3schools.com/colors/colors_names.asp 中任意选择，如 "red"。
+    disabled: bool
+        设置按钮禁用与否。若为True，则按钮被禁用，无法点击。
+    popup: str
+        设置按钮气泡文本。若设置，则当鼠标移到按钮上方的时候，会弹出写有文本的气泡。
+        一般用于对按钮功能的解释，或一些与游戏性有关的用途。
+    用法举例：
+        api.b('TEST_BUTTON', test_func, 1, 'two', color='red', popup='测试文本')
+        会显示一个文本为TEST_BUTTON的红色按钮，
+        鼠标移上去会显示一个写有“测试文本”的气泡出现，
+        按下按钮，会触发test_func函数
+            相当于执行代码：test_func(1, 'two')
+            注意：color和popup参数会被自动除去，不会传入要触发的函数中
+    """
+    global m
+    m.l(text, func, *arg, **kw)
+
+
 def h(text, rank=1, color='default', bcolor='default') -> None:
     """【控件：标题】\n
     text: str
@@ -329,7 +356,7 @@ def show_save_to_load(func_after_load) -> None:
     m.show_save_to_load(func_after_load)
 
 
-def mode(type, *arg, **kw) -> None:
+def mode(type='default', *arg, **kw) -> None:
     """【开发中】【系统：变更显示/排版模式】\n
     变更显示/排版模式。\n
     """
@@ -395,3 +422,39 @@ def save_data_to_file(dot_path, ext='yaml'):
 def shake(duration=500):
     global m
     return m.shake(duration)
+
+
+def generate_map():
+    global m
+    return m.generate_map()
+
+
+def add_listener(type, listener, hash='', removable=True):
+    global m
+    return m.add_listener(type, listener, hash, removable)
+
+
+def remove_listener(type, listener=None, hash=''):
+    global m
+    return m.remove_listener(type, listener, hash)
+
+
+def dispatch_event(type, target='', value={}):
+    global m
+    return m.dispatch_event(type, target, value)
+
+
+def enable(*arg):
+    pass
+
+
+def is_enabled(name):
+    pass
+
+
+def disable(*arg):
+    pass
+
+
+def get_dynamic_api():
+    return

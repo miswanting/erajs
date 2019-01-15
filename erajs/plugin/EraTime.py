@@ -1,8 +1,13 @@
 import sys
+# import erajs.api as a
 
 
 class Plugin:
-    pass
+    name = 'EraTime'
+
+    def reg(self):
+        a.data['class']['time'] = EraTime
+        a.data['entity']['time'] = EraTime(a.data)
 
 
 class EraTime:

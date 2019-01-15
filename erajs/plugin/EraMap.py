@@ -1,13 +1,13 @@
 import sys
 
 
-class Plugin:
-    pass
+# class Plugin:
+#     pass
 
 
-class EraMap:
-    def generate_map(self):
-        pass
+# class EraMap:
+#     def generate_map(self):
+#         pass
 
 
 # def register():
