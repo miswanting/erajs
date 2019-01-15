@@ -11,6 +11,7 @@ import socket
 import gettext
 import hashlib
 import logging
+import zipfile
 import importlib
 import threading
 import configparser
@@ -176,7 +177,7 @@ class DataEngine(EventEngine):
 
     def save_to(self, save_num, save_name=''):
         self.save_file(self.data['db'],
-                       'save/{}.{}.json'.format(save_num, save_name))
+                       'save/{}.{}.zip'.format(save_num, save_name))
 
     def load_from(self, save_num):
         save_file_path_list = self.scan('save')
@@ -256,7 +257,8 @@ class DataEngine(EventEngine):
         path_to_file = path_to_file.replace('/', '\\')
         ext = path_to_file.split('\\')[-1].split('.')[-1]
         data = None
-        if ext in ['cfg', 'ini', 'inf', 'config']:
+        time_start = time.time()
+        if ext in ['cfg', 'config', 'ini', 'inf']:
             config = configparser.ConfigParser()
             config.read(path_to_file)
             d = dict(config._sections)
@@ -276,13 +278,29 @@ class DataEngine(EventEngine):
         elif ext == 'yaml':
             with open(path_to_file, 'r', encoding='utf-8') as f:
                 data = yaml.load(''.join(f.readlines()))
+        elif ext == 'zip':
+            with zipfile.ZipFile(path_to_file) as z:
+                data = {}
+                for file_name in z.namelist():
+                    with z.open(file_name) as f:
+                        data['.'.join(file_name.split('.')[0:-1])
+                             ] = json.loads(f.read())
+        elif ext == 'txt':
+            data = []
+            with open(path_to_file, 'r') as f:
+                for line in f.readlines():
+                    data.append(line[:-1])
+        time_stop = time.time()
+        # print('加载{}文件用时：{}ms'.format(path_to_file,
+        #                              int((time_stop-time_start)*1000)))
         return data
 
     def save_file(self, data, path_to_file):
         """保存数据到某文件"""
         path_to_file = path_to_file.replace('/', '\\')
         ext = path_to_file.split('\\')[-1].split('.')[-1]
-        if ext in ['cfg', 'ini', 'inf', 'config']:
+        time_start = time.time()
+        if ext in ['cfg', 'config', 'ini', 'inf']:
             config = configparser.ConfigParser()
             config.read_dict(data)
             with open(path_to_file, 'w')as f:
@@ -298,36 +316,18 @@ class DataEngine(EventEngine):
             with open(path_to_file, 'w', encoding='utf-8') as f:
                 f.write(yaml.dump(data, allow_unicode=True,
                                   default_flow_style=False))
-
-    def load_zip_file(self, path_to_file):
-        """给一个路径，获得zip文件中的一切
-        如给一个test.zip
-        返回一个dict：
-        {
-            文件1（点语法）：{
-
-            },
-            文件2（点语法）：[
-
-            ]
-        }
-        """
-        pass
-
-    def save_zip_file(self, data, path_to_file):
-        """给一个路径，保存zip文件
-        如给一个test.zip
-        给一个dict：
-        {
-            文件1（路径）：{
-
-            },
-            文件2（路径）：[
-
-            ]
-        }
-        """
-        pass
+        elif ext == 'zip':
+            with zipfile.ZipFile(path_to_file, 'w', zipfile.ZIP_LZMA) as z:
+                for key in data:
+                    z.writestr('{}.json'.format(key), json.dumps(
+                        data[key], ensure_ascii=False))
+        elif ext == 'txt':
+            with open(path_to_file, 'w') as f:
+                for line in data:
+                    f.write('{}\n'.format(line))
+        time_stop = time.time()
+        # print('保存{}文件用时：{}ms'.format(path_to_file,
+        #                              int((time_stop-time_start)*1000)))
 
 
 class LoadEngine(DataEngine):
@@ -364,6 +364,7 @@ class LoadEngine(DataEngine):
                         '/', '\\').split('\\')[-1].split('.')[0:-1])
                     if module_name.lower() == each:
                         self.info('│  ├─ Loading [{}]...'.format(module_name))
+                        # importlib.import_module('')
                         with open(every, 'r', encoding='utf8') as target:
                             sys.argv = [self]
                             exec(''.join(target.readlines()))
@@ -547,7 +548,7 @@ class SocketEngine(LoadEngine):
         self._conn.send(json.dumps(bag, ensure_ascii=False).encode())
 
     def recv(self):
-        data = self._conn.recv(4096)
+        data = self._conn.recv(4096000)
         # self.debug("接收：{}".format(data))
         if not data:
             return
@@ -697,6 +698,10 @@ class BagEngine(LockEngine):
             if kw['disabled']:
                 bag['value']['disabled'] = True
             kw.pop('disabled')
+        if 'isLink' in kw.keys():
+            if kw['isLink']:
+                bag['value']['isLink'] = True
+            kw.pop('isLink')
         if 'popup' in kw.keys():
             bag['value']['popup'] = kw['popup']
             kw.pop('popup')
@@ -949,6 +954,14 @@ class BagEngine(LockEngine):
     def mode(self, type='default', *arg, **kw):
         bag = {'type': 'mode',
                'value': [type, *arg],
+               'from': 'b',
+               'to': 'r'
+               }
+        self.send(bag)
+
+    def generate_map(self):
+        bag = {'type': 'generate_map',
+               'value': {},
                'from': 'b',
                'to': 'r'
                }

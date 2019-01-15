@@ -77,6 +77,9 @@ class Mid():
     def b(self, text, func, *arg, **kw):
         engine.b(text, func, *arg, **kw)
 
+    def l(self, text, func, *arg, **kw):
+        engine.b(text, func, *arg, isLink=True, **kw)
+
     def h(self, text, rank=1, color='default', bcolor='default'):
         engine.h(text, rank, color, bcolor)
 
@@ -203,8 +206,20 @@ class Mid():
     def shake(self, duration=500):
         return engine.shake(duration)
 
-    def mode(self, type, *arg, **kw):
+    def mode(self, type='default', *arg, **kw):
         return engine.mode(type, *arg, **kw)
+
+    def add_listener(self, type, listener, hash='', removable=True):
+        return engine.add_listener(type, listener, hash, removable)
+
+    def remove_listener(self, type, listener=None, hash=''):
+        return engine.remove_listener(type, listener, hash)
+
+    def dispatch_event(self, type, target='', value={}):
+        return engine.dispatch_event(type, target, value)
+
+    def generate_map(self):
+        return engine.generate_map()
 
 
 mid = Mid()
