@@ -137,6 +137,7 @@ class DataEngine(EventEngine):
             },
             "class": {},
             "api": {},
+            "tmp": {},
             "entity": {},
             "db": {},  # 可保存的数据
             "act": {},
@@ -698,6 +699,8 @@ class BagEngine(LockEngine):
             if kw['disabled']:
                 bag['value']['disabled'] = True
             kw.pop('disabled')
+        if func == None:
+            bag['value']['disabled'] = True
         if 'isLink' in kw.keys():
             if kw['isLink']:
                 bag['value']['isLink'] = True
@@ -953,10 +956,23 @@ class BagEngine(LockEngine):
 
     def mode(self, type='default', *arg, **kw):
         bag = {'type': 'mode',
-               'value': [type, *arg],
+               'value': {
+                   'mode': type
+               },
                'from': 'b',
                'to': 'r'
                }
+        if type == 'grid':
+            bag['value']['celled'] = False
+            bag['value']['compact'] = False
+            if 'column' in kw:
+                bag['value']['column'] == kw['column']
+            if len(arg) == 1:
+                bag['value']['column'] = arg[0]
+            if 'celled'in kw:
+                bag['value']['celled'] = kw['celled']
+            if 'compact'in kw:
+                bag['value']['compact'] = kw['compact']
         self.send(bag)
 
     def generate_map(self):
@@ -1002,6 +1018,10 @@ class Engine(BagEngine):
             if cmd[0] == 'fix':
                 result('OK!')
         self.add_listener('CMD', handle_cmd, removable=False)
+
+        def handle_send(e):
+            self.send(e['value'])
+        self.add_listener('SEND', handle_send, removable=False)
 
     def register_api(self):
         def ban_sys(name):
