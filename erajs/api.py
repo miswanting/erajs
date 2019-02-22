@@ -2,7 +2,8 @@
 import typing as ty
 from . import mid
 m = mid.mid
-version = '0.1.0'
+version = '0.1.0-190127'
+aka = '“全局事件”更新'
 data = {}
 
 # 显示控制
@@ -101,7 +102,7 @@ def t(text: str = '', wait: bool = False, color: str = 'default', bcolor: str = 
     m.t(text, wait, color, bcolor)
 
 
-def b(text: str, func: callable, *arg, **kw) -> None:
+def b(text: str, func: callable = None, *arg, **kw) -> None:
     """【控件：按钮】\n
     向当前页面的最后一行的末尾插入按钮。\n
     text: str
@@ -420,8 +421,9 @@ def save_data_to_file(dot_path, ext='yaml'):
 
 
 def shake(duration=500):
-    global m
-    return m.shake(duration)
+    # global m
+    # return m.shake(duration)
+    pass
 
 
 def generate_map():

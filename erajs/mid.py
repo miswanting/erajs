@@ -189,9 +189,11 @@ class Mid():
         return engine.get(pattern)
 
     def get_full_time(self):
-        return engine.data['api']['get_full_time']()
+        print('即将废弃API: get_full_time')
+        return engine.data['tm'].get_full_time()
 
     def tick(self):
+        print('即将废弃API: tick')
         engine.data['api']['tick']()
 
     def new_hash(self):
