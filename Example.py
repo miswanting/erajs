@@ -65,6 +65,8 @@ def cover():
     a.t()  # 换行（换行不只是可以给文字用哦！按钮、评级、进度条等等都可以用的哦！）
     a.b('控件使用教程', a.goto, ui_all_components)
     a.t()  # 换行
+    a.b('网格排版教程', a.goto, ui_grid)
+    a.t()  # 换行
     a.b('游戏数据教程', a.goto, ui_data)
     a.t()  # 换行
     a.b('引擎模块/游戏脚本（Scripts）/DLC/MOD 教程', a.goto, ui_script)
@@ -184,6 +186,127 @@ def ui_all_components():
     a.t('如果您需要新增，请跟作者联系哦~')
     a.t()
     a.b('返回', a.back)
+
+
+def ui_grid():
+    def ui_grid_1():
+        """
+        作者: @m.l
+        （有改动）
+        """
+        # ---------默认排版模式
+        a.page()
+        # 新页面
+        a.mode()
+        # 默认排版模式。
+        a.h('一、默认排版', rank=4)
+        a.t()
+        a.t('由a.mode()切换排版模式。当前是默认排版，所有控件从左往右排列，使用a.t()进行换行。')
+        a.t()
+        a.b('按钮1')
+        a.b('按钮2')
+        a.t()
+        a.b('按钮3')
+        a.t()
+        a.divider()
+        a.b('下一页', ui_grid_2)
+        a.t()
+        a.b('返回', a.back)
+
+        # 分割线
+
+    def ui_grid_2():
+        """
+        作者: @m.l
+        （有改动）
+        """
+        a.page()
+        # 新页面
+        a.h('二、网格排版【居中】', rank=4)
+        a.mode('grid', 1)
+        # 网格排版，示例一：居中控件
+        a.t('该段文字居中，由a.mode("grid",1)切换为网格排版，参数‘1’为每一行所含的最大【控件集合】数')
+        a.t()
+        a.b('按钮1')
+        a.b('按钮2')
+        a.t()
+        a.t('上免了两个按钮同属于一个控件集合。')
+        a.t()
+        a.t('控件集合之间靠a.t()分开。')
+        a.t()
+        a.b('按钮1')
+        a.t()
+        a.b('按钮2')
+        a.mode()
+        # 建议在使用完网格排版后，运行该代码，把排版模式切换回默认模式。
+        a.t()
+        a.divider()
+        # 使用网格后，分割线的使用代码。
+        a.b('上一页', ui_grid_1)
+        a.b('下一页', ui_grid_3)
+        a.t()
+        a.b('返回', a.back)
+
+    def ui_grid_3():
+        """
+        作者: @m.l
+        （有改动）
+        """
+        a.page()
+        a.h('三、网格排版【网格】', rank=4)
+        a.t()
+        a.t('【默认样式】')
+        # ---------网格排版模式
+        a.mode('grid', 3)
+        # 网格排列，一行3列
+        a.b('按钮1')
+        a.b('按钮2')
+        a.t()
+        a.b('按钮3')
+        a.t()
+        a.b('按钮4')
+        a.t()
+        a.b('按钮5')
+        a.t()
+        a.b('按钮6')
+
+        a.mode()
+        a.t()
+        a.t('【线框样式】')
+        a.mode('grid', 3, celled=True)
+        # celled,带
+        a.b('按钮1')
+        a.b('按钮2')
+        a.t()
+        a.b('按钮3')
+        a.t()
+        a.b('按钮4')
+        a.t()
+        a.b('按钮5')
+        a.t()
+        a.b('按钮6')
+
+        a.mode()
+        a.t()
+        a.t('【紧凑样式】')
+        a.mode('grid', 3, compact=True, celled=True)
+        a.b('按钮1')
+        a.b('按钮2')
+        a.t()
+        a.b('按钮3')
+        a.t()
+        a.b('按钮4')
+        a.t()
+        a.b('按钮5')
+        a.t()
+        a.b('按钮6')
+        a.mode()
+        a.t()
+        a.divider()
+        a.b('上一页', ui_grid_2)
+        a.t()
+        a.b('返回', a.back)
+    ui_grid_1()
 
 
 def ui_data():
