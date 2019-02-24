@@ -1,4 +1,5 @@
 # coding:utf-8
+import time
 # 【第1章 第1节 准备工作】
 # 欢迎来到 Era.js 的示例程序！
 # 通过阅读本程序，你将学习到关于使用 Era.js 进行纯文本游戏开发的一切！
@@ -225,18 +226,25 @@ def ui_grid():
         a.h('二、网格排版【居中】', rank=4)
         a.mode('grid', 1)
         # 网格排版，示例一：居中控件
+        apple = [
+            '墙墙窗窗墙墙窗窗墙墙',
+            '墙　　　　　　　　门',
+            '墙　　　　　　　　墙',
+            '墙汉汉汉汉　　　　墙',
+            '墙　　　汉　　　　墙',
+            '墙皂我　汉　　　　墙',
+            '墙　　　汉　　　　门',
+            '墙墙墙墙墙墙墙墙墙墙',
+        ]
         a.t('该段文字居中，由a.mode("grid",1)切换为网格排版，参数‘1’为每一行所含的最大【控件集合】数')
         a.t()
-        a.b('按钮1')
-        a.b('按钮2')
+        a.t('网格排版，在使用紧凑样式时，行间距离会比默认排版时更加紧密，因此你可以实现一些不可描述的场面')
         a.t()
-        a.t('上免了两个按钮同属于一个控件集合。')
         a.t()
-        a.t('控件集合之间靠a.t()分开。')
-        a.t()
-        a.b('按钮1')
-        a.t()
-        a.b('按钮2')
+        a.mode('grid', 1, compact=True)
+        for n in range(0, len(apple)):
+            a.t(apple[n])
+            a.t()
         a.mode()
         # 建议在使用完网格排版后，运行该代码，把排版模式切换回默认模式。
         a.t()
@@ -246,6 +254,22 @@ def ui_grid():
         a.b('下一页', ui_grid_3)
         a.t()
         a.b('返回', a.back)
+        a.b('彩蛋', a.goto, ui_egg)
+
+    def ui_egg():
+        """
+        作者：@Miswanting
+        """
+        a.clear()
+        for pic in a.data['data.ba']:
+            a.page()
+            a.mode('grid', 1, compact=True)
+            for line in pic:
+                a.t(line)
+                a.t()
+            time.sleep(0.1)
+            a.clear()
+        ui_grid_2()
 
     def ui_grid_3():
         """
