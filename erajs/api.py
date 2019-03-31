@@ -2,7 +2,7 @@
 import typing as ty
 from . import mid
 m = mid.mid
-version = '0.1.0-190127'
+version = '0.1.0-190331'
 aka = '“全局事件”更新'
 data = {}
 
@@ -129,7 +129,7 @@ def b(text: str, func: callable = None, *arg, **kw) -> None:
     m.b(text, func, *arg, **kw)
 
 
-def l(text: str, func: callable, *arg, **kw) -> None:
+def l(text: str, func: callable = None, *arg, **kw) -> None:
     """【控件：按钮】\n
     向当前页面的最后一行的末尾插入按钮。\n
     text: str
