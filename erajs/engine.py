@@ -661,7 +661,7 @@ class BagEngine(LockEngine):
     def title(self, text):
         bag = {
             'type': 'title',
-            'value': text,
+            'value': str(text),
             'from': 'b',
             'to': 'r'
         }
@@ -671,7 +671,7 @@ class BagEngine(LockEngine):
         bag = {
             'type': 't',
             'value': {
-                'text': text,
+                'text': str(text),
                 'color': color,
                 'bcolor': bcolor
             },
@@ -688,7 +688,7 @@ class BagEngine(LockEngine):
         bag = {
             'type': 'b',
             'value': {
-                'text': text,
+                'text': str(text),
                 'hash': hash
             },
             'from': 'b',
@@ -706,7 +706,7 @@ class BagEngine(LockEngine):
                 bag['value']['isLink'] = True
             kw.pop('isLink')
         if 'popup' in kw.keys():
-            bag['value']['popup'] = kw['popup']
+            bag['value']['popup'] = str(kw['popup'])
             kw.pop('popup')
         else:
             bag['value']['popup'] = ''
@@ -728,7 +728,7 @@ class BagEngine(LockEngine):
         bag = {
             'type': 'h',
             'value': {
-                'text': text,
+                'text': str(text),
                 'rank': rank,
                 'color': color,
                 'bcolor': bcolor
@@ -804,7 +804,7 @@ class BagEngine(LockEngine):
             'type': 'input',
             'value': {
                 'hash': hash,
-                'default': default
+                'default': str(default)
             },
             'from': 'b',
             'to': 'r'
@@ -825,19 +825,15 @@ class BagEngine(LockEngine):
                 'value': each,
                 'text': each
             })
-        # default = {
-        #     'value': default,
-        #     'text': default
-        # }
         bag = {
             'type': 'dropdown',
             'value': {
                 'hash': hash,
                 'options': new_options,
-                'default': default,
+                'default': str(default),
                 'search': search,
                 'multiple': multiple,
-                'placeholder': placeholder,
+                'placeholder': str(placeholder),
                 'allowAdditions': allowAdditions
             },
             'from': 'b',
@@ -848,7 +844,7 @@ class BagEngine(LockEngine):
     def divider(self, text=''):
         bag = {
             'type': 'divider',
-            'value': text,
+            'value': str(text),
             'from': 'b',
             'to': 'r'
         }
