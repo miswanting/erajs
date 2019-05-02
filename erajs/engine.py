@@ -122,11 +122,14 @@ class DataEngine(EventEngine):
             # frozen
             d = os.path.dirname(sys.executable)
             gamepath = os.path.dirname(d)
+            workingpath = d
         else:
             # unfrozen
             d = os.path.dirname(os.path.realpath(__file__))
             gamepath = os.path.dirname(os.path.dirname(d))
+            workingpath = os.path.dirname(d)
         sys.path.append(gamepath)
+        os.chdir(workingpath)
 
     def self_check(self):
         self.data = {
