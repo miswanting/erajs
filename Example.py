@@ -132,8 +132,12 @@ def ui_all_components():
     def radio_result(new_ratio):
         print('现在选中了“{}”。'.format(new_ratio))
 
+    def check_result(new_check):
+        print('现在复选框的值为：{}'.format(new_check))
+
     def input_result(new_input):
-        print('输入框中的值为：“{}”。'.format(new_input))
+        print('输入框中的值为：')
+        print('{}'.format(new_input))
 
     def dropdown_result(new_dropdown):
         print('下拉菜单中的值为：“{}”。'.format(new_dropdown))
@@ -170,10 +174,17 @@ def ui_all_components():
     a.rate(2, 5, rate_result, False)
     a.t()
     a.t('我是一个单选，目前默认选中第二项（索引为1）修改之后请在后端控制台查看效果:')
-    a.radio(['一', '二', '三'], 1, radio_result)
+    a.radio(['一', '二', '三'], radio_result, 2)
+    a.t()
+    a.t('我是一个复选框，目前默认已选中，修改之后请在后端控制台查看效果:')
+    a.check('我是一个复选框哦！', check_result, True)
     a.t()
     a.t('我是输入框，修改之后请在后端控制台查看效果:')
     a.input(input_result, '我是默认值哦~')
+    a.t()
+    a.t('我是多行文本输入框，修改之后请在后端控制台查看效果:')
+    a.t()
+    a.input(input_result, '我是默认值哦~\n我还会换行~', True)
     a.t()
     a.t('我是一个下拉菜单哦！（下拉选择项目并在后端查看效果）:')
     a.dropdown(['甲', '乙', '丙'], dropdown_result, default='丙')
