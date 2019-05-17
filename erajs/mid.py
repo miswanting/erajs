@@ -89,13 +89,16 @@ class Mid():
     def progress(self, now, max=100, length='100px'):
         return engine.data['api']['progress'](now, max, length)
 
-    def radio(self, choice_list, default_index=0, func=None):
+    def check(self, text: str = '', func=None, *arg, **kw):
+        return engine.data['api']['check'](text, func, *arg, **kw)
+
+    def radio(self, choice_list, func=None, default_index=0):
         return engine.data['api']['radio'](choice_list, default_index, func)
 
-    def input(self, func=None, default=''):
-        return engine.data['api']['input'](func, default)
+    def input(self, func=None, default='', is_area=False, placeholder=''):
+        return engine.data['api']['input'](func, default, is_area, placeholder)
 
-    def dropdown(self, options, func=None, default='', search=False, multiple=False, placeholder='', allowAdditions=False):
+    def dropdown(self, options, func=None, default=None, search=False, multiple=False, placeholder='', allowAdditions=False):
         return engine.data['api']['dropdown'](options, func, default, search, multiple, placeholder, allowAdditions)
 
     def divider(self, text=''):

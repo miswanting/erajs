@@ -2,8 +2,8 @@
 import typing as ty
 from . import mid
 m = mid.mid
-version = '0.1.0-190331'
-aka = '“全局事件”更新'
+version = '0.1.0-190518'
+aka = '“文本区域”更新'
 data = {}
 
 # 显示控制
@@ -201,7 +201,25 @@ def progress(now, max=100, length=100) -> None:
     m.progress(now, max, length)
 
 
-def radio(choice_list, default_index=0, func=None) -> None:
+def check(text: str = '', func=None, *arg, **kw) -> None:
+    """【控件：多项选择】\n
+    显示多项选择。\n
+    text: string
+        控件的文本信息；
+    func: callable
+        回调函数，当多选的状态被改变时触发，其参数为当前选中的状态（bool）。
+    default: bool
+        表示默认值（bool）。
+    disabled: bool
+        当前选项是否可用，其意义为该选项当前无效、无意义。
+    read_only: bool
+        当前选项是否可改，其意义为该选项有效、有意义但玩家尚无法变更。
+    """
+    global m
+    m.check(text, func, *arg, **kw)
+
+
+def radio(choice_list, func=None, default_index=0, ) -> None:
     """【控件：单项选择】\n
     显示单项选择。\n
     choice_list: list
@@ -215,19 +233,23 @@ def radio(choice_list, default_index=0, func=None) -> None:
     m.radio(choice_list, default_index, func)
 
 
-def input(func=None, default='') -> None:
+def input(func=None, default='', is_area=False, placeholder='') -> None:
     """【控件：输入框】\n
     显示输入框。\n
     func: callable
         返回函数，当输入框的内容被改变时触发，其参数为当前新输入的文本。
     default: str
         默认值。
+    is_area: bool
+        替换为全宽度文本区域。
+    placeholder: str
+        输入框提示文字（不影响默认值）。
     """
     global m
-    m.input(func, default)
+    m.input(func, default, is_area, placeholder)
 
 
-def dropdown(options, func=None, default='', search=False, multiple=False, placeholder='', allowAdditions=False) -> None:
+def dropdown(options, func=None, default=None, search=False, multiple=False, placeholder='', allowAdditions=False) -> None:
     """【控件：下拉列表】\n
     显示下拉列表。\n
     options: list

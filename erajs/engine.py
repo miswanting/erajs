@@ -2,17 +2,17 @@
 import os
 import csv
 import sys
-import glob
+# import glob
 import time
 import json
-import runpy
+# import runpy
 import random
 import socket
 import gettext
 import hashlib
 import logging
 import zipfile
-import importlib
+# import importlib
 import threading
 import configparser
 
@@ -66,7 +66,7 @@ class DebugEngine:
 
 
 class EventEngine(DebugEngine):
-    _listener_list = []
+    _listener_list: list = []
 
     def add_listener(self, type, listener, hash='', removable=True):
         new_listener = {
@@ -261,7 +261,7 @@ class DataEngine(EventEngine):
         path_to_file = path_to_file.replace('/', '\\')
         ext = path_to_file.split('\\')[-1].split('.')[-1]
         data = None
-        time_start = time.time()
+        # time_start = time.time()
         if ext in ['cfg', 'config', 'ini', 'inf']:
             config = configparser.ConfigParser()
             config.read(path_to_file)
@@ -294,7 +294,12 @@ class DataEngine(EventEngine):
             with open(path_to_file, 'r') as f:
                 for line in f.readlines():
                     data.append(line[:-1])
-        time_stop = time.time()
+        elif ext == 'kjml':
+            data = []
+            with open(path_to_file, 'r') as f:
+                for line in f.readlines():
+                    data.append(line[:-1])
+        # time_stop = time.time()
         # print('加载{}文件用时：{}ms'.format(path_to_file,
         #                              int((time_stop-time_start)*1000)))
         return data
@@ -686,7 +691,7 @@ class BagEngine(LockEngine):
             self.lock()
             self.wait_for_unlock()
 
-    def b(self, text, func, *arg, **kw):
+    def b(self, text, func=None, *arg, **kw):
         hash = new_hash()
         bag = {
             'type': 'b',
@@ -775,7 +780,36 @@ class BagEngine(LockEngine):
         }
         self.send(bag)
 
-    def radio(self, choice_list, default_index=0, func=None):
+    def check(self, text='', func=None, *arg, **kw):
+        def handle_callback(e):
+            if e['target'] == hash:
+                func(e['value'])
+        hash = new_hash()
+        self.add_listener('CHECK_CHANGE', handle_callback, hash)
+        bag = {
+            'type': 'check',
+            'value': {
+                'text': str(text),
+                'hash': hash
+            },
+            'from': 'b',
+            'to': 'r'
+        }
+        if 'disabled' in kw.keys():
+            if kw['disabled']:
+                bag['value']['disabled'] = True
+            kw.pop('disabled')
+        if func == None:
+            bag['value']['disabled'] = True
+        if 'default' in kw.keys():
+            bag['value']['default'] = kw['default']
+            kw.pop('default')
+        if 'read_only' in kw.keys():
+            bag['value']['read_only'] = kw['read_only']
+            kw.pop('read_only')
+        self.send(bag)
+
+    def radio(self, choice_list, func=None, default_index=0):
         hash = new_hash()
 
         def handle_callback(e):
@@ -795,7 +829,7 @@ class BagEngine(LockEngine):
         }
         self.send(bag)
 
-    def input(self, func=None, default=''):
+    def input(self, func=None, default='', is_area=False, placeholder=''):
         hash = new_hash()
 
         def handle_callback(e):
@@ -807,14 +841,16 @@ class BagEngine(LockEngine):
             'type': 'input',
             'value': {
                 'hash': hash,
-                'default': str(default)
+                'default': str(default),
+                'is_area': is_area,
+                'placehoder': str(placeholder)
             },
             'from': 'b',
             'to': 'r'
         }
         self.send(bag)
 
-    def dropdown(self, options, func=None, default='', search=False, multiple=False, placeholder='', allowAdditions=False):
+    def dropdown(self, options, func=None, default=None,  search=False, multiple=False, placeholder='', allowAdditions=False):
         hash = new_hash()
 
         def handle_callback(e):
@@ -833,7 +869,7 @@ class BagEngine(LockEngine):
             'value': {
                 'hash': hash,
                 'options': new_options,
-                'default': str(default),
+                'default': default,
                 'search': search,
                 'multiple': multiple,
                 'placeholder': str(placeholder),
