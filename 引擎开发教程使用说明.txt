@@ -23,7 +23,7 @@
 　　注意：不推荐直接在压缩包中打开任何程序。
 1. 运行【!INIT.bat】，安装Python开发的必要库文件；（该步骤需要连接到网络）
 2. 运行【!DEBUG-FRONT.bat】，直到游戏主窗口弹出并显示【Now, you can start the Game Script Engine.】
-3. 运行【!DEBUG-BACK.bat】，然后就请尽情探索吧！
+3. 运行【!DEBUG-SAMPLE.bat】，然后就请尽情探索吧！
 4. 游戏主窗口所显示的内容就是未来会在教程中学习的内容，所以进入到下一小节吧！
 
 【二、查看引擎教程】
