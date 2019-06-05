@@ -283,6 +283,7 @@ def ui_grid():
                 a.t()
             time.sleep(0.1)
             a.clear()
+        print('123')
         ui_grid_2()
 
     def ui_grid_3():
