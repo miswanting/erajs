@@ -1,0 +1,113 @@
+
+
+[align=center][attachimg]676[/attachimg]
+
+
+[size=4][b]引擎发布/支持贴[/b][/size]
+[size=1][color=gray]（以下描述除特殊说明外均基于 v0.1 版本）[/color][/size][/align]
+[size=3]自从 [url=http://xiaxiansy.pw/sy/index.php/EraLife]EraLife[/url] 在 [url=https://tieba.baidu.com/p/5913297784]贴吧[/url] 发布之后，受到了大家的广泛关注和支持，非常感谢。但现在贴吧环境较为不好，遂决定将后续更新及讨论内容转移至深渊，原帖将不再进行更新版发布。欢迎提出意见或建议，但请客观看待个人开发进度缓慢的情况。
+
+
+[align=center][size=4][b]引擎介绍[/b][/size][/align]
+[url=http://xiaxiansy.pw/sy/index.php/EraLife]EraLife[/url] 是基于 [url=http://xiaxiansy.pw/sy/index.php/Era.js]Era.js 文字游戏引擎[/url] 的第一款作品，和 [url=http://xiaxiansy.pw/sy/index.php/Era.js]Era.js 引擎[/url] 并行开发，现已分别发布。
+
+
+[align=center][size=4][b]引擎特色[/b][/size][/align]
+[b]【开发简单】[/b]
+[list]
+[*]脚本代码为 Python3 
+[*]作为 [url=http://xiaxiansy.pw/sy/index.php/Era.js]Era.js[/url] 文字游戏引擎的示例程序，代码质量较高，注释覆盖率高，易于学习；
+[*]自带游戏编辑器，不接触底层代码，也能任意创建/修改/删除游戏内容；
+[*]游戏操作逻辑与 Emuera 引擎同步，上手0难度；
+[*]游戏界面使用 Html5 技术，灵活且美观，远离排版烦恼；
+[/list]
+
+[b]【高自由度】[/b]
+[list]
+[*]硬核文字冒险游戏，面向游戏大后期拓宽玩法；
+[*]含多周目要素，周目间继承逻辑丰富；
+[*]不同存档间可交换数据；
+[*]游戏脚本为 Python3，易学习，功能强大，自由度高；
+[/list]
+
+[b]【机制丰富】[/b]
+[list]
+[*]目指无限流，尽可能涵盖Era类游戏的主要元素；
+[*]独特世界观，不依附于现有任何作品。
+[/list]
+
+
+[align=center][size=4][b]当前进度[/b][/size]
+[color=gray][size=1]（更新时间：190707）[/size][/color]
+　游戏界面：⬛⬛⬜⬜⬜⬜⬜⬜⬜⬜ 20% [color=red]↓[/color]
+　游戏逻辑：⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜ 10% [color=green]↑[/color]
+　游戏数据：⬛⬜⬜⬜⬜⬜⬜⬜⬜⬜ 10% [color=green]↑[/color]
+　游戏事件：⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 00% [color=black]0[/color]
+游戏编辑器：⬛⬛⬜⬜⬜⬜⬜⬜⬜⬜ 20% [color=green]↑[/color]
+　游戏引擎：⬛⬛⬛⬛⬜⬜⬜⬜⬜⬜ 40% [color=green]↑[/color][/align]
+
+[align=center]【当前进度详情（按时间从旧到新）】
+[size=1]（[color=orange]刚完成[/color]　[color=purple]已暂停[/color]　[color=red]阻塞中[/color]　[color=green]进行中[/color]　[color=blue]预研中[/color]　[color=gray]探索中[/color]）[/size][/align]
+[list]
+[*][color=orange]【游戏编辑器】将游戏编辑器开发完毕并投入使用。（已具有不完整的游戏数据的查看/新增/修改/删除功能）[/color]
+[*][color=orange]【游戏逻辑】重构物品系统，现在每个物品都是唯一的。（已完成！）[/color]
+[*][color=purple]【游戏数据】开发游戏内百科全书并导入并应用魔物娘百科中的全部设定（百科全书模块已实装，导入设定已完成50%）[/color]
+[*][color=green]【游戏逻辑】修复已知 BUG[/color]
+[*][color=green]【游戏引擎】重写并升级至 v0.2[/color]
+[list]
+[*][color=blue]新增图片支持[/color]
+[*][color=blue]新增音频支持[/color]
+[*][color=blue]整体构筑支持[/color]
+[*][color=blue]实现自定义样式[/color]
+[*][color=blue]响应式设计[/color]
+[*][color=blue]跨平台支持[/color]
+[list]
+[*][color=blue]核心：Web[/color]
+[*][color=blue]Windows[/color]
+[*][color=blue]Android[/color]
+[/list][/list]
+[*][color=gray]【游戏逻辑】建立一个基于EraSQN的TJ系统，但对其中的各项基本评价状态进行推倒重写。[/color]
+[/list]
+
+
+[align=center][size=4][b]游戏截图[/b][/size]
+[attachimg]1034[/attachimg]
+[attachimg]1035[/attachimg]
+[attachimg]1041[/attachimg]
+[attachimg]1042[/attachimg]
+[attachimg]768[/attachimg]
+[attachimg]685[/attachimg]
+[attachimg]687[/attachimg]
+[attachimg]689[/attachimg]
+[attachimg]690[/attachimg]
+[attachimg]691[/attachimg]
+
+
+[size=4][b]游戏更新[/b][/size]
+[backcolor=yellow]“战斗原型”[/backcolor]更新：[backcolor=yellow]v0.1.0-190630+fix[/backcolor]
+下次更新时间：[backcolor=yellow]2019 Q3?
+注意：功能预览版仅作为讨论作品，不保证游戏性。[/backcolor]
+
+下次更新内容（拟）：
+1. 新前端
+2. 新引擎
+3. 更多游戏机制/内容
+
+
+[hide=1]
+[color=red]→如果您看到了这行字，那么您已经具有了浏览权限←[/color]
+[table=50%]
+[tr][td][align=center][b]Windows[/b] 64 bit[/align][/td][td][align=center][url=https://pan.baidu.com/s/1B_Iyvi5ewuHhgevzd_PYaQ]l8pp[/url][/align][/td][/tr]
+[tr][td][align=center][b]Windows[/b] 32 bit[/align][/td][td][align=center]Coming Soon[/align][/td][/tr]
+[tr][td][align=center][b]Linux[/b][/align][/td][td][align=center]Coming Soon[/align][/td][/tr]
+[tr][td][align=center][b]Android[/b][/align][/td][td][align=center]Coming Soon[/align][/td][/tr]
+[/table][color=red]→如果您看到了这行字，那么您已经具有了浏览权限←[/color]
+[/hide]
+
+
+[size=4][b]相关链接[/b][/size][/align]
+[list]
+[*]游戏催更：[url=https://jq.qq.com/?_wv=1027&k=54G9nwm]940068054[/url]（口令：era）
+[*]引擎支持：[url=https://jq.qq.com/?_wv=1027&k=59zsY8p]940122876[/url]（口令：era）
+[*][url=https://tieba.baidu.com/p/5913297784]EraLife 贴吧更新贴[/url]（现已停止更新）
+[/list][/size]
