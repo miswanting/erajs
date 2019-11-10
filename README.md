@@ -1,11 +1,21 @@
-（以下内容为开发目标，当前填坑进度以[计划](https://github.com/miswanting/Era.js/projects)中显示的进度为准）
+【以下内容为开发目标，当前填坑进度以[计划](https://github.com/miswanting/Era.js/projects)中显示的进度为准】
 
-[官网](https://miswanting.github.io/Era.js/)｜[文档](https://github.com/miswanting/Era.js/wiki)｜[计划](https://github.com/miswanting/Era.js/projects)｜[支持](https://github.com/miswanting/Era.js/issues)
+<div style="text-align:center">
+    <a href="https://miswanting.github.io/Era.js/">官网</a> |
+    <a href="https://github.com/miswanting/Era.js/wiki">文档</a> |
+    <a href="https://github.com/miswanting/Era.js/projects">计划</a> |
+    <a href="https://github.com/miswanting/Era.js/issues">支持</a>
+</div>
+
+<h1 style="text-align:center">Era.js</h1>
+
+## 引擎描述
+
+【描述更新于191111】
+
+Era.js 是一个由 TypeScript + Python3 构建的、 **以 [Python3](https://www.python.org/) 为游戏脚本的**次世代跨平台“类Era”富文本游戏引擎。 其基于 [Electron](https://electronjs.org/) 应用平台和 [Semantic UI](https://semantic-ui.com/) 样式库等技术开发的
 
 
-# Era.js
-
-Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python.org/) 为游戏脚本的** ，基于 [Electron](https://electronjs.org/) 应用平台和 [Semantic UI](https://semantic-ui.com/) 样式库等技术开发的次世代跨平台“类Era”富文本游戏引擎。 
 
 [![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Travis](https://img.shields.io/travis/miswanting/Era.js.svg)](https://travis-ci.org/miswanting/Era.js) [![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases) [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
@@ -43,6 +53,14 @@ Era.js 是一个由 JavaScript 构建的、 **以 [Python](https://www.python
 - 后端语言：[Python3](https://www.python.org/)
   - 测试工具：[pyTest](https://docs.pytest.org/en/latest/)
   - 打包工具：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
+## 平台支持情况
+
+|   平台支持情况   |  Web   | Windows | MacOS  | Linux | Android |  iOS   |
+| :--------------: | :----: | :-----: | :----: | :---: | :-----: | :----: |
+|   引擎开发平台   |  N/A   |  可用   | 未验证 | 可用  |   N/A   |  N/A   |
+|   游戏开发平台   |  N/A   |  可用   | 未验证 | 可用  |   N/A   |  N/A   |
+| 游戏二次开发平台 |  可用  |  可用   |  可用  | 可用  |  可用   |  可用  |
+|   游戏运行平台   | 开发中 |  可用   | 未计划 | 可用  | 未计划  | 未计划 |
 
 ## 鸣谢
 
