@@ -1,11 +1,11 @@
 【以下内容为开发目标，当前填坑进度以[计划](https://github.com/miswanting/Era.js/projects)中显示的进度为准】
 
-<div style="text-align:center">
+<p style="text-align:center">
     <a href="https://miswanting.github.io/Era.js/">官网</a> |
     <a href="https://github.com/miswanting/Era.js/wiki">文档</a> |
     <a href="https://github.com/miswanting/Era.js/projects">计划</a> |
     <a href="https://github.com/miswanting/Era.js/issues">支持</a>
-</div>
+</p>
 
 <h1 style="text-align:center">Era.js</h1>
 
