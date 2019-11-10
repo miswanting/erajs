@@ -1,5 +1,3 @@
-【以下内容为开发目标，当前填坑进度以[计划](https://github.com/miswanting/Era.js/projects)中显示的进度为准】
-
 <p align="center">
     <a href="https://miswanting.github.io/Era.js/">官网</a> |
     <a href="https://github.com/miswanting/Era.js/wiki">文档</a> |
@@ -8,6 +6,8 @@
 </p>
 
 <h1 align="center">Era.js</h1>
+
+<div align="center"><sub>以下内容为开发目标，当前填坑进度以<a href="https://github.com/miswanting/Era.js/projects">计划</a>中显示的进度为准</sub></div>
 
 ## 引擎描述
 
