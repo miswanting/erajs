@@ -1,0 +1,444 @@
+$gray_scale: [black,dimgray,gray,darkgray,silver,lightgray,gainsboro,white]
+// 虚无：black
+// 暗示（我可以交互、我是底色）：dimgray
+// （）：gray
+// （）：darkgray
+// 常规（控件：当前值）：silver
+// 活性（控件：我被指着）：lightgray
+// 激活（控件：我被按着，最小元素：我被指着）：gainsboro
+// 激活（最小元素：我被按着）：white
+$font-size: medium
+$line-height: 21px
+$show-border: false
+$hide-border: false
+
+@font-face
+    font-family: "Monomono"
+    src: url("./Monomono.ttf") format("ttf")
+
+html
+    overflow: hidden
+    height: 100%
+    background: #0000
+body
+    margin: 0
+    color: #fff
+    background-color: #0000
+    // overflow-y: auto
+    font-family: Monomono
+    height: 100%
+#root
+    display: flex
+    flex-direction: column
+    height: 100%
+
+/////////////////////////////////////
+
+header
+    -webkit-user-select: none
+    color: gray
+    background-color: #000
+    border-top-left-radius: 10px
+    border-top-right-radius: 10px
+main
+    flex-grow: 1
+    overflow-y: auto
+    color: nth($gray-scale, 8)
+    background-color: nth($gray-scale, 1)
+footer
+    border-top: 1px solid nth($gray-scale, 2)
+    color: gray
+    background-color: nth($gray-scale, 1)
+
+///////////////////////////
+
+nav
+    display: flex
+    .quick
+        padding: 0em 0.5em
+        cursor: pointer
+        border-right: 1px solid gray
+        svg
+            font-size: 14px
+        &:hover
+            color: black
+            background-color: grey
+    .title
+        flex-grow: 1
+        text-align: center
+        -webkit-app-region: drag
+        cursor: grab
+        &:hover
+            color: black
+            background-color: grey
+        &:active
+            cursor: grabbing
+    .tool
+        padding: 0em 0.5em
+        cursor: pointer
+        border-left: 1px solid gray
+        svg
+            font-size: 14px
+        &:hover
+            color: cyan
+            background-color: grey
+    .min // 最小化按钮
+        padding: 0em 0.5em
+        cursor: pointer
+        border-left: 1px solid gray
+        svg
+            font-size: 14px
+        &:hover
+            color: green
+            background-color: grey
+    .max // 最大化按钮
+        padding: 0em 0.5em
+        cursor: pointer
+        border-left: 1px solid gray
+        svg
+            font-size: 14px
+        &:hover
+            color: yellow
+            background-color: grey
+    .close // 关闭按钮
+        padding: 0em 0.5em
+        cursor: pointer
+        border-left: 1px solid gray
+        svg
+            font-size: 14px
+        &:hover
+            color: red
+            background-color: grey
+    .menu
+        cursor: pointer
+        position: relative
+        .name
+            padding-left: .5em
+            padding-right: .5em
+            &:hover
+                color: #000
+                background-color: grey
+        .list
+            min-width: 100px
+            position: absolute
+            z-index: 2
+            border: 1px solid nth($gray_scale, 2)
+            background: nth($gray_scale, 1)
+            display: none
+            &.show
+                display: block
+            .item
+                &:hover
+                    border: 1px solid nth($gray_scale, 3)
+                    background: nth($gray_scale, 2)
+
+main.splash
+    display: flex
+    align-items: center
+    div
+        width: 100%
+        text-align: center
+        color: nth($gray_scale,8)
+main.game
+main.console
+    .indicator
+        margin-right: .2em
+        color: cyan
+    .in:focus
+        outline: none
+main.pause
+    display: flex
+    align-items: center
+    > div
+        width: 100%
+        cursor: default
+        text-align: center
+        > div
+            margin: 0em 3em
+            cursor: pointer
+            &:hover
+                background: gray
+
+section
+    margin: 0.5em
+    border: 1px solid nth($gray_scale,8)
+    padding: 1em
+    border-radius: 0.5em
+    &.disabled
+        border: 1px solid nth($gray_scale,1)
+.row
+    display: flex
+    .column
+        flex: 1
+        text-align: center
+.progress
+    // font-size: 0
+    background-color: dimgray
+    display: inline-block
+    width: 100px
+    position: relative
+            // top: 3px
+            // height: $line-height - 1
+    .bar
+        display: inline-block
+        width: 50%
+        height: 100%
+        background-color: silver
+        &:before
+            content: "\200b"
+.button
+    padding: 0
+    margin-left: 1px
+    margin-right: 1px
+    cursor: pointer
+    background-color: dimgray
+    border: none
+    color: white
+    text-align: center
+    position: relative
+    div.popup
+        font-size: $font-size
+        position: absolute
+        visibility: hidden
+        text-align: center
+        display: inline-block
+        width: 120px
+        bottom: 100%
+        left: 50%
+        margin-left: -60px
+        background-color: dimgray
+        &:hover
+            color: black
+            background-color: gainsboro
+            div.popup
+                visibility: visible
+            &:active
+                color: black
+                background-color: white
+    &:hover
+        color: black
+        background-color: gainsboro
+        div.popup
+            visibility: visible
+    &:active
+        color: black
+        background-color: white
+.text
+    position: relative
+    div.popup
+        font-size: $font-size
+        position: absolute
+        visibility: hidden
+        text-align: center
+        display: inline-block
+        width: 120px
+        bottom: 100%
+        left: 50%
+        margin-left: -60px
+        background-color: dimgray
+    &:hover
+        div.popup
+            visibility: visible
+.button
+    padding: 0
+    cursor: pointer
+    background-color: dimgray
+    border: none
+    color: white
+    text-align: center
+    position: relative
+    div.popup
+        font-size: $font-size
+        position: absolute
+        visibility: hidden
+        text-align: center
+        display: inline-block
+        width: 120px
+        bottom: 100%
+        left: 50%
+        margin-left: -60px
+        background-color: dimgray
+    &:hover
+        color: black
+        background-color: gainsboro
+        div.popup
+            visibility: visible
+    &:active
+        color: black
+        background-color: white
+
+.link
+    color: white
+    cursor: pointer
+    text-decoration: underline
+    position: relative
+    div.popup
+        font-size: $font-size
+        position: absolute
+        visibility: hidden
+        text-align: center
+        display: inline-block
+        width: 120px
+        bottom: 100%
+        left: 50%
+        margin-left: -60px
+        background-color: dimgray
+    &:hover
+        color: black
+        text-decoration: none
+        background-color: gainsboro
+        div.popup
+            visibility: visible
+    &:active
+        color: black
+        background-color: white
+.check
+    cursor: pointer
+    // color: red
+    background-color: nth($gray_scale,2)
+    &:hover
+        background-color: nth($gray_scale,3)
+    &:active
+        background-color: nth($gray_scale,8)
+    &.active
+        // color: green
+        background-color: nth($gray_scale,6)
+        &:hover
+            background-color: nth($gray_scale,7)
+        &:active
+            background-color: nth($gray_scale,8)
+.progress
+    font-size: 0
+    background-color: dimgray
+    display: inline-block
+    width: 100px
+    position: relative
+    height: $line-height - 5
+    line-height: $line-height + 5
+    // top: 3px
+    // height: $line-height - 1
+    .bar
+        display: inline-block
+        width: 50%
+        height: 100%
+        background-color: silver
+        &:before
+            content: "\200b"
+
+.rate
+    cursor: pointer
+    background-color: dimgray // 基色
+    &:hover
+        .item
+            background-color: gray
+            &:hover
+                background-color: darkgray
+            &.active
+                color: black
+                background-color: lightgray
+                &:hover
+                    background-color: gainsboro
+    &:active
+        .item
+            background-color: darkgray
+            &:active
+                background-color: silver
+            &.active
+                color: black
+                background-color: gainsboro
+                &:active
+                    background-color: nth($gray_scale,8)
+    .active
+        color: black
+        background-color: silver // 基色
+.radio
+    cursor: pointer
+    &:hover
+        background-color: nth($gray_scale,5)
+    &:active
+        background-color: nth($gray_scale,6)
+    .item
+        background-color: nth($gray_scale,4)
+        &:hover
+            color: black
+            background-color: nth($gray_scale,6)
+        &:active
+            color: black
+            background-color: nth($gray_scale,8)
+        &.active
+            color: black
+            background-color: nth($gray_scale,6)
+            &:hover
+                background-color: nth($gray_scale,7)
+            &:active
+                background-color: nth($gray_scale,8)
+.dropdown
+    cursor: pointer
+    position: relative
+    &:hover
+        background-color: nth($gray_scale,5)
+    &:active
+        background-color: nth($gray_scale,6)
+    .list
+        position: absolute
+        // visibility: hidden
+        text-align: center
+        display: none
+        width: 120px
+        bottom: 100%
+        left: 50%
+        z-index: 1
+        margin-left: -60px
+        &.show
+            display: block
+    .item
+        background-color: nth($gray_scale,4)
+        &:hover
+            color: black
+            background-color: nth($gray_scale,6)
+        &:active
+            color: black
+            background-color: nth($gray_scale,8)
+        &.active
+            color: black
+            background-color: nth($gray_scale,6)
+            &:hover
+                background-color: nth($gray_scale,7)
+            &:active
+                background-color: nth($gray_scale,8)
+.divider
+    display: flex
+    .breaker
+        flex-grow: 1
+        display: flex
+        flex-direction: column
+        justify-content: center
+        span
+            height: 1px
+            background-color: white
+.input
+    border: 1px solid nth($gray_scale,7)
+    height: $line-height - 2
+    padding: 0px
+    outline-offset: 0px
+    color: nth($gray_scale,8)
+    background: nth($gray_scale,1)
+    &:focus
+        border: 1px solid nth($gray_scale,8)
+        outline: none
+
+.toast
+    cursor: default
+    .item
+        z-index: 1
+        border: 1px solid nth($gray_scale, 3)
+        color: nth($gray_scale, 8)
+        background: nth($gray_scale, 2)
+        padding: 0px 0.5em
+        border-radius: 0.2em
+        span
+            margin-left: 0.5em
+            cursor: pointer
+            &:hover
+                color: nth($gray_scale, 1)
+                background: nth($gray_scale, 8)
