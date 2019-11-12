@@ -1,0 +1,5 @@
+bson
+flask
+pytest
+python-socketio
+pyyaml

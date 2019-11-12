@@ -1,0 +1,50 @@
+html
+    overflow: hidden
+    height: 100%
+    background: #0000
+
+body
+    background: #0000
+    height: 100%
+
+#root
+    display: flex
+    flex-direction: column
+    height: 100%
+main
+    flex-grow: 1
+    overflow-y: auto
+    &.splash
+        color: #fff
+        background: rgb(38, 38, 38)
+        display: flex
+        align-items: center
+        div
+            width: 100%
+    &.ui.container.column
+        background: #fff
+        margin: 0em!important
+        padding: 0em 1em
+        width: 100%
+
+footer
+    background: #fff
+    border-top: 1px solid #ccc
+div.header.item
+    -webkit-app-region: drag
+div.ui.loader:before
+    border-color: rgba(255, 255, 255, .15)
+div.ui.loader:after
+    border-top-color: #fff
+div.ui.mini.menu
+    border-top-left-radius: .5em
+    border-top-right-radius: .5em
+    border-bottom-left-radius: 0em
+    border-bottom-right-radius: 0em
+div.ui.inverted.segment
+    border: 1px solid grey
+[contenteditable]:focus
+    display: inline-block
+    outline: 0px solid transparent
+.line
+    margin: 0 0 1em
