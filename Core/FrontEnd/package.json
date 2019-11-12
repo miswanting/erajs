@@ -1,8 +1,8 @@
 {
-  "name": "era-js",
-  "version": "0.2.0",
-  "description": "A Era-like Game Engine.",
-  "main": "dist/main.js",
+  "name": "erajs-core",
+  "version": "0.1.0",
+  "description": "The FrontEnd of Era.js Core.",
+  "main": "dist/index.js",
   "scripts": {
     "打包(调试)": "npx webpack",
     "打包(发布)": "npx webpack --config webpack.prod.js",
@@ -18,21 +18,21 @@
   },
   "keywords": [
     "era",
-    "electron"
+    "erajs",
+    "game"
   ],
   "author": "Miswanting",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/miswanting/Era.js/issues"
   },
-  "homepage": "https://github.com/miswanting/Era.js#readme",
+  "homepage": "https://github.com/miswanting/Era.js/Core/FrontEnd#readme",
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "latest",
     "@fortawesome/free-solid-svg-icons": "latest",
     "@fortawesome/react-fontawesome": "latest",
     "@types/d3": "latest",
     "@types/d3-delaunay": "latest",
-    "@types/electron-devtools-installer": "latest",
     "@types/jquery": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
@@ -42,10 +42,6 @@
     "d3": "latest",
     "d3-delaunay": "latest",
     "droplet-editor": "latest",
-    "electron": "5.0.1",
-    "electron-builder": "latest",
-    "electron-devtools-installer": "latest",
-    "fibers": "latest",
     "file-loader": "latest",
     "jquery": "latest",
     "mini-css-extract-plugin": "latest",
@@ -67,8 +63,8 @@
     "webpack-cli": "latest"
   },
   "build": {
-    "appId": "era-js",
-    "extraMetadata": "dist/main.js",
+    "appId": "erajs-core",
+    "extraMetadata": "dist/index.js",
     "files": [
       "./dist/*"
     ],
