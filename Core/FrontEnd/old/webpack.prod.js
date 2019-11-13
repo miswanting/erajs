@@ -2,12 +2,40 @@ const path = require('path');
 const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-module.exports = {
+
+const mainConfig = {
     mode: "production",
-    entry: "./src/index.ts",
+    target: 'electron-main',
+    entry: "./src/main.ts",
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js'
+        filename: 'main.js'
+    },
+    resolve: {
+        extensions: [".ts", ".js", ".json"]
+    },
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: "ts-loader",
+            },
+            {
+                enforce: "pre",
+                test: /\.jsx?$/,
+                loader: "source-map-loader"
+            }
+        ]
+    },
+};
+
+const rendererConfig = {
+    mode: "production",
+    target: 'electron-renderer',
+    entry: "./src/renderer.tsx",
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'renderer.js'
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
@@ -53,6 +81,8 @@ module.exports = {
             'src/index.html'
         ]),
         new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
             filename: "[name].css",
             chunkFilename: "[id].css"
         }),
@@ -61,4 +91,6 @@ module.exports = {
             jQuery: "jquery"
         })
     ]
-}
+};
+
+module.exports = [mainConfig, rendererConfig];
