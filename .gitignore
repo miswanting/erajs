@@ -1,0 +1,4 @@
+*.pyc
+*.log
+*.save
+.mypy*

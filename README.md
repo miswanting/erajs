@@ -6,16 +6,18 @@
 </div>
 
 <h1 align="center">Era.js</h1>
+<<<<<<< HEAD
+=======
+<div align="center">最新版本：v0.2.0-191112</div>
+>>>>>>> 608ca5fc9adc3c4416dd8eca6dd715658d3ce1af
 <div align="center"><sub>以下内容为开发目标，当前填坑进度以<a href="https://github.com/miswanting/Era.js/projects">计划</a>中显示的进度为准</sub></div>
 [![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Travis](https://img.shields.io/travis/miswanting/Era.js.svg)](https://travis-ci.org/miswanting/Era.js) [![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases) [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
-## 引擎描述
+## 概述
 
-【描述更新于191111】
+>   更新于：191111
 
-Era.js 是一个由 TypeScript + Python3 构建的、 **以 [Python3](https://www.python.org/) 为游戏脚本的**次世代跨平台“类Era”富文本游戏引擎。 其基于 [Electron](https://electronjs.org/) 应用平台和 [Semantic UI](https://semantic-ui.com/) 样式库等技术开发的
-
-
+Era.js 是一个由 TypeScript + Python3 构建的、 **以 [Python3](https://www.python.org/) 为游戏脚本的**次世代跨平台“类Era”富文本游戏引擎。 其基于 [Electron](https://electronjs.org/) 应用平台和 [Semantic UI](https://semantic-ui.com/) 样式库等技术开发的。
 
 ## 开发理念
 
@@ -37,20 +39,26 @@ Era.js 是一个由 TypeScript + Python3 构建的、 **以 [Python3](https://
   - 引擎面向游戏开发友好、面向修改友好；
   - 排版、图片、视频、音频等功能将在未来得到游戏引擎原生支持。
 
-## 技术栈
+## 技术栈（Tech Stack）
+
+### 核心代码
 
 - 前端语言：[TypeScript](https://www.typescriptlang.org/)
-  - 应用框架：[Electron](https://electronjs.org/)
-  - 前端框架：[React](https://reactjs.org/)
-  - 样式框架：[Semantic UI](https://semantic-ui.com/)
-  - 构建框架：[Gulp](https://gulpjs.com/)
-  - 测试工具：[Jest](https://jestjs.io/)
-  - 捆绑工具：[webpack](https://webpack.js.org/)
-  - 编译工具：[Babel](https://babeljs.io/)
-  - 打包工具：[Electron Builder](https://www.electron.build/)
+  - 前端响应式框架：[React](https://reactjs.org/)
+  - 样式库（其一）：[Semantic UI](https://semantic-ui.com/)
+  - 打包工具：[webpack](https://webpack.js.org/)
+  - 发布工具：[Electron Builder](https://www.electron.build/)
 - 后端语言：[Python3](https://www.python.org/)
   - 测试工具：[pyTest](https://docs.pytest.org/en/latest/)
-  - 打包工具：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
+  - 发布工具：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
+### 桌面端容器
+
+-   应用容器：[Electron](https://electronjs.org/)
+
+### 移动端容器
+
+-   N/A
+
 ## 平台支持情况
 
 |   平台支持情况   |  Web   | Windows | MacOS  | Linux | Android |  iOS   |
@@ -59,6 +67,14 @@ Era.js 是一个由 TypeScript + Python3 构建的、 **以 [Python3](https://
 |   游戏开发平台   |  N/A   |  可用   | 未验证 | 可用  |   N/A   |  N/A   |
 | 游戏二次开发平台 |  可用  |  可用   |  可用  | 可用  |  可用   |  可用  |
 |   游戏运行平台   | 开发中 |  可用   | 未计划 | 可用  | 未计划  | 未计划 |
+
+## 目录结构
+
+-   Core：核心代码
+-   Desktop Container：桌面端适配容器
+-   Mobile Container：移动端适配容器
+-   SDK：软件开发工具包
+-   docs：Pages
 
 ## 鸣谢
 
