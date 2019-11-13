@@ -6,10 +6,7 @@
 </div>
 
 <h1 align="center">Era.js</h1>
-<<<<<<< HEAD
-=======
 <div align="center">最新版本：v0.2.0-191112</div>
->>>>>>> 608ca5fc9adc3c4416dd8eca6dd715658d3ce1af
 <div align="center"><sub>以下内容为开发目标，当前填坑进度以<a href="https://github.com/miswanting/Era.js/projects">计划</a>中显示的进度为准</sub></div>
 [![GitHub release](https://img.shields.io/github/release/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Travis](https://img.shields.io/travis/miswanting/Era.js.svg)](https://travis-ci.org/miswanting/Era.js) [![GitHub Release Date](https://img.shields.io/github/release-date/miswanting/Era.js.svg)](https://github.com/miswanting/Era.js/releases) [![Github All Releases](https://img.shields.io/github/downloads/miswanting/Era.js/total.svg)](https://github.com/miswanting/Era.js/releases) [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/miswanting/Era.js/dev.svg)](https://github.com/miswanting/Era.js/commits/dev)
 
