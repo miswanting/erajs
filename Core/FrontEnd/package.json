@@ -47,6 +47,7 @@
     "jquery": "latest",
     "mini-css-extract-plugin": "latest",
     "node-sass": "latest",
+    "normalize.css": "latest",
     "react": "latest",
     "react-dom": "latest",
     "sass": "latest",
