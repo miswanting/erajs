@@ -1,8 +1,8 @@
 bson
 flask
+flask-socketio
 pytest
-python-socketio
 pyyaml
 setuptools 
-wheel
 twine
+wheel
