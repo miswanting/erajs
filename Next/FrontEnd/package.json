@@ -1,0 +1,19 @@
+{
+  "name": "erajs-next-core",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/Era.js.git"
+  },
+  "author": "Miswanting",
+  "license": "GPL-3.0+",
+  "bugs": {
+    "url": "https://github.com/miswanting/Era.js/issues"
+  },
+  "homepage": "https://github.com/miswanting/Era.js#readme"
+}
