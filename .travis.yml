@@ -6,8 +6,8 @@ jobs:
       node_js:
         - 13
       before_install: cd Core/FrontEnd
+      script: npm run "打包-发布"
     - name: "Core: BackEnd"
-      os: windows
       language: python
       python:
         - 3.8
