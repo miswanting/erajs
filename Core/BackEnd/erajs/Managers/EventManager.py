@@ -1,8 +1,6 @@
 import enum
 import threading
-
-from . import LogManager
-
+from typing import List
 
 # Node Style
 
@@ -12,15 +10,14 @@ class EventType(enum.Enum):
     REMOVE_LISTENER = 'remove_listener'
 
 
-class EventEmitter:
+class EventManager:
     """
     # 事件调度器
     """
-    __listener_list: list = []
-    sync: bool = False
 
     def __init__(self):
-        self.log = LogManager.LogManager()
+        self.__listener_list: List[dict] = []
+        self.sync: bool = False
 
     def on(self, eventType, listener):
         """
@@ -47,26 +44,21 @@ class EventEmitter:
         for i, each in enumerate(self.__listener_list):
             if each['type'] == eventType and \
                     each['listener'].__name__ == listener.__name__:
-                self.__listener_list.pop(i)
+                listener_data = self.__listener_list.pop(i)
+                self.emit(EventType.REMOVE_LISTENER,
+                          listener_data['type'], listener_data['listener'])
                 break
 
     def remove_all_listeners(self):
-        new_listener_list = []
-        for each in self.__listener_list:
-            if not each['removable']:
-                new_listener_list.append(each)
-        self.__listener_list = new_listener_list
-
-    def has_listener(self, type):
-        for each in self.__listener_list:
-            if each['type'] == type:
-                return True
-        return False
+        while self.__listener_list:
+            listener_data = self.__listener_list.pop(0)
+            self.emit(EventType.REMOVE_LISTENER,
+                      listener_data['type'], listener_data['listener'])
 
     def emit(self, eventType, *arg, **kw):
         i = 0
         while i < len(self.__listener_list):
-            listener = self.__listenerif_list[i]
+            listener = self.__listener_list[i]
             if self.sync:
                 listener['listener'](*arg, **kw)
             else:
@@ -75,7 +67,7 @@ class EventEmitter:
                     args=arg,
                     kwargs=kw
                 )
-                if listener['one_time']:
+                if listener['once']:
                     self.__listener_list.pop(i)
                     i -= 1
                 t.start()
@@ -83,6 +75,15 @@ class EventEmitter:
     dispatch = emit
     add_listener = on
     off = remove_listener
+
+    def has_listener(self, type):
+        for each in self.__listener_list:
+            if each['type'] == type:
+                return True
+        return False
+
+    def get_listener_list(self):
+        return self.__listener_list
 
     def show_listener_list(self):
         for each in self.__listener_list:
@@ -99,6 +100,6 @@ if __name__ == "__main__":
 
     def listener_B():
         print('B')
-    myEmitter = EventEmitter()
+    myEmitter = EventManager()
     myEmitter.once(EventType.NEW_LISTENER, tmp)
     myEmitter.on('event', listener_A)
