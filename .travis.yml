@@ -12,57 +12,58 @@ jobs:
       python:
         - 3.8
       before_install: cd Core/BackEnd
-    - name: "Next: FrontEnd"
-      os: windows
-      language: node_js
-      node_js:
-        - 13
-      before_install: cd Next/FrontEnd
-    - name: "Next: BackEnd"
-      os: windows
-      language: python
-      python:
-        - 3.8
-      before_install: cd Next/BackEnd
-    - name: "Desktop Container: Windows"
-      os: windows
-      language: node_js
-      node_js:
-        - 13
-      before_install: cd "Desktop Container/Windows"
-    - name: "Desktop Container: Linux"
-      os: windows
-      language: node_js
-      node_js:
-        - 13
-      before_install: cd "Desktop Container/Linux"
-    - name: "Desktop Container: MacOS"
-      os: windows
-      language: node_js
-      node_js:
-        - 13
-      before_install: cd "Desktop Container/MacOS"
-    - name: "Mobile Container: Android"
-      os: windows
-      language: node_js
-      node_js:
-        - 13
-      before_install: cd "Mobile Container/Android"
-    - name: "Mobile Container: iOS"
-      os: windows
-      language: node_js
-      node_js:
-        - 13
-      before_install: cd "Mobile Container/iOS"
-    - name: "SDK: Windows"
-      os: windows
-      language: node_js
-      node_js:
-        - 13
-      before_install: cd SDK
-deploy:
-  provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
-  file: "FILE TO UPLOAD"
-  skip_cleanup: true
-  draft: true
+      script: python3 test_erajs.py
+#     - name: "Next: FrontEnd"
+#       os: windows
+#       language: node_js
+#       node_js:
+#         - 13
+#       before_install: cd Next/FrontEnd
+#     - name: "Next: BackEnd"
+#       os: windows
+#       language: python
+#       python:
+#         - 3.8
+#       before_install: cd Next/BackEnd
+#     - name: "Desktop Container: Windows"
+#       os: windows
+#       language: node_js
+#       node_js:
+#         - 13
+#       before_install: cd "Desktop Container/Windows"
+#     - name: "Desktop Container: Linux"
+#       os: windows
+#       language: node_js
+#       node_js:
+#         - 13
+#       before_install: cd "Desktop Container/Linux"
+#     - name: "Desktop Container: MacOS"
+#       os: windows
+#       language: node_js
+#       node_js:
+#         - 13
+#       before_install: cd "Desktop Container/MacOS"
+#     - name: "Mobile Container: Android"
+#       os: windows
+#       language: node_js
+#       node_js:
+#         - 13
+#       before_install: cd "Mobile Container/Android"
+#     - name: "Mobile Container: iOS"
+#       os: windows
+#       language: node_js
+#       node_js:
+#         - 13
+#       before_install: cd "Mobile Container/iOS"
+#     - name: "SDK: Windows"
+#       os: windows
+#       language: node_js
+#       node_js:
+#         - 13
+#       before_install: cd SDK
+# deploy:
+#   provider: releases
+#   api_key: "GITHUB OAUTH TOKEN"
+#   file: "FILE TO UPLOAD"
+#   skip_cleanup: true
+#   draft: true
