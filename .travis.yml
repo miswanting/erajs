@@ -4,6 +4,7 @@ jobs:
       language: node_js
       node_js:
         - 13
+      before_install: cd Core/FrontEnd
     - name: "Core: BackEnd"
       language: python
       python:
@@ -40,3 +41,9 @@ jobs:
       language: node_js
       node_js:
         - 13
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file: "FILE TO UPLOAD"
+  skip_cleanup: true
+  draft: true
