@@ -1,0 +1,42 @@
+jobs:
+  include:
+    - name: "Core: FrontEnd"
+      language: node_js
+      node_js:
+        - 13
+    - name: "Core: BackEnd"
+      language: python
+      python:
+        - 3.8
+    - name: "Next: FrontEnd"
+      language: node_js
+      node_js:
+        - 13
+    - name: "Next: BackEnd"
+      language: python
+      python:
+        - 3.8
+    - name: "Desktop Container: Windows"
+      language: node_js
+      node_js:
+        - 13
+    - name: "Desktop Container: Linux"
+      language: node_js
+      node_js:
+        - 13
+    - name: "Desktop Container: MacOS"
+      language: node_js
+      node_js:
+        - 13
+    - name: "Mobile Container: Android"
+      language: node_js
+      node_js:
+        - 13
+    - name: "Mobile Container: iOS"
+      language: node_js
+      node_js:
+        - 13
+    - name: "SDK: Windows"
+      language: node_js
+      node_js:
+        - 13
