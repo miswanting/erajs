@@ -2,6 +2,7 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
     entry: "./src/core.ts",
+    mode: "production",
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'core.js'
