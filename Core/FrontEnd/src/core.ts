@@ -1,22 +1,31 @@
 import DisplayManager from "./Managers/DisplayManager";
 import NetManager from "./Managers/NetManager";
+import DataManager from "./Managers/DataManager";
 export default class Front {
-    dm: DisplayManager
-    nm: NetManager
+    display: DisplayManager
+    net: NetManager
+    data: DataManager
     constructor() {
-        this.dm = new DisplayManager()
-        this.nm = new NetManager()
-        this.dm.on('send', this.nm.send)
-        this.nm.on('recv', this.dm.recv)
+        this.data = new DataManager()
+        this.display = new DisplayManager()
+        this.net = new NetManager()
+
+        this.net.on('recv', this.data.onRecv)
+        this.data.on('send', this.net.onSend)
+        this.data.on('change', this.display.onChange)
+        this.display.on('act', this.data.onAct)
     }
     init() {
-        this.dm.init()
-        this.nm.init()
+        this.data.init()
+        this.display.init()
+        this.net.init()
     }
     start() {
-        this.dm.start()
-        this.nm.start()
+        this.data.start()
+        this.display.start()
+        this.net.start()
     }
 }
 let front = new Front()
+front.init()
 front.start()
