@@ -6,16 +6,12 @@ export default class Front {
     constructor() {
         this.dm = new DisplayManager()
         this.nm = new NetManager()
-        let send_func = (pkg: any) => {
-            console.log('send:', pkg)
-            this.nm.send(pkg)
-        }
-        let recv_func = (pkg: any) => {
-            console.log('recv:', pkg)
-            this.dm.recv(pkg)
-        }
-        this.dm.registerSendFunc(send_func)
-        this.nm.registerRecvFunc(recv_func)
+        this.dm.on('send', this.nm.send)
+        this.nm.on('recv', this.dm.recv)
+    }
+    init() {
+        this.dm.init()
+        this.nm.init()
     }
     start() {
         this.dm.start()

@@ -3,7 +3,7 @@ e = Engine()
 
 
 def init():
-    pass
+    e.init()
 
 
 def entry(func):

@@ -2,7 +2,7 @@ from . import MW as m
 
 
 def init():
-    pass
+    m.init()
 
 
 def entry(func):
@@ -13,5 +13,13 @@ def run():
     return m.run()
 
 
-def t(text):
+def text(text):
     pass
+
+
+def button(text, func=None):
+    pass
+
+
+t = text
+b = button

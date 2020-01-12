@@ -1,6 +1,9 @@
+import { EventEmitter } from 'events'
 import io = require('socket.io-client')
-export default class NetManager {
+export default class NetManager extends EventEmitter {
+    sio = null
     constructor() {
+        super()
         let sio = io()
         sio.on('connect', this.onConnect)
         // sio.on('connect_error', this.onConnectError)
@@ -14,6 +17,8 @@ export default class NetManager {
         // sio.on('ping', this.onPing)
         // sio.on('pong', this.onPong)
     }
+    init() { }
+    start() { }
     onConnect = () => { }
     // onConnectError = () => { }
     // onConnectTimeout = () => { }
@@ -26,4 +31,10 @@ export default class NetManager {
     // onReconnectFailed = () => { }
     // onPing = () => { }
     // onPong = () => { }
+    public send(msg: any) {
+        this.sio.send(msg)
+    }
+    public recv(msg: any) {
+        this.emit('recv', msg)
+    }
 }
