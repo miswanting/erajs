@@ -1,32 +1,40 @@
-from flask import Flask
-from flask_socketio import SocketIO
+import threading
+from urllib.parse import urlparse
 
-# from ..Prototypes.Singleton import Singleton
+from flask import Flask, request
+from flask_socketio import SocketIO
 
 
 class NetManager:
-    # class NetManager(Singleton):
     def __init__(self):
         self.app = Flask(__name__)
         self.sio = SocketIO(self.app)
 
     def create_server(self, address=None):
-        self.app.add_url_rule('/', 'index', self.index)
+        def run():
+            if address:
+                config = {
+                    'host': address[0],
+                    'port': address[1],
+                    'debug': False
+                }
+                self.sio.run(self.app, **config)
+            else:
+                self.sio.run(self.app)
+        self.app.add_url_rule('/', 'core', self.core)
+        self.app.add_url_rule('/<path:path>', 'res', self.res)
         self.sio.on_event('connect', self.on_connect)
-        if address:
-            config = {
-                'host': address[0],
-                'port': address[1],
-                'debug': False
-            }
-            self.sio.run(self.app, **config)
-        else:
-            self.sio.run(self.app)
+        t = threading.Thread(target=run)
+        t.run()
 
     def on_connect(self, data):
         pass
 
-    def index(self):
+    def core(self):
+        return "123"
+
+    def res(self, path):
+        print(path)
         return "123"
 
 
