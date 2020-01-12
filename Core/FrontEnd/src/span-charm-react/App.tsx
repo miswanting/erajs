@@ -1,25 +1,22 @@
-
+import "span-charm/span-charm.css"
 import * as React from 'react'
+import { useState } from 'react';
 import * as ReactDOM from 'react-dom'
-export default class App extends React.Component<{ data: any }, {}> {
-    constructor(props: any) {
-        super(props);
-    }
-    render() {
-        var display_item = []
-        if (this.props.data.isConsole) {
-            display_item.push(<Console data={this.props.data} />)
-        } else if (this.props.data.avantar_editor) {
-            display_item.push(<Console data={this.props.data} />)
-        } else if (this.props.data.map_editor) {
-            display_item.push(<Map data={this.props.data} />)
-        } else if (this.props.data.code_editor) {
-            // display_item.push(<Code data={this.props.data} />)
-        } else if (!this.props.data.isLoaded) {
-            display_item.push(<Xcover data={this.props.data} />)
+import Intro from './Intro'
+import Game from './Game'
+import { Window } from '../Managers/DisplayManager'
+export default function App(props: any) {
+    const [data, setData] = useState(props.data);
+    const [style, setStyle] = useState(props.style);
+    let displayList = []
+    if (data.displayMode == Window.Intro) {
+        displayList.push(<Intro key='1' data={data} style={style} />)
+    } else if (data.displayMode == Window.Game) {
+        if (data.showConsole) {
+        } else if (data.showSystemMenu) {
         } else {
-            display_item.push(<PageList data={this.props.data} />)
+            displayList.push(<Game />)
         }
-        return <>{display_item}</>
     }
+    return (<>{displayList}</>)
 }

@@ -1,4 +1,5 @@
 bson
+eventlet
 flask
 flask-socketio
 pytest

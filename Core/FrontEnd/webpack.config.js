@@ -30,5 +30,10 @@ module.exports = {
         new CopyPlugin([
             'src/index.html'
         ])
-    ]
+    ],
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM",
+        // "socket.io-client": "socket"
+    }
 };
