@@ -6,11 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Era.js</title>
-    <script src="https://cdn.jsdelivr.net/npm/react@latest/umd/react.development.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@latest/umd/react-dom.development.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/animate.js@latest/dist/scripts/animate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@latest/dist/socket.io.slim.dev.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/normalize.css@latest/normalize.min.css" rel="stylesheet">
     <style>
         html {
             background-color: black;
@@ -20,7 +15,97 @@
 
 <body>
     <div id="root"></div>
-    <script src="core.js"></script>
+    <script>
+        function loadRes(url, callback) {
+            let type = url.split(".").slice(-1).toString()
+            var res;
+            if (type == "js") {
+                res = document.createElement('script');
+                res.setAttribute("type", "text/javascript");
+                res.setAttribute("src", url);
+                document.getElementsByTagName("body")[0].appendChild(res);
+            }
+            else if (type == "css") {
+                res = document.createElement("link");
+                res.setAttribute("type", "text/css");
+                res.setAttribute("href", url);
+                res.setAttribute("rel", "stylesheet");
+                document.getElementsByTagName("head")[0].appendChild(res);
+            }
+            if (typeof (callback) != "undefined") {
+                if (res.readyState) {
+                    res.onreadystatechange = function () {
+                        if (res.readyState == "loaded" || res.readyState == "complete") {
+                            res.onreadystatechange = null;
+                            callback();
+                        }
+                    }
+                } else {
+                    res.onload = function () {
+                        callback();
+                    }
+                }
+            }
+        }
+        // Loading Strategy
+        let loadDependencies = {
+            ReactDOM: false,
+            SocketIOClient: false,
+            Core: false,
+        }
+        let loadInfo = document.createElement('div')
+        loadInfo.id = 'load-info'
+        loadInfo.innerHTML = "[INFO]正在加载资源文件..."
+        loadInfo.setAttribute('style', 'color:white')
+        document.body.appendChild(loadInfo)
+        console.log("[INFO]正在加载资源文件...");
+        loadRes("https://cdn.bootcss.com/normalize/8.0.1/normalize.min.css", function () {
+            document.getElementById('load-info').innerHTML += '<br />[FINE]已加载：Normalize.css'
+            console.log("[FINE]已加载：Normalize.css");
+        });
+        loadRes("https://cdn.jsdelivr.net/npm/socket.io-client@latest/dist/socket.io.js", function () {
+            document.getElementById('load-info').innerHTML += '<br />[FINE]已加载：Socket.io-Client'
+            console.log("[FINE]已加载：Socket.io-Client");
+            loadDependencies.SocketIOClient = true
+            checkLoaded()
+        });
+        loadRes("https://cdn.bootcss.com/react/16.10.2/umd/react.development.js", function () {
+            document.getElementById('load-info').innerHTML += '<br />[FINE]已加载：React'
+            console.log("[FINE]已加载：React");
+            loadRes("https://cdn.bootcss.com/react-dom/16.10.2/umd/react-dom.development.js", function () {
+                document.getElementById('load-info').innerHTML += '<br />[FINE]已加载：ReactDOM'
+                console.log("[FINE]已加载：ReactDOM");
+                loadDependencies.ReactDOM = true
+                checkLoaded()
+            });
+        });
+        loadRes("core.js", function () {
+            document.getElementById('load-info').innerHTML += '<br />[FINE]已加载：Core'
+            console.log("[FINE]已加载：Core");
+            loadDependencies.Core = true
+            checkLoaded()
+        });
+        // Execution Dependencies
+        function checkLoaded() {
+            var loadStatus = true;
+            Object.keys(loadDependencies).forEach(key => {
+                if (!loadDependencies[key]) {
+                    loadStatus = false
+                }
+            });
+            if (loadStatus) {
+                console.log("[FINE]已完成加载！");
+                document.getElementById('load-info').remove()
+                onLoad()
+            }
+        }
+        function onLoad() {
+            console.log(Core);
+            var front = new Core.FrontManager()
+            front.init()
+            front.start()
+        }
+    </script>
 </body>
 
 </html>

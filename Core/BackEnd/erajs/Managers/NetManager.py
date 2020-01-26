@@ -54,7 +54,7 @@ class NetCore:
         print(msg)
 
     def core(self):
-        with open('front/index.html') as f:
+        with open('front/index.html', encoding='utf-8') as f:
             return f.read()
 
     def res(self, path):

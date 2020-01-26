@@ -1,7 +1,10 @@
+
+
 import DisplayManager from "./Managers/DisplayManager";
 import NetManager from "./Managers/NetManager";
 import DataManager from "./Managers/DataManager";
-export default class Front {
+export class FrontManager {
+
     display: DisplayManager
     net: NetManager
     data: DataManager
@@ -26,6 +29,3 @@ export default class Front {
         this.net.start()
     }
 }
-let front = new Front()
-front.init()
-front.start()

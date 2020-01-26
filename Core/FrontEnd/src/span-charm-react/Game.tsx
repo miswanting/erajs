@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom'
-import { Event } from '../Managers/DisplayManager'
+import { Event } from '../Managers/DataManager'
 export default function Game(props: any) {
     const [data, setData] = useState(props.data);
     const [style, setStyle] = useState(props.style);
