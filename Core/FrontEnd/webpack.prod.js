@@ -29,6 +29,9 @@ module.exports = {
     ],
     externals: {
         "react": "React",
-        "react-dom": "ReactDOM"
+        "react-dom": "ReactDOM",
+        "animejs": "",
+        "socket.io-client": "socket",
+        "d3js": "",
     }
 };

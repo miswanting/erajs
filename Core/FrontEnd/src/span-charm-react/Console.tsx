@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState, useEffect, useRef } from "react";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons'
-import { Event } from '../managers/DisplayManager'
+import { Event } from '../managers/DataManager'
 export function Console(props: any) {
     // const [data, setData] = useState(props.data);
     // const [style, setStyle] = useState(props.style);

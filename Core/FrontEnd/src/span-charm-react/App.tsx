@@ -4,7 +4,7 @@ import { useState } from 'react';
 import * as ReactDOM from 'react-dom'
 import Intro from './Intro'
 import Game from './Game'
-import { Window } from '../Managers/DisplayManager'
+import { Window } from '../Managers/DataManager'
 export default function App(props: any) {
     const [data, setData] = useState(props.data);
     const [style, setStyle] = useState(props.style);

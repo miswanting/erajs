@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 // import io = require('socket.io-client')
 import * as io from 'socket.io-client'
-import * as cookie from 'tough-cookie'
+import * as Cookies from 'js-cookie'
 export default class NetManager extends EventEmitter {
     sio = null
     constructor() {
@@ -15,7 +15,7 @@ export default class NetManager extends EventEmitter {
         this.sio.on('data', this.onRecv)
     }
     onConnect = () => {
-        let jar = new cookie.CookieJar()
+        // let jar = new cookie.CookieJar()
         // jar.setCookie('sid')
         console.log('Server Connected!');
         console.log('ID: ' + this.sio.id);

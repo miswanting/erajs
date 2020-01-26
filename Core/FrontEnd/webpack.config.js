@@ -5,7 +5,9 @@ module.exports = {
     mode: "development",
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'core.js'
+        filename: 'core.js',
+        library: 'Core',
+        libraryTarget: 'umd',
     },
     watch: true,
     // Enable sourcemaps for debugging webpack's output.
@@ -32,8 +34,10 @@ module.exports = {
         ])
     ],
     externals: {
-        "react": "React",
+        react: "React",
         "react-dom": "ReactDOM",
-        // "socket.io-client": "socket"
+        animejs: "",
+        "socket.io-client": "io",
+        d3js: "",
     }
 };

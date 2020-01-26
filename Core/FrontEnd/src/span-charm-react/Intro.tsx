@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState, useEffect } from 'react';
 import * as ReactDOM from 'react-dom'
 import anime from 'animejs/lib/anime.es'
-import { Event } from '../Managers/DisplayManager'
+import { Event } from '../Managers/DataManager'
 export default function Intro(props: any) {
     const [data, setData] = useState(props.data);
     const [style, setStyle] = useState(props.style);
@@ -136,6 +136,7 @@ export default function Intro(props: any) {
                     type: Event.IntroComplete
                 }
                 data.CMD(bag)
+                // const std = React.useContext(STD)
             }
         })
         return (() => {

@@ -2,6 +2,7 @@ import { EventEmitter } from 'events'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import App from "../span-charm-react/App"; // span-charm-react
+const STD = React.createContext({ cmd: null })
 export default class DisplayManager extends EventEmitter {
     constructor() {
         super()
@@ -42,7 +43,9 @@ export default class DisplayManager extends EventEmitter {
     private parse(bag: any) { }
     onChange(data) {
         ReactDOM.render(
-            <App data={data} />,
+            <STD.Provider value={{ cmd: this.emit }}>
+                <App data={data} />
+            </STD.Provider >,
             document.getElementById('root')
         )
     }

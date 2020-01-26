@@ -23,9 +23,7 @@ export default class DataManager extends EventEmitter {
         code_editor: {
             childron: []
         },
-        header: {
-
-        },
+        header: {},
         CMD: null
     }
     constructor() {
