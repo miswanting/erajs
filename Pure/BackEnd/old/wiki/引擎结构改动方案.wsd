@@ -1,0 +1,84 @@
+@startuml 新旧引擎架构对比
+:新旧引擎架构对比;
+split
+    :旧架构|
+    partition Engine {
+        :            API 层           ]
+        split
+            :init();
+        split again
+            :register_api();
+        end split
+        partition BagEngine {
+            :控件解析/打包;
+            partition LockEngine {
+                :死锁控制;
+                partition SocketEngine {
+                    :前后端通信控制;
+                    partition LoadEngine {
+                        :模块导入/控制;
+                        partition DataEngine {
+                            :数据管理;
+                            partition EventEngine {
+                                :全局事件微架构;
+                                partition DebugEngine {
+                                    :记录输出模块;
+                                    detach
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+split again
+    :新架构|
+    split
+        partition Engine {
+            :API 层]
+        }
+        split
+            partition DebugManager {
+                :输出管理器（整合log文件和控制台输出）;
+                detach
+            }
+        split again
+            partition EventManager {
+                :全局事件微架构;
+                detach
+            }
+        split again
+            partition DataManager {
+                :数据管理器;
+                detach
+            }
+        split again
+            partition ModuleManager {
+                :模块导入/控制;
+                detach
+            }
+        split again
+            partition SocketManager {
+                :前后端通信控制;
+                detach
+            }
+        split again
+            partition LockManager {
+                :死锁控制;
+                detach
+            }
+        split again
+            partition BagManager {
+                :控件打包/解析;
+                detach
+            }
+        end split
+    split again
+        partition Widget{
+            :React控件库;
+        }
+        detach
+    end split
+end split
+@enduml

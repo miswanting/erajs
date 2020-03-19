@@ -30,7 +30,10 @@
                 loader.load('http://unpkg.com/react/umd/react.development.js', () => {
                     document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
                     loader.load('https://unpkg.com/react-dom/umd/react-dom.development.js', () => {
-                        loadInnerResources()
+                        document.querySelector("#root").innerText += "OK\nLoading Socket.io..."
+                        loader.load('https://unpkg.com/socket.io-client/lib/index.js', () => {
+                            loadInnerResources()
+                        })
                     })
                 })
             })
@@ -58,8 +61,11 @@
                                                 loader.load('managers/data.js', () => {
                                                     document.querySelector("#root").innerText += "OK\nLoading NetManager..."
                                                     loader.load('managers/net.js', () => {
-                                                        document.querySelector("#root").innerText += "OK"
-                                                        setTimeout(main, 1000)
+                                                        document.querySelector("#root").innerText += "OK\nLoading Era.js..."
+                                                        loader.load('era.js', () => {
+                                                            document.querySelector("#root").innerText += "OK"
+                                                            setTimeout(main, 1000)
+                                                        })
                                                     })
                                                 })
                                             })
@@ -94,11 +100,13 @@
             },
         }
         function main() {
-            dspm = new DisplayManager()
-            dspm.init()
-            dtm = new DataManager()
-            dtm.init()
-            cover()
+            let erajs = new Erajs()
+            erajs.init()
+            // dspm = new DisplayManager()
+            // dspm.init()
+            // dtm = new DataManager()
+            // dtm.init()
+            // cover()
         }
         function cover() {
             a.page()
