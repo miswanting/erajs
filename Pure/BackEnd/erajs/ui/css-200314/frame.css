@@ -1,0 +1,54 @@
+:root {
+  /* --dark-color: #030609;
+  --light-color: #c3c6c9; */
+  --dark-color: #333639;
+  --light-color: #c3c6c9;
+}
+@font-face {
+  font-family: "Microsoft YaHei";
+  src: unset;
+}
+@media (max-width: 800px) {
+  .vertical-frame,
+  .horizontal-frame {
+    display: block !important;
+  }
+  .window {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+@media (max-height: 600px) {
+  .vertical-frame,
+  .horizontal-frame {
+    display: block !important;
+  }
+  .window {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+html,
+body,
+#root,
+.vertical-frame {
+  height: 100%;
+  color: var(--dark-color);
+  background: var(--light-color);
+}
+.vertical-frame,
+.horizontal-frame {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.vertical-frame {
+  flex-direction: column;
+}
+.window {
+  width: 800px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  font: 1em "MicroSoft YaHei", sans-serif;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Era.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css">
+    <style>
+        :root {
+            --dark-color: #030609;
+            --light-color: #c3c6c9;
+        }
+
+        @font-face {
+            font-family: "Microsoft YaHei";
+            src: unset;
+        }
+
+        @media (max-width :600px) {
+            .vertical-frame,
+            .horizontal-frame {
+                display: block !important;
+            }
+
+            .window {
+                width: 100% !important;
+                height: 100% !important;
+            }
+        }
+
+        html,
+        body,
+        #root,
+        .vertical-frame {
+            font: 14px "MicroSoft YaHei", sans-serif;
+            height: 100%;
+            color: var(--dark-color);
+            background: var(--light-color);
+        }
+
+        .vertical-frame,
+        .horizontal-frame {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .vertical-frame {
+            flex-direction: column;
+        }
+
+        .window {
+            width: 800px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            font: 1em "MicroSoft YaHei", sans-serif;
+            background-color: var(--dark-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <div class="vertical-frame">
+            <div class="horizontal-frame">
+                <div class="window">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

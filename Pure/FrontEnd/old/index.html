@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Era.js</title>
+    <script src="bios.js"></script>
+</head>
+
+<body>
+    <div id="load-status"></div>
+    <div id="root"></div>
+    <script>
+        EventEmitterPath = "https://unpkg.com/eventemitter3@latest/umd/eventemitter3.js"
+        BaseCssPath = "https://unpkg.com/normalize.css@latest/normalize.css"
+        ReactPath = "https://unpkg.com/react@latest/umd/react.development.js"
+        ReactDOMPath = "https://unpkg.com/react-dom@latest/umd/react-dom.development.js"
+        FrameCssPath = "erajs.css"
+        CssPath = "span-charm.css"
+        CorePath = "era-js-core.js"
+        ErajsPath = "Era.js"
+    </script>
+    <script type="module">
+        document.getElementById('load-status').innerText = "加载依赖中……\nEventEmitter3"
+        load(EventEmitterPath, onEventEmitterLoaded)
+        function onEventEmitterLoaded() {
+            document.getElementById('load-status').innerText = "加载依赖中……\nNormalize.css"
+            load(BaseCssPath, onBaseCssLoaded)
+        }
+        function onBaseCssLoaded() {
+            document.getElementById('load-status').innerText = "加载依赖中……\nReact"
+            load(ReactPath, onReactLoaded)
+        }
+        function onReactLoaded() {
+            document.getElementById('load-status').innerText = "加载依赖中……\nReactDOM"
+            load(ReactDOMPath, onReactDOMLoaded)
+        }
+        function onReactDOMLoaded() {
+            document.getElementById('load-status').innerText = "加载依赖中……\nFrame.css"
+            load(FrameCssPath, onFrameCssLoaded)
+        }
+        function onFrameCssLoaded() {
+            document.getElementById('load-status').innerText = "加载依赖中……\nSpanCharm"
+            load(CssPath, onCssLoaded)
+        }
+        function onCssLoaded() {
+            document.getElementById('load-status').innerText = "加载依赖中……\nEra.js Core"
+            load(CorePath, onCoreLoaded)
+        }
+        function onCoreLoaded() {
+            document.getElementById('load-status').innerText = "加载依赖中……\nEra.js"
+            load(ErajsPath, onErajsLoaded)
+        }
+        function onErajsLoaded() {
+            document.getElementById('load-status').innerText = ""
+        }
+    </script>
+</body>
+
+</html>
