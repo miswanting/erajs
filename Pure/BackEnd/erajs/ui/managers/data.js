@@ -2,11 +2,12 @@
  * pull→this→push
  * recv→this→send
  */
-class DataManager {
+class DataManager extends EventEmitter {
     data = null
-    init = () => {
-        document.addEventListener('pull', (e) => { })
-        document.addEventListener('recv', (e) => { })
+    init = () => { }
+    start = () => {
+        // document.addEventListener('pull', (e) => { })
+        // document.addEventListener('recv', (e) => { })
         this.data = this.newElement('program')
         this.data.title = 'Era.js'
         this.data.footer = '@Miswanting'
@@ -14,9 +15,15 @@ class DataManager {
         this.update()
     }
     push = (data) => {
-        let event = new CustomEvent('push', { detail: data })
-        document.dispatchEvent(event)
+        this.emit('push', data)
+        // let event = new CustomEvent('push', { detail: data })
+        // document.dispatchEvent(event)
     }
+    pull = (data) => { }
+    send = (data) => {
+        this.emit('send', data)
+    }
+    recv = (data) => { }
     send = (data) => {
         let event = new CustomEvent('send', { detail: data })
         document.dispatchEvent(event)

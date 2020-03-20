@@ -1,16 +1,20 @@
 /**
  * push→this→pull
  */
-class DisplayManager {
-    init() {
-        document.addEventListener('push', (e, data) => {
-            this.update(e.detail)
-        })
+class DisplayManager extends EventEmitter {
+    init() { }
+    start = () => {
+        document.addEventListener('pull', (data) => { this.pull(data) })
+        // document.addEventListener('push', (e, data) => {
+        //     this.update(e.detail)
+        // })
     }
     pull = (data) => {
-        let event = new CustomEvent('pull', { detail: data })
-        document.dispatchEvent(event)
+        this.emit('pull', data)
+        // let event = new CustomEvent('pull', { detail: data })
+        // document.dispatchEvent(event)
     }
+    push = (data) => { this.update(data) }
     update(data) {
         ReactDOM.render(
             VerticalFrame(data),

@@ -26,13 +26,16 @@
         function loadOuterResources() {
             document.querySelector("#root").innerText = "Loading Normalize.css..."
             loader.load('https://unpkg.com/normalize.css', () => {
-                document.querySelector("#root").innerText += "OK\nLoading React..."
-                loader.load('http://unpkg.com/react/umd/react.development.js', () => {
-                    document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
-                    loader.load('https://unpkg.com/react-dom/umd/react-dom.development.js', () => {
-                        document.querySelector("#root").innerText += "OK\nLoading Socket.io..."
-                        loader.load('https://unpkg.com/socket.io-client/lib/index.js', () => {
-                            loadInnerResources()
+                document.querySelector("#root").innerText += "OK\nLoading EventEmitter..."
+                loader.load('https://unpkg.com/eventemitter3/index.js', () => {
+                    document.querySelector("#root").innerText += "OK\nLoading React..."
+                    loader.load('http://unpkg.com/react/umd/react.development.js', () => {
+                        document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
+                        loader.load('https://unpkg.com/react-dom/umd/react-dom.development.js', () => {
+                            document.querySelector("#root").innerText += "OK\nLoading Socket.io..."
+                            loader.load('https://unpkg.com/socket.io-client/dist/socket.io.dev.js', () => {
+                                loadInnerResources()
+                            })
                         })
                     })
                 })
@@ -102,6 +105,7 @@
         function main() {
             let erajs = new Erajs()
             erajs.init()
+            erajs.start()
             // dspm = new DisplayManager()
             // dspm.init()
             // dtm = new DataManager()

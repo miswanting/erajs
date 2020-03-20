@@ -1,17 +1,22 @@
 import os.path
 import threading
+import webbrowser
 from urllib.parse import urlparse
 
 from flask import Flask, make_response, request, send_file
 from flask_socketio import SocketIO
 
+from . import event
 
-class NetModule:
+
+class NetModule(event.EventModule):
     def __init__(self):
+        super().__init__()
         self.__core = NetCore()
+        webbrowser.open_new('{}'.format('localhost'))
 
     def start(self):
-        self.__core.create_server()
+        self.__core.create_server(('localhost', 80))
 
     def send(self):
         pass
@@ -61,6 +66,7 @@ class NetCore:
             return f.read()
 
     def res(self, path):
+        print(path)
         if os.path.exists('ui/'+path):
             resp = make_response(send_file('../ui/'+path))
             return resp
