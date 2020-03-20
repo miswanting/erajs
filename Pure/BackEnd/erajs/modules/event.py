@@ -1,10 +1,10 @@
 import threading
 from typing import Any, Callable, List
 
-from . import DebugManager
+from . import debug
 
 
-class EventManager(DebugManager.DebugManager):
+class EventModule(debug.DebugModule):
     """
     # 事件管理器
     """

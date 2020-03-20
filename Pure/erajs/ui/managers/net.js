@@ -1,16 +1,21 @@
-class NetManager {
+class NetManager extends EventEmitter {
+    constructor() {
+        super()
+        this.core = {}
+    }
     init = () => {
         this.core = new NetCore()
     }
     start = () => {
         this.core.on('connect', (data) => {
-            document.dispatchEvent('connection', data)
-        })
-        this.core.on('close', (data) => {
-            document.dispatchEvent('close', data)
+            console.log('connect');
+            this.emit('connection', data)
         })
         this.core.on('recv', (data) => {
-            document.dispatchEvent('recv', data)
+            this.emit('recv', data)
+        })
+        this.core.on('disconnect', (data) => {
+            this.emit('close', data)
         })
         this.core.start()
     }
@@ -21,13 +26,24 @@ class NetManager {
         this.core.close()
     }
 }
-class NetCore {
+class NetCore extends EventEmitter {
+    constructor() {
+        super()
+        this.socket = {}
+    }
     start = () => {
         this.socket = io();
-        socket.on('connect', () => {
-            console.log(123);
+        this.socket.on('connect', () => {
+            this.emit('connect')
         });
-        socket.on('data', (data) => { });
-        socket.on('disconnect', () => { });
+        this.socket.on('data', (data) => {
+            this.emit('recv', data)
+        });
+        this.socket.on('disconnect', () => {
+            this.emit('connect')
+        });
+    }
+    send = (data) => {
+
     }
 }
