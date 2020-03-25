@@ -6,27 +6,38 @@ from urllib.parse import urlparse
 from flask import Flask, make_response, request, send_file
 from flask_socketio import SocketIO
 
-from . import event
+from . import debug, event
 
 
 class NetModule(event.EventModule):
     def __init__(self):
         super().__init__()
-        self.__core = NetCore()
+        self.__core = NetCore(self.recv)
+
+    def listen(self, host='0.0.0.0', port=80):
+        self.__core.start()
         webbrowser.open_new('{}'.format('localhost'))
 
-    def start(self):
-        self.__core.create_server(('localhost', 80))
+    def on_connect(self):
+        pass
 
-    def send(self):
+    def send(self, data):
+        pass
+
+    def recv(self, data):
         pass
 
 
-class NetCore:
-    def __init__(self):
+class NetCore(threading.Thread, debug.DebugModule):
+    def __init__(self, callback_func):
+        super().__init__()
+        self.hook = callback_func
         self.app = Flask(__name__)
         self.sio = SocketIO(self.app)
         self.address = None
+
+    def run(self):
+        self.create_server(('localhost', 80))
 
     def create_server(self, address=None):
         self.address = address
@@ -35,10 +46,13 @@ class NetCore:
         self.sio.on_event('connect', self.on_connect)
         self.sio.on_event('msg', self.on_msg)
         self.sio.on_event('test', self.test)
-        t = threading.Thread(target=self.server_core)
-        t.run()
+        self.server_core()
+        # t = threading.Thread(target=self.server_core)
+        # t.run()
 
     def server_core(self):
+        print('Open localhost...')
+        self.debug(open)
         if self.address:
             config = {
                 'host': self.address[0],

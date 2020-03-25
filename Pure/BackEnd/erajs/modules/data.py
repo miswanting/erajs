@@ -1,13 +1,13 @@
 import os
 from typing import Any, Dict, List
 
-from .. import DotPath  # EventManager, LogManager, Prototypes, Tools
+from . import DotPath  # EventManager, LogManager, Prototypes, Tools
 from ..file_format_support import (cfg_file, csv_file, json_file, text_file,
                                    yaml_file, zip_file)
 from . import event
 
 
-class DataManager(event.EventModule):
+class DataModule(event.EventModule):
     def __init__(self) -> None:
         """
         # 数据管理器
