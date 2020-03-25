@@ -1,9 +1,6 @@
-import modules.net as net
+from .modules import script
 
 
-class Engine(net.NetModule):
+class Engine(script.ScriptModule):
     def init(self):
         self.start()
-
-
-    

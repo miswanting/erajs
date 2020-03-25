@@ -1,4 +1,4 @@
-<div align='right'><span>Language:&ensp;</span><span><a>zh</a></span>&ensp;<span>en</span>&ensp;<span><a>jp</a></span></div>
+<div align='right'><span><a>zh</a></span>&emsp;<span>en</span></div>
 
 <div align="center">
     <a href="http://erajs.net">Homepage</a> |
@@ -9,15 +9,16 @@
 
 <h1 align="center">Era.js</h1>
 <div align="center">Latest Version: v0.2.0-191112</div>
+<div align="center"><sub>以下内容为开发目标，当前填坑进度以<a href="https://github.com/miswanting/Era.js/projects">计划</a>中显示的进度为准</sub></div>
 <div align="center"><sub>The following contents is a description of the development target.<br />The current progress is subject to the progress shown in <a href="https://github.com/miswanting/Era.js/projects">Roadmap</a></sub></div>
 
-## Overview
+## 概述Overview
 
 >   更新于：191111
 
 Era.js 是一个由 TypeScript + Python3 构建的、 **以 [Python3](https://www.python.org/) 为游戏脚本的**次世代跨平台“类Era”富文本游戏引擎。 其基于 [Electron](https://electronjs.org/) 应用平台和 [Semantic UI](https://semantic-ui.com/) 样式库等技术开发的。
 
-## Notice
+## 提示Notice
 
 
 
