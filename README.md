@@ -1,4 +1,4 @@
-<div align='right'><span>Language:&ensp;</span><span><a>zh</a></span>&ensp;<span>en</span>&ensp;<span><a>jp</a></span></div>
+<div align='right'><span>Language:&ensp;</span><span><a href='README-zh.md'>zh</a></span>&ensp;<span><abbr title='Need to be translated!'>en</abbr></span>&ensp;<span><a><abbr title='Need to be translated!'>jp</abbr></a></span></div>
 
 <div align="center">
     <a href="http://erajs.net">Homepage</a> |
