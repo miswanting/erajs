@@ -125,6 +125,7 @@ def init():
     e.off('mod_loaded', on_mod_loaded)
     e.info('│  └─ {} MODs Loaded!'.format(mods_loaded))
     e.info('└─ Initialize Complete!')
+    print()
 
 
 def config(data):
@@ -137,3 +138,171 @@ def entry(entry_func):
 
 def start(host='0.0.0.0', port=80):
     e.listen(host, port)
+
+
+def title(text):
+    e.push('title', {'text': str(text)}, None)
+
+
+def window(style):
+    e.push('window', None, style)
+
+
+def page(style):
+    e.push('page', None, style)
+
+
+def clear(num):
+    e.push('clear', {'num': num}, None)
+
+
+def head(text, rank, style):
+    e.push('head', {'text': str(text), 'rank': rank}, style)
+
+
+def text(text, wait, style):
+    e.push('text', {'text': str(text)}, style)
+    if wait and not e.lock_passed():
+        e.lock()
+        e.wait_for_unlock()
+
+
+def button(text, callback, style, *arg, **kw):
+    data = {
+        'text': str(text),
+        'hash': tools.random_hash()
+    }
+    data['disabled'] = False
+    if 'disabled' in kw.keys():
+        if kw['disabled']:
+            data['disabled'] = True
+        kw.pop('disabled')
+    if callback == None:
+        data['disabled'] = True
+    if 'popup' in kw.keys():
+        data['popup'] = str(kw['popup'])
+        kw.pop('popup')
+    else:
+        data['popup'] = ''
+    e.push('button', data, style)
+
+    def on_click(e):
+        if e['target'] == data['hash']:
+            callback(*arg, **kw)
+    e.on('BUTTON_CLICK', on_click, data['hash'])
+    e.unlock()
+
+
+def link(text, callback, style, *arg, **kw):
+    data = {
+        'text': str(text),
+        'hash': tools.random_hash()
+    }
+    data['disabled'] = False
+    if 'disabled' in kw.keys():
+        if kw['disabled']:
+            data['disabled'] = True
+        kw.pop('disabled')
+    if callback == None:
+        data['disabled'] = True
+    if 'popup' in kw.keys():
+        data['popup'] = str(kw['popup'])
+        kw.pop('popup')
+    else:
+        data['popup'] = ''
+    e.push('link', data, style)
+
+    def on_click(e):
+        if e['target'] == data['hash']:
+            callback(*arg, **kw)
+    e.on('LINK_CLICK', on_click, data['hash'])
+    e.unlock()
+
+
+def progress(now, max, width, style):
+    e.push('progress', {'now': now, 'max': max, 'width': width}, style)
+
+
+def rate(now, max, callback, style):
+    data = {'now': now, 'max': max, 'hash': tools.random_hash()}
+    data['disabled'] = False
+    if callback == None:
+        data['disabled'] = True
+    e.push('rate', data, style)
+
+    def on_click(e):
+        if e['target'] == data['hash']:
+            callback(e['value'])
+    e.on('RATE_CLICK', on_click, data['hash'])
+
+
+def check(text, callback, default, style):
+    data = {
+        'text': str(text),
+        'default': default,
+        'hash': tools.random_hash()
+    }
+    data['disabled'] = False
+    if callback == None:
+        data['disabled'] = True
+    e.push('check', data, style)
+
+    def on_click(e):
+        if e['target'] == data['hash']:
+            callback(e['value'])
+    e.on('CHECK_CHANGE', on_click, data['hash'])
+
+
+def radio(text_list, callback, default_index, style):
+    data = {
+        'text_list': text_list,
+        'default_index': default_index,
+        'hash': tools.random_hash()
+    }
+    data['disabled'] = False
+    if callback == None:
+        data['disabled'] = True
+    e.push('radio', data, style)
+
+    def on_click(e):
+        if e['target'] == data['hash']:
+            callback(e['value'])
+    e.on('RADIO_CLICK', on_click, data['hash'])
+
+
+def input(callback, default, is_area, placeholder, style):
+    data = {
+        'default': default,
+        'is_area': is_area,
+        'placeholder': placeholder,
+        'hash': tools.random_hash()
+    }
+    data['disabled'] = False
+    if callback == None:
+        data['disabled'] = True
+    e.push('rate', data, style)
+
+    def on_click(e):
+        if e['target'] == data['hash']:
+            callback(e['value'])
+    e.on('INPUT_CHANGE', on_click, data['hash'])
+
+
+def dropdown(text_list, callback, default_index, search, multiple, placeholder, allowAdditions, style):
+    data = {
+        'text_list': text_list,
+        'default_index': default_index,
+        'search': search,
+        'multiple': multiple,
+        'placeholder': placeholder,
+        'allowAdditions': allowAdditions,
+        'hash': tools.random_hash()
+    }
+    data['disabled'] = False
+    if callback == None:
+        data['disabled'] = True
+    e.push('dropdown', data, style)
+
+
+def divider(text, style):
+    e.push('divider', {'text': text}, style)

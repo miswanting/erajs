@@ -3,7 +3,14 @@ import erajs.api as a
 
 def cover():
     a.page()
+    a.h('test')
     a.t('test')
+    a.b('test', aaa)
+    a.l('test')
+
+
+def aaa():
+    a.t('test2')
 
 
 if __name__ == "__main__":

@@ -8,10 +8,11 @@ class NetManager extends EventEmitter {
     }
     start = () => {
         this.core.on('connect', (data) => {
-            console.log('connect');
+            console.log('[INFO]Connected!');
             this.emit('connection', data)
         })
         this.core.on('recv', (data) => {
+            console.log('[DEBG]RECV:', data);
             this.emit('recv', data)
         })
         this.core.on('disconnect', (data) => {
@@ -20,6 +21,7 @@ class NetManager extends EventEmitter {
         this.core.start()
     }
     send = (data) => {
+        console.log('[DEBG]SEND:', data);
         this.core.send(data)
     }
     close = () => {
@@ -44,6 +46,6 @@ class NetCore extends EventEmitter {
         });
     }
     send = (data) => {
-
+        this.socket.emit('data', data)
     }
 }
