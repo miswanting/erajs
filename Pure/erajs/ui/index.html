@@ -24,16 +24,32 @@
         let loader = new Loader()
         loadOuterResources()
         function loadOuterResources() {
+            // document.querySelector("#root").innerText = "Loading Normalize.css..."
+            // loader.load('https://unpkg.com/normalize.css', () => {
+            //     document.querySelector("#root").innerText += "OK\nLoading EventEmitter..."
+            //     loader.load('https://unpkg.com/eventemitter3/index.js', () => {
+            //         document.querySelector("#root").innerText += "OK\nLoading React..."
+            //         loader.load('http://unpkg.com/react/umd/react.development.js', () => {
+            //             document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
+            //             loader.load('https://unpkg.com/react-dom/umd/react-dom.development.js', () => {
+            //                 document.querySelector("#root").innerText += "OK\nLoading Socket.io..."
+            //                 loader.load('https://unpkg.com/socket.io-client/dist/socket.io.dev.js', () => {
+            //                     loadInnerResources()
+            //                 })
+            //             })
+            //         })
+            //     })
+            // })
             document.querySelector("#root").innerText = "Loading Normalize.css..."
-            loader.load('https://unpkg.com/normalize.css', () => {
+            loader.load('res/normalize.css', () => {
                 document.querySelector("#root").innerText += "OK\nLoading EventEmitter..."
-                loader.load('https://unpkg.com/eventemitter3/index.js', () => {
+                loader.load('res/index.js', () => {
                     document.querySelector("#root").innerText += "OK\nLoading React..."
-                    loader.load('http://unpkg.com/react/umd/react.development.js', () => {
+                    loader.load('res/react.development.js', () => {
                         document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
-                        loader.load('https://unpkg.com/react-dom/umd/react-dom.development.js', () => {
+                        loader.load('res/react-dom.development.js', () => {
                             document.querySelector("#root").innerText += "OK\nLoading Socket.io..."
-                            loader.load('https://unpkg.com/socket.io-client/dist/socket.io.dev.js', () => {
+                            loader.load('res/socket.io.dev.js', () => {
                                 loadInnerResources()
                             })
                         })

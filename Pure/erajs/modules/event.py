@@ -13,20 +13,24 @@ class EventModule(debug.DebugModule):
         super().__init__()
         self.__listener_list: List[dict] = []
 
-    def on(self, type: str, listener: Callable) -> None:
+    def on(self, type: str, listener: Callable, *arg, **kw) -> None:
         new_listener = {
             'type': type,
             'listener': listener,
             'one_time': False,
+            'arg': arg,
+            'kw': kw
         }
         self.__listener_list.append(new_listener)
     add_listener = on
 
-    def once(self, type: str, listener: Callable) -> None:
+    def once(self, type: str, listener: Callable, *arg, **kw) -> None:
         new_listener = {
             'type': type,
             'listener': listener,
             'one_time': True,
+            'arg': arg,
+            'kw': kw
         }
         self.__listener_list.append(new_listener)
 
@@ -53,7 +57,8 @@ class EventModule(debug.DebugModule):
             if listener['one_time']:
                 self.__listener_list.pop(i)
                 i -= 1
-            t = threading.Thread(target=listener['listener'], args=(data,))
+            t = threading.Thread(
+                target=listener['listener'], args=(data,))
             t.start()
             # listener['listener'](data)
             i += 1

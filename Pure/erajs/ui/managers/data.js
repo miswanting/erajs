@@ -4,7 +4,9 @@
  */
 class DataManager extends EventEmitter {
     data = null
-    init = () => { }
+    init = () => {
+        // document.addEventListener('cmd', this.cmd)
+    }
     start = () => {
         // document.addEventListener('pull', (e) => { })
         // document.addEventListener('recv', (e) => { })
@@ -19,14 +21,15 @@ class DataManager extends EventEmitter {
         // let event = new CustomEvent('push', { detail: data })
         // document.dispatchEvent(event)
     }
-    pull = (data) => { }
+    pull = (data) => {
+        this.send(data)
+    }
     send = (data) => {
         this.emit('send', data)
     }
-    recv = (data) => { }
-    send = (data) => {
-        let event = new CustomEvent('send', { detail: data })
-        document.dispatchEvent(event)
+    recv = (data) => {
+        this.addElement(this.newElement(data.type, data.data, data.style))
+        this.update()
     }
     newElement = (type, data = null, style = null, ...children) => {
         let el = {
@@ -58,14 +61,16 @@ class DataManager extends EventEmitter {
                 this.addElement(this.newElement('line'))
             }
             let lastBlock = lastPage.children[lastPage.children.length - 1]
-            // if (['button'].indexOf(el.type) != -1) {
-            //     el.callback = this.cmd
-            // }
+            if (['button', 'link'].indexOf(el.type) != -1) {
+                el.callback = this.cmd
+            }
             lastBlock.children.push(el)
         }
     }
     cmd = (data) => {
-        console.log(data);
+        if (data.type == 'pull') {
+            this.pull(data.data)
+        }
     }
     update = () => {
         this.push(this.data)

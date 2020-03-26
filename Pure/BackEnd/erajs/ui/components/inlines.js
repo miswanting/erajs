@@ -8,6 +8,8 @@ function Inline(props) {
         inline = Button(props)
     } else if (props.type == 'link') {
         inline = Link(props)
+    } else {
+        inline = React.createElement('span', {}, JSON.stringify(props))
     }
     return (
         inline
@@ -16,9 +18,8 @@ function Inline(props) {
 function Head(props) {
     return (
         React.createElement(
-            'span',
+            'h' + props.data.rank.toString(),
             {
-                className: 'head',
                 style: props.style
             },
             props.data.text
@@ -51,8 +52,19 @@ function Text(props) {
 }
 function Button(props) {
     click = () => {
-        if (!props.disabled) {
-            props.data.callback()
+        if (!props.data.disabled) {
+            // let e = new CustomEvent('pull', {
+            //     type: 'BUTTON_CLICK',
+            //     target: props.data.hash
+            // })
+            // document.dispatchEvent(e)
+            props.callback({
+                type: 'pull',
+                data: {
+                    type: 'BUTTON_CLICK',
+                    target: props.data.hash
+                }
+            })
         }
     }
     return (

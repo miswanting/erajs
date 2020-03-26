@@ -5,9 +5,13 @@
   color: transparent !important;
   text-shadow: 0 0 2px rgba(255, 255, 255, 0.5) !important;
 }
-.head {
+h1 {
+  display: inline;
   font-size: 2em;
-  font-weight: 600;
+}
+h2 {
+  display: inline;
+  font-size: 1.5em;
 }
 .button {
   cursor: pointer;
