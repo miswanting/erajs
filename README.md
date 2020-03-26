@@ -4,8 +4,10 @@
     <a href="http://erajs.net">Homepage</a> |
     <a href="https://github.com/miswanting/Era.js/wiki">Doc</a> |
     <a href="https://github.com/miswanting/Era.js/projects">Roadmap</a> |
-    <a href="https://github.com/miswanting/Era.js/issues">Support</a>
+    <a href="https://github.com/miswanting/Era.js/issues">Support</a> |
+    <a href="https://github.com/miswanting/Era.js/issues">FAQ</a>
 </div>
+
 
 <h1 align="center">Era.js</h1>
 <div align="center">Latest Version: v0.2.0-191112</div>
@@ -15,9 +17,9 @@
 
 >   Description Updated on: 200326
 
-<img src="ss.png" alt="screenshot" width="33%" />
+<div align='center'><img src="ss.png" alt="screenshot" width="33%" /></div>
 
-Era.js is a next-generation cross-platform "era-like" rich text game engine built by JavaScript + Python3, with Python3 as the game script. ~~It is developed based on the Electron application platform and Semantic UI style library.~~<sub>Deleted on 200326, <a href='docs/en/FAQ'>Why?<a></sub>
+Era.js is a next-generation cross-platform "era-like" rich text game engine built by JavaScript + Python3, with Python3 as the game script. ~~It is developed based on the Electron application platform and Semantic UI style library.~~<sub>Deleted on 200326, <a href='docs/en/FAQ.md'>Why?<a></sub>
 
 ## Notice
 
