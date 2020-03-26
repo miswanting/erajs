@@ -13,11 +13,11 @@
 
 ## Overview
 
->   更新于：191111
+>   Description Updated on: 200326
 
 <img src="ss.png" alt="screenshot" style="zoom: 33%;" />
 
-Era.js 是一个由 TypeScript + Python3 构建的、 **以 [Python3](https://www.python.org/) 为游戏脚本的**次世代跨平台“类Era”富文本游戏引擎。 其基于 [Electron](https://electronjs.org/) 应用平台和 [Semantic UI](https://semantic-ui.com/) 样式库等技术开发的。
+Era.js is a next-generation cross-platform "era-like" rich text game engine built by JavaScript + Python3, with Python3 as the game script. ~~It is developed based on the Electron application platform and Semantic UI style library.~~
 
 ## Notice
 
