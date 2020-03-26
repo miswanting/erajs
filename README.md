@@ -17,7 +17,7 @@
 
 <img src="ss.png" alt="screenshot" width="33%" />
 
-Era.js is a next-generation cross-platform "era-like" rich text game engine built by JavaScript + Python3, with Python3 as the game script. ~~It is developed based on the Electron application platform and Semantic UI style library.~~<sub>Deleted on 200326, <a href='#'>Why?<a></sub>
+Era.js is a next-generation cross-platform "era-like" rich text game engine built by JavaScript + Python3, with Python3 as the game script. ~~It is developed based on the Electron application platform and Semantic UI style library.~~<sub>Deleted on 200326, <a href='docs/en/FAQ'>Why?<a></sub>
 
 ## Notice
 
