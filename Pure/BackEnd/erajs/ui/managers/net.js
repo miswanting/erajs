@@ -16,6 +16,8 @@ class NetManager extends EventEmitter {
             this.emit('recv', data)
         })
         this.core.on('disconnect', (data) => {
+            console.log('close');
+            
             this.emit('close', data)
         })
         this.core.start()
