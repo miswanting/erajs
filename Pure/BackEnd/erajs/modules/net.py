@@ -105,5 +105,5 @@ class NetCore(threading.Thread):
         print(msg)
 
     def send(self, data):
-        self.__engine.debug('1SEND: {}'.format(data))
+        self.__engine.debug('SEND: {}'.format(data))
         self.__sio.emit('data', data)
