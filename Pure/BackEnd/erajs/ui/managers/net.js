@@ -17,7 +17,7 @@ class NetManager extends EventEmitter {
         })
         this.core.on('disconnect', (data) => {
             console.log('close');
-            
+
             this.emit('close', data)
         })
         this.core.start()
@@ -33,21 +33,21 @@ class NetManager extends EventEmitter {
 class NetCore extends EventEmitter {
     constructor() {
         super()
-        this.socket = {}
+        this.sio = {}
     }
     start = () => {
-        this.socket = io();
-        this.socket.on('connect', () => {
+        this.sio = io();
+        this.sio.on('connect', () => {
             this.emit('connect')
-        });
-        this.socket.on('data', (data) => {
-            this.emit('recv', data)
-        });
-        this.socket.on('disconnect', () => {
-            this.emit('connect')
+            this.sio.on('data', (data) => {
+                this.emit('recv', data)
+            });
+            this.sio.on('disconnect', () => {
+                this.emit('disconnect')
+            });
         });
     }
     send = (data) => {
-        this.socket.emit('data', data)
+        this.sio.emit('data', data)
     }
 }

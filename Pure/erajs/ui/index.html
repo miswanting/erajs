@@ -15,88 +15,77 @@
         }
     </style>
     <script src="bios.js"></script>
+
+    <script></script>
 </head>
 
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <div
+            style="position: absolute; width: 100%; height: 100%; display: flex; flex-direction: row; align-items: center; background-color: #c3c6c9;">
+            <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                <div class="shake shake-constant" style="display: block; text-align: center;">
+                    <style>
+                        #eee {
+                            animation: .5s infinite linear ro;
+                        }
+
+                        @keyframes ro {
+                            from {
+                                transform: translate(50px, 50px) rotate(0deg);
+                            }
+
+                            to {
+                                transform: translate(50px, 50px) rotate(360deg);
+                            }
+                        }
+                    </style>
+                    <svg width='100' height='100' viewBox="0 0 100 100">
+                        <g id="eee">
+                            <circle r='25px' cy='-1' fill='black'></circle>
+                            <circle r='25px' cy='1' fill='#c3c6c9'></circle>
+                            <!-- <circle r='23px' fill='black'></circle> -->
+                        </g>
+                    </svg>
+                    <div id="load-text" style="text-align: center;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         CSS_FOLDER = 'css-200314'
         let loader = new Loader()
-        loadOuterResources()
-        function loadOuterResources() {
-            // document.querySelector("#root").innerText = "Loading Normalize.css..."
-            // loader.load('https://unpkg.com/normalize.css', () => {
-            //     document.querySelector("#root").innerText += "OK\nLoading EventEmitter..."
-            //     loader.load('https://unpkg.com/eventemitter3/index.js', () => {
-            //         document.querySelector("#root").innerText += "OK\nLoading React..."
-            //         loader.load('http://unpkg.com/react/umd/react.development.js', () => {
-            //             document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
-            //             loader.load('https://unpkg.com/react-dom/umd/react-dom.development.js', () => {
-            //                 document.querySelector("#root").innerText += "OK\nLoading Socket.io..."
-            //                 loader.load('https://unpkg.com/socket.io-client/dist/socket.io.dev.js', () => {
-            //                     loadInnerResources()
-            //                 })
-            //             })
-            //         })
-            //     })
-            // })
-            document.querySelector("#root").innerText = "Loading Normalize.css..."
-            loader.load('res/normalize.css', () => {
-                document.querySelector("#root").innerText += "OK\nLoading EventEmitter..."
-                loader.load('res/index.js', () => {
-                    document.querySelector("#root").innerText += "OK\nLoading React..."
-                    loader.load('res/react.development.js', () => {
-                        document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
-                        loader.load('res/react-dom.development.js', () => {
-                            document.querySelector("#root").innerText += "OK\nLoading Socket.io..."
-                            loader.load('res/socket.io.dev.js', () => {
-                                loadInnerResources()
-                            })
-                        })
-                    })
-                })
-            })
-        }
-        function loadInnerResources() {
-            document.querySelector("#root").innerText += "OK\nLoading Frame.css..."
-            loader.load(CSS_FOLDER + '/frame.css', () => {
-                document.querySelector("#root").innerText += "OK\nLoading Window.css..."
-                loader.load(CSS_FOLDER + '/window.css', () => {
-                    document.querySelector("#root").innerText += "OK\nLoading SpanCharm.css..."
-                    loader.load(CSS_FOLDER + '/span-charm.css', () => {
-                        document.querySelector("#root").innerText += "OK\nLoading Header..."
-                        loader.load('components/header.js', () => {
-                            document.querySelector("#root").innerText += "OK\nLoading Container..."
-                            loader.load('components/container.js', () => {
-                                document.querySelector("#root").innerText += "OK\nLoading Footer..."
-                                loader.load('components/footer.js', () => {
-                                    document.querySelector("#root").innerText += "OK\nLoading Blocks..."
-                                    loader.load('components/blocks.js', () => {
-                                        document.querySelector("#root").innerText += "OK\nLoading Inlines..."
-                                        loader.load('components/inlines.js', () => {
-                                            document.querySelector("#root").innerText += "OK\nLoading DisplayManager..."
-                                            loader.load('managers/display.js', () => {
-                                                document.querySelector("#root").innerText += "OK\nLoading DataManager..."
-                                                loader.load('managers/data.js', () => {
-                                                    document.querySelector("#root").innerText += "OK\nLoading NetManager..."
-                                                    loader.load('managers/net.js', () => {
-                                                        document.querySelector("#root").innerText += "OK\nLoading Era.js..."
-                                                        loader.load('era.js', () => {
-                                                            document.querySelector("#root").innerText += "OK"
-                                                            setTimeout(main, 1000)
-                                                        })
-                                                    })
-                                                })
-                                            })
-                                        })
-                                    })
-                                })
-                            })
-                        })
-                    })
-                })
-            })
-        }
+        loader.addResource("https://unpkg.com/normalize.css", 'Normalize.css')
+        loader.addResource("https://unpkg.com/csshake/dist/csshake.css", 'CSShake')
+        loader.addResource("https://unpkg.com/eventemitter3/index.js", 'EventEmitter')
+        loader.addResource("http://unpkg.com/react/umd/react.development.js", 'React')
+        loader.addResource("https://unpkg.com/react-dom/umd/react-dom.development.js", 'ReactDOM')
+        loader.addResource("https://unpkg.com/socket.io-client/dist/socket.io.dev.js", 'Socket.io')
+        loader.addResource(CSS_FOLDER + '/frame.css', 'Frame.css')
+        loader.addResource(CSS_FOLDER + '/window.css', 'Window.css')
+        loader.addResource(CSS_FOLDER + '/span-charm.css', 'SpanCharm.css')
+        loader.addResource('components/header.js', 'Loading Header')
+        loader.addResource('components/container.js', 'Loading Container')
+        loader.addResource('components/footer.js', 'Loading Footer')
+        loader.addResource('components/blocks.js', 'Loading Blocks')
+        loader.addResource('components/inlines.js', 'Loading Inlines')
+        loader.addResource('managers/display.js', 'Loading DisplayManager')
+        loader.addResource('managers/data.js', 'Loading DataManager')
+        loader.addResource('managers/net.js', 'NetManager')
+        loader.addResource('era.js', 'Era.js')
+        loader.load((e) => {
+            if (e.type == 'progress') {
+                document.querySelector("#load-text").innerText = `Loading: ${e.text}...\n(${e.now + 1}/${e.max})\n${e.loaded}/${e.length}`
+            } else if (e.type == 'load') {
+                if (!loader.done) {
+                    document.querySelector("#load-text").innerText = `Loading: ${e.text}...\n(${e.now + 1}/${e.max})\n${e.loaded}/${e.length}`
+                } else {
+                    document.querySelector("#load-text").innerText = `Loading: ${e.text}...\n(${e.now + 1}/${e.max})\n${e.loaded}/${e.length}`
+                    main()
+                }
+            }
+        })
+
         let dspm, dtm
         let a = {
             page: (data, style) => {
