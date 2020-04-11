@@ -36,7 +36,7 @@ class NetCore(threading.Thread):
         super().__init__()
         self.__engine = engine
         self.__app = Flask(__name__)
-        self.__sio = SocketIO(self.__app)
+        self.__sio = SocketIO(self.__app, async_mode='threading')
 
     def run(self):
         self.__app.add_url_rule('/', 'core', self.core)
