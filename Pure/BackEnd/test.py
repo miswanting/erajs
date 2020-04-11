@@ -10,7 +10,8 @@ def cover():
 
 
 def aaa():
-    a.t('test2')
+    a.page()
+    a.b('test', aaa)
 
 
 if __name__ == "__main__":
