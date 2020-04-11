@@ -1,8 +1,31 @@
 from . import mw as m
 
+data = {}
+
 
 def init():
     m.init()
+    data = m.get_data()
+
+
+def debug(text):
+    m.debug(text)
+
+
+def info(text):
+    m.info(text)
+
+
+def warn(text):
+    m.warn(text)
+
+
+def error(text):
+    m.error(text)
+
+
+def critical(text):
+    m.critical(text)
 
 
 def config(conf_data):
@@ -88,3 +111,43 @@ def dropdown(text_list=None, callback=None, default_index=0, search=False, multi
 
 def divider(text=None):
     m.divider(text)
+
+
+def goto(ui_func, *arg, **kw):
+    pass
+
+
+def back(num=1, *arg, **kw):
+    pass
+
+
+def repeat(*arg, **kw):
+    pass
+
+
+def clear_gui(num=0):
+    pass
+
+
+def append_gui(ui_func, *arg, **kw):
+    pass
+
+
+def get_gui_list():
+    pass
+
+
+def show_save_to_save():
+    pass
+
+
+def show_save_to_load():
+    pass
+
+
+def mode(type='default', *arg, **kw):
+    pass
+
+
+def exit(save=False):
+    pass

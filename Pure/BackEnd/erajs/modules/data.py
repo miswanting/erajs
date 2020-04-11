@@ -55,7 +55,7 @@ class DataModule(event.EventModule):
 
         """
         super().__init__()
-        self.__data: Dict[str, Any] = {  # data【OLD】
+        self.__data: Dict[str, dict] = {  # data【OLD】
             "config": {  # cfg【NEW】
                 "ENGINE": {},  # 引擎配置【NEW】
                 "PLUGINs": {},  # 插件激活状态【OLD】
@@ -65,7 +65,7 @@ class DataModule(event.EventModule):
             "db": {},  # 存档的数据【OLD】
             "tmp": {},  # 【OLD】
             # 'standard':  {},  # std【NEW】
-            # 'data': {},  # dat【NEW】
+            'data': {},  # dat【NEW】
             # 'user': {},  # usr【NEW】
         }
 

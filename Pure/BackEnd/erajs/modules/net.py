@@ -59,8 +59,8 @@ class NetCore(threading.Thread):
 
     def send(self, data):
         print('SEND: {}'.format(data))
-        print(self.__sio.__hash__())
-        print(threading.current_thread().__hash__())
+        # print(self.__sio.__hash__())
+        # print(threading.current_thread().__hash__())
         self.__sio.emit('data', data)
         self.__sio.sleep()
 
@@ -73,8 +73,8 @@ class NetCore(threading.Thread):
 
     def on_data(self, data):
         print('RECV: {}'.format(data))
-        print(self.__sio.__hash__())
-        print(threading.current_thread().__hash__())
+        # print(self.__sio.__hash__())
+        # print(threading.current_thread().__hash__())
         self.send(data)
         self.__engine.recv(data)
 

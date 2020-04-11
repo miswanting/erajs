@@ -140,6 +140,26 @@ def start(host='0.0.0.0', port=80):
     e.listen(host, port)
 
 
+def debug(text):
+    e.debug(text)
+
+
+def info(text):
+    e.info(text)
+
+
+def warn(text):
+    e.warn(text)
+
+
+def error(text):
+    e.error(text)
+
+
+def critical(text):
+    e.critical(text)
+
+
 def title(text):
     e.push('title', {'text': str(text)}, None)
 
@@ -161,7 +181,7 @@ def head(text, rank, style):
 
 
 def text(text, wait, style):
-    e.push('text', {'text': str(text)}, style)
+    e.push('text', {'text': text}, style)
     if wait and not e.lock_passed():
         e.lock()
         e.wait_for_unlock()
@@ -306,3 +326,7 @@ def dropdown(text_list, callback, default_index, search, multiple, placeholder, 
 
 def divider(text, style):
     e.push('divider', {'text': text}, style)
+
+
+def get_data():
+    return e.dat

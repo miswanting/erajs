@@ -4,6 +4,7 @@ import erajs.api as a
 def cover():
     a.page()
     a.h('test')
+    a.t()
     a.t('test')
     a.b('test', aaa)
     a.l('test')
