@@ -32,14 +32,25 @@ def random_hash(level=4):
 
 def fix_path():
     if getattr(sys, 'frozen', False):
-        # frozen
-        d = os.path.dirname(sys.executable)
-        gamepath = os.path.dirname(d)
-        workingpath = d
+        # The application is frozen
+        datadir = os.path.dirname(sys.executable)
     else:
-        # unfrozen
-        d = os.path.dirname(os.path.realpath(__file__))
-        gamepath = os.path.dirname(os.path.dirname(d))
-        workingpath = os.path.dirname(d)
-    sys.path.append(gamepath)
-    os.chdir(workingpath)
+        # The application is not frozen
+        # Change this bit to match where you store your data files:
+        datadir = os.path.join(os.path.dirname(__file__), '../..')
+    os.chdir(datadir)
+
+
+# def fix_path():
+#     if getattr(sys, 'frozen', False):
+#         # frozen
+#         d = os.path.dirname(sys.executable)
+#         gamepath = os.path.dirname(d)
+#         workingpath = d
+#     else:
+#         # unfrozen
+#         d = os.path.dirname(os.path.realpath(__file__))
+#         gamepath = os.path.dirname(os.path.dirname(d))
+#         workingpath = os.path.dirname(d)
+#     sys.path.append(gamepath)
+#     os.chdir(workingpath)
