@@ -16,12 +16,10 @@ def aaa():
     a.h('封面')
     a.t()
     a.b('test', aaa)
-    print(a.data)
+    a.debug(a.data)
 
 
 if __name__ == "__main__":
-    print(os.getcwd())
     a.init()
-    print(os.getcwd())
     a.entry(cover)
     a.start()
