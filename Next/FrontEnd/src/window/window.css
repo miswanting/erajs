@@ -1,0 +1,68 @@
+:root {
+  --light: #c3c6c9;
+  --actived-dark: #636669;
+  --dark: #333639;
+}
+@font-face {
+  font-family: "Microsoft YaHei";
+  src: unset;
+}
+html,
+body,
+#root,
+.window {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+}
+.window {
+  display: flex;
+  flex-direction: column;
+  color: var(--light);
+  cursor: default;
+}
+
+.header {
+  display: flex;
+}
+.header > span:first-child {
+  border-top-left-radius: 0.5rem;
+}
+.header > span:last-child {
+  border-top-right-radius: 0.5rem;
+}
+.header > span {
+  padding: 0em 0.5em;
+  text-align: center;
+  background-color: var(--dark);
+}
+.menu:hover {
+  background-color: var(--actived-dark);
+}
+.title {
+  flex-grow: 1;
+}
+.min:before,
+.max:before,
+.close:before {
+  content: "●";
+}
+.min:hover {
+  color: lime;
+  background-color: var(--actived-dark);
+}
+.max:hover {
+  color: yellow;
+  background-color: var(--actived-dark);
+}
+.close:hover {
+  color: red;
+  background-color: var(--actived-dark);
+}
+
+.container {
+  flex-grow: 1;
+  background-color: var(--dark);
+}
+.footer {
+  background-color: var(--dark);
+}

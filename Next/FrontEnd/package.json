@@ -2,8 +2,10 @@
   "name": "erajs-next-core",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/core.js",
+  "main": "src/main.js",
   "scripts": {
+    "setup": "npm i",
+    "start": "npx electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,16 @@
   "bugs": {
     "url": "https://github.com/miswanting/Era.js/issues"
   },
-  "homepage": "https://github.com/miswanting/Era.js#readme"
+  "homepage": "https://github.com/miswanting/Era.js#readme",
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest"
+  },
+  "dependencies": {
+    "csshake": "latest",
+    "d3": "latest",
+    "normalize.css": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
 }
