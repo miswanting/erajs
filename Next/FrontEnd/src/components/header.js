@@ -1,31 +1,32 @@
 const React = require('../../node_modules/react')
 module.exports = function Header(props) {
     return (
-        React.createElement(
-            'div',
-            { className: 'header' },
+        React.createElement('div', { className: 'header' },
             React.createElement(
-                Menu, { data: { text: '视图' } },
-            ), React.createElement(
-                Menu, { data: { text: '帮助' } },
-            ), React.createElement(
+                MenuBar
+            ),
+            React.createElement(
                 Title, { data: { text: 'Era.js' } },
-            ), React.createElement(
-                Min
-            ), React.createElement(
-                Max
-            ), React.createElement(
-                Close
+            ),
+            React.createElement(
+                WindowOperatorBar
             )
         )
     )
 }
-function Menu(props) {
+function MenuBar(props) {
     return (
-        React.createElement(
-            'span',
-            { className: 'menu' },
-            props.data.text
+        React.createElement('span', { className: 'menu-bar' },
+            React.createElement(
+                'span',
+                { className: 'menu' },
+                '≡'  // ☰
+            ),
+            React.createElement(
+                'span',
+                { className: 'menu-add' },
+                '+'  // ＋
+            )
         )
     )
 }
@@ -38,7 +39,15 @@ function Title(props) {
         )
     )
 }
-
+function WindowOperatorBar(props) {
+    return (
+        React.createElement('span', { className: 'window-operator-bar' },
+            React.createElement('span', { className: 'min' }, '●'),
+            React.createElement('span', { className: 'max' }, '●'),
+            React.createElement('span', { className: 'close' }, '●')
+        )
+    )
+}
 function Min(props) {
     return (
         React.createElement(
