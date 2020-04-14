@@ -3,7 +3,9 @@ const { EventEmitter } = require('events')
 const React = require('../../node_modules/react')
 const ReactDOM = require('../../node_modules/react-dom')
 
-const Header = require('../components/header')
+// const Header = require('../components/header')
+const Intro = require('../ui/intro')
+const Game = require('../ui/game')
 module.exports = class DisplayManager extends EventEmitter {
     constructor() {
         super()
@@ -12,29 +14,18 @@ module.exports = class DisplayManager extends EventEmitter {
     start = () => {
         this.update({})
     }
+    push = (data) => { this.update(data) }
+    pull = (data) => { this.emit('pull', data) }
     update = (data) => {
+        let container = null
+        if (data.mode == 'intro') {
+            container = Intro(data)
+        } else if (data.mode == 'game') {
+            container = Game(data)
+        }
         ReactDOM.render(
-            Game(data),
+            container,
             document.getElementById('root')
         )
     }
-}
-function Game(props) {
-    return (
-        React.createElement(
-            'div',
-            { className: 'window' },
-            React.createElement(
-                Header,
-                { className: 'header' },
-            )
-            , React.createElement(
-                'div',
-                { className: 'container' },
-            ), React.createElement(
-                'div',
-                { className: 'footer' },
-            )
-        )
-    )
 }

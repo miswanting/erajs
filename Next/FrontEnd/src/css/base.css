@@ -1,0 +1,16 @@
+:root {
+  --light: #c3c6c9;
+  --actived-dark: #636669;
+  --dark: #333639;
+}
+@font-face {
+  font-family: "Microsoft YaHei";
+  src: unset;
+}
+html,
+body,
+#root,
+.window {
+  height: 100%;
+  /* background-color: rgba(0, 0, 0, 0); */
+}
