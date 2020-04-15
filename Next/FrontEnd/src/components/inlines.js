@@ -28,8 +28,6 @@ function Heading(props) {
     )
 }
 function Text(props) {
-    console.log(props.data);
-
     if (!props.data.text) {
         return (
             React.createElement('br')
