@@ -23,6 +23,7 @@
     "electron-builder": "latest"
   },
   "dependencies": {
+    "animejs": "^3.2.0",
     "csshake": "latest",
     "d3": "latest",
     "normalize.css": "latest",

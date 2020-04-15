@@ -7,7 +7,7 @@ module.exports = class DisplayManager extends EventEmitter {
     init = () => { }
     start = () => {
         this.data = this.newElement('program')
-        this.data.mode = 'game'
+        this.data.mode = 'intro'
         this.data.title = 'Era.js'
         this.data.footer = '@Miswanting'
         this.data.maxPages = 10
