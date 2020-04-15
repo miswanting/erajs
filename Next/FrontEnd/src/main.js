@@ -1,5 +1,17 @@
 const { app } = require('electron')
-class Main { }
 const WindowManager = require('./modules/window')
-let win = new WindowManager()
-app.whenReady().then(win.createWindow)
+const NetManager = require('./modules/net')
+class MainManager {
+    init = () => {
+        this.win = new WindowManager()
+        this.back = new NetManager('back')
+        this.renderer = new NetManager('renderer')
+    }
+    start = () => {
+        this.win.start()
+        this.back.start()
+    }
+}
+let main = new MainManager()
+main.init()
+app.whenReady().then(main.start)
