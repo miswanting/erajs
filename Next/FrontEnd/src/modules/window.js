@@ -1,7 +1,7 @@
 const { EventEmitter } = require('events')
 const { BrowserWindow } = require('electron')
 module.exports = class WindowManager extends EventEmitter {
-    createWindow = () => {
+    start = () => {
         let win = new BrowserWindow({
             width: 800,
             height: 600,
@@ -13,6 +13,6 @@ module.exports = class WindowManager extends EventEmitter {
         })
         // 加载index.html文件
         win.loadFile('src/index.html')
-        win.webContents.openDevTools()
+        // win.webContents.openDevTools()
     }
 }
