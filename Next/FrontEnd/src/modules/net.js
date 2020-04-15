@@ -2,21 +2,50 @@ const { EventEmitter } = require('events')
 const { Server } = require('net')
 const { BrowserWindow, ipcRenderer } = require('electron')
 module.exports = class NetManager extends EventEmitter {
-    init = () => { }
-    start = () => { }
-    send = () => { }
-    recv = () => { }
+    constructor(type) {
+        super()
+        this.type = type  // back, main, renderer
+    }
+    init = () => {
+        if (this.type = 'back') {
+            this.core = new ToBack()
+        } else if (this.type = 'main') {
+            this.core = new ToMain()
+        } else if (this.type = 'renderer') {
+            this.core = new ToRenderer()
+        }
+        this.core.init()
+        this.core.on('recv', this.recv)
+    }
+    start = () => {
+        this.core.start()
+    }
+    send = (data) => {
+        this.core.send(data)
+    }
+    recv = (data) => {
+        this.emit('recv', data)
+    }
     close = () => { }
 }
 class ToBack extends EventEmitter {
     init = () => {
         this.server = new Server((s) => {
             this.socket = s
-            this.emit('connection')
+            console.log('Connected!');
+            this.socket.on('connection', () => {
+                console.log('!');
+
+            })
             this.socket.on('data', (data) => {
                 this.recv(data)
             })
-            this.socket.on('end', () => { })
+            this.socket.on('error', (e) => {
+                console.log(e);
+            })
+            this.socket.on('end', () => {
+                console.log('Disconnected!');
+            })
         })
     }
     start = () => {
