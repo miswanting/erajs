@@ -10,9 +10,19 @@ module.exports = function Container(props) {
         const el = props.children[i];
         if (i < props.children.length - 1) {
             el.disabled = true
-            pages.push(Page(el))
+            // pages.push(Page(el))
+            pages.push(
+                React.createElement(
+                    Page,
+                    { key: i, data: el }
+                )
+            )
         } else {
-            pages.push(Page(el))
+            // pages.push(Page(el))
+            React.createElement(
+                Page,
+                { key: i, data: el }
+            )
         }
     }
     return (
