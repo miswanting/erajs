@@ -17,36 +17,37 @@
 }
 .header {
   text-align: center;
+  color: var(--react-light);
 }
 .menu-bar > span {
   padding: 0em 0.5em;
   text-align: center;
-  background-color: var(--dark);
+  background-color: var(--react-dark);
 }
 .window-operator-bar > span {
   padding: 0em 0.5em;
   text-align: center;
-  background-color: var(--dark);
+  background-color: var(--react-dark);
 }
 .menu:hover,
 .menu-add:hover {
-  background-color: var(--actived-dark);
+  background-color: var(--hover-dark);
 }
 .title {
   flex-grow: 1;
-  background-color: var(--dark);
+  background-color: var(--react-dark);
 }
 .min:hover {
   color: lime;
-  background-color: var(--actived-dark);
+  background-color: var(--hover-dark);
 }
 .max:hover {
   color: yellow;
-  background-color: var(--actived-dark);
+  background-color: var(--hover-dark);
 }
 .close:hover {
   color: red;
-  background-color: var(--actived-dark);
+  background-color: var(--hover-dark);
 }
 
 .container {
