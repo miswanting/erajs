@@ -1,7 +1,12 @@
 :root {
-  --light: #c3c6c9;
-  --actived-dark: #636669;
-  --dark: #333639;
+  --active-light: #eaeaea;
+  --hover-light: #cccccc;
+  --react-light: #a5a5a5;
+  --light: #d5d5d5;
+  --active-dark: #202020;
+  --hover-dark: #202020;
+  --react-dark: #333333;
+  --dark: #242424;
 }
 @font-face {
   font-family: "Microsoft YaHei";
