@@ -114,7 +114,7 @@ def divider(text=None):
 
 
 def goto(ui_func, *arg, **kw):
-    pass
+    m.goto(ui_func, *arg, **kw)
 
 
 def back(num=1, *arg, **kw):
@@ -145,8 +145,8 @@ def show_save_to_load():
     pass
 
 
-def mode(type='default', *arg, **kw):
-    pass
+def mode(type='line', *arg, **kw):
+    m.mode(type, *arg, **kw)
 
 
 def exit(save=False):

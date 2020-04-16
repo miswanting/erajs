@@ -34,6 +34,7 @@ def init():
     plugins_found = 0
 
     def on_plugin_found(event):
+        e.send({})
         e.info('│  ├─ Plugin [{}] Found.'.format(event['value']))
         plugins_found += 1
     e.on('plugin_found', on_plugin_found)
@@ -130,6 +131,9 @@ def init():
     e.load_mods()
     e.off('mod_loaded', on_mod_loaded)
     e.info('│  └─ {} MODs Loaded!'.format(mods_loaded))
+    e.info('├─ Sending Init Finished Signal...')
+    e.send({'type': 'loaded'})
+    e.info('│  └─ Done!')
     e.info('└─ Initialize Complete!')
     print()
 
@@ -187,7 +191,10 @@ def head(text, rank, style):
 
 
 def text(text, wait, style):
-    e.push('text', {'text': text}, style)
+    if text == None or text == '':
+        e.push('pass', None, None)
+    else:
+        e.push('text', {'text': text}, style)
     if wait and not e.lock_passed():
         e.lock()
         e.wait_for_unlock()
@@ -336,3 +343,11 @@ def divider(text, style):
 
 def get_data():
     return e.dat
+
+
+def goto(ui_func, *arg, **kw):
+    e.goto(ui_func, *arg, **kw)
+
+
+def mode(type, *arg, **kw):
+    e.push('mode', {'type': type, 'arg': arg}, None)
