@@ -11,18 +11,18 @@ module.exports = class DisplayManager extends EventEmitter {
         super()
     }
     init = () => { }
-    start = () => {
-        this.update({})
-    }
+    start = () => { }
     push = (data) => { this.update(data) }
     pull = (data) => { this.emit('pull', data) }
     update = (data) => {
         let container = null
-        if (data.mode == 'intro') {
+        if (data.ui == 'intro') {
             container = Intro(data)
-        } else if (data.mode == 'game') {
+        } else if (data.ui == 'game') {
             container = Game(data)
         }
+        console.log(data);
+        
         ReactDOM.render(
             container,
             document.getElementById('root')

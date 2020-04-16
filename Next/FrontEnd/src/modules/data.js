@@ -7,7 +7,8 @@ module.exports = class DisplayManager extends EventEmitter {
     init = () => { }
     start = () => {
         this.data = this.newElement('program')
-        this.data.mode = 'intro'
+        this.data.ui = 'intro'
+        this.data.mode = { type: 'line' }
         this.data.title = 'Era.js'
         this.data.footer = '@Miswanting'
         this.data.maxPages = 10
@@ -24,7 +25,23 @@ module.exports = class DisplayManager extends EventEmitter {
         this.emit('send', data)
     }
     recv = (data) => {
+        this.parse(data)
         this.push(this.data)
+    }
+    parse = (data) => {
+        console.log(data);
+        if (data.type == 'loaded') {
+            this.data.ui = 'game'
+        } else if (data.type == 'title') {
+            this.data.title = data.data.text
+        } else if (data.type == 'mode') {
+            this.data.mode = { type: data.data.type }
+            if (this.data.mode == 'grid') {
+                this.data.mode.column = data.data.arg[0]
+            }
+        } else {
+            this.addElement(data)
+        }
     }
     newElement = (type, data = null, style = null, ...children) => {
         let el = {
@@ -36,6 +53,7 @@ module.exports = class DisplayManager extends EventEmitter {
         return el
     }
     addElement = (el) => {
+        console.log(123, el, this.data);
         if (el.type == 'page') {
             this.data.children.push(el)
             this.data.children.splice(0, this.data.children.length - this.data.maxPages)
@@ -45,15 +63,27 @@ module.exports = class DisplayManager extends EventEmitter {
                 this.addElement(this.newElement('page'))
             }
             this.data.children[this.data.children.length - 1].children.push(el)
-        } else if (['heading', 'text', 'button', 'link'].indexOf(el.type) != -1) {
+        } else if (el.type == 'grid') {
+            // Page Exist?
+            if (this.data.children.length == 0) {
+                this.addElement(this.newElement('page'))
+            }
+            this.data.children[this.data.children.length - 1].children.push(el)
+        } else if (el.type == 'pass' && this.data.mode.type == 'line') {
+            this.addElement(this.newElement('line'))
+        } else if (['heading', 'text', 'button', 'link', 'pass'].indexOf(el.type) != -1) {
             // Page Exist?
             if (this.data.children.length == 0) {
                 this.addElement(this.newElement('page'))
             }
             let lastPage = this.data.children[this.data.children.length - 1]
             // Block Exist?
-            if (lastPage.children == 0) {
-                this.addElement(this.newElement('line'))
+            if (lastPage.children.length == 0) {
+                if (this.data.mode.type == 'line') {
+                    this.addElement(this.newElement('line'))
+                } else if (this.data.mode.type == 'grid') {
+                    this.addElement(this.newElement('grid', { column: this.data.mode.column }))
+                }
             }
             let lastBlock = lastPage.children[lastPage.children.length - 1]
             if (['button', 'link'].indexOf(el.type) != -1) {
