@@ -7,24 +7,20 @@ module.exports = function Container(props) {
     })
     let pages = []
     for (let i = 0; i < props.children.length; i++) {
-        const el = props.children[i];
+        const p = props.children[i];
+        // console.log(p);
         if (i < props.children.length - 1) {
-            el.disabled = true
-            // pages.push(Page(el))
-            pages.push(
-                React.createElement(
-                    Page,
-                    { key: i, data: el }
-                )
-            )
-        } else {
-            // pages.push(Page(el))
+            p.disabled = true
+        }
+        p.key = i
+        pages.push(
             React.createElement(
                 Page,
-                { key: i, data: el }
+                p
             )
-        }
+        )
     }
+    // console.log(pages);
     return (
         React.createElement(
             'div',

@@ -1,17 +1,17 @@
 const { EventEmitter } = require('events')
 const { Server } = require('net')
-const { BrowserWindow, ipcRenderer } = require('electron')
+const { BrowserWindow, ipcRenderer, ipcMain } = require('electron')
 module.exports = class NetManager extends EventEmitter {
     constructor(type) {
         super()
         this.type = type  // back, main, renderer
     }
     init = () => {
-        if (this.type = 'back') {
+        if (this.type == 'back') {
             this.core = new ToBack()
-        } else if (this.type = 'main') {
+        } else if (this.type == 'main') {
             this.core = new ToMain()
-        } else if (this.type = 'renderer') {
+        } else if (this.type == 'renderer') {
             this.core = new ToRenderer()
         }
         this.core.init()
@@ -24,19 +24,20 @@ module.exports = class NetManager extends EventEmitter {
         this.core.send(data)
     }
     recv = (data) => {
+        // console.log('NetManager', 'Recv', data);
         this.emit('recv', data)
     }
     close = () => { }
 }
 class ToBack extends EventEmitter {
+    constructor() {
+        super()
+    }
     init = () => {
         this.server = new Server((s) => {
             this.socket = s
             console.log('Connected!');
-            this.socket.on('connection', () => {
-                console.log('!');
-
-            })
+            this.emit('recv', { type: 'connection' })
             this.socket.on('data', (data) => {
                 this.recv(data)
             })
@@ -65,15 +66,18 @@ class ToBack extends EventEmitter {
                 pieces[i] = '{' + pieces[i]
             }
         }
-        for (let i = 0; i < piece.length; i++) {
-            console.log('[DEBG]自前端接收：', piece[i]); // 生产环境下请注释掉
-            let data = JSON.parse(piece[i])
+        for (let i = 0; i < pieces.length; i++) {
+            console.log('[DEBG]Recv From Back：', pieces[i]); // 生产环境下请注释掉
+            let data = JSON.parse(pieces[i])
             this.emit('recv', data)
         }
     }
     close = () => { }
 }
 class ToRenderer extends EventEmitter {
+    constructor() {
+        super()
+    }
     init = () => {
         ipcMain.on('data', (e, data) => {
             this.recv(data)
@@ -89,6 +93,9 @@ class ToRenderer extends EventEmitter {
     close = () => { }
 }
 class ToMain extends EventEmitter {
+    constructor() {
+        super()
+    }
     init = () => {
         ipcRenderer.on('data', (e, data) => {
             this.recv(data)

@@ -5,7 +5,7 @@ class Erajs {
     init = () => {
         this.dis = new DisplayManager()
         this.dat = new DataManager()
-        this.net = new NetManager()
+        this.net = new NetManager('main')
         this.dis.init()
         this.dat.init()
         this.net.init()

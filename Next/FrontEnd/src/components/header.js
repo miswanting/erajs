@@ -7,7 +7,7 @@ module.exports = function Header(props) {
                 MenuBar
             ),
             React.createElement(
-                Title, { data: { text: 'Era.js' } },
+                Title, props,
             ),
             React.createElement(
                 WindowOperatorBar
@@ -36,7 +36,7 @@ function Title(props) {
         React.createElement(
             'span',
             { className: 'title' },
-            props.data.text
+            props.title
         )
     )
 }

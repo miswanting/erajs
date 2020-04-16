@@ -13,6 +13,6 @@ module.exports = class WindowManager extends EventEmitter {
         })
         // 加载index.html文件
         win.loadFile('src/index.html')
-        // win.webContents.openDevTools()
+        win.webContents.openDevTools()
     }
 }
