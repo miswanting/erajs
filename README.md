@@ -50,13 +50,11 @@ Work In Heavy Progress. Ultra-Experimental.
 
 ### 核心代码
 
-- 前端语言：[TypeScript](https://www.typescriptlang.org/)
+- 前端语言：[JavaScript]()
   - 前端响应式框架：[React](https://reactjs.org/)
-  - 样式库（其一）：[Semantic UI](https://semantic-ui.com/)
-  - 打包工具：[webpack](https://webpack.js.org/)
+  - 样式库（其一）：[Span Charm
   - 发布工具：[Electron Builder](https://www.electron.build/)
 - 后端语言：[Python3](https://www.python.org/)
-  - 测试工具：[pyTest](https://docs.pytest.org/en/latest/)
   - 发布工具：[cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
 ### 桌面端容器
 
