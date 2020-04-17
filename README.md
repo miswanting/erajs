@@ -1,4 +1,4 @@
-<div align='right'><span>Language:&ensp;</span><span><a href='README-zh.md'>zh</a></span>&ensp;<span><abbr title='Need to be translated!'>en</abbr></span>&ensp;<span><a><abbr title='Need to be translated!'>jp</abbr></a></span></div>
+<div style='float:left'><span style='color:#856404;background-color:#fff3cd;border-color:#ffeeba;border:1px solid transparent;border-radius:.25rem'>Need to be translated!</span></div><div style='float:right'><span>Language:&ensp;</span><span><a href='README-zh.md'>zh</a></span>&ensp;<span><abbr title='Need to be translated!'>en</abbr></span>&ensp;<span><a><abbr title='Need to be translated!'>jp</abbr></a></span></div>
 
 <div align="center">
     <a href="http://erajs.net">Homepage</a> |
