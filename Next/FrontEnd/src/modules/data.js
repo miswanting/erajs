@@ -12,7 +12,6 @@ module.exports = class DisplayManager extends EventEmitter {
         this.data.title = 'Era.js'
         this.data.footer = '@Miswanting'
         this.data.maxPages = 10
-        this.addElement(this.newElement('text', { text: 'test' }))
         this.push(this.data)
     }
     push = (data) => {
@@ -29,14 +28,14 @@ module.exports = class DisplayManager extends EventEmitter {
         this.push(this.data)
     }
     parse = (data) => {
-        console.log(data);
+        // console.log(data);
         if (data.type == 'loaded') {
             this.data.ui = 'game'
         } else if (data.type == 'title') {
             this.data.title = data.data.text
         } else if (data.type == 'mode') {
             this.data.mode = { type: data.data.type }
-            if (this.data.mode == 'grid') {
+            if (this.data.mode.type == 'grid') {
                 this.data.mode.column = data.data.arg[0]
             }
         } else {
@@ -53,9 +52,9 @@ module.exports = class DisplayManager extends EventEmitter {
         return el
     }
     addElement = (el) => {
-        console.log(123, el, this.data);
+        // console.log(el);
         if (el.type == 'page') {
-            this.data.children.push(el)
+            this.data.children.push(this.newElement('page', el.data, el.style))
             this.data.children.splice(0, this.data.children.length - this.data.maxPages)
         } else if (el.type == 'line') {
             // Page Exist?
@@ -89,7 +88,9 @@ module.exports = class DisplayManager extends EventEmitter {
             if (['button', 'link'].indexOf(el.type) != -1) {
                 // el.callback = this.cmd
             }
+            // console.log(lastBlock, el);
             lastBlock.children.push(el)
         }
+        // console.log(JSON.stringify(this.data));
     }
 }
