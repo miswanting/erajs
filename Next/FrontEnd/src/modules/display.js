@@ -21,8 +21,6 @@ module.exports = class DisplayManager extends EventEmitter {
         } else if (data.ui == 'game') {
             container = Game(data)
         }
-        console.log(data);
-        
         ReactDOM.render(
             container,
             document.getElementById('root')
