@@ -56,11 +56,11 @@ def clear(num=0):
     m.clear(num)
 
 
-def head(text=None, rank=1, style=None):
-    m.head(text, rank, style)
+def heading(text=None, rank=1, style=None):
+    m.heading(text, rank, style)
 
 
-h = head
+h = heading
 
 
 def text(text=None, wait=False, style=None):
