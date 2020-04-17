@@ -26,15 +26,15 @@ Era.js is a next-generation cross-platform "era-like" rich text game engine buil
 
 Work In Heavy Progress. Ultra-Experimental.
 
-## 开发理念
+## Development Philosophy
 
-- 充分利用 HTML5 技术，打造绚丽、整齐、内容丰富、充满设计感的游戏前端；
-- 审慎地设置 API，让游戏开发者能够更少地操心与内容和游戏性无关的事物；
-- 全部代码跨平台；
-- 开发环境、打包和部署一定要简单可靠；
-- 对二次开发友好；
-- 原则上不砍掉任何所使用的技术所提供的功能。
-- 使用最新的技术。
+- make full use of HTML5 technology to create a gorgeous, neat, rich, full of design sense of the game front end;
+- carefully set up the API so that game developers can worry less about things that have nothing to do with content or gameplay;
+- all code cross-platform;
+- the development environment, packaging and deployment must be simple and reliable;
+-friendly to secondary development;
+- in principle, do not cut off any functionality provided by the technology used.
+- use the latest technology.
 
 ## 引擎特性
 
