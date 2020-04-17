@@ -186,8 +186,8 @@ def clear(num):
     e.push('clear', {'num': num}, None)
 
 
-def head(text, rank, style):
-    e.push('head', {'text': str(text), 'rank': rank}, style)
+def heading(text, rank, style):
+    e.push('heading', {'text': str(text), 'rank': rank}, style)
 
 
 def text(text, wait, style):
