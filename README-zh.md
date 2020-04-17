@@ -1,4 +1,4 @@
-<div align='right'><span><a>zh</a></span>&emsp;<span>en</span></div>
+<div align='right'><span>语言：</span><span>zh</span>&emsp;<span><a>en</a></span>&emsp;<span><a>jp</a></span></div>
 
 <div align="center">
     <a href="http://erajs.net">Homepage</a> |
