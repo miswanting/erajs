@@ -36,6 +36,11 @@
 .title {
   flex-grow: 1;
   background-color: var(--react-dark);
+  -webkit-app-region: drag;
+  cursor: grab;
+}
+.title:active {
+  cursor: grabbing;
 }
 .min:hover {
   color: lime;
@@ -53,6 +58,7 @@
 .container {
   flex-grow: 1;
   background-color: var(--dark);
+  overflow-y: auto;
 }
 .footer {
   background-color: var(--dark);
