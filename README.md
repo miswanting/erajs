@@ -1,9 +1,5 @@
 <div align='right'><span>Language:&ensp;</span><span><a href='README-zh.md'>zh</a></span>&ensp;<span><abbr title='Need to be translated!'>en</abbr></span>&ensp;<span><a><abbr title='Need to be translated!'>jp</abbr></a></span></div>
 
-```diff
-! Need to be translated!
-```
-
 <div align="center">
     <a href="http://erajs.net">Homepage</a> |
     <a href="https://github.com/miswanting/Era.js/wiki">Doc</a> |
@@ -11,6 +7,7 @@
     <a href="https://github.com/miswanting/Era.js/issues">Support</a> |
     <a href="https://github.com/miswanting/Era.js/issues">FAQ</a>
 </div>
+
 
 
 <h1 align="center">Era.js</h1>
