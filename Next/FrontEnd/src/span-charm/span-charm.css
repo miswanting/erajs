@@ -39,3 +39,10 @@ h2 {
 .link:hover {
   text-decoration: underline;
 }
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+td {
+  text-align: center;
+}
