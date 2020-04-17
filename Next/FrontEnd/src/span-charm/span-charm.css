@@ -1,10 +1,21 @@
 .page {
+  position: relative;
   margin: 0.5rem;
 }
-.disabled {
+.page > .disable-mask.disabled {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  backdrop-filter: blur(0.9px);
+  z-index: 1;
+}
+/* .disabled {
   color: transparent !important;
   text-shadow: 0 0 2px rgba(255, 255, 255, 0.5) !important;
-}
+} */
 h1 {
   display: inline;
   font-size: 2em;

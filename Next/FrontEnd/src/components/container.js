@@ -29,31 +29,62 @@ module.exports = function Container(props) {
         )
     );
 }
+
 function Page(props) {
-    let blocks = []
+    let blocks = [DisableMask(props)]
     for (let i = 0; i < props.children.length; i++) {
         const el = props.children[i];
-        if (props.hasOwnProperty('disabled') && props.disabled) {
-            el.disabled = true
-        }
         blocks.push(Block(el))
     }
+    let c = 'page'
     if (props.hasOwnProperty('disabled') && props.disabled) {
-        return (
-            React.createElement(
-                'div',
-                { className: 'page disabled' },
-                blocks
-            )
-        )
-    } else {
-        return (
-            React.createElement(
-                'div',
-                { className: 'page' },
-                blocks
-            )
-        )
+        c += ' disabled'
     }
-
+    return (
+        React.createElement(
+            'div',
+            { className: c },
+            blocks
+        )
+    )
 }
+function DisableMask(props) {
+    let c = 'disable-mask'
+    if (props.hasOwnProperty('disabled') && props.disabled) {
+        c += ' disabled'
+    }
+    return (
+        React.createElement(
+            'div',
+            { className: c }
+        )
+    )
+}
+// function Page(props) {
+//     let blocks = []
+//     for (let i = 0; i < props.children.length; i++) {
+//         const el = props.children[i];
+//         if (props.hasOwnProperty('disabled') && props.disabled) {
+//             el.disabled = true
+//         }
+//         blocks.push(Block(el))
+//     }
+//     if (props.hasOwnProperty('disabled') && props.disabled) {
+//         return (
+//             React.createElement(
+//                 'div',
+//                 { className: 'page disabled' },
+//                 blocks
+//             )
+//         )
+//     } else {
+//         return (
+//             React.createElement(
+//                 'div',
+//                 { className: 'page' },
+//                 blocks
+//             )
+//         )
+//     }
+
+// }
