@@ -21,6 +21,7 @@ module.exports = class NetManager extends EventEmitter {
         this.core.start()
     }
     send = (data) => {
+        // console.log('NetManager', 'Send', data);
         this.core.send(data)
     }
     recv = (data) => {
@@ -53,7 +54,10 @@ class ToBack extends EventEmitter {
         this.server.listen(11994)
     }
     send = (data) => {
-        this.socket.write(data)
+        console.log('ToBack', "SEND", data);
+        if (this.socket) {
+            this.socket.write(JSON.stringify(data))
+        }
     }
     recv = (data) => {
         // Handling Sticky Packages
@@ -67,7 +71,7 @@ class ToBack extends EventEmitter {
             }
         }
         for (let i = 0; i < pieces.length; i++) {
-            console.log('[DEBG]Recv From Back：', pieces[i]); // 生产环境下请注释掉
+            console.log('ToBack', "RECV", pieces[i]);
             let data = JSON.parse(pieces[i])
             this.emit('recv', data)
         }
@@ -80,14 +84,32 @@ class ToRenderer extends EventEmitter {
     }
     init = () => {
         ipcMain.on('data', (e, data) => {
-            this.recv(data)
+            // Handling Sticky Packages
+            console.log(data);
+            let pieces = data.toString().split('}{')
+            for (let i = 0; i < pieces.length; i++) {
+                if (i != pieces.length - 1) {
+                    pieces[i] += '}'
+                }
+                if (i != 0) {
+                    pieces[i] = '{' + pieces[i]
+                }
+            }
+            for (let i = 0; i < pieces.length; i++) {
+
+                let data = JSON.parse(pieces[i])
+                this.recv(data)
+            }
+
         })
     }
     start = () => { }
     send = (data) => {
+        console.log('ToRenderer', "SEND", data);
         BrowserWindow.getAllWindows()[0].webContents.send('data', data)
     }
     recv = (data) => {
+        console.log('ToRenderer', "RECV", data);
         this.emit('recv', data)
     }
     close = () => { }
@@ -103,9 +125,11 @@ class ToMain extends EventEmitter {
     }
     start = () => { }
     send = (data) => {
-        ipcRenderer.send('data', data)
+        console.log('ToMain', "SEND", data);
+        ipcRenderer.send('data', JSON.stringify(data))
     }
     recv = (data) => {
+        console.log('ToMain', "RECV", data);
         this.emit('recv', data)
     }
     close = () => { }

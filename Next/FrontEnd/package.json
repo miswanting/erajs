@@ -5,8 +5,9 @@
   "main": "src/main.js",
   "scripts": {
     "setup": "npm i",
-    "start": "npx electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "chcp 65001 && npx electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx electron-builder --dir"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,17 @@
     "electron-builder": "latest"
   },
   "dependencies": {
-    "animejs": "^3.2.0",
+    "animejs": "latest",
     "csshake": "latest",
     "d3": "latest",
     "normalize.css": "latest",
     "react": "latest",
     "react-dom": "latest"
+  },
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "your.app.category.type"
+    }
   }
 }

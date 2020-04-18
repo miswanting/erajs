@@ -56,6 +56,7 @@ module.exports = class DisplayManager extends EventEmitter {
         if (el.type == 'page') {
             this.data.children.push(this.newElement('page', el.data, el.style))
             this.data.children.splice(0, this.data.children.length - this.data.maxPages)
+            this.data.mode.type = 'line'
         } else if (el.type == 'line') {
             // Page Exist?
             if (this.data.children.length == 0) {
@@ -86,11 +87,15 @@ module.exports = class DisplayManager extends EventEmitter {
             }
             let lastBlock = lastPage.children[lastPage.children.length - 1]
             if (['button', 'link'].indexOf(el.type) != -1) {
-                // el.callback = this.cmd
+                el.callback = this.cmd
             }
-            // console.log(lastBlock, el);
             lastBlock.children.push(el)
         }
         // console.log(JSON.stringify(this.data));
+    }
+    cmd = (data) => {
+        if (data.type == 'pull') {
+            this.pull(data.data)
+        }
     }
 }
