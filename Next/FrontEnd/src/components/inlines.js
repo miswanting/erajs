@@ -28,42 +28,57 @@ function Heading(props) {
     )
 }
 function Text(props) {
+    // const [shake, setShake] = React.useState(false);
+    // const refShake = React.useRef(['text']);
+    // React.useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setShake(true)
+    //     }, 1000)
+    // }, []);
+    // React.useEffect(() => {
+    //     if (props.style) {
+    //         if (props.style.hasOwnProperty('shake_duration')) {
+    //             // refShake.current.push('shake-constant')
+    //             const timer = setTimeout(() => {
+    //                 setShake(true)
+    //             }, props.style.shake_duration * 1000)
+    //             return () => {
+    //                 clearInterval(timer);
+    //             }
+    //         }
+    //     }
+    // }, []);
+
+
     if (!props.data.text) {
         return (
             React.createElement('br')
         )
     }
-    if (props.hasOwnProperty('disabled') && props.disabled) {
-        return (
-            React.createElement(
-                'span',
-                {
-                    className: 'text',
-                },
-                props.data.text
-            )
-        )
-    } else {
-        return (
-            React.createElement(
-                'span',
-                {
-                    className: 'text',
-                    style: props.style
-                },
-                props.data.text
-            )
-        )
+    let c = ['text']
+    if (props.style) {
+        if (props.style.hasOwnProperty('shake_duration')) {
+            c.push('shake')
+            c.push('shake-constant')
+        }
     }
+    // if (shake) {
+    //     c.push('shake-constant')
+    // }
+    return (
+        React.createElement(
+            'span',
+            {
+                className: c.join(' '),
+                style: props.style
+            },
+            props.data.text
+        )
+    )
 }
 function Button(props) {
     click = () => {
         if (!props.data.disabled) {
-            // let e = new CustomEvent('pull', {
-            //     type: 'BUTTON_CLICK',
-            //     target: props.data.hash
-            // })
-            // document.dispatchEvent(e)
             props.callback({
                 type: 'pull',
                 data: {

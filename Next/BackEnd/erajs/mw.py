@@ -195,12 +195,22 @@ def text(text, wait, style):
         e.push('pass', None, None)
     else:
         e.push('text', {'text': text}, style)
+
     if wait and not e.lock_passed():
         e.lock()
+
+        def on_click(event):
+            if event['value'] == 1:  # 左键
+                if e.is_locked():
+                    e.unlock()
+            elif event['value'] == 3:  # 右键
+                if e.is_locked():
+                    e.unlock_forever()
+        e.once('MOUSE_CLICK', on_click)
         e.wait_for_unlock()
 
 
-def button(text, callback, style, *arg, **kw):
+def button(text, callback, *arg, **kw):
     data = {
         'text': str(text),
         'hash': tools.random_hash()
@@ -217,6 +227,9 @@ def button(text, callback, style, *arg, **kw):
         kw.pop('popup')
     else:
         data['popup'] = ''
+    style = None
+    if 'style'in kw:
+        style = kw['style']
     e.push('button', data, style)
 
     def on_click(e):
@@ -347,6 +360,10 @@ def get_data():
 
 def goto(ui_func, *arg, **kw):
     e.goto(ui_func, *arg, **kw)
+
+
+def back(num, *arg, **kw):
+    e.back(num, *arg, **kw)
 
 
 def mode(type, *arg, **kw):

@@ -70,8 +70,8 @@ def text(text=None, wait=False, style=None):
 t = text
 
 
-def button(text=None, callback=None, style=None, *arg, **kw):
-    m.button(text, callback, style, *arg, **kw)
+def button(text=None, callback=None, *arg, **kw):
+    m.button(text, callback, *arg, **kw)
 
 
 b = button
@@ -85,7 +85,7 @@ l = link
 
 
 def progress(now=0, max=100, width=100, style=None):
-    m.progress(now, max, length)
+    m.progress(now, max, width)
 
 
 def rate(now=0, max=5, callback=None):
@@ -118,7 +118,7 @@ def goto(ui_func, *arg, **kw):
 
 
 def back(num=1, *arg, **kw):
-    pass
+    m.back(num=1, *arg, **kw)
 
 
 def repeat(*arg, **kw):

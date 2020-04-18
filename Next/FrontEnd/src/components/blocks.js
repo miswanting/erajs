@@ -41,8 +41,8 @@ function Grid(props) {
 
     let columns = []
     let column = []
-    console.log('!');
-    console.log(props.children.length);
+    // console.log('!');
+    // console.log(props.children.length);
     for (let i = 0; i < props.children.length; i++) {
         const el = props.children[i];
         if (el.type != 'pass') {
@@ -75,8 +75,8 @@ function Grid(props) {
             column
         )
     )
-    console.log(columns);
-    console.log(Math.ceil(columns.length / props.data.column));
+    // console.log(columns);
+    // console.log(Math.ceil(columns.length / props.data.column));
     let rows = []
     for (let i = 0; i < Math.ceil(columns.length / props.data.column); i++) {
         let row = []

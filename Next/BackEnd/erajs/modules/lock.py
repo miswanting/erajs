@@ -18,7 +18,7 @@ class LockModule:
         while self.is_locked():
             time.sleep(0.1)
 
-    def is_locked(self) -> None:
+    def is_locked(self) -> bool:
         # print('is_locked')
         if self.__lock_status[0] == 1:
             return True

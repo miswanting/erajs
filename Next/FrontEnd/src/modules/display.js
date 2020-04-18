@@ -11,7 +11,19 @@ module.exports = class DisplayManager extends EventEmitter {
         super()
     }
     init = () => { }
-    start = () => { }
+    start = () => {
+        document.getElementById('root').addEventListener("mouseup", (e) => {
+            console.log('[DEBG]鼠标点击：', e.which);
+            let data = {
+                type: 'MOUSE_CLICK',
+                value: e.which
+            }
+            this.pull(data)
+        })
+        document.getElementById('root').addEventListener("keyup", (e) => {
+            console.log('[DEBG]键盘按下：', e.key);
+        })
+    }
     push = (data) => { this.update(data) }
     pull = (data) => { this.emit('pull', data) }
     update = (data) => {
