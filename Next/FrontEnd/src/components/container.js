@@ -31,19 +31,25 @@ module.exports = function Container(props) {
 }
 
 function Page(props) {
-    let blocks = [DisableMask(props)]
+    let p = props
+    p.key = 3
+    let blocks = [React.createElement(DisableMask, p)]
+    console.log(p, blocks);
     for (let i = 0; i < props.children.length; i++) {
         const el = props.children[i];
-        blocks.push(Block(el))
+        el.key = i
+        blocks.push(React.createElement(Block, el))
     }
-    let c = 'page'
+    let c = ['page']
     if (props.hasOwnProperty('disabled') && props.disabled) {
-        c += ' disabled'
+        c.push('disabled')
     }
+    console.log(blocks);
+
     return (
         React.createElement(
             'div',
-            { className: c },
+            { className: c.join(' ') },
             blocks
         )
     )
