@@ -28,26 +28,12 @@ function Heading(props) {
     )
 }
 function Text(props) {
-    // const [shake, setShake] = React.useState(false);
-    // const refShake = React.useRef(['text']);
-    // React.useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         setShake(true)
-    //     }, 1000)
-    // }, []);
-    // React.useEffect(() => {
-    //     if (props.style) {
-    //         if (props.style.hasOwnProperty('shake_duration')) {
-    //             // refShake.current.push('shake-constant')
-    //             const timer = setTimeout(() => {
-    //                 setShake(true)
-    //             }, props.style.shake_duration * 1000)
-    //             return () => {
-    //                 clearInterval(timer);
-    //             }
-    //         }
-    //     }
-    // }, []);
+    console.log('useState');
+
+    const [shake, setShake] = React.useState(false)
+    toggleShake = () => {
+        setShake(!shake)
+    }
 
 
     if (!props.data.text) {
@@ -58,13 +44,13 @@ function Text(props) {
     let c = ['text']
     if (props.style) {
         if (props.style.hasOwnProperty('shake_duration')) {
-            c.push('shake')
-            c.push('shake-constant')
+            toggleShake()
         }
     }
-    // if (shake) {
-    //     c.push('shake-constant')
-    // }
+    if (shake) {
+        c.push('shake')
+        c.push('shake-constant')
+    }
     return (
         React.createElement(
             'span',
