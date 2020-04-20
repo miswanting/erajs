@@ -14,10 +14,7 @@ module.exports = function Container(props) {
         }
         p.key = i
         pages.push(
-            React.createElement(
-                Page,
-                p
-            )
+            React.createElement(Page, p)
         )
     }
     // console.log(pages);
@@ -34,7 +31,7 @@ function Page(props) {
     let p = props
     p.key = 3
     let blocks = [React.createElement(DisableMask, p)]
-    console.log(p, blocks);
+    // console.log(p, blocks);
     for (let i = 0; i < props.children.length; i++) {
         const el = props.children[i];
         el.key = i
@@ -44,7 +41,7 @@ function Page(props) {
     if (props.hasOwnProperty('disabled') && props.disabled) {
         c.push('disabled')
     }
-    console.log(blocks);
+    // console.log(blocks);
 
     return (
         React.createElement(
