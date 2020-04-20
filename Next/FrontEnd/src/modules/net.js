@@ -54,7 +54,7 @@ class ToBack extends EventEmitter {
         this.server.listen(11994)
     }
     send = (data) => {
-        console.log('ToBack', "SEND", data);
+        // console.log('ToBack', "SEND", data);
         if (this.socket) {
             this.socket.write(JSON.stringify(data))
         }
@@ -71,7 +71,7 @@ class ToBack extends EventEmitter {
             }
         }
         for (let i = 0; i < pieces.length; i++) {
-            console.log('ToBack', "RECV", pieces[i]);
+            // console.log('ToBack', "RECV", pieces[i]);
             let data = JSON.parse(pieces[i])
             this.emit('recv', data)
         }
@@ -105,11 +105,11 @@ class ToRenderer extends EventEmitter {
     }
     start = () => { }
     send = (data) => {
-        console.log('ToRenderer', "SEND", data);
+        // console.log('ToRenderer', "SEND", data);
         BrowserWindow.getAllWindows()[0].webContents.send('data', data)
     }
     recv = (data) => {
-        console.log('ToRenderer', "RECV", data);
+        // console.log('ToRenderer', "RECV", data);
         this.emit('recv', data)
     }
     close = () => { }
@@ -125,11 +125,11 @@ class ToMain extends EventEmitter {
     }
     start = () => { }
     send = (data) => {
-        console.log('ToMain', "SEND", data);
+        // console.log('ToMain', "SEND", data);
         ipcRenderer.send('data', JSON.stringify(data))
     }
     recv = (data) => {
-        console.log('ToMain', "RECV", data);
+        // console.log('ToMain', "RECV", data);
         this.emit('recv', data)
     }
     close = () => { }
