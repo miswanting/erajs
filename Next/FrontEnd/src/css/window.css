@@ -60,6 +60,14 @@
   background-color: var(--dark);
   overflow-y: auto;
 }
+
+.container::-webkit-scrollbar {
+  width: 6px;
+}
+.container::-webkit-scrollbar-thumb {
+  background: var(--react-dark);
+  border-radius: 3px;
+}
 .footer {
   background-color: var(--dark);
 }
