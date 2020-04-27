@@ -8,6 +8,11 @@ from . import event
 
 
 class DataModule(event.EventModule):
+    ext_priority = [
+        'zip', 'json', 'yaml', 'cfg', 'config',
+        'csv', 'inf', 'ini', 'txt'
+    ]
+
     def __init__(self) -> None:
         """
         # 数据管理器
@@ -66,13 +71,10 @@ class DataModule(event.EventModule):
             "tmp": {},  # 【OLD】
             # 'standard':  {},  # std【NEW】
             'data': {},  # dat【NEW】
+            'save': {},  # sav【NEW】
             # 'user': {},  # usr【NEW】
         }
 
-    @property
-    def cfg(self) -> Dict[Any, Any]:
-        # NEW
-        return self.__data['config']
     def cfg(self, dot_path):
         if dot_path in self.__data['config'].keys():
             return self.__data['config'][dot_path]
@@ -92,26 +94,117 @@ class DataModule(event.EventModule):
     def sav(self):
         return self.__data['save']
 
+    def read(self, path, mode=None):
+        """
+        # 读取文件到数据
+        """
+        ext = os.path.splitext(path[0])[1].lower()
+        data = None
+        if ext in ['inf', 'ini', 'cfg', 'config']:
+            data = cfg_file.read(path)
+        elif ext == 'csv':
+            data = csv_file.read(path)
+        elif ext == 'json':
+            data = json_file.read(path)
+        elif ext in ['yaml', 'yml']:
+            data = yaml_file.read(path)
+        elif ext == 'zip':
+            data = zip_file.read(path)
+        elif ext == 'txt':
+            data = text_file.read(path)
+        return data
 
-    @property
-    def std(self) -> Dict[Any, Any]:
-        # NEW
-        return self.__data['standard']
+    def write(self, data, path, mode=None):
+        """
+        # 写入数据到文件
+        """
+        ext = os.path.splitext(path)[1].split('.')[1].lower()
+        if ext in ['inf', 'ini', 'cfg', 'config']:
+            cfg_file.write(path, data)
+        elif ext == 'csv':
+            csv_file.write(path, data)
+        elif ext == 'json':
+            json_file.write(path, data)
+        elif ext in ['yaml', 'yml']:
+            yaml_file.write(path, data)
+        elif ext == 'zip':
+            zip_file.write(path, data)
+        elif ext == 'txt':
+            text_file.write(path, data)
 
-    @property
-    def dat(self) -> Dict[Any, Any]:
-        # NEW
-        return self.__data['data']
+    def assemble_path(self, folder_path, file_name, file_extension):
+        file_extension = file_extension.lower()
+        path = "{}/{}.{}".format(folder_path, file_name, file_extension)
+        return path
 
-    @property
-    def usr(self) -> Dict[Any, Any]:
-        # NEW
-        return self.__data['user']
+    def path2dot(self, path):
+        """
+        # 将路径转换为点路径
+        ## 要求
+        路径中的文件夹与文件名不能含有点
+        """
+        path = path.replace('/', '\\')
+        dot_path = '.'.join('.'.join(path.split('.')[0:-1]).split('\\'))
+        ext = path.split('.')[-1]
+        return dot_path
 
-    @property
-    def data(self) -> Dict[Any, Any]:
-        # OLD
-        return self.__data
+    def dot2path(self, dot_path, root='data'):
+        """
+        # 将点路径转换为路径
+        ## 要求
+        路径中的文件夹与文件名不能含有点
+        """
+        path = dot_path.replace('.', '\\')
+        paths = []
+        for each in self.ext_priority:
+            tmp_path = path+'.'+each
+            if os.path.exists(root+'\\'+tmp_path):
+                paths.append(root+'\\'+tmp_path)
+        return paths
+
+    def mount(self, dot_path: str) -> None:
+        """
+        # 挂载数据文件到内存（覆盖）
+        """
+        path = self.dot2path(dot_path)
+        data = self.read(path)
+        self.__data['data'][dot_path] = data
+
+    def umount(self, dot_path: str) -> None:
+        """
+        # 从内存中卸载数据（不保存）
+        """
+        del self.__data['data'][dot_path]
+
+    def save(self, dot_path: str, ext=None):  # Quick Save
+        """
+        # 将当前save数据保存到唯一save文件中
+        """
+        pass
+
+    def read_save(self, save_file_path=None):
+        """
+        # 读取存档文件（覆盖）
+        如果不传入save_file_path，代表快速读取
+        """
+        pass
+
+    def write_save(self, save_file_path=None):
+        pass
+
+    def import_data(self):
+        """
+        # 导入数据
+        用于数据共享
+        """
+        pass
+
+    def export_data(self):
+        """
+        # 导出数据
+        用于数据共享
+        """
+        pass
 
     def check_file_system(self) -> None:
         """
@@ -148,88 +241,76 @@ class DataModule(event.EventModule):
                 self.emit('file_missing', event_data)
                 open(each, 'w')
 
-    def import_data(self, file_path):
-        """
-        # 导入数据
-        从数据文件导入数据
-        ## 支持导入的数据文件格式
-        - Setup Information file: *.inf
-        - Configuration file: *.ini
-        - Generic Preference file: *.cfg, *.config
-        - Comma Separated Values file: *.csv
-        - JavaScript Object Notation file: *.json
-        - YAML Ain't Markup Language file: *.yaml
-        - ZIP Compressed file: *.zip
-        - Text file: *.txt
-        """
-        ext = os.path.splitext(file_path)[1].split('.')[1].lower()
-        data = None
-        if ext in ['cfg', 'config', 'ini', 'inf']:
-            data = cfg_file.read(file_path)
-        elif ext == 'csv':
-            data = csv_file.read(file_path)
-        elif ext == 'json':
-            data = json_file.read(file_path)
-        elif ext == 'yaml':
-            data = yaml_file.read(file_path)
-        elif ext == 'zip':
-            data = yaml_file.read(file_path)
-        elif ext == 'txt':
-            data = text_file.read(file_path)
-        # elif ext == 'kjml':
-        #     data = []
-        #     with open(file_path, 'r') as f:
-        #         for line in f.readlines():
-        #             data.append(line[:-1])
-        return data
+    # def import_data(self, file_path):
+    #     """
+    #     # 导入数据
+    #     从数据文件导入数据
+    #     ## 支持导入的数据文件格式
+    #     - Setup Information file: *.inf
+    #     - Configuration file: *.ini
+    #     - Generic Preference file: *.cfg, *.config
+    #     - Comma Separated Values file: *.csv
+    #     - JavaScript Object Notation file: *.json
+    #     - YAML Ain't Markup Language file: *.yaml, *.yml
+    #     - ZIP Compressed file: *.zip
+    #     - Text file: *.txt
+    #     """
+    #     ext = os.path.splitext(file_path)[1].split('.')[1].lower()
+    #     data = None
+    #     if ext in ['cfg', 'config', 'ini', 'inf']:
+    #         data = cfg_file.read(file_path)
+    #     elif ext == 'csv':
+    #         data = csv_file.read(file_path)
+    #     elif ext == 'json':
+    #         data = json_file.read(file_path)
+    #     elif ext in ['yaml', 'yml']:
+    #         data = yaml_file.read(file_path)
+    #     elif ext == 'zip':
+    #         data = yaml_file.read(file_path)
+    #     elif ext == 'txt':
+    #         data = text_file.read(file_path)
+    #     # elif ext == 'kjml':
+    #     #     data = []
+    #     #     with open(file_path, 'r') as f:
+    #     #         for line in f.readlines():
+    #     #             data.append(line[:-1])
+    #     return data
 
-    def export_data(self, data, name, folder_path='.', ext='json') -> None:
-        """
-        # 导出数据
-        导出数据到数据文件
-        ## 支持导出的数据文件格式
-        - Setup Information file: *.inf
-        - Configuration file: *.ini
-        - Generic Preference file: *.cfg, *.config
-        - Comma Separated Values file: *.csv
-        - JavaScript Object Notation file: *.json
-        - YAML Ain't Markup Language file: *.yaml
-        - ZIP Compressed file: *.zip
-        - Text file: *.txt
-        """
-        ext = ext.lower()
-        file_path = "{}/{}.{}".format(folder_path, name, ext)
-        #
-        if ext in ['cfg', 'config', 'ini', 'inf']:
-            cfg_file.write(file_path, data)
-        elif ext == 'csv':
-            csv_file.write(file_path, data)
-        elif ext == 'json':
-            json_file.write(file_path, data)
-        elif ext == 'yaml':
-            yaml_file.write(file_path, data)
-        elif ext == 'zip':
-            zip_file.write(file_path, data)
-        elif ext == 'txt':
-            text_file.write(file_path, data)
-
-    def mount(self, dot_path: str) -> None:
-        """
-        # 挂载数据文件数据到内存
-        """
-        pass
-
-    def umount(self, dot_path: str) -> None:
-        """
-        # 从内存中卸载数据（不保存）
-        """
-        pass
+    # def export_data(self, data, name, folder_path='.', ext='json') -> None:
+    #     """
+    #     # 导出数据
+    #     导出数据到数据文件
+    #     ## 支持导出的数据文件格式
+    #     - Setup Information file: *.inf
+    #     - Configuration file: *.ini
+    #     - Generic Preference file: *.cfg, *.config
+    #     - Comma Separated Values file: *.csv
+    #     - JavaScript Object Notation file: *.json
+    #     - YAML Ain't Markup Language file: *.yaml
+    #     - ZIP Compressed file: *.zip
+    #     - Text file: *.txt
+    #     """
+    #     ext = ext.lower()
+    #     file_path = "{}/{}.{}".format(folder_path, name, ext)
+    #     #
+    #     if ext in ['cfg', 'config', 'ini', 'inf']:
+    #         cfg_file.write(file_path, data)
+    #     elif ext == 'csv':
+    #         csv_file.write(file_path, data)
+    #     elif ext == 'json':
+    #         json_file.write(file_path, data)
+    #     elif ext == 'yaml':
+    #         yaml_file.write(file_path, data)
+    #     elif ext == 'zip':
+    #         zip_file.write(file_path, data)
+    #     elif ext == 'txt':
+    #         text_file.write(file_path, data)
 
     def scan(self, path):
         files = []
         for dirpath, dirnames, filenames in os.walk(path, True):
             for filename in filenames:
-                fileList.append(dirpath + '\\' + filename)
+                files.append(dirpath + '\\' + filename)
                 dispatcher.dispatch(
                     event_type.DATA_FILE_FOUND,
                     self.path2dot(dirpath + '\\' + filename)
@@ -321,7 +402,7 @@ class DataModule(event.EventModule):
                     'to': 'r'
                 }
                 send_func(bag)
-            data[key] = self.import_data(each)
+            data[key] = self.read(each)
         return data
 
     def save_data_to_file(self, dot_path, ext='yaml'):
