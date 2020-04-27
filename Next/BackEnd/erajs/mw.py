@@ -24,9 +24,29 @@ def init():
     e.off('folder_missing', on_folder_missing)
     e.off('file_missing', on_file_missing)
     e.info('│  └─ Data Integrity Checked!')
-    e.info('├─ Loading Engine Config...')
-    e.load_config(['config/config.ini'])
-    e.info('│  └─ Engine Config Loaded!')
+    e.info('├─ Scanning Configs...')
+    configs_found = 0
+
+    def on_config_found(event):
+        nonlocal configs_found
+        e.info('│  ├─ Config [{}] Found.'.format(event['value']))
+        configs_found += 1
+    e.on('config_found', on_config_found)
+    e.scan_configs()
+    e.off('config_found', on_config_found)
+    e.info('│  └─ {} Configs Found!'.format(configs_found))
+    e.info('├─ Loading Configs...')
+    # e.load_config(['config/config.ini'])
+    configs_loaded = 0
+
+    def on_config_loaded(event):
+        e.info('│  ├─ Plugin [{}] Loaded.'.format(event['value']))
+        configs_loaded += 1
+    e.on('config_loaded', on_config_loaded)
+    e.load_configs()
+    e.off('config_loaded', on_config_loaded)
+    e.info('│  └─ {} Configs Found!'.format(configs_found))
+    # e.info('│  └─ Engine Config Loaded!')
     e.info('├─ Connecting...')
     e.connect()
     e.info('│  └─ Connected!')
