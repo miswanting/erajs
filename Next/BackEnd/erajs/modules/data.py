@@ -226,7 +226,7 @@ class DataModule(event.EventModule):
         pass
 
     def scan(self, path):
-        fileList = []
+        files = []
         for dirpath, dirnames, filenames in os.walk(path, True):
             for filename in filenames:
                 fileList.append(dirpath + '\\' + filename)
@@ -234,12 +234,15 @@ class DataModule(event.EventModule):
                     event_type.DATA_FILE_FOUND,
                     self.path2dot(dirpath + '\\' + filename)
                 )
-        return fileList
+        return files
 
-    def scan_config(self, config_path):
-        pass
+    def scan_configs(self):
+        files = self.scan('config')
+        for each in files:
+            dot_path = self.path2dot(each)
+            self.emit('config_found', {'value': dot_path})
 
-    def load_config(self, config_path):
+    def load_configs(self):
         """
         从路径读入ConfigPath，并挂载到data config key
         """
