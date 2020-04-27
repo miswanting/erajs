@@ -164,3 +164,6 @@ def dat(dot_path):
 def sav():
     return m.sav()
 
+
+def dangerously_get_engine_core():
+    return m.dangerously_get_engine_core()

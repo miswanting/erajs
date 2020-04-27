@@ -369,6 +369,11 @@ def back(num, *arg, **kw):
 def mode(type, *arg, **kw):
     e.push('mode', {'type': type, 'arg': arg}, None)
 
+
+def dangerously_get_engine_core():
+    return e
+
+
 def cfg(dot_path):
     return e.cfg(dot_path)
 
