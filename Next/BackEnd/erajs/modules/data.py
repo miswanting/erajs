@@ -73,6 +73,25 @@ class DataModule(event.EventModule):
     def cfg(self) -> Dict[Any, Any]:
         # NEW
         return self.__data['config']
+    def cfg(self, dot_path):
+        if dot_path in self.__data['config'].keys():
+            return self.__data['config'][dot_path]
+        else:
+            self.warn('Config File: "{}" DO NOT EXIST!'.format(str(dot_path)))
+            return False
+
+    def dat(self, dot_path):
+        if dot_path in self.__data['data'].keys():
+            return self.__data['data'][dot_path]
+        elif self.mount(dot_path):
+            return self.__data['data'][dot_path]
+        else:
+            self.warn('Data File: "{}" DO NOT EXIST!'.format(str(dot_path)))
+            return False
+
+    def sav(self):
+        return self.__data['save']
+
 
     @property
     def std(self) -> Dict[Any, Any]:

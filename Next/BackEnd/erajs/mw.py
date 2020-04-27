@@ -368,3 +368,14 @@ def back(num, *arg, **kw):
 
 def mode(type, *arg, **kw):
     e.push('mode', {'type': type, 'arg': arg}, None)
+
+def cfg(dot_path):
+    return e.cfg(dot_path)
+
+
+def dat(dot_path):
+    return e.dat(dot_path)
+
+
+def sav():
+    return e.sav()

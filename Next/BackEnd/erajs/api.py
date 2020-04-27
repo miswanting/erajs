@@ -151,3 +151,16 @@ def mode(type='line', *arg, **kw):
 
 def exit(save=False):
     pass
+
+
+def cfg(dot_path):
+    return m.cfg(dot_path)
+
+
+def dat(dot_path):
+    return m.dat(dot_path)
+
+
+def sav():
+    return m.sav()
+
