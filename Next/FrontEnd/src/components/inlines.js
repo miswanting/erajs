@@ -28,17 +28,17 @@ function Heading(props) {
     )
 }
 function Text(props) {
-    const [shake, setShake] = React.useState(false)
-    React.useEffect(() => {
-        if (props.style) {
-            if (props.style.hasOwnProperty('shake_duration')) {
-                const timer = setTimeout(() => {
-                    console.log('This will shake!')
-                }, props.style.shake_duration * 1000)
-            }
-        }
-        return () => clearTimeout(timer)
-    }, [])
+    // const [shake, setShake] = React.useState(false)
+    // React.useEffect(() => {
+    //     if (props.style) {
+    //         if (props.style.hasOwnProperty('shake_duration')) {
+    //             const timer = setTimeout(() => {
+    //                 console.log('This will shake!')
+    //             }, props.style.shake_duration * 1000)
+    //         }
+    //     }
+    //     return () => clearTimeout(timer)
+    // }, [])
 
 
     if (!props.data.text) {
@@ -47,7 +47,7 @@ function Text(props) {
         )
     }
     let c = ['text']
-    if (shake) {
+    if (props.style && props.style.hasOwnProperty('shake_duration')) {
         c.push('shake')
         c.push('shake-constant')
     }
