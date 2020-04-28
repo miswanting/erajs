@@ -178,7 +178,7 @@ class DataModule(event.EventModule):
 
     def save(self, dot_path: str, ext=None):  # Quick Save
         """
-        # 将当前save数据保存到唯一save文件中
+        # 将当前save数据保存到特定save文件中（快速保存）
         """
         pass
 
