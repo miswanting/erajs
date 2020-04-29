@@ -375,7 +375,7 @@ def divider(text, style):
 
 
 def get_data():
-    return e.dat
+    return e.dat()
 
 
 def goto(ui_func, *arg, **kw):
