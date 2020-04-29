@@ -40,13 +40,13 @@ def init():
     configs_loaded = 0
 
     def on_config_loaded(event):
+        nonlocal configs_loaded
         e.info('│  ├─ Plugin [{}] Loaded.'.format(event['value']))
         configs_loaded += 1
     e.on('config_loaded', on_config_loaded)
     e.load_configs()
     e.off('config_loaded', on_config_loaded)
-    e.info('│  └─ {} Configs Found!'.format(configs_found))
-    # e.info('│  └─ Engine Config Loaded!')
+    e.info('│  └─ {} Configs Loaded!'.format(configs_loaded))
     e.info('├─ Connecting...')
     e.connect()
     e.info('│  └─ Connected!')
@@ -75,6 +75,7 @@ def init():
     data_files_found = 0
 
     def on_data_file_found(event):
+        nonlocal data_files_found
         e.info('│  ├─ Data File [{}] Found.'.format(event['value']))
         data_files_found += 1
     e.on('data_file_found', on_data_file_found)
@@ -85,6 +86,7 @@ def init():
     data_files_loaded = 0
 
     def on_data_file_loaded(event):
+        nonlocal data_files_loaded
         e.info('│  ├─ Data File [{}] Loaded.'.format(event['value']))
         data_files_loaded += 1
     e.on('data_file_loaded', on_data_file_loaded)
