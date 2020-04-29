@@ -61,17 +61,13 @@ class DataModule(event.EventModule):
         """
         super().__init__()
         self.__data: Dict[str, dict] = {  # data【OLD】
-            "config": {  # cfg【NEW】
-                "ENGINE": {},  # 引擎配置【NEW】
-                "PLUGINs": {},  # 插件激活状态【OLD】
-                "DLCs": {},  # DLC激活状态【OLD】
-                "MODs": {},  # MOD激活状态【OLD】
-            },
+            "config": {},  # cfg【NEW】
             "db": {},  # 存档的数据【OLD】
             "tmp": {},  # 【OLD】
             # 'standard':  {},  # std【NEW】
             'data': {},  # dat【NEW】
             'save': {},  # sav【NEW】
+            'load_queue': []
             # 'user': {},  # usr【NEW】
         }
 
