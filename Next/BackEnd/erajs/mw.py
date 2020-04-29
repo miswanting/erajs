@@ -36,7 +36,6 @@ def init():
     e.off('config_found', on_config_found)
     e.info('│  └─ {} Configs Found!'.format(configs_found))
     e.info('├─ Loading Configs...')
-    # e.load_config(['config/config.ini'])
     configs_loaded = 0
 
     def on_config_loaded(event):
