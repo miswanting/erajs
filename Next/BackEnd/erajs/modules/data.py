@@ -185,27 +185,37 @@ class DataModule(event.EventModule):
     def scan_configs(self):
         files = self.scan('config')
         for each in files:
-            dot_path = self.path2dot(each)
+            dot_path = '.'.join(self.path2dot(each).split('.')[1:])
+            self.__data['load_queue'].append([dot_path, each])
             self.emit('config_found', {'value': dot_path})
 
     def load_configs(self):
         """
         从路径读入ConfigPath，并挂载到data config key
         """
-        # self.info('├─ Loading Engine Config...')
-        config = self.load_data(config_path)
-        for each in config['config.config'].keys():
-            self.data['config'][each] = config['config.config'][each]
-        # dispatcher.dispatch(event_type.ENGINE_CONFIG_LOADED)
+        while self.__data['load_queue']:
+            pair = self.__data['load_queue'].pop()
+            self.__data['config'][pair[0]] = self.read(pair[1])
+            self.emit('config_loaded', {'value': pair[0]})
 
     def scan_data_files(self):
-        file_list = self.scan('data')
+        files = self.scan('data')
+        for each in files:
+            dot_path = '.'.join(self.path2dot(each).split('.')[1:])
+            self.__data['load_queue'].append([dot_path, each])
+            self.emit('data_file_found', {'value': dot_path})
+        # file_list = self.scan('data')
         # dispatcher.dispatch(
         # event_type.DATA_FILES_SCAN_FINISHED, len(file_list)
         # )
 
     def load_data_files(self):
-        file_list = self.scan('data')
+        while self.__data['load_queue']:
+            pair = self.__data['load_queue'].pop()
+            self.__data['data'][pair[0]] = self.read(pair[1])
+            print(self.read(pair[1]))
+            self.emit('data_file_loaded', {'value': pair[0]})
+        # file_list = self.scan('data')
         # dispatcher.dispatch(
         #     event_type.DATA_FILES_LOAD_FINISHED, len(file_list)
         # )
@@ -344,6 +354,7 @@ class DataModule(event.EventModule):
         pass
 
     # TODO：↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
     def save_to(self, save_num, save_name=''):
         """
         将存档按序号保存到存档文件中
