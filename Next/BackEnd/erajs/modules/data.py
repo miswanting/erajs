@@ -71,137 +71,6 @@ class DataModule(event.EventModule):
             # 'user': {},  # usr【NEW】
         }
 
-    def cfg(self, dot_path):
-        if dot_path in self.__data['config'].keys():
-            return self.__data['config'][dot_path]
-        else:
-            self.warn('Config File: "{}" DO NOT EXIST!'.format(str(dot_path)))
-            return False
-
-    def dat(self, dot_path):
-        if dot_path in self.__data['data'].keys():
-            return self.__data['data'][dot_path]
-        elif self.mount(dot_path):
-            return self.__data['data'][dot_path]
-        else:
-            self.warn('Data File: "{}" DO NOT EXIST!'.format(str(dot_path)))
-            return False
-
-    def sav(self):
-        return self.__data['save']
-
-    def read(self, path, mode=None):
-        """
-        # 读取文件到数据
-        """
-        ext = os.path.splitext(path[0])[1].lower()
-        data = None
-        if ext in ['inf', 'ini', 'cfg', 'config']:
-            data = cfg_file.read(path)
-        elif ext == 'csv':
-            data = csv_file.read(path)
-        elif ext == 'json':
-            data = json_file.read(path)
-        elif ext in ['yaml', 'yml']:
-            data = yaml_file.read(path)
-        elif ext == 'zip':
-            data = zip_file.read(path)
-        elif ext == 'txt':
-            data = text_file.read(path)
-        return data
-
-    def write(self, data, path, mode=None):
-        """
-        # 写入数据到文件
-        """
-        ext = os.path.splitext(path)[1].split('.')[1].lower()
-        if ext in ['inf', 'ini', 'cfg', 'config']:
-            cfg_file.write(path, data)
-        elif ext == 'csv':
-            csv_file.write(path, data)
-        elif ext == 'json':
-            json_file.write(path, data)
-        elif ext in ['yaml', 'yml']:
-            yaml_file.write(path, data)
-        elif ext == 'zip':
-            zip_file.write(path, data)
-        elif ext == 'txt':
-            text_file.write(path, data)
-
-    def assemble_path(self, folder_path, file_name, file_extension):
-        file_extension = file_extension.lower()
-        path = "{}/{}.{}".format(folder_path, file_name, file_extension)
-        return path
-
-    def path2dot(self, path):
-        """
-        # 将路径转换为点路径
-        ## 要求
-        路径中的文件夹与文件名不能含有点
-        """
-        path = path.replace('/', '\\')
-        dot_path = '.'.join('.'.join(path.split('.')[0:-1]).split('\\'))
-        ext = path.split('.')[-1]
-        return dot_path
-
-    def dot2path(self, dot_path, root='data'):
-        """
-        # 将点路径转换为路径
-        ## 要求
-        路径中的文件夹与文件名不能含有点
-        """
-        path = dot_path.replace('.', '\\')
-        paths = []
-        for each in self.ext_priority:
-            tmp_path = path+'.'+each
-            if os.path.exists(root+'\\'+tmp_path):
-                paths.append(root+'\\'+tmp_path)
-        return paths
-
-    def mount(self, dot_path: str) -> None:
-        """
-        # 挂载数据文件到内存（覆盖）
-        """
-        path = self.dot2path(dot_path)
-        data = self.read(path)
-        self.__data['data'][dot_path] = data
-
-    def umount(self, dot_path: str) -> None:
-        """
-        # 从内存中卸载数据（不保存）
-        """
-        del self.__data['data'][dot_path]
-
-    def save(self, dot_path: str, ext=None):  # Quick Save
-        """
-        # 将当前save数据保存到特定save文件中（快速保存）
-        """
-        pass
-
-    def read_save(self, save_file_path=None):
-        """
-        # 读取存档文件（覆盖）
-        如果不传入save_file_path，代表快速读取
-        """
-        pass
-
-    def write_save(self, save_file_path=None):
-        pass
-
-    def import_data(self):
-        """
-        # 导入数据
-        用于数据共享
-        """
-        pass
-
-    def export_data(self):
-        """
-        # 导出数据
-        用于数据共享
-        """
-        pass
-
     def check_file_system(self) -> None:
         """
         # 数据初始化
@@ -340,6 +209,139 @@ class DataModule(event.EventModule):
         # dispatcher.dispatch(
         #     event_type.DATA_FILES_LOAD_FINISHED, len(file_list)
         # )
+
+    def cfg(self, dot_path):
+        if dot_path in self.__data['config'].keys():
+            return self.__data['config'][dot_path]
+        else:
+            self.warn('Config File: "{}" DO NOT EXIST!'.format(str(dot_path)))
+            return False
+
+    def dat(self, dot_path=None):
+        if dot_path is None:
+            return self.__data['data']
+        if dot_path in self.__data['data'].keys():
+            return self.__data['data'][dot_path]
+        elif self.mount(dot_path):
+            return self.__data['data'][dot_path]
+        else:
+            self.warn('Data File: "{}" DO NOT EXIST!'.format(str(dot_path)))
+            return False
+
+    def sav(self):
+        return self.__data['save']
+
+    def read(self, path, mode=None):
+        """
+        # 读取文件到数据
+        """
+        ext = os.path.splitext(path)[1][1:].lower()
+        data = None
+        if ext in ['inf', 'ini', 'cfg', 'config']:
+            data = cfg_file.read(path)
+        elif ext == 'csv':
+            data = csv_file.read(path)
+        elif ext == 'json':
+            data = json_file.read(path)
+        elif ext in ['yaml', 'yml']:
+            data = yaml_file.read(path)
+        elif ext == 'zip':
+            data = zip_file.read(path)
+        elif ext == 'txt':
+            data = text_file.read(path)
+        return data
+
+    def write(self, data, path, mode=None):
+        """
+        # 写入数据到文件
+        """
+        ext = os.path.splitext(path)[1].split('.')[1].lower()
+        if ext in ['inf', 'ini', 'cfg', 'config']:
+            cfg_file.write(path, data)
+        elif ext == 'csv':
+            csv_file.write(path, data)
+        elif ext == 'json':
+            json_file.write(path, data)
+        elif ext in ['yaml', 'yml']:
+            yaml_file.write(path, data)
+        elif ext == 'zip':
+            zip_file.write(path, data)
+        elif ext == 'txt':
+            text_file.write(path, data)
+
+    def assemble_path(self, folder_path, file_name, file_extension):
+        file_extension = file_extension.lower()
+        path = "{}/{}.{}".format(folder_path, file_name, file_extension)
+        return path
+
+    def path2dot(self, path):
+        """
+        # 将路径转换为点路径
+        ## 要求
+        路径中的文件夹与文件名不能含有点
+        """
+        path = path.replace('/', '\\')
+        dot_path = '.'.join('.'.join(path.split('.')[0:-1]).split('\\'))
+        ext = path.split('.')[-1]
+        return dot_path
+
+    def dot2path(self, dot_path, root='data'):
+        """
+        # 将点路径转换为路径
+        ## 要求
+        路径中的文件夹与文件名不能含有点
+        """
+        path = dot_path.replace('.', '\\')
+        paths = []
+        for each in self.ext_priority:
+            tmp_path = path+'.'+each
+            if os.path.exists(root+'\\'+tmp_path):
+                paths.append(root+'\\'+tmp_path)
+        return paths
+
+    def mount(self, dot_path: str) -> None:
+        """
+        # 挂载数据文件到内存（覆盖）
+        """
+        path = self.dot2path(dot_path)
+        data = self.read(path)
+        self.__data['data'][dot_path] = data
+
+    def unmount(self, dot_path: str) -> None:
+        """
+        # 从内存中卸载数据（不保存）
+        """
+        del self.__data['data'][dot_path]
+
+    def save(self, dot_path: str, ext=None):  # Quick Save
+        """
+        # 将当前save数据保存到特定save文件中（快速保存）
+        """
+        pass
+
+    def read_save(self, save_file_path=None):
+        """
+        # 读取存档文件（覆盖）
+        如果不传入save_file_path，代表快速读取
+        """
+        pass
+
+    def write_save(self, save_file_path=None):
+        pass
+
+    def import_data(self):
+        """
+        # 导入数据
+        用于数据共享
+        """
+        pass
+
+    def export_data(self):
+        """
+        # 导出数据
+        用于数据共享
+        """
+        pass
 
     # TODO：↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
     def save_to(self, save_num, save_name=''):
