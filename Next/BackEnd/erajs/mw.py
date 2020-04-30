@@ -301,9 +301,12 @@ def rate(now=0, max=5, callback=None, style=None):
     data['disabled'] = False
     if callback == None:
         data['disabled'] = True
+    if style is None:
+        style = {}
     e.push('rate', data, style)
 
     def on_click(e):
+        # print(e)
         if e['target'] == data['hash']:
             callback(e['value'])
     e.on('RATE_CLICK', on_click, data['hash'])
@@ -318,6 +321,8 @@ def check(text, callback, default, style):
     data['disabled'] = False
     if callback == None:
         data['disabled'] = True
+    if style is None:
+        style = {}
     e.push('check', data, style)
 
     def on_click(e):
@@ -335,12 +340,14 @@ def radio(text_list, callback, default_index, style):
     data['disabled'] = False
     if callback == None:
         data['disabled'] = True
+    if style is None:
+        style = {}
     e.push('radio', data, style)
 
     def on_click(e):
         if e['target'] == data['hash']:
             callback(e['value'])
-    e.on('RADIO_CLICK', on_click, data['hash'])
+    e.on('RADIO_CHANGE', on_click, data['hash'])
 
 
 def input(callback, default, is_area, placeholder, style):
@@ -353,7 +360,9 @@ def input(callback, default, is_area, placeholder, style):
     data['disabled'] = False
     if callback == None:
         data['disabled'] = True
-    e.push('rate', data, style)
+    if style is None:
+        style = {}
+    e.push('input', data, style)
 
     def on_click(e):
         if e['target'] == data['hash']:
@@ -362,6 +371,7 @@ def input(callback, default, is_area, placeholder, style):
 
 
 def dropdown(text_list, callback, default_index, search, multiple, placeholder, allowAdditions, style):
+    
     data = {
         'text_list': text_list,
         'default_index': default_index,
@@ -374,6 +384,8 @@ def dropdown(text_list, callback, default_index, search, multiple, placeholder, 
     data['disabled'] = False
     if callback == None:
         data['disabled'] = True
+    if style is None:
+        style = {}
     e.push('dropdown', data, style)
 
 

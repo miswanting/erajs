@@ -102,13 +102,13 @@ def radio(text_list, callback=None, default_index=0, style=None):
     m.radio(text_list, callback, default_index, style)
 
 
-def input(callback=None, default='', is_area=False, placeholder=''):
-    m.input(callback, default, is_area, placeholder)
+def input(callback=None, default='', is_area=False, placeholder='', style=None):
+    m.input(callback, default, is_area, placeholder, style)
 
 
-def dropdown(text_list=None, callback=None, default_index=0, search=False, multiple=False, placeholder='', allowAdditions=False):
+def dropdown(text_list=None, callback=None, default_index=0, search=False, multiple=False, placeholder='', allowAdditions=False, style=None):
     m.dropdown(text_list, callback, default_index, search,
-               multiple, placeholder, allowAdditions)
+               multiple, placeholder, allowAdditions, style)
 
 
 def divider(text=None):
