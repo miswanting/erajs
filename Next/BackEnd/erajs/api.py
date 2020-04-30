@@ -90,8 +90,8 @@ def progress(now=0, max=100, style=None):
     m.progress(now, max, style)
 
 
-def rate(now=0, max=5, callback=None):
-    m.rate(now, max, callback)
+def rate(now=0, max=5, callback=None, style=None):
+    m.rate(now, max, callback, style)
 
 
 def check(text=None, callback=None, default=False, style=None):

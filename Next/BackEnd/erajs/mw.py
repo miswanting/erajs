@@ -292,8 +292,12 @@ def progress(now=0, max=100, style=None):
     e.push('progress', {'now': now, 'max': max}, style)
 
 
-def rate(now, max, callback, style):
-    data = {'now': now, 'max': max, 'hash': tools.random_hash()}
+def rate(now=0, max=5, callback=None, style=None):
+    data = {
+        'now': now,
+        'max': max,
+        'hash': tools.random_hash()
+    }
     data['disabled'] = False
     if callback == None:
         data['disabled'] = True

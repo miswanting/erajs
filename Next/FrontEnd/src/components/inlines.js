@@ -11,6 +11,8 @@ module.exports = function Inline(props) {
         inline = Link(props)
     } else if (props.type == 'progress') {
         inline = Progress(props)
+    } else if (props.type == 'rate') {
+        inline = Rate(props)
     } else {
         inline = React.createElement('span', {}, JSON.stringify(props))
     }
