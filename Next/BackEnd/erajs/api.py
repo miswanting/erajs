@@ -86,8 +86,8 @@ def link(text=None, callback=None, style=None, *arg, **kw):
 l = link
 
 
-def progress(now=0, max=100, width=100, style=None):
-    m.progress(now, max, width)
+def progress(now=0, max=100, style=None):
+    m.progress(now, max, style)
 
 
 def rate(now=0, max=5, callback=None):
