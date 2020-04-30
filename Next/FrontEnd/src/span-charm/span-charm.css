@@ -68,6 +68,20 @@ span.text.shake {
   border-radius: 0.2rem;
   left: 0px;
 }
+.check {
+  margin: 0rem 0.2rem;
+}
 .radio {
   margin: 0rem 0.2rem;
+}
+.input {
+  height: 1rem;
+  width: 100px;
+  background-color: var(--react-dark);
+  border: none;
+  color: var(--react-light);
+  margin: 0rem 0.2rem;
+}
+input:focus{
+  outline: none;
 }

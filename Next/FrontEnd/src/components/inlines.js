@@ -11,10 +11,16 @@ module.exports = function Inline(props) {
         inline = Link(props)
     } else if (props.type == 'progress') {
         inline = Progress(props)
+    } else if (props.type == 'check') {
+        inline = Check(props)
     } else if (props.type == 'rate') {
         inline = Rate(props)
     } else if (props.type == 'radio') {
         inline = Radio(props)
+    } else if (props.type == 'input') {
+        inline = Input(props)
+    } else if (props.type == 'dropdown') {
+        inline = Dropdown(props)
     } else {
         inline = React.createElement('span', {}, JSON.stringify(props))
     }
@@ -168,4 +174,221 @@ function Progress(props) {
         )
     )
 }
+function Rate(props) {
+    const [now, setNow] = React.useState(props.data.now)
+    let falseIcon = '☆';
+    let trueIcon = '★';
+
+    if (props.style.hasOwnProperty('false_icon')) {
+        falseIcon = props.style.false_icon;
+    }
+
+    if (props.style.hasOwnProperty('true_icon')) {
+        trueIcon = props.style.true_icon;
+    }
+
+    click = i => {
+        if (!props.data.disabled) {
+            if (i == now) {
+                i = 0
+            }
+            props.callback({
+                type: 'pull',
+                data: {
+                    type: 'RATE_CLICK',
+                    value: i,
+                    target: props.data.hash
+                }
+            });
+            setNow(i)
+        }
+    };
+
+    let itemList = [];
+
+    for (let i = 0; i < props.data.max; i++) {
+        if (i < now) {
+            itemList.push(React.createElement('span', {
+                className: 'rate-item',
+                onClick: e => {
+                    click(i + 1);
+                }
+            }, trueIcon));
+        } else {
+            itemList.push(React.createElement('span', {
+                className: 'rate-item',
+                onClick: () => {
+                    click(i + 1);
+                }
+            }, falseIcon));
+        }
+    }
+
+    return React.createElement('span', {
+        className: 'rate',
+        style: props.style
+    }, itemList);
+}
+
+function Check(props) {
+    const [value, setValue] = React.useState(props.data.default)
+    let falseIcon = '◻';
+    let trueIcon = '◼';
+
+    if (props.style.hasOwnProperty('false_icon')) {
+        falseIcon = props.style.false_icon;
+    }
+
+    if (props.style.hasOwnProperty('true_icon')) {
+        trueIcon = props.style.true_icon;
+    }
+
+    click = () => {
+        if (!props.data.disabled) {
+            props.callback({
+                type: 'pull',
+                data: {
+                    type: 'CHECK_CHANGE',
+                    value: !value,
+                    target: props.data.hash
+                }
+            });
+            setValue(!value)
+        }
+    };
+    let valueText = falseIcon
+    if (value) {
+        valueText = trueIcon
+    }
+    return React.createElement('span', {
+        className: 'check',
+        style: props.style,
+        onClick: click
+    }, [
+        React.createElement('span', {
+            className: 'check-value',
+        }, valueText),
+        React.createElement('span', {
+            className: 'check-text',
+        }, props.data.text)
+    ]);
+}
+function Radio(props) {
+    const [value, setValue] = React.useState(props.data.default_index)
+    let falseIcon = '◻';
+    let trueIcon = '◼';
+
+    if (props.style.hasOwnProperty('false_icon')) {
+        falseIcon = props.style.false_icon;
+    }
+
+    if (props.style.hasOwnProperty('true_icon')) {
+        trueIcon = props.style.true_icon;
+    }
+
+    click = (i) => {
+        if (!props.data.disabled) {
+            props.callback({
+                type: 'pull',
+                data: {
+                    type: 'RADIO_CHANGE',
+                    value: i,
+                    target: props.data.hash
+                }
+            });
+            setValue(i)
+        }
+    };
+    let itemList = []
+    for (let i = 0; i < props.data.text_list.length; i++) {
+        let valueText = falseIcon
+        if (i == value) {
+            valueText = trueIcon
+        }
+        itemList.push(
+            React.createElement('span', {
+                className: 'radio-item',
+                style: props.style,
+                onClick: () => { click(i) }
+            }, [
+                React.createElement('span', {
+                    className: 'radio-value',
+                }, valueText),
+                React.createElement('span', {
+                    className: 'radio-text',
+                }, props.data.text_list[i])
+            ])
+        )
+    }
+    return React.createElement('span', {
+        className: 'radio',
+    }, itemList);
+}
+function Input(props) {
+    const [value, setValue] = React.useState(props.data.default)
+    change = (e) => {
+        if (!props.data.disabled) {
+            props.callback({
+                type: 'pull',
+                data: {
+                    type: 'INPUT_CHANGE',
+                    value: e.target.value,
+                    target: props.data.hash
+                }
+            });
+            setValue(e.target.value)
+        }
+    };
+
+    let entity = null
+    if (props.data.is_area) {
+        entity = React.createElement('textarea', {
+            className: 'input-area',
+            onChange: change,
+            placeholder: props.data.placeholder,
+            value: value
+        })
+    } else {
+        entity = React.createElement('input', {
+            className: 'input',
+            onChange: change,
+            placeholder: props.data.placeholder,
+            value: value
+        })
+    }
+    return entity
+}
+function Dropdown(props) {
+    const [value, setValue] = React.useState(props.data.default)
+    change = (e) => {
+        if (!props.data.disabled) {
+            props.callback({
+                type: 'pull',
+                data: {
+                    type: 'INPUT_CHANGE',
+                    value: e.target.value,
+                    target: props.data.hash
+                }
+            });
+            setValue(e.target.value)
+        }
+    };
+
+    let entity = null
+    if (props.data.is_area) {
+        entity = React.createElement('textarea', {
+            className: 'input-area',
+            onChange: change,
+            placeholder: props.data.placeholder,
+            value: value
+        })
+    } else {
+        entity = React.createElement('input', {
+            className: 'input',
+            onChange: change,
+            placeholder: props.data.placeholder,
+            value: value
+        })
+    }
+    return entity
 }
