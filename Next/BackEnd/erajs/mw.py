@@ -286,8 +286,10 @@ def link(text, callback, style, *arg, **kw):
     e.unlock()
 
 
-def progress(now, max, width, style):
-    e.push('progress', {'now': now, 'max': max, 'width': width}, style)
+def progress(now=0, max=100, style=None):
+    if style is None:
+        style = [{}, {}]
+    e.push('progress', {'now': now, 'max': max}, style)
 
 
 def rate(now, max, callback, style):

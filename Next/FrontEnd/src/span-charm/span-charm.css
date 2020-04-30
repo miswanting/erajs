@@ -49,3 +49,22 @@ td {
 span.text.shake {
   display: inline-block;
 }
+.progress {
+  position: relative;
+  display: inline-block;
+  background-color: gray;
+  vertical-align: middle;
+  height: 1rem;
+  margin: 0rem 0.2rem;
+  border-radius: 0.2rem;
+}
+.progress::before,
+.bar::before {
+}
+.progress > .bar {
+  position: absolute;
+  background-color: lime;
+  height: 100%;
+  border-radius: 0.2rem;
+  left: 0px;
+}

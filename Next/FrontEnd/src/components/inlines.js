@@ -9,6 +9,8 @@ module.exports = function Inline(props) {
         inline = Button(props)
     } else if (props.type == 'link') {
         inline = Link(props)
+    } else if (props.type == 'progress') {
+        inline = Progress(props)
     } else {
         inline = React.createElement('span', {}, JSON.stringify(props))
     }
@@ -138,4 +140,28 @@ function Link(props) {
             props.data.text
         )
     )
+}
+function Progress(props) {
+    if (!props.style[0].hasOwnProperty('width')) {
+        props.style[0].width = '100px'
+    }
+    props.style[1].width = `${props.data.now / props.data.max * 100}%`
+    return (
+        React.createElement(
+            'span',
+            {
+                className: 'progress',
+                style: props.style[0]
+            },
+            React.createElement(
+                'span',
+                {
+                    className: 'bar',
+                    style: props.style[1]
+                },
+                props.data.text
+            )
+        )
+    )
+}
 }

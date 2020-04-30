@@ -71,7 +71,7 @@ module.exports = class DisplayManager extends EventEmitter {
             this.data.children[this.data.children.length - 1].children.push(el)
         } else if (el.type == 'pass' && this.data.mode.type == 'line') {
             this.addElement(this.newElement('line'))
-        } else if (['heading', 'text', 'button', 'link', 'pass'].indexOf(el.type) != -1) {
+        } else if (['heading', 'text', 'button', 'link', 'pass', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
             // Page Exist?
             if (this.data.children.length == 0) {
                 this.addElement(this.newElement('page'))
@@ -86,7 +86,7 @@ module.exports = class DisplayManager extends EventEmitter {
                 }
             }
             let lastBlock = lastPage.children[lastPage.children.length - 1]
-            if (['button', 'link'].indexOf(el.type) != -1) {
+            if (['button', 'link', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
                 el.callback = this.cmd
             }
             lastBlock.children.push(el)
