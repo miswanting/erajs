@@ -13,6 +13,8 @@ module.exports = function Inline(props) {
         inline = Progress(props)
     } else if (props.type == 'rate') {
         inline = Rate(props)
+    } else if (props.type == 'radio') {
+        inline = Radio(props)
     } else {
         inline = React.createElement('span', {}, JSON.stringify(props))
     }
