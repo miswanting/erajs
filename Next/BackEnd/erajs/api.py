@@ -98,8 +98,8 @@ def check(text=None, callback=None, default=False, style=None):
     m.check(text, callback, default, style)
 
 
-def radio(text_list, callback=None, default_index=0):
-    m.radio(text_list, callback, default_index)
+def radio(text_list, callback=None, default_index=0, style=None):
+    m.radio(text_list, callback, default_index, style)
 
 
 def input(callback=None, default='', is_area=False, placeholder=''):
