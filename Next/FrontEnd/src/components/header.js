@@ -1,4 +1,5 @@
 const React = require('../../node_modules/react')
+const { remote } = require('electron')
 
 module.exports = function Header(props) {
     return (
@@ -41,11 +42,38 @@ function Title(props) {
     )
 }
 function WindowOperatorBar(props) {
+    click = (type) => {
+        console.log(123);
+        if (type == 'min') {
+            remote.getCurrentWindow().unminimize()
+        } else if (type == 'max') {
+            if (remote.getCurrentWindow().isMaximized()) {
+                remote.getCurrentWindow().unmaximize()
+            } else {
+                remote.getCurrentWindow().maximize()
+            }
+        } else if (type == 'close') {
+            remote.getCurrentWindow().close()
+        }
+    }
     return (
         React.createElement('span', { className: 'window-operator-bar' },
-            React.createElement('span', { className: 'min' }, '●'),
-            React.createElement('span', { className: 'max' }, '●'),
-            React.createElement('span', { className: 'close' }, '●')
+            React.createElement('span', {
+                className: 'min',
+                onClick: () => {
+                    click('min')
+                }
+            }, '●'),
+            React.createElement('span', {
+                className: 'max',
+                onClick: () => { click('max') }
+            }, '●'),
+            React.createElement('span', {
+                className: 'close',
+                onClick: () => {
+                    click('close')
+                }
+            }, '●')
         )
     )
 }
