@@ -1,13 +1,3 @@
-:root {
-  --active-light: #eaeaea;
-  --hover-light: #cccccc;
-  --react-light: #a5a5a5;
-  --light: #d5d5d5;
-  --active-dark: #202020;
-  --hover-dark: #202020;
-  --react-dark: #333333;
-  --dark: #242424;
-}
 @font-face {
   font-family: "Microsoft YaHei";
   src: unset;
@@ -17,6 +7,5 @@ body,
 #root,
 .window {
   height: 100%;
-  /* background-color: rgba(0, 0, 0, 0); */
   overflow: hidden;
 }

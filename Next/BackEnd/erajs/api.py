@@ -91,28 +91,28 @@ def progress(now=0, max=100, style=None):
 
 
 def rate(now=0, max=5, callback=None, style=None):
-    m.rate(now, max, callback, style)
+    return m.rate(now, max, callback, style)
 
 
 def check(text=None, callback=None, default=False, style=None):
-    m.check(text, callback, default, style)
+    return m.check(text, callback, default, style)
 
 
 def radio(text_list, callback=None, default_index=0, style=None):
-    m.radio(text_list, callback, default_index, style)
+    return m.radio(text_list, callback, default_index, style)
 
 
 def input(callback=None, default='', is_area=False, placeholder='', style=None):
-    m.input(callback, default, is_area, placeholder, style)
+    return m.input(callback, default, is_area, placeholder, style)
 
 
 def dropdown(text_list=None, callback=None, default_index=0, search=False, multiple=False, placeholder='', allowAdditions=False, style=None):
-    m.dropdown(text_list, callback, default_index, search,
-               multiple, placeholder, allowAdditions, style)
+    return m.dropdown(text_list, callback, default_index, search,
+                      multiple, placeholder, allowAdditions, style)
 
 
-def divider(text=None):
-    m.divider(text)
+def divider(text=None, style=None):
+    m.divider(text, style)
 
 
 def goto(ui_func, *arg, **kw):

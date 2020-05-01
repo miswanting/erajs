@@ -1,0 +1,27 @@
+.light-theme {
+  /* 静态 */
+  --static-front: #000;
+  --static-back: #fff;
+  /* 默认 */
+  --default-front: #111;
+  --default-back: #eee;
+  /* 交互 */
+  --react-front: #222;
+  --react-back: #ddd;
+  /* 悬停 */
+  --hover-front: #333;
+  --hover-back: #ccc;
+  /* 激活 */
+  --active-front: #444;
+  --active-back: #bbb;
+}
+.dark-theme {
+  --active-light: #eaeaea;
+  --hover-light: #cccccc;
+  --react-light: #a5a5a5;
+  --light: #d5d5d5;
+  --active-dark: #202020;
+  --hover-dark: #202020;
+  --react-dark: #333333;
+  --dark: #242424;
+}

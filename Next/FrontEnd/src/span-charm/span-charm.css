@@ -82,6 +82,42 @@ span.text.shake {
   color: var(--react-light);
   margin: 0rem 0.2rem;
 }
-input:focus{
+input:focus {
   outline: none;
+}
+.dropdown {
+  position: relative;
+  margin: 0rem 0.2rem;
+  user-select: none;
+}
+.dropdown-anchor {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  width: 0rem;
+  height: 0rem;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  bottom: 0rem;
+  left: 0rem;
+  background-color: var(--react-dark);
+  width: max-content;
+  border: 0.5px solid gray;
+}
+.dropdown-menu.show {
+  display: block;
+}
+.divider {
+  display: flex;
+}
+.divider-text {
+  margin: 0em 0.2em;
+}
+.divider-line {
+  flex-grow: 1;
+  height: 1px;
+  align-self: center;
+  background-color: var(--light);
 }

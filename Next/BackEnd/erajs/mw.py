@@ -304,12 +304,15 @@ def rate(now=0, max=5, callback=None, style=None):
     if style is None:
         style = {}
     e.push('rate', data, style)
+    node = {'value': now}
 
     def on_click(e):
         # print(e)
         if e['target'] == data['hash']:
+            node['value'] = e['value']
             callback(e['value'])
     e.on('RATE_CLICK', on_click, data['hash'])
+    return node
 
 
 def check(text, callback, default, style):
@@ -324,11 +327,14 @@ def check(text, callback, default, style):
     if style is None:
         style = {}
     e.push('check', data, style)
+    node = {'value': default}
 
     def on_click(e):
         if e['target'] == data['hash']:
+            node['value'] = e['value']
             callback(e['value'])
     e.on('CHECK_CHANGE', on_click, data['hash'])
+    return node
 
 
 def radio(text_list, callback, default_index, style):
@@ -343,11 +349,14 @@ def radio(text_list, callback, default_index, style):
     if style is None:
         style = {}
     e.push('radio', data, style)
+    node = {'value': default_index}
 
     def on_click(e):
         if e['target'] == data['hash']:
+            node['value'] = e['value']
             callback(e['value'])
     e.on('RADIO_CHANGE', on_click, data['hash'])
+    return node
 
 
 def input(callback, default, is_area, placeholder, style):
@@ -363,15 +372,17 @@ def input(callback, default, is_area, placeholder, style):
     if style is None:
         style = {}
     e.push('input', data, style)
+    node = {'value': default}
 
     def on_click(e):
         if e['target'] == data['hash']:
+            node['value'] = e['value']
             callback(e['value'])
     e.on('INPUT_CHANGE', on_click, data['hash'])
+    return node
 
 
 def dropdown(text_list, callback, default_index, search, multiple, placeholder, allowAdditions, style):
-    
     data = {
         'text_list': text_list,
         'default_index': default_index,
@@ -387,6 +398,14 @@ def dropdown(text_list, callback, default_index, search, multiple, placeholder, 
     if style is None:
         style = {}
     e.push('dropdown', data, style)
+    node = {'value': default_index}
+
+    def on_click(e):
+        if e['target'] == data['hash']:
+            node['value'] = e['value']
+            callback(e['value'])
+    e.on('DROPDOWN_CHANGE', on_click, data['hash'])
+    return node
 
 
 def divider(text, style):

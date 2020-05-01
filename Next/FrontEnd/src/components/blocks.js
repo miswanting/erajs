@@ -8,12 +8,13 @@ module.exports = function Block(props) {
         block = Line(props)
     } else if (props.type == 'grid') {
         block = Grid(props)
+    } else if (props.type == 'divider') {
+        block = Divider(props)
     }
     return (
         block
     )
 }
-
 function Line(props) {
     let inlines = []
     for (let i = 0; i < props.children.length; i++) {
@@ -114,5 +115,23 @@ function Grid(props) {
                 rows
             )
         )
+    );
+}
+function Divider(props) {
+    return (
+        React.createElement('div', {
+            className: 'divider',
+            style: props.style
+        }, [
+            React.createElement('div', {
+                className: 'divider-line',
+            }),
+            React.createElement('div', {
+                className: 'divider-text',
+            }, props.data.text),
+            React.createElement('div', {
+                className: 'divider-line',
+            })
+        ])
     );
 }

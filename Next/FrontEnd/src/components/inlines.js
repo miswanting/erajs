@@ -359,36 +359,48 @@ function Input(props) {
     return entity
 }
 function Dropdown(props) {
-    const [value, setValue] = React.useState(props.data.default)
-    change = (e) => {
-        if (!props.data.disabled) {
-            props.callback({
-                type: 'pull',
-                data: {
-                    type: 'INPUT_CHANGE',
-                    value: e.target.value,
-                    target: props.data.hash
-                }
-            });
-            setValue(e.target.value)
-        }
-    };
+    const [value, setValue] = React.useState(props.data.default_index)
+    const [show, setShow] = React.useState(false)
+    let icon = '△';
+    click = () => {
+        console.log(show);
 
-    let entity = null
-    if (props.data.is_area) {
-        entity = React.createElement('textarea', {
-            className: 'input-area',
-            onChange: change,
-            placeholder: props.data.placeholder,
-            value: value
-        })
-    } else {
-        entity = React.createElement('input', {
-            className: 'input',
-            onChange: change,
-            placeholder: props.data.placeholder,
-            value: value
-        })
+        setShow(!show)
     }
-    return entity
+    clickItem = (i) => {
+        props.callback({
+            type: 'pull',
+            data: {
+                type: 'DROPDOWN_CHANGE',
+                value: i,
+                target: props.data.hash
+            }
+        });
+        setValue(i)
+    }
+    itemList = []
+    itemList.push(React.createElement('span', {
+        className: 'dropdown-item',
+    }, props.data.text_list[value]))
+    itemList.push(React.createElement('span', {
+        className: 'dropdown-icon',
+    }, icon))
+    if (show) {
+        let menuItemList = []
+        for (let i = 0; i < props.data.text_list.length; i++) {
+            menuItemList.push(React.createElement('div', {
+                className: 'dropdown-menu-item',
+                onClick: () => { clickItem(i) }
+            }, props.data.text_list[i]))
+        }
+        itemList.push(React.createElement('div', {
+            className: 'dropdown-anchor',
+        }, React.createElement('div', {
+            className: 'dropdown-menu show',
+        }, menuItemList)))
+    }
+    return React.createElement('span', {
+        className: 'dropdown',
+        onClick: click
+    }, itemList)
 }
