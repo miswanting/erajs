@@ -28,9 +28,7 @@ module.exports = function Container(props) {
 }
 
 function Page(props) {
-    let p = props
-    p.key = 3
-    let blocks = [React.createElement(DisableMask, p)]
+    let blocks = [React.createElement(DisableMask, { key: '-1' })]
     // console.log(p, blocks);
     for (let i = 0; i < props.children.length; i++) {
         const el = props.children[i];
