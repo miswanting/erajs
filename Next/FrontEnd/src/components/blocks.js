@@ -2,8 +2,6 @@ const React = require('../../node_modules/react')
 const Inline = require('../components/inlines')
 module.exports = function Block(props) {
     let block = null
-    // console.log(111, props);
-
     if (props.type == 'line') {
         block = Line(props)
     } else if (props.type == 'grid') {
@@ -22,10 +20,10 @@ function Line(props) {
         if (props.hasOwnProperty('disabled') && props.disabled) {
             el.disabled = true
         }
-        inlines.push(Inline(el))
+        inlines.push(Inline(el, { key: i }))
     }
     if (inlines.length == 0) {
-        inlines.push(React.createElement('br'))
+        inlines.push(React.createElement('br', { key: '0' }))
     }
     return (
         React.createElement(
@@ -47,7 +45,7 @@ function Grid(props) {
     for (let i = 0; i < props.children.length; i++) {
         const el = props.children[i];
         if (el.type != 'pass') {
-            column.push(Inline(el))
+            column.push(Inline(el, { key: i }))
         } else {
             if (column.length == 0) {
                 column = React.createElement('br')
