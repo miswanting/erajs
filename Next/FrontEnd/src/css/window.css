@@ -1,7 +1,7 @@
 .window {
   display: flex;
   flex-direction: column;
-  color: var(--light);
+  color: var(--default-front);
   cursor: default;
 }
 
@@ -17,25 +17,25 @@
 }
 .header {
   text-align: center;
-  color: var(--react-light);
+  color: var(--default-front);
 }
 .menu-bar > span {
   padding: 0em 0.5em;
   text-align: center;
-  background-color: var(--react-dark);
+  background-color: var(--default-back);
 }
 .window-operator-bar > span {
   padding: 0em 0.5em;
   text-align: center;
-  background-color: var(--react-dark);
+  background-color: var(--default-back);
 }
 .menu:hover,
 .menu-add:hover {
-  background-color: var(--hover-dark);
+  background-color: var(--default-back);
 }
 .title {
   flex-grow: 1;
-  background-color: var(--react-dark);
+  background-color: var(--default-back);
   -webkit-app-region: drag;
   cursor: grab;
 }
@@ -44,20 +44,20 @@
 }
 .min:hover {
   color: lime;
-  background-color: var(--hover-dark);
+  background-color: var(--hover-back);
 }
 .max:hover {
   color: yellow;
-  background-color: var(--hover-dark);
+  background-color: var(--hover-back);
 }
 .close:hover {
   color: red;
-  background-color: var(--hover-dark);
+  background-color: var(--hover-back);
 }
 
 .container {
   flex-grow: 1;
-  background-color: var(--dark);
+  background-color: var(--default-back);
   overflow-y: auto;
 }
 
@@ -65,9 +65,9 @@
   width: 6px;
 }
 .container::-webkit-scrollbar-thumb {
-  background: var(--react-dark);
+  background: var(--react-back);
   border-radius: 3px;
 }
 .footer {
-  background-color: var(--dark);
+  background-color: var(--default-back);
 }
