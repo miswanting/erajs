@@ -1,0 +1,15 @@
+.container-intro {
+  height: 100%;
+  display: flex;
+  background-color: var(--default-back);
+  cursor: default;
+}
+.logo-banner {
+  align-self: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.logo-group {
+  align-self: center;
+}

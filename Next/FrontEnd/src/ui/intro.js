@@ -175,15 +175,15 @@ function AnimeIntro(props) {
     return (
         React.createElement('div',
             {
-                style: { height: '100%', display: 'flex', backgroundColor: 'var(--dark)', cursor: 'default' }
+                className: 'container-intro'
             },
             React.createElement('div',
                 {
-                    style: { alignSelf: 'center', width: '100%', display: 'flex', flexDirection: 'column' }
+                    className: 'logo-banner'
                 },
                 React.createElement('div',
                     {
-                        style: { alignSelf: 'center' }
+                        className: 'logo-group'
                     },
                     React.createElement('svg',
                         {
@@ -200,7 +200,7 @@ function AnimeIntro(props) {
                                 {
                                     id: 'txt',
                                     style: { textAnchor: 'middle', fontWeight: 'bold', fontSize: '120px', transform: 'translateX(0px)translateY(47px)' },
-                                    fill: 'var(--light)'
+                                    fill: 'var(--default-front)'
                                 },
                                 'Era.js'
                             ),
@@ -211,7 +211,7 @@ function AnimeIntro(props) {
                                     y: '-140',
                                     width: '320px',
                                     height: '280px',
-                                    fill: 'var(--dark)',
+                                    fill: 'var(--default-back)',
                                 },
 
                             ),
@@ -243,7 +243,7 @@ function AnimeIntro(props) {
                                         id: 'tri1',
                                         style: { opacity: 0 },
                                         points: "-50,-50 50,-50 -50,50",
-                                        fill: 'var(--light)'
+                                        fill: 'var(--default-front)'
                                     },
 
                                 ),
@@ -252,7 +252,7 @@ function AnimeIntro(props) {
                                         id: 'tri2',
                                         style: { opacity: 0 },
                                         points: "50,50 50,-50 -50,50",
-                                        fill: 'var(--light)'
+                                        fill: 'var(--default-front)'
                                     },
 
                                 ),
@@ -261,7 +261,7 @@ function AnimeIntro(props) {
                                         id: 'rect',
                                         style: { transform: 'scale(0.0)' },
                                         points: "-50,-50 50,-50 50,50 -50,50",
-                                        fill: 'var(--light)'
+                                        fill: 'var(--default-front)'
                                     },
 
                                 )
@@ -271,14 +271,14 @@ function AnimeIntro(props) {
                     React.createElement('div',
                         {
                             id: 'inst',
-                            style: { color: 'var(--light)', opacity: 0.0, textAlign: 'center' },
+                            style: { color: 'var(--default-front)', opacity: 0.0, textAlign: 'center' },
                         },
 
                         'Waiting for Connection...',
                         React.createElement('div',
                             {
                                 id: 'inst-more',
-                                style: { color: 'var(--light)', opacity: 0.0, textAlign: 'center', fontSize: '0.7rem' },
+                                style: { color: 'var(--default-front)', opacity: 0.0, textAlign: 'center', fontSize: '0.7rem' },
                             },
                             React.createElement('span', null,
                                 'If there is no connection for a long time,',

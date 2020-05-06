@@ -26,11 +26,11 @@ h2 {
 }
 .button {
   cursor: pointer;
-  background-color: #434649;
+  background-color: var(--react-back);
 }
 .button:hover {
-  color: var(--dark-color);
-  background-color: var(--light-color);
+  color: var(--hover-front);
+  background-color: var(--hover-back);
 }
 .link {
   cursor: pointer;
@@ -52,7 +52,7 @@ span.text.shake {
 .progress {
   position: relative;
   display: inline-block;
-  background-color: gray;
+  background-color: var(--react-back);
   vertical-align: middle;
   height: 1rem;
   margin: 0rem 0.2rem;
@@ -63,7 +63,7 @@ span.text.shake {
 }
 .progress > .bar {
   position: absolute;
-  background-color: lime;
+  background-color: var(--default-front);
   height: 100%;
   border-radius: 0.2rem;
   left: 0px;
@@ -77,9 +77,9 @@ span.text.shake {
 .input {
   height: 1rem;
   width: 100px;
-  background-color: var(--react-dark);
+  background-color: var(--react-back);
   border: none;
-  color: var(--react-light);
+  color: var(--react-front);
   margin: 0rem 0.2rem;
 }
 input:focus {
@@ -102,7 +102,7 @@ input:focus {
   position: absolute;
   bottom: 0rem;
   left: 0rem;
-  background-color: var(--react-dark);
+  background-color: var(--react-back);
   width: max-content;
   border: 0.5px solid gray;
 }
@@ -119,5 +119,5 @@ input:focus {
   flex-grow: 1;
   height: 1px;
   align-self: center;
-  background-color: var(--light);
+  background-color: var(--default-front);
 }
