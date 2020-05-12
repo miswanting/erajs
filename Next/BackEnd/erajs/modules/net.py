@@ -61,6 +61,7 @@ class NetModule(event.EventModule):
                 if not i == len(data) - 1:
                     data[i] = data[i] + '}'
             for i, each in enumerate(data):
-                data[i] = json.loads(each)
+                if each != '':
+                    data[i] = json.loads(each)
             for each in data:
                 self.recv(each)
