@@ -2,7 +2,7 @@
   position: relative;
   margin: 0.5rem;
 }
-.page > .disable-mask.disabled {
+.page.disabled > .disable-mask {
   content: "";
   position: absolute;
   top: 0;
@@ -27,6 +27,7 @@ h2 {
 .button {
   cursor: pointer;
   background-color: var(--react-back);
+  margin: 0px 0.1em;
 }
 .button:hover {
   color: var(--hover-front);
