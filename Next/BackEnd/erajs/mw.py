@@ -442,3 +442,7 @@ def dat(dot_path):
 
 def sav():
     return e.sav()
+
+
+def new_hash(level=4):
+    return tools.random_hash(level)
