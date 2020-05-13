@@ -1,5 +1,5 @@
 from . import mw as m
-
+version='0.2.0'
 data = {}
 
 
@@ -7,7 +7,7 @@ def init():
     global data
     m.init()
     data = m.get_data()
-    print(data)
+    # print(data)
 
 
 def debug(text):
