@@ -160,7 +160,7 @@ def cfg(dot_path):
     return m.cfg(dot_path)
 
 
-def dat(dot_path):
+def dat(dot_path=None):
     return m.dat(dot_path)
 
 
