@@ -10,7 +10,6 @@ module.exports = class DisplayManager extends EventEmitter {
     constructor() {
         super()
     }
-    init = () => { }
     start = () => {
         document.getElementById('root').addEventListener("mouseup", (e) => {
             console.log('[DEBG]鼠标点击：', e.which);
@@ -24,13 +23,16 @@ module.exports = class DisplayManager extends EventEmitter {
             console.log('[DEBG]键盘按下：', e.key);
         })
     }
-    push = (data) => { this.update(data) }
+    push = (data) => {
+        console.log(data);
+        this.update(data)
+    }
     pull = (data) => { this.emit('pull', data) }
     update = (data) => {
         let container = null
-        if (data.ui == 'intro') {
+        if (data.interfaceType == 'intro') {
             container = Intro(data)
-        } else if (data.ui == 'game') {
+        } else if (data.interfaceType == 'game') {
             container = Game(data)
         }
         ReactDOM.render(
