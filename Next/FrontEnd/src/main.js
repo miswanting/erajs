@@ -1,14 +1,17 @@
 const { app } = require('electron')
-const WindowManager = require('./modules/window')
-const NetManager = require('./modules/net')
+const WindowManager = require('./managers/window')
+const NetManager = require('./managers/net')
+/**
+ * # 主进程管理器 MainManager
+ * 提供渲染窗口、前/后端网络模块容器
+ */
 class MainManager {
-    constructor() { }
     init = () => {
+        // 初始化模块
         this.win = new WindowManager()
         this.back = new NetManager('back')
         this.renderer = new NetManager('renderer')
-        this.back.init()
-        this.renderer.init()
+        // 侦听网络管理器事件
         this.back.on('recv', this.onBackRecv)
         this.renderer.on('recv', this.onRendererRecv)
     }
@@ -22,9 +25,10 @@ class MainManager {
         this.renderer.send(data)
     }
     onRendererRecv = (data) => {
+        console.log('MainManager', 'Send', data);
         this.back.send(data)
     }
 }
-let main = new MainManager()
+const main = new MainManager()
 main.init()
 app.whenReady().then(main.start)
