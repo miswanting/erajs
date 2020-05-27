@@ -73,12 +73,6 @@ pip3 install --user --upgrade buildozer
 
 
 ```bash
-git clone https://github.com/miswanting/Era.js
-```
-
-
-
-```bash
 sudo pacman -S jdk8-openjdk
 ```
 
