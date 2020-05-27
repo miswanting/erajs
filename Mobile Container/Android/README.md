@@ -71,7 +71,7 @@ pip3 install --user --upgrade buildozer
 ### 安装运行依赖
 
 ```bash
-sudo pacman -S cython jdk8-openjdk patch gcc cmake autoconf libtool
+sudo pacman -S cython jdk8-openjdk patch gcc cmake autoconf automake libtool
 ```
 
 ## 构建引擎
