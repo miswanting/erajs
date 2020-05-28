@@ -212,8 +212,8 @@ class DataModule(event.EventModule):
     def load_data_files(self):
         while self.__data['load_queue']:
             pair = self.__data['load_queue'].pop()
-            self.__data['data'][pair[0]] = self.read(pair[1])
-            print(self.read(pair[1]))
+            self.__data['data.'+pair[0]] = self.read(pair[1])
+            # print(self.read(pair[1]))
             self.emit('data_file_loaded', {'value': pair[0]})
         # file_list = self.scan('data')
         # dispatcher.dispatch(
@@ -229,8 +229,13 @@ class DataModule(event.EventModule):
 
     def dat(self, dot_path=None):
         if dot_path is None:
-            return self.__data['data']
-        if dot_path in self.__data['data'].keys():
+            return self.__data
+        if dot_path[0:5] == 'data.':
+            if dot_path in self.__data.keys():
+                return self.__data[dot_path]
+            elif self.mount(dot_path):
+                return self.__data[dot_path]
+        elif dot_path in self.__data['data'].keys():
             return self.__data['data'][dot_path]
         elif self.mount(dot_path):
             return self.__data['data'][dot_path]
