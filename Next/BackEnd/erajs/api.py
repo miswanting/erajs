@@ -1,5 +1,6 @@
 from . import mw as m
-
+version = '0.2.0'
+aka = 'brandnew'
 data = {}
 
 
@@ -158,7 +159,7 @@ def cfg(dot_path):
     return m.cfg(dot_path)
 
 
-def dat(dot_path):
+def dat(dot_path=None):
     return m.dat(dot_path)
 
 
@@ -168,3 +169,40 @@ def sav():
 
 def dangerously_get_engine_core():
     return m.dangerously_get_engine_core()
+
+
+def new_hash(level=4):
+    return m.new_hash(level)
+########################################
+
+
+def get_full_time():
+    pass
+
+
+def tick():
+    pass
+
+
+def save_data_to_file():
+    pass
+
+
+def shake():
+    pass
+
+
+def generate_map():
+    pass
+
+
+def add_listener():
+    pass
+
+
+def remove_listener():
+    pass
+
+
+def dispatch_event():
+    pass

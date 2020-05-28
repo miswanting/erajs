@@ -54,6 +54,7 @@ function Grid(props) {
                 React.createElement(
                     'td',
                     {
+                        key: i,
                         style: props.style
                     },
                     column
@@ -107,7 +108,6 @@ function Grid(props) {
             React.createElement(
                 'tbody',
                 {
-                    data: props.data,
                     style: props.style
                 },
                 rows

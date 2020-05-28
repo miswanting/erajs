@@ -5,17 +5,21 @@ module.exports = function Header(props) {
     return (
         React.createElement('div', { className: 'header' },
             React.createElement(
-                MenuBar
+                MenuBar, props
             ),
             React.createElement(
-                Title, props,
+                Title, props
             ),
             React.createElement(
-                WindowOperatorBar
+                WindowOperatorBar, props
             )
         )
     )
 }
+/**
+ * 
+ * @param {*} props 
+ */
 function MenuBar(props) {
     return (
         React.createElement('span', { className: 'menu-bar' },
@@ -42,10 +46,10 @@ function Title(props) {
     )
 }
 function WindowOperatorBar(props) {
-    click = (type) => {
+    const click = (type) => {
         console.log(123);
         if (type == 'min') {
-            remote.getCurrentWindow().unminimize()
+            // remote.getCurrentWindow().unminimize()
         } else if (type == 'max') {
             if (remote.getCurrentWindow().isMaximized()) {
                 remote.getCurrentWindow().unmaximize()
