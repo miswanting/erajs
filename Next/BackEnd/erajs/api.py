@@ -8,7 +8,6 @@ def init():
     global data
     m.init()
     data = m.get_data()
-    # print(data)
 
 
 def debug(text):

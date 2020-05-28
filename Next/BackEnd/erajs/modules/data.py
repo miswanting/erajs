@@ -230,7 +230,12 @@ class DataModule(event.EventModule):
     def dat(self, dot_path=None):
         if dot_path is None:
             return self.__data
-        if dot_path in self.__data['data'].keys():
+        if dot_path[0:5] == 'data.':
+            if dot_path in self.__data.keys():
+                return self.__data[dot_path]
+            elif self.mount(dot_path):
+                return self.__data[dot_path]
+        elif dot_path in self.__data['data'].keys():
             return self.__data['data'][dot_path]
         elif self.mount(dot_path):
             return self.__data['data'][dot_path]

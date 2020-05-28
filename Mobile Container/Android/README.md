@@ -71,7 +71,7 @@ pip3 install --user --upgrade buildozer
 ### 安装运行依赖
 
 ```bash
-sudo pacman -S cython jdk8-openjdk patch gcc cmake autoconf automake libtool
+sudo pacman -S cython jdk8-openjdk patch gcc cmake autoconf automake
 ```
 
 ## 构建引擎
@@ -89,3 +89,7 @@ buildozer -v android debug
 ```
 
 时间较长，保持网络通畅，放松一下吧~
+
+> 'env': env must be a dict
+>
+> https://askubuntu.com/questions/1233200/buildozer-crashed-with-env-env-must-be-a-dict
