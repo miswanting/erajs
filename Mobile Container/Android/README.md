@@ -89,3 +89,7 @@ buildozer -v android debug
 ```
 
 时间较长，保持网络通畅，放松一下吧~
+
+> 'env': env must be a dict
+>
+> https://askubuntu.com/questions/1233200/buildozer-crashed-with-env-env-must-be-a-dict
