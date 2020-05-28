@@ -1,13 +1,13 @@
 [app]
 
 # (str) Title of your application
-title = My Application
+title = Era.js
 
 # (str) Package name
-package.name = myapp
+package.name = erajs
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = net.erajs
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -241,7 +241,7 @@ android.arch = armeabi-v7a
 #p4a.hook =
 
 # (str) Bootstrap to use for android builds
-# p4a.bootstrap = sdl2
+p4a.bootstrap = webview
 
 # (int) port number to specify an explicit --port= p4a argument (eg for bootstrap flask)
 #p4a.port =
