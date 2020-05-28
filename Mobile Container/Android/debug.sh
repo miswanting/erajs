@@ -1,1 +1,1 @@
-
+buildozer -v android debug
