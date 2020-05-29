@@ -24,12 +24,10 @@ git clone https://github.com/miswanting/Era.js
 
 打开另一个终端
 
-### 设置系统镜像源（可选）
-
-> https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/
+### 设置系统镜像（可选）
 
 ``````bash
-
+sudo pacman-mirrors -i -c China -m rank
 ``````
 
 ### 同步系统软件库
@@ -37,13 +35,13 @@ git clone https://github.com/miswanting/Era.js
 > https://wiki.archlinux.org/index.php/Pacman
 
 ```bash
-sudo apt update
+sudo pacman -Syu
 ```
 
-
+如果同步过程中出现问题，尝试：
 
 ```bash
-sudo apt upgrade
+sudo pacman -Syyu
 ```
 
 ### 安装Python3
@@ -51,7 +49,7 @@ sudo apt upgrade
 > https://wiki.archlinux.org/index.php/Python
 
 ```bash
-sudo apt install python3-pip
+sudo pacman -S python python-pip
 ```
 
 ### 配置Pypi镜像（可选）
