@@ -2,16 +2,6 @@
 
 我们来构建一个引擎！
 
-## 安装系统
-
-https://manjaro.org/downloads/official/xfce/
-
-`Download Minimal`
-
-内存：4096MB
-
-硬盘：16GB
-
 ## 下载代码
 
 打开一个终端
@@ -24,24 +14,22 @@ git clone https://github.com/miswanting/Era.js
 
 打开另一个终端
 
-### 设置系统镜像（可选）
+### 设置系统镜像源（可选）
 
-``````bash
-sudo pacman-mirrors -i -c China -m rank
-``````
+> https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/
 
 ### 同步系统软件库
 
 > https://wiki.archlinux.org/index.php/Pacman
 
 ```bash
-sudo pacman -Syu
+sudo apt update
 ```
 
-如果同步过程中出现问题，尝试：
+
 
 ```bash
-sudo pacman -Syyu
+sudo apt upgrade
 ```
 
 ### 安装Python3
@@ -49,7 +37,7 @@ sudo pacman -Syyu
 > https://wiki.archlinux.org/index.php/Python
 
 ```bash
-sudo pacman -S python python-pip
+sudo apt install python3-pip
 ```
 
 ### 配置Pypi镜像（可选）
