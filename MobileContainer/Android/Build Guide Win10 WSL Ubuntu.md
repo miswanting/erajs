@@ -20,13 +20,11 @@ git clone https://github.com/miswanting/Era.js
 
 ### 同步系统软件库
 
-> https://wiki.archlinux.org/index.php/Pacman
-
 ```bash
 sudo apt update
 ```
 
-
+### 更新软件库软件
 
 ```bash
 sudo apt upgrade
@@ -67,7 +65,7 @@ sudo pacman -S cython jdk8-openjdk patch gcc cmake autoconf automake
 在Git clone完成之后，进入目录：
 
 ```bash
-cd Era.js/Mobile Container/Android/
+cd Era.js/MobileContainer/Android/
 ```
 
 开始Android/debug build

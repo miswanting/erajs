@@ -81,7 +81,7 @@ sudo pacman -S cython jdk8-openjdk patch gcc cmake autoconf automake
 在Git clone完成之后，进入目录：
 
 ```bash
-cd Era.js/Mobile Container/Android/
+cd Era.js/MobileContainer/Android/
 ```
 
 开始Android/debug build
