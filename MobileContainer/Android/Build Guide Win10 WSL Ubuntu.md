@@ -2,12 +2,18 @@
 
 我们来构建一个引擎！
 
+## 安装系统
+
+程序与应用→WSL
+
+应用商店→Ubuntu
+
 ## 下载代码
 
 打开一个终端
 
 ```bash
-git clone https://github.com/miswanting/Era.js
+git clone https://github.com/miswanting/Era.js --depth 1
 ```
 
 ## 配置环境
@@ -35,7 +41,7 @@ sudo apt upgrade
 > https://wiki.archlinux.org/index.php/Python
 
 ```bash
-sudo apt install python3-pip
+sudo apt install python3 python3-pip
 ```
 
 ### 配置Pypi镜像（可选）
@@ -57,7 +63,7 @@ pip3 install --user --upgrade buildozer
 ### 安装运行依赖
 
 ```bash
-sudo pacman -S cython jdk8-openjdk patch gcc cmake autoconf automake
+sudo apt install cython openjdk-8-jdk patch gcc cmake autoconf automake
 ```
 
 ## 构建引擎
@@ -72,6 +78,12 @@ cd Era.js/MobileContainer/Android/
 
 ```bash
 buildozer -v android debug
+```
+
+
+
+```bash
+python3 -m buildozer -v android debug
 ```
 
 时间较长，保持网络通畅，放松一下吧~

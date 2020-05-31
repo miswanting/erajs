@@ -17,7 +17,7 @@ https://manjaro.org/downloads/official/xfce/
 打开一个终端
 
 ```bash
-git clone https://github.com/miswanting/Era.js
+git clone https://github.com/miswanting/Era.js --depth 1
 ```
 
 ## 配置环境
