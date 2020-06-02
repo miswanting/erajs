@@ -63,7 +63,7 @@ pip3 install --user --upgrade buildozer
 ### 安装运行依赖
 
 ```bash
-sudo apt install cython3 openjdk-8-jdk unzip autoconf automake pkg-config libtoolize
+sudo apt install cython cython3 openjdk-8-jdk unzip autoconf automake pkg-config libtool
 ```
 
 ## 构建引擎
