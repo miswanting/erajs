@@ -63,6 +63,8 @@ function Text(props) {
         c.push('shake')
         c.push('shake-constant')
     }
+    props.data.text.replace(' ', '&ensp;')
+    props.data.text.replace('　', '&emsp;')
     return (
         React.createElement(
             'span',
