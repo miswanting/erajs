@@ -49,27 +49,6 @@ def init():
     e.info('├─ Connecting...')
     e.connect()
     e.info('│  └─ Connected!')
-    # e.info('├─ Scanning Plugins...')
-    # plugins_found = 0
-
-    # def on_plugin_found(event):
-    #     e.send({})
-    #     e.info('│  ├─ Plugin [{}] Found.'.format(event['value']))
-    #     plugins_found += 1
-    # e.on('plugin_found', on_plugin_found)
-    # e.scan_plugins()
-    # e.off('plugin_found', on_plugin_found)
-    # e.info('│  └─ {} Plugins Found!'.format(plugins_found))
-    # e.info('├─ Loading Plugins...')
-    # plugins_loaded = 0
-
-    # def on_plugin_loaded(event):
-    #     e.info('│  ├─ Plugin [{}] Loaded.'.format(event['value']))
-    #     plugins_loaded += 1
-    # e.on('plugin_loaded', on_plugin_loaded)
-    # e.load_plugins()
-    # e.off('plugin_loaded', on_plugin_loaded)
-    # e.info('│  └─ {} Plugins Loaded!'.format(plugins_loaded))
     e.info('├─ Scanning Data Files...')
     data_files_found = 0
 
@@ -92,66 +71,6 @@ def init():
     e.load_data_files()
     e.off('data_file_loaded', on_data_file_loaded)
     e.info('│  └─ {} Data Files Loaded!'.format(data_files_loaded))
-    # e.info('├─ Scanning Scripts...')
-    # scripts_found = 0
-
-    # def on_script_found(event):
-    #     e.info('│  ├─ Script [{}] Found.'.format(event['value']))
-    #     scripts_found += 1
-    # e.on('script_found', on_script_found)
-    # e.scan_scripts()
-    # e.off('script_found', on_script_found)
-    # e.info('│  └─ {} Scripts Found!'.format(scripts_found))
-    # e.info('├─ Loading Scripts...')
-    # scripts_loaded = 0
-
-    # def on_script_loaded(event):
-    #     e.info('│  ├─ Script [{}] Loaded.'.format(event['value']))
-    #     scripts_loaded += 1
-    # e.on('script_loaded', on_script_loaded)
-    # e.load_scripts()
-    # e.off('script_loaded', on_script_loaded)
-    # e.info('│  └─ {} Scripts Loaded!'.format(scripts_loaded))
-    # e.info('├─ Scanning DLCs...')
-    # dlcs_found = 0
-
-    # def on_dlc_found(event):
-    #     e.info('│  ├─ DLC [{}] Found.'.format(event['value']))
-    #     dlcs_found += 1
-    # e.on('dlc_found', on_dlc_found)
-    # e.scan_dlcs()
-    # e.off('dlc_found', on_dlc_found)
-    # e.info('│  └─ {} DLCs Found!'.format(dlcs_found))
-    # e.info('├─ Loading DLCs...')
-    # dlcs_loaded = 0
-
-    # def on_dlc_loaded(event):
-    #     e.info('│  ├─ DLC [{}] Loaded.'.format(event['value']))
-    #     dlcs_loaded += 1
-    # e.on('dlc_loaded', on_dlc_loaded)
-    # e.load_dlcs()
-    # e.off('dlc_loaded', on_dlc_loaded)
-    # e.info('│  └─ {} DLCs Loaded!'.format(dlcs_loaded))
-    # e.info('├─ Scanning MODs...')
-    # mods_found = 0
-
-    # def on_mod_found(event):
-    #     e.info('│  ├─ MOD [{}] Found.'.format(event['value']))
-    #     mods_found += 1
-    # e.on('mod_found', on_mod_found)
-    # e.scan_mods()
-    # e.off('mod_found', on_mod_found)
-    # e.info('│  └─ {} MODs Found!'.format(mods_found))
-    # e.info('├─ Loading MODs...')
-    # mods_loaded = 0
-
-    # def on_mod_loaded(event):
-    #     e.info('│  ├─ MOD [{}] Loaded.'.format(event['value']))
-    #     mods_loaded += 1
-    # e.on('mod_loaded', on_mod_loaded)
-    # e.load_mods()
-    # e.off('mod_loaded', on_mod_loaded)
-    # e.info('│  └─ {} MODs Loaded!'.format(mods_loaded))
     e.info('├─ Sending Init Finished Signal...')
     e.send({'type': 'loaded'})
     e.info('│  └─ Done!')
