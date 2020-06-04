@@ -25,11 +25,11 @@ class NetModule(event.EventModule):
             time.sleep(0.1)
 
     def send(self, data):
-        self.debug(data)
+        self.debug('Send: '+str(data))
         self.s.send(json.dumps(data, ensure_ascii=False).encode())
 
     def recv(self, data):
-        self.debug(data)
+        self.debug('Recv: '+str(data))
         self.emit(data['type'], data)
 
     def connector(self, host, port):
