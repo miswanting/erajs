@@ -76,6 +76,7 @@ def init():
     e.info('│  └─ Done!')
     e.info('└─ Initialize Complete!')
     print()
+    e.info('Executing Game Scripts...')
 
 
 def config(data):
