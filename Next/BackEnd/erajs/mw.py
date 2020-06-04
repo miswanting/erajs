@@ -120,6 +120,7 @@ def window(style):
 
 
 def page(style):
+    e.remove_all_listeners()
     e.push('page', None, style)
 
 
