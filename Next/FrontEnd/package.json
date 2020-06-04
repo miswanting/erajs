@@ -35,6 +35,8 @@
     "appId": "your.id",
     "mac": {
       "category": "your.app.category.type"
+    "win": {
+      "icon": "../../Game Assets/Engine Icon/icon.png"
     }
   }
 }
