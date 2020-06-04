@@ -21,9 +21,7 @@ class NetModule(event.EventModule):
             (host, port)
         )
         t.start()
-        while True:
-            if self.isConnected:
-                break
+        while not self.isConnected:
             time.sleep(0.1)
 
     def send(self, data):
