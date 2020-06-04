@@ -4,34 +4,64 @@
   color: var(--default-front);
   cursor: default;
 }
-
 .header {
   display: flex;
   user-select: none;
-}
-.menu-bar > span:first-child {
-  border-top-left-radius: 0.5rem;
-}
-.window-operator-bar > span:last-child {
-  border-top-right-radius: 0.5rem;
-}
-.header {
   text-align: center;
   color: var(--default-front);
 }
+/* .menu-bar > span:first-child {
+  border-top-left-radius: 0.5rem;
+} */
+.window-operator-bar > span:last-child {
+  border-top-right-radius: 0.5rem;
+}
 .menu-bar > span {
+  /* padding: 0em 0.5em; */
+  /* text-align: center; */
+  /* background-color: var(--default-back); */
+}
+.menu {
+  position: relative;
+}
+.menu-button {
+  border-top-left-radius: 0.5rem;
   padding: 0em 0.5em;
-  text-align: center;
   background-color: var(--default-back);
+}
+.menu-add-button {
+  padding: 0em 0.5em;
+  background-color: var(--default-back);
+}
+.menu-list {
+  position: absolute;
+  /* border: 1px solid var(--default-front); */
+  box-shadow: 0px 1px 2px var(--static-back);
+}
+.menu-item {
+  color: var(--default-front);
+  text-align: left;
+  /* margin: 0em 0.5em; */
+  width: 50px;
+}
+.menu-item:hover {
+  color: var(--hover-front);
+  background-color: var(--hover-back);
 }
 .window-operator-bar > span {
   padding: 0em 0.5em;
   text-align: center;
   background-color: var(--default-back);
 }
-.menu:hover,
-.menu-add:hover {
-  background-color: var(--default-back);
+.menu-button:hover,
+.menu-add-button:hover {
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+.menu-button:active,
+.menu-add-button:active {
+  color: var(--active-front);
+  background-color: var(--active-back);
 }
 .title {
   flex-grow: 1;
@@ -53,6 +83,18 @@
 .close:hover {
   color: red;
   background-color: var(--hover-back);
+}
+.min:active {
+  color: lime;
+  background-color: var(--active-back);
+}
+.max:active {
+  color: yellow;
+  background-color: var(--active-back);
+}
+.close:active {
+  color: red;
+  background-color: var(--active-back);
 }
 
 .container {
