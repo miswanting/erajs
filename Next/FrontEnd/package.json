@@ -1,7 +1,7 @@
 {
   "name": "erajs-next-core",
   "version": "0.1.0",
-  "description": "",
+  "description": "Next-Generation HyperText Game Engine.",
   "main": "src/main.js",
   "scripts": {
     "setup": "npm i",
@@ -32,9 +32,11 @@
     "react-dom": "latest"
   },
   "build": {
-    "appId": "your.id",
-    "mac": {
-      "category": "your.app.category.type"
+    "appId": "net.erajs.next",
+    "productName": "Era.js",
+    "directories": {
+      "output": "dist"
+    },
     "win": {
       "icon": "../../Game Assets/Engine Icon/icon.png"
     }
