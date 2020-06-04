@@ -40,7 +40,7 @@ def init():
 
     def on_config_loaded(event):
         nonlocal configs_loaded
-        e.info('│  ├─ Plugin [{}] Loaded.'.format(event['value']))
+        e.info('│  ├─ Config [{}] Loaded.'.format(event['value']))
         configs_loaded += 1
     e.on('config_loaded', on_config_loaded)
     e.load_configs()
