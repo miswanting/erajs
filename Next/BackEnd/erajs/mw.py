@@ -145,10 +145,13 @@ def text(text, wait, style):
             if event['value'] == 1:  # 左键
                 if e.is_locked():
                     e.unlock()
+                    e.remove_listener('MOUSE_CLICK', on_click)
             elif event['value'] == 3:  # 右键
                 if e.is_locked():
                     e.unlock_forever()
-        e.once('MOUSE_CLICK', on_click)
+                    e.remove_listener('MOUSE_CLICK', on_click)
+        e.on('MOUSE_CLICK', on_click)
+        e.show_listener_list()
         e.wait_for_unlock()
 
 
