@@ -21,71 +21,82 @@ module.exports = function Header(props) {
  * @param {*} props 
  */
 function MenuBar(props) {
-    return (
-        React.createElement('span', { className: 'menu-bar' },
-            React.createElement(Menu),
-            React.createElement(MenuAdd)
+    const templete = [
+        {
+            label: '文件',
+            submenu: [
+                { label: '新建' },
+                { label: '打开' },
+                {
+                    label: '最近打开的文件',
+                    submenu: [
+                        { label: 'File 1' },
+                        { label: 'File 2' },
+                        { label: 'File 3' }
+                    ]
+                }
+            ]
+        },
+        { label: '编辑' },
+        { label: '窗口' },
+        { label: '帮助' },
+        { label: '+' }
+    ]
+    let menus = []
+    for (let i = 0; i < templete.length; i++) {
+        const d = templete[i];
+        menus.push(React.createElement(MenuItem, d))
+    }
+    return (React.createElement('div', { className: 'menu-bar' }, menus))
+}
+function MenuItem(props) {
+    const [show, setShow] = React.useState(false)
+    click = () => {
+        if (props.hasOwnProperty('submenu')) {
+            setShow(!show)
+        } else {
+            // Do
+        }
+    }
+    if (props.hasOwnProperty('submenu')) {
+        let container = null
+        if (show) {
+            let menus = []
+            for (let i = 0; i < props.submenu.length; i++) {
+                const d = props.submenu[i];
+                menus.push(React.createElement(MenuItem, d))
+            }
+            container = React.createElement(
+                'div', { className: 'menu-anchor' },
+                React.createElement('div', { className: 'menu-list' }, menus)
+            )
+        }
+        return (
+            React.createElement(
+                'div',
+                { className: 'menu-item has-menu' },
+                React.createElement(
+                    'div',
+                    {
+                        className: 'menu-button',
+                        onClick: click
+                    },
+                    props.label
+                ),
+                container
+            )
         )
-    )
-}
-
-function Menu(props) {
-    const [show, setShow] = React.useState(false)
-    showList = [React.createElement(
-        'span',
-        {
-            className: 'menu-button',
-            onClick: () => { setShow(!show) }
-        },
-        '≡'  // ☰
-    )]
-    if (show) {
-        showList.push(
+    } else {
+        return (
             React.createElement(
-                'div', { className: 'menu-list' }, [
-                React.createElement('div', { className: 'menu-item' }, '文件'),
-                React.createElement('div', { className: 'menu-item' }, '编辑'),
-                React.createElement('div', { className: 'menu-item' }, '窗口'),
-                React.createElement('div', { className: 'menu-item' }, '帮助')
-            ]
-            ))
+                'div',
+                { className: 'menu-item' },
+                React.createElement(
+                    'div', { className: 'menu-button' }, props.label
+                )
+            )
+        )
     }
-    return (
-        React.createElement('span', { className: 'menu' }, showList)
-    )
-}
-
-function MenuAdd(props) {
-    const [show, setShow] = React.useState(false)
-    showList = [React.createElement(
-        'span',
-        {
-            className: 'menu-add-button',
-            onClick: () => { setShow(!show) }
-        },
-        '+'  // ＋
-    )]
-    if (show) {
-        showList.push(
-            React.createElement(
-                'div', { className: 'menu-list' }, [
-                React.createElement('div', { className: 'menu-item' }, '文件'),
-                React.createElement('div', { className: 'menu-item' }, '编辑'),
-                React.createElement('div', { className: 'menu-item' }, '窗口'),
-                React.createElement('div', { className: 'menu-item' }, '帮助')
-            ]
-            ))
-    }
-    return (
-        React.createElement('span', { className: 'menu' }, showList)
-    )
-    // return (
-    //     React.createElement(
-    //         'span',
-    //         { className: 'menu-add' },
-    //         '+'  // ＋
-    //     )
-    // )
 }
 function Title(props) {
     return (
