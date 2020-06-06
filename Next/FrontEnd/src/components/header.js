@@ -101,7 +101,7 @@ function MenuItem(props) {
 function Title(props) {
     return (
         React.createElement(
-            'span',
+            'div',
             { className: 'title' },
             props.title
         )
@@ -123,7 +123,7 @@ function WindowOperatorBar(props) {
         }
     }
     return (
-        React.createElement('span', { className: 'window-operator-bar' },
+        React.createElement('div', { className: 'window-operator-bar' },
             React.createElement('span', {
                 className: 'min',
                 onClick: () => {
