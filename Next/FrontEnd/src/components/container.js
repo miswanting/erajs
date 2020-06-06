@@ -2,19 +2,6 @@ const React = require('../../node_modules/react')
 const Block = require('../components/blocks')
 module.exports = function Container(props) {
     React.useEffect(() => {
-        document.getElementById('.container').addEventListener("mouseup", (e) => {
-            console.log('[DEBG]鼠标点击：', e.which);
-            let data = {
-                type: 'MOUSE_CLICK',
-                value: e.which
-            }
-            this.pull(data)
-        })
-        document.getElementById('.container').addEventListener("keyup", (e) => {
-            console.log('[DEBG]键盘按下：', e.key);
-        })
-    }, [])
-    React.useEffect(() => {
         let el = document.querySelector('.container')
         el.scrollTop = el.scrollHeight
     })
@@ -39,7 +26,6 @@ module.exports = function Container(props) {
         )
     );
 }
-
 function Page(props) {
     let blocks = [React.createElement(DisableMask, { key: '-1' })]
     // console.log(p, blocks);
