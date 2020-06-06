@@ -27,18 +27,21 @@
                 loader.load('http://unpkg.com/react/umd/react.development.js', () => {
                     document.querySelector("#root").innerText += "OK\nLoading ReactDOM..."
                     loader.load('https://unpkg.com/react-dom/umd/react-dom.development.js', () => {
-                        loadInnerResources()
+                        document.querySelector("#root").innerText += "OK\nLoading CSShake..."
+                        loader.load('https://unpkg.com/csshake/dist/csshake.css', () => {
+                            loadInnerResources()
+                        })
                     })
                 })
             })
         }
         function loadInnerResources() {
             document.querySelector("#root").innerText += "OK\nLoading Frame.css..."
-            loader.load(CSS_FOLDER + '/frame.css', () => {
+            loader.load(`${CSS_FOLDER}/frame.css`, () => {
                 document.querySelector("#root").innerText += "OK\nLoading Window.css..."
-                loader.load(CSS_FOLDER + '/window.css', () => {
+                loader.load(`${CSS_FOLDER}/window.css`, () => {
                     document.querySelector("#root").innerText += "OK\nLoading SpanCharm.css..."
-                    loader.load(CSS_FOLDER + '/span-charm.css', () => {
+                    loader.load(`${CSS_FOLDER}/span-charm.css`, () => {
                         document.querySelector("#root").innerText += "OK\nLoading Header..."
                         loader.load('components/header.js', () => {
                             document.querySelector("#root").innerText += "OK\nLoading Container..."
