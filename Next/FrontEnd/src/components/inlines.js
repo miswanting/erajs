@@ -40,17 +40,19 @@ function Heading(props) {
     )
 }
 function Text(props) {
-    // const [shake, setShake] = React.useState(false)
-    // React.useEffect(() => {
-    //     if (props.style) {
-    //         if (props.style.hasOwnProperty('shake_duration')) {
-    //             const timer = setTimeout(() => {
-    //                 console.log('This will shake!')
-    //             }, props.style.shake_duration * 1000)
-    //         }
-    //     }
-    //     return () => clearTimeout(timer)
-    // }, [])
+    const [shake, setShake] = React.useState(false)
+    React.useEffect(() => {
+        let timer
+        if (props.style) {
+            if (props.style.hasOwnProperty('shake_duration')) {
+                setShake(true)
+                timer = setTimeout(() => {
+                    setShake(false)
+                }, props.style.shake_duration * 1000)
+            }
+        }
+        return () => clearTimeout(timer)
+    }, [])
 
 
     if (!props.data.text) {
@@ -59,7 +61,7 @@ function Text(props) {
         )
     }
     let c = ['text']
-    if (props.style && props.style.hasOwnProperty('shake_duration')) {
+    if (shake) {
         c.push('shake')
         c.push('shake-constant')
     }
@@ -76,41 +78,6 @@ function Text(props) {
         )
     )
 }
-// function Text(props) {
-//     console.log('useState', this);
-
-//     const [shake, setShake] = React.useState(false)
-//     toggleShake = () => {
-//         setShake(!shake)
-//     }
-
-
-//     if (!props.data.text) {
-//         return (
-//             React.createElement('br')
-//         )
-//     }
-//     let c = ['text']
-//     if (props.style) {
-//         if (props.style.hasOwnProperty('shake_duration')) {
-//             toggleShake()
-//         }
-//     }
-//     if (shake) {
-//         c.push('shake')
-//         c.push('shake-constant')
-//     }
-//     return (
-//         React.createElement(
-//             'span',
-//             {
-//                 className: c.join(' '),
-//                 style: props.style
-//             },
-//             props.data.text
-//         )
-//     )
-// }
 function Button(props) {
     click = () => {
         if (!props.data.disabled) {
