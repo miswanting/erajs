@@ -9,59 +9,60 @@
   user-select: none;
   text-align: center;
   color: var(--default-front);
+  z-index: 3;
 }
-/* .menu-bar > span:first-child {
-  border-top-left-radius: 0.5rem;
-} */
 .window-operator-bar > span:last-child {
   border-top-right-radius: 0.5rem;
 }
-.menu-bar > span {
-  /* padding: 0em 0.5em; */
-  /* text-align: center; */
-  /* background-color: var(--default-back); */
+.menu-bar {
+  display: flex;
 }
-.menu {
-  position: relative;
+.menu-item {
+  display: flex;
+}
+.has-button::after {
+  content: "▶";
+}
+.menu-bar > .menu-item {
+  display: block;
+}
+.menu-bar > .menu-item > .menu-button {
+  background-color: var(--default-back);
 }
 .menu-button {
-  border-top-left-radius: 0.5rem;
   padding: 0em 0.5em;
-  background-color: var(--default-back);
+  /* background-color: var(--default-back); */
+  width: -webkit-fill-available;
+  text-align: left;
 }
-.menu-add-button {
-  padding: 0em 0.5em;
-  background-color: var(--default-back);
+.has-menu > .menu-button::after {
+  content: "▶";
+}
+.menu-bar > .menu-item:first-child > .menu-button::after {
+  content: "";
+}
+.menu-button:hover {
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+.menu-button:active {
+  color: var(--active-front);
+  background-color: var(--active-back);
+}
+.menu-bar > .menu-item:first-child > .menu-button {
+  border-top-left-radius: 0.5rem;
 }
 .menu-list {
   position: absolute;
-  /* border: 1px solid var(--default-front); */
-  box-shadow: 0px 1px 2px var(--static-back);
-}
-.menu-item {
-  color: var(--default-front);
-  text-align: left;
-  /* margin: 0em 0.5em; */
-  width: 50px;
-}
-.menu-item:hover {
-  color: var(--hover-front);
-  background-color: var(--hover-back);
+  box-shadow: 1px 1px 1px var(--static-back);
+  width: fit-content;
+  backdrop-filter: blur(0.2em);
+  background-color: #8884;
 }
 .window-operator-bar > span {
   padding: 0em 0.5em;
   text-align: center;
   background-color: var(--default-back);
-}
-.menu-button:hover,
-.menu-add-button:hover {
-  color: var(--hover-front);
-  background-color: var(--hover-back);
-}
-.menu-button:active,
-.menu-add-button:active {
-  color: var(--active-front);
-  background-color: var(--active-back);
 }
 .title {
   flex-grow: 1;
@@ -96,11 +97,29 @@
   color: red;
   background-color: var(--active-back);
 }
-
+.toast-bar {
+  z-index: 2;
+}
+.toast-anchor,
+.toast-list {
+  position: absolute;
+  right: 0px;
+}
+.toast-list {
+  width: max-content;
+}
+.toast-item {
+  padding: 0.5em 1em;
+  margin-top: 0.5em;
+  box-shadow: 0em 1px 1px var(--static-back);
+  backdrop-filter: blur(0.2em);
+  background-color: #8882;
+}
 .container {
   flex-grow: 1;
   background-color: var(--default-back);
   overflow-y: auto;
+  z-index: 1;
 }
 
 .container::-webkit-scrollbar {
