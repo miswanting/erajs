@@ -11,6 +11,7 @@ module.exports = class DataManager extends EventEmitter {
         this.#data.title = 'Era.js'
         this.#data.footer = '@Miswanting'
         this.#data.maxPages = 10
+        this.#data.msgList = []
         this.resetComposeMode()
         this.push(this.#data)
     }
@@ -110,6 +111,8 @@ module.exports = class DataManager extends EventEmitter {
                 el.callback = this.cmd
             }
             this.getLastBlock().children.push(el)
+        } else if (el.type == 'msg') {
+            this.#data.msgList.push(el)
         }
     }
     cmd = (data) => {
@@ -118,140 +121,6 @@ module.exports = class DataManager extends EventEmitter {
         }
     }
 }
-// module.exports = class DataManager extends EventEmitter {
-//     constructor() {
-//         super()
-//         this.data = null
-//     }
-//     start = () => {
-//         this.data = this.newElement('program')
-//         this.data.ui = 'intro'
-//         this.data.mode = { type: 'line' }
-//         this.data.title = 'Era.js'
-//         this.data.footer = '@Miswanting'
-//         this.data.maxPages = 10
-//         this.push(this.data)
-//     }
-//     push = (data) => {
-//         this.emit('push', data)
-//     }
-//     pull = (data) => {
-//         this.send(data)
-//     }
-//     send = (data) => {
-//         this.emit('send', data)
-//     }
-//     recv = (data) => {
-//         this.parse(data)
-//         this.push(this.data)
-//     }
-//     //////////////////////
-//     /**
-//      * # 页面是否为空
-//      */
-//     isPageExist() {
-//         return this.data.children.length != 0
-//     }
-//     touchPage() {
-//         if (!this.isPageExist()) {
-//             this.addElement(this.newElement('page'))
-//         }
-//     }
-//     getLastPage() {
-//         this.touchPage()
-//         return this.data.children[this.data.children.length - 1]
-//     }
-//     isBlockExist() {
-//         this.touchPage()
-//         return this.getLastPage().children.length != 0
-//     }
-//     isLastBlockAddible() {
-//         this.touchPage()
-//         return this.getLastPage().type != 'divider'
-//     }
-//     getLastBlock() {
-//         this.touchPage()
-//         let lastPage = this.getLastPage()
-//         return lastPage.children[lastPage.children.length - 1]
-//     }
-//     changeComposeMode(type, data = null) {
-//         if (data == null) {
-//             data = {}
-//         }
-//         data.type = type
-//         this.data.mode = data
-//     }
-//     resetComposeMode() {
-//         this.data.mode = {
-//             type: 'line'
-//         }
-//     }
-//     touchPageAmount() {
-//         this.data.children.splice(0, this.data.children.length - this.data.maxPages)
-//     }
-//     /////////////
-//     parse = (data) => {
-//         // console.log(data);
-//         if (data.type == 'loaded') {
-//             this.data.ui = 'game'
-//         } else if (data.type == 'title') {
-//             this.data.title = data.data.text
-//         } else if (data.type == 'mode') {
-//             this.data.mode = { type: data.data.type }
-//             if (this.data.mode.type == 'grid') {
-//                 this.data.mode.column = data.data.arg[0]
-//             }
-//         } else {
-//             this.addElement(data)
-//         }
-//     }
-//     addElement(el) {
-//         if (el.type == 'page') {
-//             this.data.children.push(newElement('page', el.data, el.style))
-//             this.touchPageAmount()
-//             this.resetComposeMode()
-//         } else if (['line', 'grid', 'divider'].indexOf(el.type) != -1) {
-//             this.touchPage()
-//             this.getLastPage().children.push(el)
-//         } else if (el.type == 'divider') {
-//             this.touchPage()
-//             this.getLastPage().children.push(el)
-//             this.resetComposeMode()
-//         } else if (el.type == 'pass' && this.data.mode.type == 'line') {
-//             this.touchPage()
-//             this.addElement(newElement('line'))
-//         } else if (['heading', 'text', 'button', 'link', 'pass', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
-//             this.touchPage()
-//             let lastPage = this.getLastPage()
-//             // Block Exist?
-//             if (!this.isBlockExist() || this.getLastBlock().type == 'divider') {
-//                 if (this.data.mode.type == 'line') {
-//                     this.addElement(newElement('line'))
-//                 } else if (this.data.mode.type == 'grid') {
-//                     this.addElement(newElement('grid', { column: this.data.mode.column }))
-//                 }
-//             }
-//             if (['button', 'link', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
-//                 el.callback = this.cmd
-//             }
-//             this.getLastBlock().children.push(el)
-//         }
-//     }
-//     cmd = (data) => {
-//         if (data.type == 'pull') {
-//             this.pull(data.data)
-//         }
-//     }
-//     newElement(type, data = null, style = null, ...children) {
-//         let el = {
-//             type: type,
-//             data: data,
-//             style: style,
-//             children: children
-//         }
-//         return el
-//     }
-// }
 /**
  * # 生成抽象元素
  * @param {String} type 元素类型：`program`, `page`, `line`, `grid`, `text`……
