@@ -1,5 +1,6 @@
 const { EventEmitter } = require('events')
 const { BrowserWindow } = require('electron')
+const isDev = require('electron-is-dev')
 module.exports = class WindowManager extends EventEmitter {
     start = () => {
         let win = new BrowserWindow({
@@ -13,6 +14,16 @@ module.exports = class WindowManager extends EventEmitter {
         })
         // 加载index.html文件
         win.loadFile('src/index.html')
-        win.webContents.openDevTools()
+        if (isDev) {
+            const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer')
+            installExtension(REACT_DEVELOPER_TOOLS)
+                .then((name) => console.log(`Extension Added!: ${name}`))
+                .catch((err) => {
+                    console.log('An Error Occurred: ', err)
+                    console.log('But PLEASE DO NOT WORRY!')
+                    console.log('It`s FINE! It`s NOT IMPORTANT at all!')
+                });
+            win.webContents.openDevTools()
+        }
     }
 }
