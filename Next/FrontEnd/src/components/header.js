@@ -45,6 +45,7 @@ function MenuBar(props) {
     let menus = []
     for (let i = 0; i < templete.length; i++) {
         const d = templete[i];
+        d.key = i.toString()
         menus.push(React.createElement(MenuItem, d))
     }
     return (React.createElement('div', { className: 'menu-bar' }, menus))
