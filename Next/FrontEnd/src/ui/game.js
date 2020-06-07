@@ -34,7 +34,7 @@ function ToastList(props) {
             'div',
             { className: 'toast-list' },
             [
-                React.createElement(ToastItem),
+                // React.createElement(ToastItem),
                 // React.createElement(ToastItem)
             ]
         )
