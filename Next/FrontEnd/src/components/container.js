@@ -1,6 +1,7 @@
 const React = require('../../node_modules/react')
 const Block = require('../components/blocks')
 module.exports = function Container(props) {
+    // const [pageIndex, setPageIndex] = React.useState(0)
     React.useEffect(() => {
         let el = document.querySelector('.container')
         el.scrollTop = el.scrollHeight
