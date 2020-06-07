@@ -120,7 +120,7 @@ def goto(ui_func, *arg, **kw):
 
 
 def back(num=1, *arg, **kw):
-    m.back(num=1, *arg, **kw)
+    m.back(num, *arg, **kw)
 
 
 def repeat(*arg, **kw):
