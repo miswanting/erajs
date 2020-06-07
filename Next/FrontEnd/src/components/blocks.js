@@ -3,11 +3,14 @@ const Inline = require('../components/inlines')
 module.exports = function Block(props) {
     let block = null
     if (props.type == 'line') {
-        block = Line(props)
+        // block = Line(props)
+        block = React.createElement(Line, props)
     } else if (props.type == 'grid') {
-        block = Grid(props)
+        // block = Grid(props)
+        block = React.createElement(Grid, props)
     } else if (props.type == 'divider') {
-        block = Divider(props)
+        // block = Divider(props)
+        block = React.createElement(Divider, props)
     }
     return (
         block
@@ -20,7 +23,7 @@ function Line(props) {
         if (props.hasOwnProperty('disabled') && props.disabled) {
             el.disabled = true
         }
-        inlines.push(Inline(el, { key: i }))
+        inlines.push(Inline(el, { key: i.toString() }))
     }
     if (inlines.length == 0) {
         inlines.push(React.createElement('br', { key: '0' }))
@@ -40,8 +43,6 @@ function Grid(props) {
 
     let columns = []
     let column = []
-    // console.log('!');
-    // console.log(props.children.length);
     for (let i = 0; i < props.children.length; i++) {
         const el = props.children[i];
         if (el.type != 'pass') {
@@ -54,7 +55,7 @@ function Grid(props) {
                 React.createElement(
                     'td',
                     {
-                        key: i,
+                        key: i.toString(),
                         style: props.style
                     },
                     column
@@ -91,13 +92,13 @@ function Grid(props) {
             React.createElement(
                 'tr',
                 {
-                    style: props.style
+                    style: props.style,
+                    key: i.toString()
                 },
                 row
             )
         )
     }
-    // console.log(props, rows);
     return (
         React.createElement(
             'table',
