@@ -12,6 +12,7 @@ module.exports = class DataManager extends EventEmitter {
         this.#data.footer = '@Miswanting'
         this.#data.maxPages = 10
         this.#data.msgList = []
+        this.#data.pageIndex = 0
         this.resetComposeMode()
         this.push(this.#data)
     }
@@ -33,7 +34,7 @@ module.exports = class DataManager extends EventEmitter {
     }
     touchPage() {
         if (!this.isPageExist()) {
-            this.addElement(this.newElement('page'))
+            this.addElement(newElement('page'))
         }
     }
     getLastPage() {
@@ -83,6 +84,12 @@ module.exports = class DataManager extends EventEmitter {
     }
     addElement(el) {
         if (el.type == 'page') {
+            console.log(el);
+            if (!el.data) {
+                el.data = { key: this.#data.pageIndex.toString() }
+            }
+            // el.data.key = this.#data.pageIndex
+            this.#data.pageIndex += 1
             this.#data.children.push(newElement('page', el.data, el.style))
             this.touchPageAmount()
             this.resetComposeMode()
