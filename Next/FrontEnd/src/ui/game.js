@@ -59,7 +59,8 @@ function ToastItem(props) {
                 });
             }
         });
-    }, [])
+
+    })
     return (
         React.createElement(
             'div',

@@ -41,7 +41,6 @@
 .menu-bar > .menu-item:first-child > .menu-button::after {
   content: "";
 }
-.menu-bar > .menu-item > .menu-button:hover,
 .menu-button:hover {
   color: var(--hover-front);
   background-color: var(--hover-back);

@@ -79,7 +79,7 @@ class DataModule(event.EventModule):
         - 维护数据文件完整性
         """
         check_folder_list = [
-            'configs',  # 配置文件存放处
+            'config',  # 配置文件存放处
             'data',  # 静态数据文件存放处
             'logic',  # 核心逻辑脚本存放处
             'cache',  # 缓冲数据文件
@@ -91,7 +91,7 @@ class DataModule(event.EventModule):
             'plugins',  # 引擎插件
         ]
         check_file_list = [
-            'configs/config.ini'  # 配置信息统一存放于此
+            'config/config.ini'  # 配置信息统一存放于此
         ]
         # 补全文件夹
         for each in check_folder_list:

@@ -108,11 +108,38 @@ function Title(props) {
     )
 }
 function WindowOperatorBar(props) {
+    const click = (type) => {
+        // console.log(123);
+        if (type == 'min') {
+            remote.getCurrentWindow().unminimize()
+        } else if (type == 'max') {
+            if (remote.getCurrentWindow().isMaximized()) {
+                remote.getCurrentWindow().unmaximize()
+            } else {
+                remote.getCurrentWindow().maximize()
+            }
+        } else if (type == 'close') {
+            remote.getCurrentWindow().close()
+        }
+    }
     return (
         React.createElement('div', { className: 'window-operator-bar' },
-            React.createElement(Min),
-            React.createElement(Max),
-            React.createElement(Close)
+            React.createElement('span', {
+                className: 'min',
+                onClick: () => {
+                    click('min')
+                }
+            }, '●'),
+            React.createElement('span', {
+                className: 'max',
+                onClick: () => { click('max') }
+            }, '●'),
+            React.createElement('span', {
+                className: 'close',
+                onClick: () => {
+                    click('close')
+                }
+            }, '●')
         )
     )
 }
@@ -120,34 +147,16 @@ function Min(props) {
     return (
         React.createElement(
             'span',
-            {
-                className: 'min',
-                onClick: () => {
-                    remote.getCurrentWindow().minimize()
-                }
-            },
-            '●'
+            { className: 'min' }
         )
     )
 }
 
 function Max(props) {
-    const [max, setMax] = React.useState(false)
     return (
         React.createElement(
             'span',
-            {
-                className: 'max',
-                onClick: () => {
-                    if (max) {
-                        remote.getCurrentWindow().unmaximize()
-                    } else {
-                        remote.getCurrentWindow().maximize()
-                    }
-                    setMax(!max)
-                }
-            },
-            '●'
+            { className: 'max' }
         )
     )
 }
@@ -156,13 +165,7 @@ function Close(props) {
     return (
         React.createElement(
             'span',
-            {
-                className: 'close',
-                onClick: () => {
-                    remote.getCurrentWindow().close()
-                }
-            },
-            '●'
+            { className: 'close' }
         )
     )
 }
