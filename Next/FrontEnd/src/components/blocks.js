@@ -70,7 +70,7 @@ function Grid(props) {
         React.createElement(
             'td',
             {
-                style: props.style
+                style: props.style,
             },
             column
         )
