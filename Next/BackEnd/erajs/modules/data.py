@@ -60,15 +60,12 @@ class DataModule(event.EventModule):
 
         """
         super().__init__()
-        self.__data: Dict[str, dict] = {  # data【OLD】
+        self.__data = {
             "config": {},  # cfg【NEW】
-            "db": {},  # 存档的数据【OLD】
-            "tmp": {},  # 【OLD】
-            # 'standard':  {},  # std【NEW】
             'data': {},  # dat【NEW】
             'save': {},  # sav【NEW】
+            'temp': {},  # tmp【NEW】
             'load_queue': []
-            # 'user': {},  # usr【NEW】
         }
 
     def check_file_system(self) -> None:
@@ -81,17 +78,10 @@ class DataModule(event.EventModule):
         check_folder_list = [
             'configs',  # 配置文件存放处
             'data',  # 静态数据文件存放处
-            'logic',  # 核心逻辑脚本存放处
-            'cache',  # 缓冲数据文件
             'save',  # 存档文件存放处
-            'scripts',  # 热加载脚本存放处
-            'dlc',  # DLC包存放处
-            'mod',  # MOD包存放处
-            'resources',  # 二进制数据文件存放处（图片，视频，音频等）
-            'plugins',  # 引擎插件
         ]
         check_file_list = [
-            'configs/config.ini'  # 配置信息统一存放于此
+            'configs/system.ini'  # 系统配置信息统一存放于此
         ]
         # 补全文件夹
         for each in check_folder_list:
@@ -212,7 +202,8 @@ class DataModule(event.EventModule):
     def load_data_files(self):
         while self.__data['load_queue']:
             pair = self.__data['load_queue'].pop()
-            self.__data['data.'+pair[0]] = self.read(pair[1])
+            # self.__data['data.'+pair[0]] = self.read(pair[1])
+            self.__data['data'][pair[0]] = self.read(pair[1])
             # print(self.read(pair[1]))
             self.emit('data_file_loaded', {'value': pair[0]})
         # file_list = self.scan('data')
@@ -230,12 +221,12 @@ class DataModule(event.EventModule):
     def dat(self, dot_path=None):
         if dot_path is None:
             return self.__data
-        if dot_path[0:5] == 'data.':
-            if dot_path in self.__data.keys():
-                return self.__data[dot_path]
-            elif self.mount(dot_path):
-                return self.__data[dot_path]
-        elif dot_path in self.__data['data'].keys():
+        # if dot_path[0:5] == 'data.':
+        #     if dot_path in self.__data.keys():
+        #         return self.__data[dot_path]
+        #     elif self.mount(dot_path):
+        #         return self.__data[dot_path]
+        if dot_path in self.__data['data'].keys():
             return self.__data['data'][dot_path]
         elif self.mount(dot_path):
             return self.__data['data'][dot_path]
@@ -245,6 +236,9 @@ class DataModule(event.EventModule):
 
     def sav(self):
         return self.__data['save']
+
+    def tmp(self):
+        return self.__data['temp']
 
     def read(self, path, mode=None):
         """
