@@ -31,7 +31,8 @@
     "electron-is-dev": "latest",
     "normalize.css": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "vue": "latest"
   },
   "build": {
     "appId": "net.erajs.next",

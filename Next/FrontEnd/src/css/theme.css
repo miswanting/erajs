@@ -1,10 +1,12 @@
 :root {
-  --a: #030609;
-  --b: #333639;
-  --c: #636669;
-  --d: #939699;
-  --e: #c3c6c9;
-  --f: #f3f6f9;
+  --static: #030609;
+  --disable: #232629;
+  --default: #333639;
+  --interactable: #434649;
+  --hover-sub: #636669;
+  --hover: #939699;
+  --active-sub: #c3c6c9;
+  --active: #f3f6f9;
 }
 .light-theme {
   /* 静态 */
@@ -46,22 +48,3 @@
   --active-front: #030609;
   --active-back: #f3f6f9;
 }
-
-/* --active-light: #eaeaea;
-  --hover-light: #cccccc;
-  --react-light: #a5a5a5;
-  --light: #d5d5d5;
-  --active-dark: #202020;
-  --hover-dark: #202020;
-  --react-dark: #333333;
-  --dark: #242424; */
-/* .dark-theme {
-  --active-light: #eaeaea;
-  --hover-light: #cccccc;
-  --react-light: #a5a5a5;
-  --light: #d5d5d5;
-  --active-dark: #202020;
-  --hover-dark: #202020;
-  --react-dark: #333333;
-  --dark: #242424;
-} */

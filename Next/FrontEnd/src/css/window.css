@@ -1,8 +1,13 @@
 .window {
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
   color: var(--default-front);
   cursor: default;
+}
+.game {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .header {
   display: flex;
@@ -11,11 +16,21 @@
   color: var(--default-front);
   z-index: 3;
 }
-.window-operator-bar > span:last-child {
-  border-top-right-radius: 0.5rem;
-}
-.menu-bar {
+.header .menu-bar {
   display: flex;
+}
+.menu-bar .menu-list {
+  position: absolute;
+}
+.menu-bar > .menu:first-child > .menu-button {
+  border-top-left-radius: 0.5em;
+}
+.menu-bar .menu-button {
+  background: var(--default-back);
+}
+.menu-bar .menu-button:hover {
+  color: var(--hover-front);
+  background: var(--hover-back);
 }
 .menu-item {
   display: flex;
@@ -31,7 +46,6 @@
 }
 .menu-button {
   padding: 0em 0.5em;
-  /* background-color: var(--default-back); */
   width: -webkit-fill-available;
   text-align: left;
 }
@@ -60,43 +74,39 @@
   backdrop-filter: blur(0.2em);
   background-color: #8884;
 }
-.window-operator-bar > span {
-  padding: 0em 0.5em;
-  text-align: center;
-  background-color: var(--default-back);
-}
-.title {
+.header .title {
   flex-grow: 1;
-  background-color: var(--default-back);
+  background: var(--default-back);
   -webkit-app-region: drag;
   cursor: grab;
 }
 .title:active {
   cursor: grabbing;
 }
-.min:hover {
+.operator-bar > span {
+  padding: 0em 0.5em;
+  background: var(--default-back);
+}
+.operator-bar > span:last-child {
+  border-top-right-radius: 0.5rem;
+}
+.operator-bar span:hover {
+  background: var(--hover-back);
+}
+.operator-bar span:active {
+  background: var(--active-back);
+}
+.operator-bar .min:hover,
+.operator-bar .min:active {
   color: lime;
-  background-color: var(--hover-back);
 }
-.max:hover {
+.operator-bar .max:hover,
+.operator-bar .max:active {
   color: yellow;
-  background-color: var(--hover-back);
 }
-.close:hover {
+.operator-bar .close:hover,
+.operator-bar .close:active {
   color: red;
-  background-color: var(--hover-back);
-}
-.min:active {
-  color: lime;
-  background-color: var(--active-back);
-}
-.max:active {
-  color: yellow;
-  background-color: var(--active-back);
-}
-.close:active {
-  color: red;
-  background-color: var(--active-back);
 }
 .toast-bar {
   z-index: 2;
@@ -118,8 +128,8 @@
 }
 .container {
   flex-grow: 1;
-  background-color: var(--default-back);
   overflow-y: auto;
+  background: var(--default-back);
   z-index: 1;
 }
 
