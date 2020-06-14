@@ -7,7 +7,7 @@ module.exports = function Game(props) {
     return (
         React.createElement(
             'div',
-            { className: 'window' },
+            { className: 'game' },
             React.createElement(Header, props),
             React.createElement(ToastSystem, props),
             React.createElement(Container, props),

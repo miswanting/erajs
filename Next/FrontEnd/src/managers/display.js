@@ -36,8 +36,23 @@ module.exports = class DisplayManager extends EventEmitter {
             container = Game(data)
         }
         ReactDOM.render(
-            container,
+            Window(data),
             document.getElementById('root')
         )
     }
+}
+function Window(props) {
+    let container = null
+    if (props.interfaceType == 'intro') {
+        container = Intro(props)
+    } else if (props.interfaceType == 'game') {
+        container = Game(props)
+    }
+    return (
+        React.createElement(
+            'div',
+            { className: 'window' },
+            container
+        )
+    )
 }

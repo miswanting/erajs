@@ -33,6 +33,10 @@ h2 {
   color: var(--hover-front);
   background-color: var(--hover-back);
 }
+.button:active {
+  color: var(--active-front);
+  background-color: var(--active-back);
+}
 .link {
   cursor: pointer;
   text-decoration: dotted;
@@ -47,7 +51,7 @@ table {
 td {
   text-align: center;
 }
-span.text.shake {
+.text.shake {
   display: inline-block;
 }
 .progress {

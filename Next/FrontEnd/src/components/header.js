@@ -110,7 +110,7 @@ function Title(props) {
 }
 function WindowOperatorBar(props) {
     return (
-        React.createElement('div', { className: 'window-operator-bar' },
+        React.createElement('div', { className: 'operator-bar' },
             React.createElement(Min),
             React.createElement(Max),
             React.createElement(Close)

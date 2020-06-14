@@ -1,6 +1,6 @@
 const { EventEmitter } = require('events')
 module.exports = class DataManager extends EventEmitter {
-    #data
+    #data = null
     constructor() {
         super()
         this.#data = {}

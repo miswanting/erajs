@@ -42,7 +42,7 @@ class NetModule(event.EventModule):
                 self.core()
             except OSError as err:
                 if err.errno == 10061:
-                    self.warn('   └─ [!] Please Start FrontEnd!')
+                    self.warn('   └─ [!] Please Start FrontEnd First!')
                 else:
                     self.warn(err)
                 os._exit(1)
