@@ -26,7 +26,7 @@ h2 {
 }
 .button {
   cursor: pointer;
-  background-color: var(--react-back);
+  background-color: var(--interactable-back);
   margin: 0px 0.1em;
 }
 .button:hover {
@@ -57,7 +57,7 @@ td {
 .progress {
   position: relative;
   display: inline-block;
-  background-color: var(--react-back);
+  background-color: var(--interactable-back);
   vertical-align: middle;
   height: 1rem;
   margin: 0rem 0.2rem;
@@ -82,9 +82,9 @@ td {
 .input {
   height: 1rem;
   width: 100px;
-  background-color: var(--react-back);
+  background-color: var(--interactable-back);
   border: none;
-  color: var(--react-front);
+  color: var(--interactable-front);
   margin: 0rem 0.2rem;
 }
 input:focus {
@@ -107,7 +107,7 @@ input:focus {
   position: absolute;
   bottom: 0rem;
   left: 0rem;
-  background-color: var(--react-back);
+  background-color: var(--interactable-back);
   width: max-content;
   border: 0.5px solid gray;
 }
