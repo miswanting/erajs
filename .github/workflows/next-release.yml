@@ -24,5 +24,7 @@ jobs:
         run: dir
       - name: Dir Parent INFO
         run: |
-          cd ..
+          cd Era.js
+          dir
+          cd ../Era.js-SDK
           dir
