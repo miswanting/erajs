@@ -12,11 +12,14 @@ jobs:
     steps:
       - name: Checkout Core
         uses: actions/checkout@v2
+        with:
+          repository: "miswanting/Era.js"
+          path: Era.js
       - name: Checkout SDK
         uses: actions/checkout@v2
         with:
           repository: "miswanting/Era.js-SDK"
-          path: ../Era.js-SDK
+          path: Era.js-SDK
       - name: Dir INFO
         run: dir
       - name: Dir Parent INFO
