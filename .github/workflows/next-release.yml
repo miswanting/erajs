@@ -1,4 +1,4 @@
-name: CI
+name: Release SDK
 on:
   push:
     branches:
@@ -16,6 +16,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: "miswanting/Era.js-SDK"
-          path: Era.js-SDK
+          path: ../Era.js-SDK
       - name: Dir INFO
         run: dir
+      - name: Dir Parent INFO
+        run: |
+          cd ..
+          dir
