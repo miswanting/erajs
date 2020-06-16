@@ -32,11 +32,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           cd ..
-      - name: Checkout SDK
+      - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: "12"
-      - name: Checkout SDK
+      - name: Install Node.js dependencies
         run: |
           cd Era.js/Next/FrontEnd
           npm i
