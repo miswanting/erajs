@@ -6,7 +6,7 @@ from .modules import tools
 e = engine.Engine()
 
 
-def init():
+def init(config: dict = None):
     print()
     e.info('Era.js Engine Initializing...')
     e.info('├─ Fixing Path...')
@@ -91,6 +91,10 @@ def start(host='0.0.0.0', port=80):
     e.listen(host, port)
 
 
+def exit():
+    pass
+
+
 def debug(text):
     e.debug(text)
 
@@ -111,12 +115,12 @@ def critical(text):
     e.critical(text)
 
 
-def title(text):
-    e.push('title', {'text': str(text)}, None)
-
-
 def window(style):
     e.push('window', None, style)
+
+
+def title(text):
+    e.push('title', {'text': str(text)}, None)
 
 
 def page(style):
@@ -124,8 +128,16 @@ def page(style):
     e.push('page', None, style)
 
 
-def clear(num):
+def cls(num):
     e.push('clear', {'num': num}, None)
+
+
+def mode(type, *arg, **kw):
+    e.push('mode', {'type': type, 'arg': arg}, None)
+
+
+def divider(text, style):
+    e.push('divider', {'text': text}, style)
 
 
 def heading(text, rank, style):
@@ -332,12 +344,8 @@ def dropdown(text_list, callback, default_index, search, multiple, placeholder, 
     return node
 
 
-def divider(text, style):
-    e.push('divider', {'text': text}, style)
-
-
-def get_data():
-    return e.dat()
+def style():
+    pass
 
 
 def goto(ui_func, *arg, **kw):
@@ -348,12 +356,20 @@ def back(num, *arg, **kw):
     e.back(num, *arg, **kw)
 
 
-def mode(type, *arg, **kw):
-    e.push('mode', {'type': type, 'arg': arg}, None)
+def repeat():
+    pass
 
 
-def dangerously_get_engine_core():
-    return e
+def clear():
+    pass
+
+
+def insert():
+    pass
+
+
+def get_gui_stack():
+    pass
 
 
 def cfg(dot_path):
@@ -368,5 +384,65 @@ def sav():
     return e.sav()
 
 
-def new_hash(level=4):
+def tmp():
+    return e.sav()
+
+
+def dump_cfg(dot_path=None, ext='ini'):
+    return m.dump_cfg(dot_path, ext)
+
+
+def dump_dat(dot_path=None, ext='ini'):
+    return m.dump_dat(dot_path, ext)
+
+
+def dump_sav():
+    return m.dump_sav()
+
+
+def load_sav():
+    return m.load_sav()
+
+
+def quick_save():
+    return m.quick_save()
+
+
+def quick_load():
+    return m.quick_load()
+
+
+def on():
+    pass
+
+
+def once():
+    pass
+
+
+def off():
+    pass
+
+
+def emit():
+    pass
+
+
+def dangerously_get_engine_core():
+    return e
+
+
+def random_hash(level=4):
     return tools.random_hash(level)
+
+
+def show_save_to_save():
+    pass
+
+
+def show_save_to_load():
+    pass
+
+
+def get_data():
+    return e.dat()

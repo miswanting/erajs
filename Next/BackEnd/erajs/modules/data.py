@@ -61,6 +61,7 @@ class DataModule(event.EventModule):
         """
         super().__init__()
         self.__data = {
+            "system": {},  # cfg【NEW】
             "config": {},  # cfg【NEW】
             'data': {},  # dat【NEW】
             'save': {},  # sav【NEW】
@@ -76,13 +77,13 @@ class DataModule(event.EventModule):
         - 维护数据文件完整性
         """
         check_folder_list = [
-            'configs',  # 配置文件存放处
+            'config',  # 配置文件存放处
             'data',  # 静态数据文件存放处
             'save',  # 存档文件存放处
             'res'  # 资源文件存放处
         ]
         check_file_list = [
-            'configs/system.ini'  # 系统配置信息统一存放于此
+            'config/system.ini'  # 系统配置信息统一存放于此
         ]
         # 补全文件夹
         for each in check_folder_list:

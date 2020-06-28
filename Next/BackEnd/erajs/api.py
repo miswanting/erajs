@@ -1,6 +1,7 @@
 from . import mw as m
 version = '0.2.0'
 aka = 'brandnew'
+data = None
 
 
 ########## 系统 ##########
@@ -8,7 +9,10 @@ def init(config: dict = None):
     """
     # 初始化引擎
     """
-    m.init()
+    m.init(config)
+    # 兼容
+    # global data
+    # data = a.get_data()
 
 
 def config(data: dict = None):
@@ -67,21 +71,21 @@ def info(text):
 
 def warn(text):
     """
-    # 初始化
+    # 调试输出
     """
     m.warn(text)
 
 
 def error(text):
     """
-    # 初始化
+    # 调试输出
     """
     m.error(text)
 
 
 def critical(text):
     """
-    # 初始化
+    # 调试输出
     """
     m.critical(text)
 
@@ -89,14 +93,14 @@ def critical(text):
 ########## 窗口 ##########
 def window(style=None):
     """
-    # 初始化引擎
+    # 设置窗口样式
     """
     m.window(style)
 
 
 def title(text):
     """
-    # 初始化引擎
+    # 设置窗口标题
     """
     m.title(text)
 
@@ -104,14 +108,14 @@ def title(text):
 ########## 页面管理 ##########
 def page(style=None):
     """
-    # 初始化引擎
+    # 生成新的空白页面
     """
     m.page(style)
 
 
-def clear(num=0):
+def cls(num=0):
     """
-    # 初始化引擎
+    # 清屏
     """
     m.clear(num)
 
@@ -119,14 +123,14 @@ def clear(num=0):
 ########## 块 ##########
 def mode(type='line', *arg, **kw):
     """
-    # 初始化引擎
+    # 设置新增控件排版模式
     """
     m.mode(type, *arg, **kw)
 
 
 def divider(text=None, style=None):
     """
-    # 初始化引擎
+    # 插入块级控件：分割线
     """
     m.divider(text, style)
 
@@ -134,7 +138,7 @@ def divider(text=None, style=None):
 ########## 行 ##########
 def heading(text=None, rank=1, style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：标题
     """
     m.heading(text, rank, style)
 
@@ -144,7 +148,7 @@ h = heading
 
 def text(text=None, wait=False, style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：文本
     """
     m.text(text, wait, style)
 
@@ -154,7 +158,7 @@ t = text
 
 def button(text=None, callback=None, *arg, **kw):
     """
-    # 初始化引擎
+    # 插入行内控件：按钮
     """
     m.button(text, callback, *arg, **kw)
 
@@ -164,7 +168,7 @@ b = button
 
 def link(text=None, callback=None, style=None, *arg, **kw):
     """
-    # 初始化引擎
+    # 插入行内控件：链接
     """
     m.link(text, callback, style, *arg, **kw)
 
@@ -174,51 +178,58 @@ l = link
 
 def progress(now=0, max=100, style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：进度条
     """
     m.progress(now, max, style)
 
 
 def rate(now=0, max=5, callback=None, style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：评分
     """
     return m.rate(now, max, callback, style)
 
 
 def check(text=None, callback=None, default=False, style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：多选
     """
     return m.check(text, callback, default, style)
 
 
 def radio(text_list, callback=None, default_index=0, style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：单选
     """
     return m.radio(text_list, callback, default_index, style)
 
 
 def input(callback=None, default='', is_area=False, placeholder='', style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：输入框
     """
     return m.input(callback, default, is_area, placeholder, style)
 
 
 def dropdown(text_list=None, callback=None, default_index=0, search=False, multiple=False, placeholder='', allowAdditions=False, style=None):
     """
-    # 初始化引擎
+    # 插入行内控件：下拉列表
     """
     return m.dropdown(text_list, callback, default_index, search,
                       multiple, placeholder, allowAdditions, style)
 
 
-########## 界面逻辑 ##########
-def style(ui_func, *arg, **kw):
+########## 样式管理 ##########
+def set_style(ui_func, *arg, **kw):
     """
-    # 初始化引擎
+    # 设置样式
+    """
+    m.goto(ui_func, *arg, **kw)
+
+
+def reset_style(ui_func, *arg, **kw):
+    """
+    # 重置样式
     """
     m.goto(ui_func, *arg, **kw)
 
@@ -226,57 +237,42 @@ def style(ui_func, *arg, **kw):
 ########## 界面逻辑 ##########
 def goto(ui_func, *arg, **kw):
     """
-    # 初始化引擎
+    # 将界面节点添加到界面栈的末尾，并触发
     """
     m.goto(ui_func, *arg, **kw)
 
 
 def back(num=1, *arg, **kw):
     """
-    # 初始化引擎
+    # 从界面栈删除n（默认为1）个界面节点，并触发删除之后的末尾节点
     """
     m.back(num, *arg, **kw)
 
 
 def repeat(*arg, **kw):
     """
-    # 初始化引擎
+    # 不对界面栈进行修改，并触发末尾节点
     """
     pass
 
 
-def clear_gui(num=0):
+def clear(num=0):
     """
-    # 初始化引擎
-    """
-    pass
-
-
-def append_gui(ui_func, *arg, **kw):
-    """
-    # 初始化引擎
+    # 清空界面栈
     """
     pass
 
 
-def get_gui_list():
+def insert(ui_func, *arg, **kw):
     """
-    # 初始化引擎
-    """
-    pass
-
-
-########## 预设控件 ##########
-def show_save_to_save():
-    """
-    # 初始化引擎
+    # 将界面节点添加到界面栈的末尾，但不触发
     """
     pass
 
 
-def show_save_to_load():
+def get_gui_stack():
     """
-    # 初始化引擎
+    # 返回界面栈，以界面名称列表的格式
     """
     pass
 
@@ -284,57 +280,96 @@ def show_save_to_load():
 ########## 数据管理 ##########
 def cfg(dot_path=None):
     """
-    # 初始化引擎
+    # 返回设置数据
     """
     return m.cfg(dot_path)
 
 
 def dat(dot_path=None):
     """
-    # 初始化引擎
+    # 返回静态数据
     """
     return m.dat(dot_path)
 
 
 def sav():
     """
-    # 初始化引擎
+    # 返回存档数据
     """
     return m.sav()
 
 
 def tmp(key=None):
     """
-    # 初始化引擎
+    # 返回临时数据
     """
     return m.sav()
+
+
+def dump_cfg(dot_path=None, ext='ini'):
+    """
+    # 转储设置数据
+    """
+    return m.dump_cfg(dot_path, ext)
+
+
+def dump_dat(dot_path=None, ext='ini'):
+    """
+    # 转储静态数据
+    """
+    return m.dump_dat(dot_path, ext)
+
+
+def dump_sav():
+    """
+    # 转储存档数据
+    """
+    return m.dump_sav()
+
+
+def load_sav():
+    return m.load_sav()
+
+
+def quick_save():
+    """
+    # 创建快速存档
+    """
+    return m.quick_save()
+
+
+def quick_load():
+    """
+    # 加载快速存档
+    """
+    return m.quick_load()
 
 
 ########## 事件 ##########
 def on():
     """
-    # 初始化引擎
+    # 注册侦听器
     """
     pass
 
 
 def once():
     """
-    # 初始化引擎
+    # 注册一次性侦听器
     """
     pass
 
 
 def off():
     """
-    # 初始化引擎
+    # 注销侦听器
     """
     pass
 
 
 def emit():
     """
-    # 初始化引擎
+    # 发布事件
     """
     pass
 
@@ -342,7 +377,7 @@ def emit():
 ########## 实验性 ##########
 def dangerously_get_engine_core():
     """
-    # 初始化引擎
+    # 获取引擎核心（危险）
     """
     return m.dangerously_get_engine_core()
 
@@ -350,9 +385,24 @@ def dangerously_get_engine_core():
 ########## 工具 ##########
 def random_hash(level=4):
     """
-    # 初始化引擎
+    # 获取哈希随机值
     """
     return m.random_hash(level)
+
+
+########## 预设控件 ##########
+def show_save_to_save():
+    """
+    # 插入块级复合控件：存档保存列表（单页）
+    """
+    pass
+
+
+def show_save_to_load():
+    """
+    # 插入块级复合控件：存档加载列表（单页）
+    """
+    pass
 
 
 ########## 弃用 ##########
@@ -365,6 +415,10 @@ def tick():
 
 
 def save_data_to_file():
+    """
+    弃用
+    现在用`save_cfg`，`save_dat`，`save_sav`代替
+    """
     pass
 
 
@@ -373,4 +427,32 @@ def shake():
 
 
 def generate_map():
+    pass
+
+
+def clear(num=0):
+    """
+    # 初始化引擎
+    """
+    pass
+
+
+def clear(num=0):
+    """
+    # 初始化引擎
+    """
+    pass
+
+
+def append_gui(ui_func, *arg, **kw):
+    """
+    # 添加界面节点但不触发
+    """
+    pass
+
+
+def get_gui_list():
+    """
+    # 初始化引擎
+    """
     pass
