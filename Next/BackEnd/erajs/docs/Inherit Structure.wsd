@@ -6,6 +6,7 @@
 :APIModule;
 split
     :ProtocolModule;
+    :StyleModule;
     :NetModule;
 split again
     :DataModule;

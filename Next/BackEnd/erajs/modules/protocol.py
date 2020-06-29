@@ -1,5 +1,5 @@
 from . import net
 
 
-class ProtocolModule(net.NetModule):
+class ProtocolModule(style.StyleModule):
     pass
