@@ -19,7 +19,7 @@ def init(config: dict = None):
 
     def on_file_missing(event):
         e.warn('│  ├─ File [{}] Missing. Creating...'.format(event['value']))
-        if event['value'] == 'config\\system.yaml':
+        if event['value'] == 'config\\sys.yaml':
             init_sys_cfg_data = {
                 'resolution': [800, 600]
             }
@@ -381,20 +381,20 @@ def get_gui_stack():
     pass
 
 
-def cfg(dot_path):
-    return e.cfg(dot_path)
+def cfg(dot_path=None):
+    return e.get_data(dot_path, 'config')
 
 
-def dat(dot_path):
-    return e.dat(dot_path)
+def dat(dot_path=None):
+    return e.get_data(dot_path)
 
 
 def sav():
     return e.sav()
 
 
-def tmp():
-    return e.sav()
+def tmp(dot_path=None):
+    return e.get_data(dot_path, 'temp')
 
 
 def write_cfg(dot_path=None, ext='yaml'):

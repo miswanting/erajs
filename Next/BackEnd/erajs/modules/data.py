@@ -86,7 +86,7 @@ class DataModule(event.EventModule):
             'res'  # 资源文件存放处
         ]
         check_file_list = [
-            'config\\system.yaml'  # 系统配置信息统一存放于此
+            'config\\sys.yaml'  # 系统配置信息统一存放于此
         ]
         # 补全文件夹
         for each in check_folder_list:
@@ -215,34 +215,67 @@ class DataModule(event.EventModule):
         #     event_type.DATA_FILES_LOAD_FINISHED, len(file_list)
         # )
 
-    def cfg(self, dot_path):
-        if dot_path in self.__data['config'].keys():
-            return self.__data['config'][dot_path]
-        else:
-            self.warn('Config File: "{}" DO NOT EXIST!'.format(str(dot_path)))
-            return False
+    def get_data(self, dot_path=None, scope='data'):
+        if scope == 'config':
+            if dot_path is None:
+                return self.__data[scope]
+            elif dot_path in self.__data[scope].keys():
+                return self.__data[scope][dot_path]
+            elif self.mount(dot_path, 'config'):
+                return self.__data[scope][dot_path]
+            else:
+                self.warn(
+                    'Config File: "{}" DO NOT EXIST!'.format(str(dot_path))
+                )
+                return False
+        elif scope == 'data':
+            if dot_path is None:
+                return self.__data[scope]
+            elif dot_path in self.__data[scope].keys():
+                return self.__data[scope][dot_path]
+            elif self.mount(dot_path):
+                return self.__data[scope][dot_path]
+            else:
+                self.warn(
+                    'Data File: "{}" DO NOT EXIST!'.format(str(dot_path))
+                )
+                return False
+        elif scope == 'save':
+            return self.__data[scope]
+        elif scope == 'temp':
+            if dot_path is None:
+                return self.__data[scope]
+            elif dot_path in self.__data[scope].keys():
+                return self.__data[scope][dot_path]
+            else:
+                self.warn(
+                    'Temp Data: "{}" DO NOT EXIST!'.format(str(dot_path))
+                )
+                return False
 
-    def dat(self, dot_path=None):
-        if dot_path is None:
-            return self.__data
-        # if dot_path[0:5] == 'data.':
-        #     if dot_path in self.__data.keys():
-        #         return self.__data[dot_path]
-        #     elif self.mount(dot_path):
-        #         return self.__data[dot_path]
-        if dot_path in self.__data['data'].keys():
-            return self.__data['data'][dot_path]
-        elif self.mount(dot_path):
-            return self.__data['data'][dot_path]
-        else:
-            self.warn('Data File: "{}" DO NOT EXIST!'.format(str(dot_path)))
-            return False
+    # def cfg(self, dot_path):
+    #     if dot_path in self.__data['config'].keys():
+    #         return self.__data['config'][dot_path]
+    #     else:
+    #         self.warn('Config File: "{}" DO NOT EXIST!'.format(str(dot_path)))
+    #         return False
 
-    def sav(self):
-        return self.__data['save']['data']
+    # def dat(self, dot_path=None):
+    #     if dot_path is None:
+    #         return self.__data
+    #     if dot_path in self.__data['data'].keys():
+    #         return self.__data['data'][dot_path]
+    #     elif self.mount(dot_path):
+    #         return self.__data['data'][dot_path]
+    #     else:
+    #         self.warn('Data File: "{}" DO NOT EXIST!'.format(str(dot_path)))
+    #         return False
 
-    def tmp(self):
-        return self.__data['temp']
+    # def sav(self):
+    #     return self.__data['save']['data']
+
+    # def tmp(self):
+    #     return self.__data['temp']
 
     def read(self, path, mode=None):
         """
@@ -286,10 +319,10 @@ class DataModule(event.EventModule):
         elif ext in ['save', 'sav']:
             save_file.write(path, data)
 
-    def assemble_path(self, folder_path, file_name, file_extension):
-        file_extension = file_extension.lower()
-        path = "{}/{}.{}".format(folder_path, file_name, file_extension)
-        return path
+    # def assemble_path(self, folder_path, file_name, file_extension):
+    #     file_extension = file_extension.lower()
+    #     path = "{}/{}.{}".format(folder_path, file_name, file_extension)
+    #     return path
 
     def path2dot(self, path):
         """
@@ -317,13 +350,13 @@ class DataModule(event.EventModule):
         #         paths.append(root+'\\'+tmp_path)
         return path
 
-    def mount(self, dot_path: str) -> None:
+    def mount(self, dot_path: str, scope='data') -> None:
         """
         # 挂载数据文件到内存（覆盖）
         """
-        path = self.dot2path(dot_path)
+        path = scope+'\\'+self.dot2path(dot_path)
         data = self.read(path)
-        self.__data['data'][dot_path] = data
+        self.__data[scope][dot_path] = data
 
     def unmount(self, dot_path: str) -> None:
         """
@@ -331,11 +364,11 @@ class DataModule(event.EventModule):
         """
         del self.__data['data'][dot_path]
 
-    def save(self, dot_path: str, ext=None):  # Quick Save
-        """
-        # 将当前save数据保存到特定save文件中（快速保存）
-        """
-        pass
+    # def save(self, dot_path: str, ext=None):  # Quick Save
+    #     """
+    #     # 将当前save数据保存到特定save文件中（快速保存）
+    #     """
+    #     pass
 
     def write_save(self, filename_without_ext=None):
         self.__data['save']['manifest'] = {
@@ -362,124 +395,124 @@ class DataModule(event.EventModule):
             path = 'save\\'+self.dot2path(filename_without_ext, 'save')
         self.__data['save'] = self.read(path)
 
-    def import_data(self):
-        """
-        # 导入数据
-        用于数据共享
-        """
-        pass
+    # def import_data(self):
+    #     """
+    #     # 导入数据
+    #     用于数据共享
+    #     """
+    #     pass
 
-    def export_data(self):
-        """
-        # 导出数据
-        用于数据共享
-        """
-        pass
+    # def export_data(self):
+    #     """
+    #     # 导出数据
+    #     用于数据共享
+    #     """
+    #     pass
 
     # TODO：↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-    def save_to(self, save_num, save_name=''):
-        """
-        将存档按序号保存到存档文件中
-        """
-        self.save_file(self.data['db'],
-                       'save/{}.{}.zip'.format(save_num, save_name))
+    # def save_to(self, save_num, save_name=''):
+    #     """
+    #     将存档按序号保存到存档文件中
+    #     """
+    #     self.save_file(self.data['db'],
+    #                    'save/{}.{}.zip'.format(save_num, save_name))
 
-    def load_from(self, save_num):
-        """
-        将存档按数值保存到存档文件中
-        """
-        save_file_path_list = self.scan('save')
-        for each in save_file_path_list:
-            if each.split('\\')[-1].split('.')[0] == str(save_num):
-                self.data['db'] = self.load_file(each)
+    # def load_from(self, save_num):
+    #     """
+    #     将存档按数值保存到存档文件中
+    #     """
+    #     save_file_path_list = self.scan('save')
+    #     for each in save_file_path_list:
+    #         if each.split('\\')[-1].split('.')[0] == str(save_num):
+    #             self.data['db'] = self.load_file(each)
 
-    def read_file_by_dot_path(self, dot_path):
-        """
-        # 通过DOT_PATH读取数据文件
-        若
-        ## 用法
-        ```python
-        # 读取data文件夹中的test.json
-        data = read_file_by_dot_path('test')
-        # 当data文件夹中存在test文件与
-        # 的test.json
-        data = read_file_by_dot_path('test')
-        ```
-        """
-        file_path = DotPath.dot2path(dot_path)
-        return self.import_data(file_path)
+    # def read_file_by_dot_path(self, dot_path):
+    #     """
+    #     # 通过DOT_PATH读取数据文件
+    #     若
+    #     ## 用法
+    #     ```python
+    #     # 读取data文件夹中的test.json
+    #     data = read_file_by_dot_path('test')
+    #     # 当data文件夹中存在test文件与
+    #     # 的test.json
+    #     data = read_file_by_dot_path('test')
+    #     ```
+    #     """
+    #     file_path = DotPath.dot2path(dot_path)
+    #     return self.import_data(file_path)
 
-    def write_file_by_dot_path(self, dot_path, ext='yaml'):
-        """
-        # 将一个data文件夹中加载的数据重新保存回去
-        # """
-        data = self.data[dot_path]
-        path_to_file = DotPath.dot2path(dot_path)
-        self.export_data(data,)
-        self.save_file(data, path_to_file)
+    # def write_file_by_dot_path(self, dot_path, ext='yaml'):
+    #     """
+    #     # 将一个data文件夹中加载的数据重新保存回去
+    #     # """
+    #     data = self.data[dot_path]
+    #     path_to_file = DotPath.dot2path(dot_path)
+    #     self.export_data(data,)
+    #     self.save_file(data, path_to_file)
 
-    def load_data(self, files, send_func=None):
-        data = {}
-        for each in files:
-            key = DotPath.path2dot(each)[0]
-            # 载入文件
-            # self.emit('')
-            # e.info('│  ├─ Loading [{}]...'.format(each))
-            if send_func is not None:
-                bag = {
-                    'type': 'load_text',
-                    'value': 'Data: [ {} ]...'.format(key),
-                    'from': 'b',
-                    'to': 'r'
-                }
-                send_func(bag)
-            data[key] = self.read(each)
-        return data
+    # def load_data(self, files, send_func=None):
+    #     data = {}
+    #     for each in files:
+    #         key = DotPath.path2dot(each)[0]
+    #         # 载入文件
+    #         # self.emit('')
+    #         # e.info('│  ├─ Loading [{}]...'.format(each))
+    #         if send_func is not None:
+    #             bag = {
+    #                 'type': 'load_text',
+    #                 'value': 'Data: [ {} ]...'.format(key),
+    #                 'from': 'b',
+    #                 'to': 'r'
+    #             }
+    #             send_func(bag)
+    #         data[key] = self.read(each)
+    #     return data
 
-    def save_data_to_file(self, dot_path, ext='yaml'):
-        """
-        # 将一个data文件夹中加载的数据重新保存回去
-        # """
-        data = self.data[dot_path]
-        path_to_file = self.dot2path(dot_path, ext)
-        self.save_file(data, path_to_file)
-    # TODO：↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+    # def save_data_to_file(self, dot_path, ext='yaml'):
+    #     """
+    #     # 将一个data文件夹中加载的数据重新保存回去
+    #     # """
+    #     data = self.data[dot_path]
+    #     path_to_file = self.dot2path(dot_path, ext)
+    #     self.save_file(data, path_to_file)
+    # # TODO：↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
-    def file_type_predict(self, file_path):
-        pass
+    # def file_type_predict(self, file_path):
+    #     pass
 
-    def file_convert(self, from_file_path, to_file_path, from_format='',
-                     to_format=''):
-        # 格式强制转换
-        if from_format == '':
-            from_format = os.path.splitext(from_file_path).lower()
-        if to_format == '':
-            to_format = os.path.splitext(to_file_path).lower()
+    # def file_convert(self, from_file_path, to_file_path, from_format='',
+    #                  to_format=''):
+    #     # 格式强制转换
+    #     if from_format == '':
+    #         from_format = os.path.splitext(from_file_path).lower()
+    #     if to_format == '':
+    #         to_format = os.path.splitext(to_file_path).lower()
 
-        data = None
-        if from_format in ['cfg', 'config', 'ini', 'inf']:
-            data = cfg_file.read(from_file_path)
-        elif from_format == 'csv':
-            data = csv_file.read(from_file_path)
-        elif from_format == 'json':
-            data = json_file.read(from_file_path)
-        elif from_format == 'yaml':
-            data = yaml_file.read(from_file_path)
-        elif from_format == 'zip':
-            data = yaml_file.read(from_file_path)
-        elif from_format == 'txt':
-            data = text_file.read(from_file_path)
+    #     data = None
+    #     if from_format in ['cfg', 'config', 'ini', 'inf']:
+    #         data = cfg_file.read(from_file_path)
+    #     elif from_format == 'csv':
+    #         data = csv_file.read(from_file_path)
+    #     elif from_format == 'json':
+    #         data = json_file.read(from_file_path)
+    #     elif from_format == 'yaml':
+    #         data = yaml_file.read(from_file_path)
+    #     elif from_format == 'zip':
+    #         data = yaml_file.read(from_file_path)
+    #     elif from_format == 'txt':
+    #         data = text_file.read(from_file_path)
 
-        if to_format in ['cfg', 'config', 'ini', 'inf']:
-            cfg_file.write(to_file_path, data)
-        elif to_format == 'csv':
-            csv_file.write(to_file_path, data)
-        elif to_format == 'json':
-            json_file.write(to_file_path, data)
-        elif to_format == 'yaml':
-            yaml_file.write(to_file_path, data)
-        elif to_format == 'zip':
-            zip_file.write(to_file_path, data)
-        elif to_format == 'txt':
-            text_file.write(to_file_path, data)
+    #     if to_format in ['cfg', 'config', 'ini', 'inf']:
+    #         cfg_file.write(to_file_path, data)
+    #     elif to_format == 'csv':
+    #         csv_file.write(to_file_path, data)
+    #     elif to_format == 'json':
+    #         json_file.write(to_file_path, data)
+    #     elif to_format == 'yaml':
+    #         yaml_file.write(to_file_path, data)
+    #     elif to_format == 'zip':
+    #         zip_file.write(to_file_path, data)
+    #     elif to_format == 'txt':
+    #         text_file.write(to_file_path, data)
