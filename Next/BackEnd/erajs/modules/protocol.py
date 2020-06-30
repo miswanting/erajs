@@ -1,4 +1,4 @@
-from . import net
+from . import style
 
 
 class ProtocolModule(style.StyleModule):

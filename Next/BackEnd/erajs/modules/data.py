@@ -2,9 +2,9 @@ import os
 from typing import Any, Dict, List
 
 from ..file_format_support import (cfg_file, csv_file, json_file, text_file,
-                                   yaml_file, zip_file)
+                                   yaml_file, zip_file, save_file)
 from . import DotPath  # EventManager, LogManager, Prototypes, Tools
-from . import event
+from . import event, tools
 
 
 class DataModule(event.EventModule):
@@ -64,7 +64,10 @@ class DataModule(event.EventModule):
             "system": {},  # cfg【NEW】
             "config": {},  # cfg【NEW】
             'data': {},  # dat【NEW】
-            'save': {},  # sav【NEW】
+            'save': {  # sav【NEW】
+                'manifest': {},
+                'data': {}
+            },
             'temp': {},  # tmp【NEW】
             'load_queue': []
         }
@@ -83,20 +86,19 @@ class DataModule(event.EventModule):
             'res'  # 资源文件存放处
         ]
         check_file_list = [
-            'config/system.ini'  # 系统配置信息统一存放于此
+            'config\\system.yaml'  # 系统配置信息统一存放于此
         ]
         # 补全文件夹
         for each in check_folder_list:
             if not os.path.isdir(each):
                 event_data = {'value': each}
                 self.emit('folder_missing', event_data)
-                os.mkdir(each)
         # 补全文件
         for each in check_file_list:
             if not os.path.isfile(each):
                 event_data = {'value': each}
                 self.emit('file_missing', event_data)
-                open(each, 'w')
+        # 配置文件初始化
 
     # def import_data(self, file_path):
     #     """
@@ -177,7 +179,7 @@ class DataModule(event.EventModule):
     def scan_configs(self):
         files = self.scan('config')
         for each in files:
-            dot_path = '.'.join(self.path2dot(each).split('.')[1:])
+            dot_path = '.'.join(self.path2dot(each)[0].split('.')[1:])
             self.__data['load_queue'].append([dot_path, each])
             self.emit('config_found', {'value': dot_path})
 
@@ -193,7 +195,7 @@ class DataModule(event.EventModule):
     def scan_data_files(self):
         files = self.scan('data')
         for each in files:
-            dot_path = '.'.join(self.path2dot(each).split('.')[1:])
+            dot_path = '.'.join(self.path2dot(each)[0].split('.')[1:])
             self.__data['load_queue'].append([dot_path, each])
             self.emit('data_file_found', {'value': dot_path})
         # file_list = self.scan('data')
@@ -237,7 +239,7 @@ class DataModule(event.EventModule):
             return False
 
     def sav(self):
-        return self.__data['save']
+        return self.__data['save']['data']
 
     def tmp(self):
         return self.__data['temp']
@@ -260,6 +262,8 @@ class DataModule(event.EventModule):
             data = zip_file.read(path)
         elif ext == 'txt':
             data = text_file.read(path)
+        elif ext in ['save', 'sav']:
+            data = save_file.read(path)
         return data
 
     def write(self, data, path, mode=None):
@@ -279,6 +283,8 @@ class DataModule(event.EventModule):
             zip_file.write(path, data)
         elif ext == 'txt':
             text_file.write(path, data)
+        elif ext in ['save', 'sav']:
+            save_file.write(path, data)
 
     def assemble_path(self, folder_path, file_name, file_extension):
         file_extension = file_extension.lower()
@@ -294,21 +300,22 @@ class DataModule(event.EventModule):
         path = path.replace('/', '\\')
         dot_path = '.'.join('.'.join(path.split('.')[0:-1]).split('\\'))
         ext = path.split('.')[-1]
-        return dot_path
+        return [dot_path, ext]
 
-    def dot2path(self, dot_path, root='data'):
+    def dot2path(self, dot_path, ext='json'):
         """
         # 将点路径转换为路径
         ## 要求
         路径中的文件夹与文件名不能含有点
         """
-        path = dot_path.replace('.', '\\')
-        paths = []
-        for each in self.ext_priority:
-            tmp_path = path+'.'+each
-            if os.path.exists(root+'\\'+tmp_path):
-                paths.append(root+'\\'+tmp_path)
-        return paths
+
+        path = dot_path.replace('.', '\\') + '.' + ext
+        # paths = []
+        # for each in self.ext_priority:
+        #     tmp_path = path+'.'+each
+        #     if os.path.exists(root+'\\'+tmp_path):
+        #         paths.append(root+'\\'+tmp_path)
+        return path
 
     def mount(self, dot_path: str) -> None:
         """
@@ -330,15 +337,30 @@ class DataModule(event.EventModule):
         """
         pass
 
-    def read_save(self, save_file_path=None):
-        """
-        # 读取存档文件（覆盖）
-        如果不传入save_file_path，代表快速读取
-        """
-        pass
+    def write_save(self, filename_without_ext=None):
+        self.__data['save']['manifest'] = {
+            'timestamp': tools.get_current_timestamp(),
+            'name': filename_without_ext
+        }
+        path = ''
+        if filename_without_ext == None:
+            path = 'save\\quick.save'
+            self.__data['save']['manifest']['name'] = 'quick'
+        else:
+            path = 'save\\'+self.dot2path(filename_without_ext, 'save')
+        self.write(self.__data['save'], path)
 
-    def write_save(self, save_file_path=None):
-        pass
+    def read_save(self, filename_without_ext=None):
+        self.__data['save']['manifest'].clear()
+        self.__data['save']['data'].clear()
+        path = ''
+        if filename_without_ext == None:
+            path = 'save\\quick.save'
+            if not os.path.isfile(path):
+                return
+        else:
+            path = 'save\\'+self.dot2path(filename_without_ext, 'save')
+        self.__data['save'] = self.read(path)
 
     def import_data(self):
         """

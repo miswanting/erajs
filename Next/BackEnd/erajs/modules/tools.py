@@ -1,3 +1,4 @@
+import datetime
 import hashlib
 import os
 import random
@@ -40,6 +41,9 @@ def fix_path():
         datadir = os.path.join(os.path.dirname(__file__), '../..')
     os.chdir(datadir)
 
+
+def get_current_timestamp():
+    return datetime.datetime.isoformat(datetime.datetime.now())
 
 # def fix_path():
 #     if getattr(sys, 'frozen', False):

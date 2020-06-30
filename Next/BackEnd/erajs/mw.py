@@ -15,9 +15,18 @@ def init(config: dict = None):
 
     def on_folder_missing(event):
         e.warn('│  ├─ Folder [{}] Missing. Creating...'.format(event['value']))
+        os.mkdir(event['value'])
 
     def on_file_missing(event):
         e.warn('│  ├─ File [{}] Missing. Creating...'.format(event['value']))
+        if event['value'] == 'config\\system.yaml':
+            init_sys_cfg_data = {
+                'resolution': [800, 600]
+            }
+            e.write(init_sys_cfg_data, event['value'])
+        else:
+            open(event['value'], 'w')
+
     e.on('folder_missing', on_folder_missing)
     e.on('file_missing', on_file_missing)
     e.check_file_system()
@@ -388,28 +397,26 @@ def tmp():
     return e.sav()
 
 
-def dump_cfg(dot_path=None, ext='ini'):
-    return m.dump_cfg(dot_path, ext)
+def write_cfg(dot_path=None, ext='yaml'):
+    # dot_path转换为path
+    path = 'config\\'+e.dot2path(dot_path)
+    # 将data导出到path
+    e.write(e.dat(dot_path), path)
 
 
-def dump_dat(dot_path=None, ext='ini'):
-    return m.dump_dat(dot_path, ext)
+def write_dat(dot_path=None, ext='json'):
+    # dot_path转换为path
+    path = 'data\\'+e.dot2path(dot_path, ext)
+    # 将data导出到path
+    e.write(e.dat(dot_path), path)
 
 
-def dump_sav():
-    return m.dump_sav()
+def write_sav(filename_without_ext):
+    e.write_save(filename_without_ext)
 
 
-def load_sav():
-    return m.load_sav()
-
-
-def quick_save():
-    return m.quick_save()
-
-
-def quick_load():
-    return m.quick_load()
+def read_sav(filename_without_ext):
+    e.read_save(filename_without_ext)
 
 
 def on():

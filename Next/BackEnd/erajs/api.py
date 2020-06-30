@@ -306,43 +306,32 @@ def tmp(key=None):
     return m.sav()
 
 
-def dump_cfg(dot_path=None, ext='ini'):
+def write_cfg(dot_path=None, ext='ini'):
     """
     # 转储设置数据
     """
-    return m.dump_cfg(dot_path, ext)
+    return m.write_cfg(dot_path, ext)
 
 
-def dump_dat(dot_path=None, ext='ini'):
+def write_dat(dot_path=None, ext='ini'):
     """
     # 转储静态数据
     """
-    return m.dump_dat(dot_path, ext)
+    return m.write_dat(dot_path, ext)
 
 
-def dump_sav():
+def write_sav(filename_without_ext=None):
     """
     # 转储存档数据
     """
-    return m.dump_sav()
+    m.write_sav(filename_without_ext)
 
 
-def load_sav():
-    return m.load_sav()
-
-
-def quick_save():
+def read_sav(filename_without_ext=None):
     """
-    # 创建快速存档
+    # 转储存档数据
     """
-    return m.quick_save()
-
-
-def quick_load():
-    """
-    # 加载快速存档
-    """
-    return m.quick_load()
+    m.read_sav(filename_without_ext)
 
 
 ########## 事件 ##########
