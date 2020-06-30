@@ -98,11 +98,19 @@ def window(style=None):
     m.window(style)
 
 
-def title(text):
+def title(text, style=None):
     """
     # 设置窗口标题
     """
     m.title(text)
+
+
+def footer(text, style=None):
+    pass
+
+
+def msg(text, style=None):
+    pass
 
 
 ########## 页面管理 ##########
@@ -416,13 +424,6 @@ def shake():
 
 
 def generate_map():
-    pass
-
-
-def clear(num=0):
-    """
-    # 初始化引擎
-    """
     pass
 
 
