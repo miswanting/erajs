@@ -3,7 +3,7 @@ import yaml
 
 def read(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
-        data = yaml.load(''.join(f.readlines()))
+        data = yaml.load(''.join(f.readlines()), Loader=yaml.SafeLoader)
     return data
 
 
