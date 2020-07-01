@@ -224,10 +224,8 @@ class DataModule(event.EventModule):
             elif self.mount(dot_path, 'config'):
                 return self.__data[scope][dot_path]
             else:
-                self.warn(
-                    'Config File: "{}" DO NOT EXIST!'.format(str(dot_path))
-                )
-                return False
+                self.__data[scope][dot_path] = None
+                return self.__data[scope][dot_path]
         elif scope == 'data':
             if dot_path is None:
                 return self.__data[scope]
@@ -236,22 +234,24 @@ class DataModule(event.EventModule):
             elif self.mount(dot_path):
                 return self.__data[scope][dot_path]
             else:
-                self.warn(
-                    'Data File: "{}" DO NOT EXIST!'.format(str(dot_path))
-                )
-                return False
+                self.__data[scope][dot_path] = None
+                return self.__data[scope][dot_path]
         elif scope == 'save':
-            return self.__data[scope]
+            if dot_path is None:
+                return self.__data[scope]['data']
+            elif dot_path in self.__data[scope]['data'].keys():
+                return self.__data[scope]['data'][dot_path]
+            else:
+                self.__data[scope]['data'][dot_path] = None
+                return self.__data[scope]['data'][dot_path]
         elif scope == 'temp':
             if dot_path is None:
                 return self.__data[scope]
             elif dot_path in self.__data[scope].keys():
                 return self.__data[scope][dot_path]
             else:
-                self.warn(
-                    'Temp Data: "{}" DO NOT EXIST!'.format(str(dot_path))
-                )
-                return False
+                self.__data[scope][dot_path] = None
+                return self.__data[scope][dot_path]
 
     # def cfg(self, dot_path):
     #     if dot_path in self.__data['config'].keys():

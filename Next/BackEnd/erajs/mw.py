@@ -1,3 +1,4 @@
+import os
 import time
 
 from . import engine
@@ -389,8 +390,8 @@ def dat(dot_path=None):
     return e.get_data(dot_path)
 
 
-def sav():
-    return e.sav()
+def sav(dot_path=None):
+    return e.get_data(dot_path, 'save')
 
 
 def tmp(dot_path=None):

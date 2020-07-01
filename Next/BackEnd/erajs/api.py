@@ -1,6 +1,6 @@
 from . import mw as m
-version = '0.2.0'
-aka = 'brandnew'
+version = '0.2.0-α+200612'
+aka = 'Dark Elf'
 data = None
 
 
@@ -125,7 +125,7 @@ def cls(num=0):
     """
     # 清屏
     """
-    m.clear(num)
+    m.cls(num)
 
 
 ########## 块 ##########
@@ -300,11 +300,11 @@ def dat(dot_path=None):
     return m.dat(dot_path)
 
 
-def sav():
+def sav(dot_path=None):
     """
     # 返回存档数据
     """
-    return m.sav()
+    return m.sav(dot_path)
 
 
 def tmp(key=None):
