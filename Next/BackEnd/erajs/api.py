@@ -311,7 +311,7 @@ def tmp(key=None):
     """
     # 返回临时数据
     """
-    return m.sav()
+    return m.tmp(key)
 
 
 def write_cfg(dot_path=None, ext='ini'):
