@@ -228,18 +228,18 @@ def dropdown(text_list=None, callback=None, default_index=0, search=False, multi
 
 
 ########## 样式管理 ##########
-def set_style(ui_func, *arg, **kw):
+def set_style(widget, style):
     """
     # 设置样式
     """
-    m.goto(ui_func, *arg, **kw)
+    m.set_style(widget, style)
 
 
-def reset_style(ui_func, *arg, **kw):
+def reset_style(widget):
     """
     # 重置样式
     """
-    m.goto(ui_func, *arg, **kw)
+    m.reset_style(widget)
 
 
 ########## 界面逻辑 ##########
