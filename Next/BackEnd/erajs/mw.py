@@ -452,5 +452,32 @@ def show_save_to_load():
     pass
 
 
-def get_data():
-    return e.dat()
+def old_data():
+    return OldData()
+
+
+class OldData:
+    def __setitem__(self, key, value):
+        scope = key.split('.')[0]
+        if scope == 'data':
+            dat()['.'.join(key.split('.')[1:])] = value
+        elif scope == 'db':
+            for key in value.keys():
+                sav()[key] = value[key]
+        else:
+            tmp()
+
+    def __getitem__(self, key):
+        scope = key.split('.')[0]
+        if scope == 'data':
+            return dat('.'.join(key.split('.')[1:]))
+        elif scope == 'db':
+            return sav()
+        else:
+            return tmp(key)
+
+    def __delitem__(self, key):
+        print('del', key)
+
+    def __len__(self):
+        print('len')

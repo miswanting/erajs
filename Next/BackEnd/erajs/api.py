@@ -11,8 +11,8 @@ def init(config: dict = None):
     """
     m.init(config)
     # 兼容
-    # global data
-    # data = a.get_data()
+    global data
+    data = m.old_data()
 
 
 def config(data: dict = None):
