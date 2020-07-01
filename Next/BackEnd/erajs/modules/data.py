@@ -65,7 +65,7 @@ class DataModule(event.EventModule):
             "config": {},  # cfg【NEW】
             'data': {},  # dat【NEW】
             'save': {  # sav【NEW】
-                'manifest': {},
+                'meta': {},
                 'data': {}
             },
             'temp': {},  # tmp【NEW】
@@ -384,7 +384,7 @@ class DataModule(event.EventModule):
         self.write(self.__data['save'], path)
 
     def read_save(self, filename_without_ext=None):
-        self.__data['save']['manifest'].clear()
+        self.__data['save']['meta'].clear()
         self.__data['save']['data'].clear()
         path = ''
         if filename_without_ext == None:
