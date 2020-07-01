@@ -343,28 +343,28 @@ def read_sav(filename_without_ext=None):
 
 
 ########## 事件 ##########
-def on():
+def on(event_name, listener):
     """
     # 注册侦听器
     """
     pass
 
 
-def once():
+def once(event_name, listener):
     """
     # 注册一次性侦听器
     """
     pass
 
 
-def off():
+def off(event_name, listener):
     """
     # 注销侦听器
     """
     pass
 
 
-def emit():
+def emit(event_name, *arg, **kw):
     """
     # 发布事件
     """
