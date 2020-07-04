@@ -1,6 +1,6 @@
-from .modules import script
+from .modules import mod
 
 
-class Engine(script.ScriptModule):
+class Engine(mod.ModModule):
     def init(self):
         self.start()
