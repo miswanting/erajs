@@ -3,6 +3,8 @@ import os
 import sys
 from pathlib import Path
 
+import semver
+
 from . import api
 
 
@@ -12,16 +14,33 @@ class ModModule(api.APIModule):
 
     def scan_mods(self):
         mod_info_list = []
+        # 1. Verify configuration validity
+        cfg = self.get_data('sys', 'config')
+        for key in cfg['mod'].keys():
+            # cfg['mod'][key]['path']
+            pass
         for entry_name in os.listdir('mod'):
             path = 'mod\\{}'.format(entry_name)
             if os.path.isfile(path):
                 pass
-            if os.path.isfile(path):
+            if os.path.isdir(path):
                 meta_path = path+'\\meta.json'
                 if os.path.isfile(meta_path):
                     mod_info = self.read(meta_path)
                     mod_info['path'] = path
-                    print(self.cfg())
+                    if 'mod' not in cfg:
+                        cfg['mod'] = {}
+                    if mod_info['name'] in cfg['mod']:
+                        if semver.compare(mod_info['version'], cfg['mod'][mod_info['name']]['version']) == 1:
+                            # TODO 当前版本更大
+                            pass
+                    if mod_info['name'] not in cfg['mod']:
+                        cfg['mod'][mod_info['name']] = {
+                            'version': mod_info['version'],
+                            'enabled': False,
+                            'path': path
+                        }
+                    self.write(cfg, 'config\\sys.yaml')
     # def scan_plugins(self):
     #     # scan收集文件信息
     #     # path = Path('plugins')
