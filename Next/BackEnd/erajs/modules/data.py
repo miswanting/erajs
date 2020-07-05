@@ -179,9 +179,9 @@ class DataModule(event.EventModule):
 
     def scan_configs(self):
         files = self.scan('config')
-        for each in files:
-            dot_path = '.'.join(self.path2dot(each)[0].split('.')[1:])
-            self.__data['load_queue'].append([dot_path, each])
+        for path in files:
+            dot_path = '.'.join(self.path2dot(path)[0].split('.')[1:])
+            self.__data['load_queue'].append([dot_path, path])
             self.emit('config_found', {'value': dot_path})
 
     def load_configs(self):
