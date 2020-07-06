@@ -83,6 +83,7 @@ class DataModule(event.EventModule):
             'config',  # 配置文件存放处
             'data',  # 静态数据文件存放处
             'save',  # 存档文件存放处
+            'mod',  # 存档文件存放处
             'res'  # 资源文件存放处
         ]
         check_file_list = [
@@ -170,17 +171,17 @@ class DataModule(event.EventModule):
         for dirpath, dirnames, filenames in os.walk(path, True):
             for filename in filenames:
                 files.append(dirpath + '\\' + filename)
-                dispatcher.dispatch(
-                    event_type.DATA_FILE_FOUND,
-                    self.path2dot(dirpath + '\\' + filename)
-                )
+                # dispatcher.dispatch(
+                #     event_type.DATA_FILE_FOUND,
+                #     self.path2dot(dirpath + '\\' + filename)
+                # )
         return files
 
     def scan_configs(self):
         files = self.scan('config')
-        for each in files:
-            dot_path = '.'.join(self.path2dot(each)[0].split('.')[1:])
-            self.__data['load_queue'].append([dot_path, each])
+        for path in files:
+            dot_path = '.'.join(self.path2dot(path)[0].split('.')[1:])
+            self.__data['load_queue'].append([dot_path, path])
             self.emit('config_found', {'value': dot_path})
 
     def load_configs(self):

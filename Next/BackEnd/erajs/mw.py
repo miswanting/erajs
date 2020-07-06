@@ -60,22 +60,38 @@ def init(config: dict = None):
     e.connect()
     e.info('│  └─ Connected!')
     e.info('├─ Scanning Data Files...')
+    e.send({
+        'type': 'set_loading_title',
+        'value': 'Scanning Data Files...'
+    })
     data_files_found = 0
 
     def on_data_file_found(event):
         nonlocal data_files_found
         e.info('│  ├─ Data File [{}] Found.'.format(event['value']))
+        e.send({
+            'type': 'set_loading_text',
+            'value': 'Data File [{}] Found.'.format(event['value'])
+        })
         data_files_found += 1
     e.on('data_file_found', on_data_file_found)
     e.scan_data_files()
     e.off('data_file_found', on_data_file_found)
     e.info('│  └─ {} Data Files Found!'.format(data_files_found))
     e.info('├─ Loading Data Files...')
+    e.send({
+        'type': 'set_loading_title',
+        'value': 'Loading Data Files...'
+    })
     data_files_loaded = 0
 
     def on_data_file_loaded(event):
         nonlocal data_files_loaded
         e.info('│  ├─ Data File [{}] Loaded.'.format(event['value']))
+        e.send({
+            'type': 'set_loading_text',
+            'value': 'Data File [{}] Loaded.'.format(event['value'])
+        })
         data_files_loaded += 1
     e.on('data_file_loaded', on_data_file_loaded)
     e.load_data_files()
@@ -85,8 +101,17 @@ def init(config: dict = None):
     e.send({'type': 'loaded'})
     e.info('│  └─ Done!')
     e.info('└─ Initialize Complete!')
+    e.send({
+        'type': 'set_loading_title',
+        'value': 'Initialize Complete!'
+    })
     print()
     e.info('Executing Game Scripts...')
+    e.send({
+        'type': 'set_loading_text',
+        'value': 'Executing Game Scripts...'
+    })
+    e.scan_mods()
 
 
 def config(data):
