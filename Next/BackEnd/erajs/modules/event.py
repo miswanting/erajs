@@ -58,11 +58,11 @@ class EventModule(debug.DebugModule):
                 self.__listener_list.pop(i)
                 i -= 1
             ##
-            # t = threading.Thread(
-            #     target=listener['listener'], args=(data,))
-            # t.start()
+            t = threading.Thread(
+                target=listener['listener'], args=(data,))
+            t.start()
             # /
-            listener['listener'](data)
+            # listener['listener'](data)
             ##
             i += 1
     dispatch = emit
