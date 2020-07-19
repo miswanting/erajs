@@ -1,5 +1,5 @@
 {
     "name": "EraMap",
-    "version": "1.0-α",
+    "version": "0.1.0-alpha",
     "main": "map.py"
 }

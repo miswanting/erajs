@@ -22,7 +22,8 @@ def init(config: dict = None):
         e.warn('│  ├─ File [{}] Missing. Creating...'.format(event['value']))
         if event['value'] == 'config\\sys.yaml':
             init_sys_cfg_data = {
-                'resolution': [800, 600]
+                'resolution': [800, 600],
+                'mod': {}
             }
             e.write(init_sys_cfg_data, event['value'])
         else:
@@ -97,6 +98,49 @@ def init(config: dict = None):
     e.load_data_files()
     e.off('data_file_loaded', on_data_file_loaded)
     e.info('│  └─ {} Data Files Loaded!'.format(data_files_loaded))
+    e.info('├─ Scaning Mods...')
+    e.send({
+        'type': 'set_loading_title',
+        'value': 'Scaning Mods...'
+    })
+    mods_found = 0
+
+    def on_mod_found(event):
+        nonlocal mods_found
+        e.info('│  ├─ Mod [{}] Found.'.format(event['value']))
+        e.send({
+            'type': 'set_loading_text',
+            'value': 'Mod [{}] Found.'.format(event['value'])
+        })
+        mods_found += 1
+    e.on('mod_found', on_mod_found)
+    e.scan_mods()
+    e.off('mod_found', on_mod_found)
+    e.info('│  └─ {} Mods Found!'.format(mods_found))
+    e.info('├─ Loading Mods...')
+    e.send({
+        'type': 'set_loading_title',
+        'value': 'Loading Mods...'
+    })
+    mods_loaded = 0
+
+    def on_mod_loading(event):
+        e.info('│  ├─ Mod [{}] Loading...'.format(event['value']))
+        e.send({
+            'type': 'set_loading_text',
+            'value': 'Mod [{}] Loading...'.format(event['value'])
+        })
+
+    def on_mod_loaded(event):
+        nonlocal mods_loaded
+        e.info('│  │  └─ Done.')
+        mods_loaded += 1
+    e.on('mod_loading', on_mod_loading)
+    e.on('mod_loaded', on_mod_loaded)
+    e.load_mods()
+    e.off('mod_loading', on_mod_loading)
+    e.off('mod_loaded', on_mod_loaded)
+    e.info('│  └─ {} Mods Loaded!'.format(mods_loaded))
     e.info('├─ Sending Init Finished Signal...')
     e.send({'type': 'loaded'})
     e.info('│  └─ Done!')
@@ -111,7 +155,6 @@ def init(config: dict = None):
         'type': 'set_loading_text',
         'value': 'Executing Game Scripts...'
     })
-    e.scan_mods()
 
 
 def config(data):

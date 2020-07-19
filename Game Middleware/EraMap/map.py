@@ -1,21 +1,25 @@
 import erajs.api as a
 
 
+def init():
+    pass
+
+
 class Map:
     def __init__(self):
         super().__init__()
         self.__data = {
-            root: None
-            places: {}
+            'root': None,
+            'places': {}
         }
 
     def new_empty_place(self):
         new_empty_place = {
-            name: '',
-            id: '',
-            data: {},
-            parent: None,
-            children: []
+            'name': '',
+            'id': '',
+            'data': {},
+            'parent': None,
+            'children': []
         }
 
     def register_place(self, place):

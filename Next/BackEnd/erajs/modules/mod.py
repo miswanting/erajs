@@ -1,4 +1,5 @@
 import configparser
+import importlib.util
 import os
 import sys
 from pathlib import Path
@@ -73,6 +74,10 @@ class ModModule(api.APIModule):
         meta_path = path+'\\meta.json'
         info = self.read(meta_path)
         main_path = '{}\\{}'.format(path, info['main'])
+        spec = importlib.util.spec_from_file_location(name, main_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        module.init()
 
         # def scan_plugins(self):
         #     # scan收集文件信息

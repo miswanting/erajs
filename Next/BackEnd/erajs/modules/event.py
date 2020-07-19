@@ -57,10 +57,13 @@ class EventModule(debug.DebugModule):
             if listener['one_time']:
                 self.__listener_list.pop(i)
                 i -= 1
-            t = threading.Thread(
-                target=listener['listener'], args=(data,))
-            t.start()
-            # listener['listener'](data)
+            ##
+            # t = threading.Thread(
+            #     target=listener['listener'], args=(data,))
+            # t.start()
+            # /
+            listener['listener'](data)
+            ##
             i += 1
     dispatch = emit
 
