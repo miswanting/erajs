@@ -9,6 +9,7 @@ module.exports = class WindowManager extends EventEmitter {
             frame: false,
             transparent: true,
             webPreferences: {
+                enableRemoteModule: true,
                 nodeIntegration: true
             }
         })
