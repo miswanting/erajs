@@ -172,6 +172,21 @@ function AnimeIntro(props) {
             document.removeEventListener('touchmove', moveEye)
         })
     })
+    let loadingTitle = 'Waiting for Connection...'
+    let loadingText = [
+        'If there is no connection for a long time,',
+        'you may need to manually start the backend.'
+    ]
+    if (props.loadingTitle != null) {
+        loadingTitle = props.loadingTitle
+    }
+    if (props.loadingText != null) {
+        loadingText = props.loadingText.split('\n')
+    }
+    let loadingTextEl = []
+    for (let i = 0; i < loadingText.length; i++) {
+        loadingTextEl.push(React.createElement('div', { key: i }, loadingText[i],))
+    }
     return (
         React.createElement('div',
             {
@@ -273,20 +288,13 @@ function AnimeIntro(props) {
                             id: 'inst',
                             style: { color: 'var(--default-front)', opacity: 0.0, textAlign: 'center' },
                         },
-
-                        'Waiting for Connection...',
+                        React.createElement('div', null, loadingTitle),
                         React.createElement('div',
                             {
                                 id: 'inst-more',
                                 style: { color: 'var(--default-front)', opacity: 0.0, textAlign: 'center', fontSize: '0.7rem' },
                             },
-                            React.createElement('span', null,
-                                'If there is no connection for a long time,',
-                            ),
-                            React.createElement('br'),
-                            React.createElement('span', null,
-                                'you may need to manually start the backend.',
-                            )
+                            loadingTextEl
                         )
                     )
                 )

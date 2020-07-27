@@ -24,7 +24,7 @@ module.exports = class DisplayManager extends EventEmitter {
         })
     }
     push = (data) => {
-        console.log(data);
+        // console.log(data);
         this.update(data)
     }
     pull = (data) => { this.emit('pull', data) }

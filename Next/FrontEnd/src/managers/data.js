@@ -13,6 +13,8 @@ module.exports = class DataManager extends EventEmitter {
         this.#data.maxPages = 10
         this.#data.msgList = []
         this.#data.pageIndex = 0
+        this.#data.loadingTitle = null
+        this.#data.loadingText = null
         this.resetComposeMode()
         this.push(this.#data)
     }
@@ -70,6 +72,11 @@ module.exports = class DataManager extends EventEmitter {
     parse(data) {
         // console.log(data);
         if (data.type == 'loaded') {
+        } else if (data.type == 'set_loading_title') {
+            this.#data.loadingTitle = data.value
+        } else if (data.type == 'set_loading_text') {
+            this.#data.loadingText = data.value
+        } else if (data.type == 'loaded') {
             this.#data.interfaceType = 'game'
         } else if (data.type == 'title') {
             this.#data.title = data.data.text
