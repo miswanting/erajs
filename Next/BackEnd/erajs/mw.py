@@ -12,6 +12,7 @@ def init(config: dict = None):
     e.info('Era.js Engine Initializing...')
     e.info('├─ Fixing Path...')
     tools.fix_path()
+    e.info('│  └─ Done!')
     e.info('├─ Checking Data Integrity...')
 
     def on_folder_missing(event):
