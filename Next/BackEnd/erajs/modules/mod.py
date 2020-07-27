@@ -10,6 +10,14 @@ from . import api
 
 
 class ModModule(api.APIModule):
+    """
+    # 模块管理器
+    扫描
+    启用/禁用
+    升级
+    卸载
+    """
+
     def __init__(self):
         super().__init__()
         self.__data = {
