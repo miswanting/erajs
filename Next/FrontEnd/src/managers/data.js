@@ -71,7 +71,10 @@ module.exports = class DataManager extends EventEmitter {
     }
     parse(data) {
         // console.log(data);
-        if (data.type == 'loaded') {
+        if (data.type == 'connection') {
+            this.#data.loadingTitle = 'Initializing...'
+            this.#data.loadingText = ''
+            this.#data.interfaceType = 'intro'
         } else if (data.type == 'set_loading_title') {
             this.#data.loadingTitle = data.value
         } else if (data.type == 'set_loading_text') {

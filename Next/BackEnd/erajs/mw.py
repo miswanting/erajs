@@ -76,6 +76,10 @@ def init(config: dict = None):
         'type': 'set_loading_title',
         'value': 'Scanning Data Files...'
     })
+    e.send({
+        'type': 'set_loading_text',
+        'value': ''
+    })
     counter['data_files_found'] = 0
     # data_files_found = 0
 
