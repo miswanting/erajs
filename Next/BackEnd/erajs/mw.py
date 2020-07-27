@@ -8,6 +8,9 @@ e = engine.Engine()
 
 
 def init(config: dict = None):
+    """
+    # Initialization Process
+    """
     print()
     e.info('Era.js Engine Initializing...')
     e.info('├─ Fixing Path...')
