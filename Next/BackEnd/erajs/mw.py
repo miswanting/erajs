@@ -37,27 +37,34 @@ def init(config: dict = None):
     e.off('file_missing', on_file_missing)
     e.info('│  └─ Data Integrity Checked!')
     e.info('├─ Scanning Configs...')
-    configs_found = 0
+    counter = {}
+    counter['configs_found'] = 0
+    # configs_found = 0
 
     def on_config_found(event):
-        nonlocal configs_found
+        nonlocal counter
         e.info('│  ├─ Config [{}] Found.'.format(event['value']))
-        configs_found += 1
+        counter['configs_found'] += 1
     e.on('config_found', on_config_found)
     e.scan_configs()
+    # TODO: Wait until the scan ends.
     e.off('config_found', on_config_found)
-    e.info('│  └─ {} Configs Found!'.format(configs_found))
+    time.sleep(0.5)  # Walk Round
+    e.info('│  └─ {} Configs Found!'.format(counter['configs_found']))
     e.info('├─ Loading Configs...')
-    configs_loaded = 0
+    counter['configs_loaded'] = 0
+    # configs_loaded = 0
 
     def on_config_loaded(event):
-        nonlocal configs_loaded
+        nonlocal counter
         e.info('│  ├─ Config [{}] Loaded.'.format(event['value']))
-        configs_loaded += 1
+        counter['configs_loaded'] += 1
     e.on('config_loaded', on_config_loaded)
     e.load_configs()
+    # TODO: Wait until the load ends.
     e.off('config_loaded', on_config_loaded)
-    e.info('│  └─ {} Configs Loaded!'.format(configs_loaded))
+    time.sleep(0.5)  # Walk Round
+    e.info('│  └─ {} Configs Loaded!'.format(counter['configs_loaded']))
     e.info('├─ Connecting...')
     e.connect()
     e.info('│  └─ Connected!')
@@ -66,64 +73,74 @@ def init(config: dict = None):
         'type': 'set_loading_title',
         'value': 'Scanning Data Files...'
     })
-    data_files_found = 0
+    counter['data_files_found'] = 0
+    # data_files_found = 0
 
     def on_data_file_found(event):
-        nonlocal data_files_found
+        nonlocal counter
         e.info('│  ├─ Data File [{}] Found.'.format(event['value']))
         e.send({
             'type': 'set_loading_text',
             'value': 'Data File [{}] Found.'.format(event['value'])
         })
-        data_files_found += 1
+        counter['data_files_found'] += 1
     e.on('data_file_found', on_data_file_found)
     e.scan_data_files()
+    # TODO: Wait until the scan ends.
     e.off('data_file_found', on_data_file_found)
-    e.info('│  └─ {} Data Files Found!'.format(data_files_found))
+    time.sleep(0.5)  # Walk Round
+    e.info('│  └─ {} Data Files Found!'.format(counter['data_files_found']))
     e.info('├─ Loading Data Files...')
     e.send({
         'type': 'set_loading_title',
         'value': 'Loading Data Files...'
     })
-    data_files_loaded = 0
+    counter['data_files_loaded'] = 0
+    # data_files_loaded = 0
 
     def on_data_file_loaded(event):
-        nonlocal data_files_loaded
+        nonlocal counter
         e.info('│  ├─ Data File [{}] Loaded.'.format(event['value']))
         e.send({
             'type': 'set_loading_text',
             'value': 'Data File [{}] Loaded.'.format(event['value'])
         })
-        data_files_loaded += 1
+        counter['data_files_loaded'] += 1
     e.on('data_file_loaded', on_data_file_loaded)
     e.load_data_files()
+    # TODO: Wait until the load ends.
     e.off('data_file_loaded', on_data_file_loaded)
-    e.info('│  └─ {} Data Files Loaded!'.format(data_files_loaded))
+    time.sleep(0.5)  # Walk Round
+    e.info('│  └─ {} Data Files Loaded!'.format(counter['data_files_loaded']))
     e.info('├─ Scaning Mods...')
     e.send({
         'type': 'set_loading_title',
         'value': 'Scaning Mods...'
     })
-    mods_found = 0
+    counter['mods_found'] = 0
+    # mods_found = 0
 
     def on_mod_found(event):
-        nonlocal mods_found
+        nonlocal counter
         e.info('│  ├─ Mod [{}] Found.'.format(event['value']))
         e.send({
             'type': 'set_loading_text',
             'value': 'Mod [{}] Found.'.format(event['value'])
         })
-        mods_found += 1
+        counter['mods_found'] += 1
     e.on('mod_found', on_mod_found)
     e.scan_mods()
+    # TODO: Wait until the scan ends.
     e.off('mod_found', on_mod_found)
-    e.info('│  └─ {} Mods Found!'.format(mods_found))
+    time.sleep(0.5)  # Walk Round
+    e.info('│  └─ {} Mods Found!'.format(counter['mods_found']))
     e.info('├─ Loading Mods...')
     e.send({
         'type': 'set_loading_title',
         'value': 'Loading Mods...'
     })
-    mods_loaded = 0
+    counter['mods_loaded'] = 0
+    # mods_loaded = 0
 
     def on_mod_loading(event):
         e.info('│  ├─ Mod [{}] Loading...'.format(event['value']))
@@ -133,15 +150,17 @@ def init(config: dict = None):
         })
 
     def on_mod_loaded(event):
-        nonlocal mods_loaded
+        nonlocal counter
         e.info('│  │  └─ Done.')
-        mods_loaded += 1
+        counter['mods_loaded'] += 1
     e.on('mod_loading', on_mod_loading)
     e.on('mod_loaded', on_mod_loaded)
     e.load_mods()
+    # TODO: Wait until the load ends.
     e.off('mod_loading', on_mod_loading)
     e.off('mod_loaded', on_mod_loaded)
-    e.info('│  └─ {} Mods Loaded!'.format(mods_loaded))
+    time.sleep(0.5)  # Walk Round
+    e.info('│  └─ {} Mods Loaded!'.format(counter['mods_loaded']))
     e.info('├─ Sending Init Finished Signal...')
     e.send({'type': 'loaded'})
     e.info('│  └─ Done!')
