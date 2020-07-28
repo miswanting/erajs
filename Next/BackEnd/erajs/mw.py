@@ -52,7 +52,7 @@ def init(config: dict = None):
     e.scan_configs()
     # TODO: Wait until the scan ends.
     e.off('config_found', on_config_found)
-    time.sleep(0.5)  # Walk Round
+    time.sleep(0.1)  # Walk Round
     e.info('│  └─ {} Configs Found!'.format(counter['configs_found']))
     e.info('├─ Loading Configs...')
     counter['configs_loaded'] = 0
@@ -66,7 +66,7 @@ def init(config: dict = None):
     e.load_configs()
     # TODO: Wait until the load ends.
     e.off('config_loaded', on_config_loaded)
-    time.sleep(0.5)  # Walk Round
+    time.sleep(0.1)  # Walk Round
     e.info('│  └─ {} Configs Loaded!'.format(counter['configs_loaded']))
     e.info('├─ Connecting...')
     e.connect()
@@ -95,7 +95,7 @@ def init(config: dict = None):
     e.scan_data_files()
     # TODO: Wait until the scan ends.
     e.off('data_file_found', on_data_file_found)
-    time.sleep(0.5)  # Walk Round
+    time.sleep(0.1)  # Walk Round
     e.info('│  └─ {} Data Files Found!'.format(counter['data_files_found']))
     e.info('├─ Loading Data Files...')
     e.send({
@@ -117,7 +117,7 @@ def init(config: dict = None):
     e.load_data_files()
     # TODO: Wait until the load ends.
     e.off('data_file_loaded', on_data_file_loaded)
-    time.sleep(0.5)  # Walk Round
+    time.sleep(0.1)  # Walk Round
     e.info('│  └─ {} Data Files Loaded!'.format(counter['data_files_loaded']))
     e.info('├─ Scaning Mods...')
     e.send({
@@ -139,7 +139,7 @@ def init(config: dict = None):
     e.scan_mods()
     # TODO: Wait until the scan ends.
     e.off('mod_found', on_mod_found)
-    time.sleep(0.5)  # Walk Round
+    time.sleep(0.1)  # Walk Round
     e.info('│  └─ {} Mods Found!'.format(counter['mods_found']))
     e.info('├─ Loading Mods...')
     e.send({
@@ -166,7 +166,7 @@ def init(config: dict = None):
     # TODO: Wait until the load ends.
     e.off('mod_loading', on_mod_loading)
     e.off('mod_loaded', on_mod_loaded)
-    time.sleep(0.5)  # Walk Round
+    time.sleep(0.1)  # Walk Round
     e.info('│  └─ {} Mods Loaded!'.format(counter['mods_loaded']))
     e.info('├─ Sending Init Finished Signal...')
     e.send({'type': 'loaded'})
