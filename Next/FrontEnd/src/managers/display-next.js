@@ -25,7 +25,35 @@ Vue.component('i-program', {
     props: {
         data: Object
     },
-    template: '<i-console :data=data></i-console>'
+    render: function (createElement) {
+        // console.log(this.data);
+        if (this.data.data.ui == 'console') {
+            return createElement('i-console', {
+                props: {
+                    data: this.data
+                }
+            })
+        } else if (this.data.data.ui == 'intro') {
+            return createElement('i-intro', {
+                props: {
+                    data: this.data
+                }
+            })
+        } else if (this.data.data.ui == 'pause') {
+            return createElement('i-pause', {
+                props: {
+                    data: this.data
+                }
+            })
+        } else if (this.data.data.ui == 'game') {
+            return createElement('i-game', {
+                props: {
+                    data: this.data
+                }
+            })
+        }
+    }
+    // template: '<i-console :data=data></i-console>'
 })
 Vue.component('i-game', {
     props: {

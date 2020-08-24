@@ -10,5 +10,10 @@ Vue.component('i-loading', {
     props: {
         data: Object
     },
-    template: '<div>Loading</div>'
+    methods: {
+        enter: function (el) {
+            alert()
+        }
+    },
+    template: '<transition v-on:enter="enter"><div>Loadi111ng</div></transition>'
 })

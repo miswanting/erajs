@@ -17,8 +17,30 @@ module.exports = class DataManager {
         this.#data.data = {
             title: 'Era.js',
             footer: '@Miswanting',
-            maxPages: 10
+            maxPages: 10,
+            ui: 'intro',
         }
+        this.#data.data.menu = [
+            {
+                label: '文件',
+                submenu: [
+                    { label: '新建' },
+                    { label: '打开' },
+                    {
+                        label: '最近打开的文件',
+                        submenu: [
+                            { label: 'File 1' },
+                            { label: 'File 2' },
+                            { label: 'File 3' }
+                        ]
+                    }
+                ]
+            },
+            { label: '编辑' },
+            { label: '窗口' },
+            { label: '帮助' },
+            { label: '+' }
+        ]
         this.#data.children = {
             // 下可以呼出上
             console: newElement('console'),

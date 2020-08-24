@@ -11,6 +11,25 @@ body {
   flex-direction: column;
   overflow: hidden;
 }
+header,
+.menu-bar,
+.operator-bar {
+  display: flex;
+}
+.menu {
+  display: flex;
+}
+.menu-bar > .menu {
+  display: block;
+}
+.menu-list {
+  position: absolute;
+  width: fit-content;
+}
+header > .title {
+  flex-grow: 1;
+  text-align: center;
+}
 main {
   flex-grow: 1;
 }
