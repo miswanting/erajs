@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "Microsoft YaHei";
+  src: unset;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+main {
+  flex-grow: 1;
+}

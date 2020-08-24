@@ -1,0 +1,50 @@
+name: Release SDK
+on:
+  push:
+    branches:
+      - master
+    # tags:
+    #   - v*
+jobs:
+  build:
+    name: Generate Win-x64 Release for Next
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Checkout Core
+        uses: actions/checkout@v2
+        with:
+          repository: "miswanting/Era.js"
+          path: Era.js
+      - name: Checkout SDK
+        uses: actions/checkout@v2
+        with:
+          repository: "miswanting/Era.js-SDK"
+          path: Era.js-SDK
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+      - name: Install Python dependencies
+        run: |
+          cd Era.js-SDK
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          cd ..
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+      - name: Install Node.js dependencies
+        run: |
+          cd Era.js/Next/FrontEnd
+          npm i
+      - name: Dir INFO
+        run: dir
+      - name: Dir Parent INFO
+        run: |
+          cd Era.js
+          dir
+          cd ../Era.js-SDK
+          dir

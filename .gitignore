@@ -1,0 +1,6 @@
+*.pyc
+*.log
+*.save
+.mypy*
+node_modules
+dist

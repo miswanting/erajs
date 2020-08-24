@@ -1,0 +1,86 @@
+{
+  "name": "erajs-core",
+  "version": "0.1.0",
+  "description": "The FrontEnd of Era.js Core.",
+  "main": "dist/index.js",
+  "scripts": {
+    "打包(调试)": "npx webpack",
+    "打包(发布)": "npx webpack --config webpack.prod.js",
+    "运行(Win)": "chcp 65001 && npx electron .",
+    "运行(Linux)": "npx electron .",
+    "初始化": "npm i",
+    "发布": "!PACKAGE.bat",
+    "强制清除NPM包缓存": "npm cache clean --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/Era.js.git"
+  },
+  "keywords": [
+    "era",
+    "erajs",
+    "game"
+  ],
+  "author": "Miswanting",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/miswanting/Era.js/issues"
+  },
+  "homepage": "https://github.com/miswanting/Era.js/Core/FrontEnd#readme",
+  "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "latest",
+    "@fortawesome/free-solid-svg-icons": "latest",
+    "@fortawesome/react-fontawesome": "latest",
+    "@types/d3": "latest",
+    "@types/d3-delaunay": "latest",
+    "@types/jquery": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/socket.io-client": "latest",
+    "blockly": "latest",
+    "copy-webpack-plugin": "latest",
+    "css-loader": "latest",
+    "d3": "latest",
+    "d3-delaunay": "latest",
+    "droplet-editor": "latest",
+    "file-loader": "latest",
+    "jquery": "latest",
+    "mini-css-extract-plugin": "latest",
+    "node-sass": "latest",
+    "normalize.css": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "sass": "latest",
+    "sass-loader": "latest",
+    "scratch-blocks": "latest",
+    "semantic-ui-css": "latest",
+    "semantic-ui-react": "latest",
+    "simplex-noise": "latest",
+    "socket.io-client": "latest",
+    "source-map-loader": "latest",
+    "style-loader": "latest",
+    "ts-loader": "latest",
+    "typescript": "latest",
+    "url-loader": "latest",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  },
+  "build": {
+    "appId": "erajs-core",
+    "extraMetadata": "dist/index.js",
+    "files": [
+      "./dist/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    }
+  }
+}

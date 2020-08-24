@@ -1,0 +1,10 @@
+bson
+eventlet
+flask
+flask-socketio
+pytest
+python-socketio
+pyyaml
+setuptools
+twine
+wheel

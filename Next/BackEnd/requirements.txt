@@ -1,0 +1,8 @@
+bson
+flask
+flask-socketio
+pytest
+pyyaml
+setuptools 
+twine
+wheel

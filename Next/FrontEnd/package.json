@@ -1,0 +1,47 @@
+{
+  "name": "erajs-next-core",
+  "version": "0.1.0",
+  "description": "Next-Generation HyperText Game Engine.",
+  "main": "src/main.js",
+  "scripts": {
+    "setup": "npm i",
+    "start": "chcp 65001 && npx electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx electron-builder --dir"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/Era.js.git"
+  },
+  "author": "Miswanting",
+  "license": "GPL-3.0+",
+  "bugs": {
+    "url": "https://github.com/miswanting/Era.js/issues"
+  },
+  "homepage": "https://github.com/miswanting/Era.js#readme",
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electron-devtools-installer": "latest"
+  },
+  "dependencies": {
+    "animejs": "latest",
+    "csshake": "latest",
+    "d3": "latest",
+    "electron-is-dev": "latest",
+    "normalize.css": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "vue": "latest"
+  },
+  "build": {
+    "appId": "net.erajs.next",
+    "productName": "Era.js",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "../../Game Assets/Engine Icon/icon.png"
+    }
+  }
+}

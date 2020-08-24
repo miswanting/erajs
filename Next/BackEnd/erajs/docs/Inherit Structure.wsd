@@ -1,0 +1,19 @@
+@startuml
+:API;
+:MW;
+:Engine;
+:ScriptModule;
+:APIModule;
+split
+    :ProtocolModule;
+    :StyleModule;
+    :NetModule;
+split again
+    :DataModule;
+split again
+    :LockModule;
+    detach
+end split
+:EventModule;
+:DebugModule;
+@enduml
