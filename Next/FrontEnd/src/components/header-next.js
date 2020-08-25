@@ -11,7 +11,6 @@ Vue.component('menu-bar', {
         data: Object
     },
     render: function (createElement) {
-        // console.log(this.data.data.menu);
         let menus = []
         for (let i = 0; i < this.data.data.menu.length; i++) {
             menus.push(

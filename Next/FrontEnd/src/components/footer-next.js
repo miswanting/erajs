@@ -4,5 +4,5 @@ Vue.component('i-footer', {
     props: {
         data: Object
     },
-    template: '<footer>{{data}}</footer>'
+    template: '<footer>{{data.data.footer}}</footer>'
 })

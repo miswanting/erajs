@@ -3,14 +3,13 @@
  * recv→this→send
  * program→ui→page→block→line→inline
  */
-module.exports = class DataManager {
+const { EventEmitter } = require('events')
+module.exports = class DataManager extends EventEmitter {
     #data
     constructor() {
+        super()
         this.#data = {}
         document.addEventListener('pull', data => {
-            AST.parse(this.data, data.detail)
-        })
-        document.addEventListener('recv', data => {
             AST.parse(this.data, data.detail)
         })
         this.#data = newElement('program')
@@ -18,8 +17,12 @@ module.exports = class DataManager {
             title: 'Era.js',
             footer: '@Miswanting',
             maxPages: 10,
+            lastUi: '',
             ui: 'intro',
+            loadingTitle: 'intro',
+            loadingText: 'intro',
         }
+        this.resetComposeMode()
         this.#data.data.menu = [
             {
                 label: '文件',
@@ -56,10 +59,66 @@ module.exports = class DataManager {
         let event = new CustomEvent('send', { detail: data })
         document.dispatchEvent(event)
     }
+    recv = (data) => {
+        AST.parse(this.#data, data)
+    }
 }
 
 class AST {
-    static parse(data, event) { }
+    static parse(vm, data) {
+        console.log(data);
+        if (data.type == 'loaded') {
+            vm.data.ui = 'game'
+        } else if (data.type) {
+
+        }
+    }
+    isPageExist(vm) {
+        return vm.children.game.children.length != 0
+    }
+    touchPage(vm) {
+        if (!this.isPageExist(vm)) {
+            this.addElement(vm, newElement('page'))
+        }
+    }
+    getLastPage(vm) {
+        this.touchPage(vm)
+        return vm.children.game.children[vm.children.game.children.length - 1]
+    }
+    isBlockExist(vm) {
+        this.touchPage(vm)
+        return this.getLastPage(vm).children.game.children.length != 0
+    }
+    isLastBlockAddible(vm) {
+        this.touchPage(vm)
+        return this.getLastPage(vm).type != 'divider'
+    }
+    getLastBlock(vm) {
+        this.touchPage(vm)
+        let lastPage = this.getLastPage(vm)
+        return lastPage.children.game.children[lastPage.children.game.children.length - 1]
+    }
+    changeComposeMode(vm, type, data = null) {
+        if (data == null) {
+            data = {}
+        }
+        data.type = type
+        vm.data.composeMode = data
+    }
+    resetComposeMode(vm) {
+        this.changeComposeMode('line')
+    }
+    touchPageAmount(vm) {
+        this.#data.children.splice(0, this.#data.children.length - this.#data.maxPages)
+    }
+    addElement(vm, el) {
+        if (el.type == 'page') {
+            if (!el.data) {
+                el.data = { key: Math.random().toString() }
+            }
+        }
+        vm.children.game.children.push(el)
+    }
 }
 
 /**

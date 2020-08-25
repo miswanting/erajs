@@ -7,6 +7,8 @@ class Erajs {
         this.dis = new DisplayManager()
         this.dis.register(this.dat.getData())
         this.net = new NetManager('main')
+        this.dat.on('send', (data) => { this.net.send(data) })
+        this.net.on('recv', (data) => { this.dat.recv(data) })
     }
 }
 window.onload = () => {

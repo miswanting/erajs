@@ -13,9 +13,6 @@ module.exports = class NetManager extends EventEmitter {
         } else if (this.type == 'renderer') {
             this.core = new ToRenderer()
         }
-        document.addEventListener('send', data => {
-            this.send(data)
-        })
         this.core.on('recv', this.recv)
     }
     start = () => {
@@ -25,8 +22,7 @@ module.exports = class NetManager extends EventEmitter {
         this.core.send(data)
     }
     recv = (data) => {
-        let event = new CustomEvent('recv', { detail: data })
-        document.dispatchEvent(event)
+        this.emit('recv', data)
     }
 }
 class ToBack extends EventEmitter {
@@ -48,7 +44,7 @@ class ToBack extends EventEmitter {
         })
     }
     start = () => {
-        this.server.listen(11994)
+        this.server.listen(11994, '127.0.0.1')
     }
     send = (data) => {
         if (this.socket) {

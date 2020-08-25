@@ -16,8 +16,8 @@ module.exports = class WindowManager extends EventEmitter {
         // 加载index.html文件
         win.loadFile('src/index.html')
         if (isDev) {
-            const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer')
-            installExtension(REACT_DEVELOPER_TOOLS)
+            const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer')
+            installExtension(VUEJS_DEVTOOLS)
                 .then((name) => console.log(`Extension Added!: ${name}`))
                 .catch((err) => {
                     console.log('An Error Occurred: ', err)

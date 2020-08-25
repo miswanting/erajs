@@ -2,15 +2,29 @@
 module.exports = class DisplayManager {
     #app
     constructor() {
-        document.getElementById('root').addEventListener("mouseup", (e) => {
+        document.body.addEventListener("mouseup", (e) => {
             console.log('[DEBG]鼠标点击：', e.which);
             let data = {
                 type: 'MOUSE_CLICK',
                 value: e.which
             }
         })
-        document.getElementById('root').addEventListener("keyup", (e) => {
+        document.body.addEventListener("keyup", (e) => {
             console.log('[DEBG]键盘按下：', e.key);
+            if (e.key == '`') {
+                if (this.#app.data.data.ui != 'console') {
+                    this.#app.data.data.lastUi = this.#app.data.data.ui
+                    this.#app.data.data.ui = 'console'
+                } else if (this.#app.data.data.ui == 'console') {
+                    this.#app.data.data.ui = this.#app.data.data.lastUi
+                }
+            } else if (e.key == 'Escape') {
+                if (this.#app.data.data.ui == 'game') {
+                    this.#app.data.data.ui = 'pause'
+                } else if (this.#app.data.data.ui == 'pause') {
+                    this.#app.data.data.ui = 'game'
+                }
+            }
         })
     }
     register(data) {

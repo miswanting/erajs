@@ -4,7 +4,7 @@ Vue.component('i-console', {
     props: {
         data: Object
     },
-    template: '<body><i-header></i-header><console-main></console-main></body>'
+    template: '<body><i-header :data=data></i-header><console-main></console-main></body>'
 })
 Vue.component('console-main', {
     props: {

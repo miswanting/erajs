@@ -1,8 +1,19 @@
-// const Vue = require('../node_modules/vue/dist/vue')
-
 Vue.component('i-main', {
     props: {
         data: Object
     },
-    template: '<main>{{data}}</main>'
+    render: function (createElement) {
+        let sections = []
+        for (let i = 0; i < this.data.children.game.children.length; i++) {
+            sections.push(this.data.children.game.children[i])
+        }
+        return createElement(
+            'main',
+            {
+                data: this.data
+            },
+            sections
+        )
+    },
+    template: '<main>{{data.children.game}}</main>'
 })

@@ -33,3 +33,14 @@ header > .title {
 main {
   flex-grow: 1;
 }
+.loading {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+}
+.loading > div {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
