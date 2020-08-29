@@ -19,10 +19,11 @@ module.exports = class DataManager extends EventEmitter {
             maxPages: 10,
             lastUi: '',
             ui: 'intro',
-            loadingTitle: 'intro',
-            loadingText: 'intro',
+            msgs: [],
+            blockMode: {},
+            loadingTitle: 'Loading...',
+            loadingText: 'If there is no connection for a long time,\nyou may need to manually start the backend.',
         }
-        this.resetComposeMode()
         this.#data.data.menu = [
             {
                 label: '文件',
@@ -67,57 +68,69 @@ module.exports = class DataManager extends EventEmitter {
 class AST {
     static parse(vm, data) {
         console.log(data);
-        if (data.type == 'loaded') {
+        if (data.type == 'connection') {
+            vm.data.ui = 'intro'
+        } else if (data.type == 'set_loading_title') {
+            vm.data.loadingTitle = data.value
+        } else if (data.type == 'set_loading_text') {
+            vm.data.loadingText = data.value
+        } else if (data.type == 'loaded') {
             vm.data.ui = 'game'
-        } else if (data.type) {
-
+        } else if (data.type == 'page') {
+            this.addElement(vm, data)
+        } else if (data.type == 'text') {
+            this.addElement(vm, data)
         }
     }
-    isPageExist(vm) {
+    static isPageExist(vm) {
         return vm.children.game.children.length != 0
     }
-    touchPage(vm) {
+    static touchPage(vm) {
         if (!this.isPageExist(vm)) {
             this.addElement(vm, newElement('page'))
         }
     }
-    getLastPage(vm) {
+    static getLastPage(vm) {
         this.touchPage(vm)
         return vm.children.game.children[vm.children.game.children.length - 1]
     }
-    isBlockExist(vm) {
+    static isBlockExist(vm) {
         this.touchPage(vm)
         return this.getLastPage(vm).children.game.children.length != 0
     }
-    isLastBlockAddible(vm) {
+    static isLastBlockAddible(vm) {
         this.touchPage(vm)
         return this.getLastPage(vm).type != 'divider'
     }
-    getLastBlock(vm) {
+    static getLastBlock(vm) {
         this.touchPage(vm)
         let lastPage = this.getLastPage(vm)
         return lastPage.children.game.children[lastPage.children.game.children.length - 1]
     }
-    changeComposeMode(vm, type, data = null) {
+    static changeBlockMode(vm, type, data = null) {
         if (data == null) {
             data = {}
         }
         data.type = type
-        vm.data.composeMode = data
+        vm.data.blockMode = data
     }
-    resetComposeMode(vm) {
-        this.changeComposeMode('line')
+    static resetBlockMode(vm) {
+        this.changeBlockMode(vm, 'line')
     }
-    touchPageAmount(vm) {
-        this.#data.children.splice(0, this.#data.children.length - this.#data.maxPages)
+    static touchPageAmount(vm) {
+        vm.data.children.splice(0, vm.data.children.length - vm.data.maxPages)
     }
-    addElement(vm, el) {
-        if (el.type == 'page') {
-            if (!el.data) {
-                el.data = { key: Math.random().toString() }
-            }
+    static appendInlineInLastBlock(vm, inline) {
+        if (this.isLastBlockAddible(vm)) {
+            
         }
-        vm.children.game.children.push(el)
+    }
+    static addElement(vm, el) {
+        if (el.type == 'page') {
+            vm.children.game.children.push(el)
+        } else if (el.type == 'text') {
+            this.getLastBlock(vm)
+        }
     }
 }
 

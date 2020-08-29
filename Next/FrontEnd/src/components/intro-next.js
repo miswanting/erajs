@@ -5,11 +5,17 @@ Vue.component('i-intro', {
     },
     template: '<body><i-header :data=data></i-header><i-loading-frame :data=data></i-loading-frame></body>'
 })
+// Vue.component('i-loading-frame', {
+//     props: {
+//         data: Object
+//     },
+//     template: `<main class='loading'><div><loading-logo></loading-logo><loading-heading :data=data></loading-heading><loading-text :data=data></loading-text></div></main>`
+// })
 Vue.component('i-loading-frame', {
     props: {
         data: Object
     },
-    template: `<main class='loading'><div><loading-logo></loading-logo><loading-heading></loading-heading><loading-text></loading-text></div></main>`
+    template: `<main><div class='loading-banner'><div class='loading-group'><loading-logo></loading-logo><loading-heading :data=data></loading-heading><loading-text :data=data></loading-text></div></div></main>`
 })
 Vue.component('loading-logo', {
     props: {
@@ -301,11 +307,19 @@ Vue.component('loading-heading', {
     props: {
         data: Object
     },
-    template: `<div>Waiting for Connection...</div>`
+    template: `<div class="loading-heading">{{data.data.loadingTitle}}</div>`
 })
 Vue.component('loading-text', {
     props: {
         data: Object
     },
-    template: `<div>If there is no connection for a long time,<br>you may need to manually start the backend.</div>`
+    render: function (createElement) {
+        lines = this.data.data.loadingText.split('\n')
+        let texts = []
+        for (let i = 0; i < lines.length; i++) {
+            texts.push(createElement('div', { key: i }, lines[i]))
+        }
+        return createElement('div', { class: 'loading-text' }, texts)
+    },
+    template: `<div>{{data.data.loadingText}}</div>`
 })
