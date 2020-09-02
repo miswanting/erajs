@@ -66,7 +66,6 @@ Vue.component('i-menu', {
                     )
                 ]
             )
-
         }
         return createElement('div', { class: "menu" },
             [

@@ -1,3 +1,5 @@
+const { json } = require("d3")
+
 Vue.component('i-game', {
     props: {
         data: Object
@@ -10,15 +12,15 @@ Vue.component('i-main', {
     },
     render: function (createElement) {
         let sections = []
-        // console.log(this.data);
         for (let i = 0; i < this.data.children.game.children.length; i++) {
-            console.log(this.data.children.game.children[i]);
             sections.push(createElement('i-section',
                 {
                     key: i,
-                    data: this.data.children.game.children[i]
-                })
-            )
+                    props: {
+                        data: this.data.children.game.children[i]
+                    }
+                }
+            ))
         }
         return createElement(
             'main',
@@ -32,15 +34,78 @@ Vue.component('i-section', {
         data: Object
     },
     render: function (createElement) {
-        return createElement('section')
+        let blocks = [];
+        for (let i = 0; i < this.data.children.length; i++) {
+            blocks.push(createElement('i-block',
+                {
+                    key: i,
+                    props: {
+                        data: this.data.children[i]
+                    }
+                }
+            ))
+        }
+        return createElement('section', {}, blocks)
     }
 })
-
+Vue.component('i-block', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        let blockType = null;
+        if (this.data.type == 'line') { blockType = 'i-line' }
+        return createElement(blockType, {
+            props: {
+                data: this.data
+            }
+        })
+    }
+})
 Vue.component('i-line', {
     props: {
         data: Object
     },
     render: function (createElement) {
-        return createElement('section')
+        let inlines = [];
+        for (let i = 0; i < this.data.children.length; i++) {
+            inlines.push(createElement('i-inline',
+                {
+                    key: i,
+                    props: {
+                        data: this.data.children[i]
+                    }
+                }
+            ))
+        }
+        return createElement('div',
+            { class: 'line' },
+            inlines
+        )
+    }
+})
+Vue.component('i-inline', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        let inlineType = null;
+        if (this.data.type == 'text') { inlineType = 'i-text' }
+        return createElement(inlineType, {
+            props: {
+                data: this.data
+            }
+        })
+    }
+})
+Vue.component('i-text', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {},
+            this.data.data.text
+        )
     }
 })

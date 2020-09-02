@@ -20,7 +20,7 @@ module.exports = class DataManager extends EventEmitter {
             lastUi: '',
             ui: 'intro',
             msgs: [],
-            blockMode: {},
+            blockMode: { type: 'line' },
             loadingTitle: 'Loading...',
             loadingText: 'If there is no connection for a long time,\nyou may need to manually start the backend.',
         }
@@ -67,7 +67,6 @@ module.exports = class DataManager extends EventEmitter {
 
 class AST {
     static parse(vm, data) {
-        console.log(data);
         if (data.type == 'connection') {
             vm.data.ui = 'intro'
         } else if (data.type == 'set_loading_title') {
@@ -78,6 +77,7 @@ class AST {
             vm.data.ui = 'game'
         } else if (data.type == 'page') {
             this.addElement(vm, data)
+        } else if (data.type == 'mode') {
         } else if (data.type == 'text') {
             this.addElement(vm, data)
         }
@@ -95,17 +95,38 @@ class AST {
         return vm.children.game.children[vm.children.game.children.length - 1]
     }
     static isBlockExist(vm) {
-        this.touchPage(vm)
-        return this.getLastPage(vm).children.game.children.length != 0
+        return this.getLastPage(vm).children.length != 0
     }
-    static isLastBlockAddible(vm) {
-        this.touchPage(vm)
+    static isBlockSame(vm) {
+        if (!this.isBlockExist(vm)) {
+            return false
+        }
+        let lastPage = this.getLastPage(vm);
+        let lastBlock = lastPage.children[lastPage.children.length - 1]
+        let blockMode = vm.data.blockMode
+        if (lastBlock.type != blockMode.type) { return false }
+        Object.keys(lastBlock.data).forEach(key => {
+            if (lastBlock.data[key] != blockMode[key]) {
+                return false
+            }
+        });
+        Object.keys(lastBlock.style).forEach(key => {
+            if (lastBlock.data[key] != blockMode[key]) {
+                return false
+            }
+        });
+    }
+    static touchBlock(vm) {
+        if (!this.isBlockExist(vm)) {
+            // this.addElement(vm, newElement(vm.data.blockMode.type))
+        }
+    }
+    static isLastBlockAddable(vm) {
         return this.getLastPage(vm).type != 'divider'
     }
     static getLastBlock(vm) {
-        this.touchPage(vm)
         let lastPage = this.getLastPage(vm)
-        return lastPage.children.game.children[lastPage.children.game.children.length - 1]
+        return lastPage.children[lastPage.children.length - 1]
     }
     static changeBlockMode(vm, type, data = null) {
         if (data == null) {
@@ -120,16 +141,26 @@ class AST {
     static touchPageAmount(vm) {
         vm.data.children.splice(0, vm.data.children.length - vm.data.maxPages)
     }
-    static appendInlineInLastBlock(vm, inline) {
-        if (this.isLastBlockAddible(vm)) {
-            
+    static addBlock(vm) {
+        let lastPage = this.getLastPage(vm)
+        if (vm.data.blockMode.type == 'line') {
+            lastPage.children.push(newElement(vm.data.blockMode.type))
+        } else if (vm.data.blockMode.type == 'grid') {
+            lastPage.children.push(newElement(vm.data.blockMode.type, { column: vm.data.blockMode.column }))
         }
+    }
+    static addInline(vm, data) {
+        if (!this.isBlockSame(vm)) {
+            this.addBlock(vm)
+        }
+        let lastBlock = this.getLastBlock(vm)
+        lastBlock.children.push(data)
     }
     static addElement(vm, el) {
         if (el.type == 'page') {
-            vm.children.game.children.push(el)
+            vm.children.game.children.push(newElement(el.type, el.data, el.style))
         } else if (el.type == 'text') {
-            this.getLastBlock(vm)
+            this.addInline(vm, el)
         }
     }
 }
@@ -141,7 +172,10 @@ class AST {
  * @param {Object} style 样式数据
  * @param  {...any} children 子
  */
-function newElement(type, data = null, style = null, ...children) {
+function newElement(type, data = null, style = null, children = null) {
+    if (!data) { data = new Map() }
+    if (!style) { style = new Map() }
+    if (!children) { children = new Array() }
     let el = {
         type: type,
         data: data,
