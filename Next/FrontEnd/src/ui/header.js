@@ -1,4 +1,4 @@
-const { remote } = require('electron')
+// const { remote } = require('electron')
 
 Vue.component('i-header', {
     props: {

@@ -1,6 +1,6 @@
 const { app } = require('electron')
 const WindowManager = require('./managers/window')
-const NetManager = require('./managers/net-next')
+const NetManager = require('./managers/net')
 /**
  * # 主进程管理器 MainManager
  * 提供渲染窗口、前/后端网络模块容器

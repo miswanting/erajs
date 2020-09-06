@@ -1,14 +1,14 @@
-const DisplayManager = require('./managers/display-next')
-const DataManager = require('./managers/data-next')
-const NetManager = require('./managers/net-next')
+const NetManager = require('./managers/net')
 class Erajs {
     constructor() {
         this.dat = new DataManager()
         this.dis = new DisplayManager()
         this.dis.register(this.dat.getData())
         this.net = new NetManager('main')
-        this.dat.on('send', (data) => { this.net.send(data) })
         this.net.on('recv', (data) => { this.dat.recv(data) })
+        document.addEventListener('send', function (data) {
+            this.net.send(data)
+        })
     }
 }
 window.onload = () => {

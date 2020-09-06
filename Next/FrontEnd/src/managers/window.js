@@ -8,6 +8,7 @@ module.exports = class WindowManager extends EventEmitter {
             height: 600,
             frame: false,
             transparent: true,
+            useContentSize: true,
             webPreferences: {
                 enableRemoteModule: true,
                 nodeIntegration: true
@@ -15,6 +16,8 @@ module.exports = class WindowManager extends EventEmitter {
         })
         // 加载index.html文件
         win.loadFile('src/index.html')
+        win.webContents.session.clearCache();
+
         if (isDev) {
             async function tmp() {
                 const os = require('os')

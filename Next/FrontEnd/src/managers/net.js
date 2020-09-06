@@ -1,30 +1,28 @@
 const { EventEmitter } = require('events')
 const { Server } = require('net')
 const { BrowserWindow, ipcRenderer, ipcMain } = require('electron')
-
+/** 
+ * # NetManager
+ */
 module.exports = class NetManager extends EventEmitter {
+    #type
+    #core
     constructor(type) {
         super()
-        this.type = type  // back, main, renderer
-        if (this.type == 'back') {
-            this.core = new ToBack()
-        } else if (this.type == 'main') {
-            this.core = new ToMain()
-        } else if (this.type == 'renderer') {
-            this.core = new ToRenderer()
-        }
-        this.core.on('recv', this.recv)
+        this.#type = type  // back, main, renderer
+        if (this.#type == 'back') { this.#core = new ToBack() }
+        else if (this.#type == 'main') { this.#core = new ToMain() }
+        else if (this.#type == 'renderer') { this.#core = new ToRenderer() }
+        this.#core.on('recv', this.recv)
     }
-    start = () => {
-        this.core.start()
-    }
-    send = (data) => {
-        this.core.send(data)
-    }
-    recv = (data) => {
-        this.emit('recv', data)
-    }
+    start() { this.#core.start() }
+    send = (data) => { this.core.send(data) }
+    recv = (data) => { this.emit('recv', data) }
 }
+/**
+ * # ToBack
+ * Main -> Back
+ */
 class ToBack extends EventEmitter {
     constructor() {
         super()
@@ -44,7 +42,7 @@ class ToBack extends EventEmitter {
         })
     }
     start = () => {
-        this.server.listen(11994)
+        this.server.listen(11994, '127.0.0.1')
     }
     send = (data) => {
         if (this.socket) {
@@ -68,6 +66,10 @@ class ToBack extends EventEmitter {
         }
     }
 }
+/**
+ * # ToRenderer
+ * Main -> Renderer
+ */
 class ToRenderer extends EventEmitter {
     constructor() {
         super()
@@ -99,6 +101,10 @@ class ToRenderer extends EventEmitter {
         this.emit('recv', data)
     }
 }
+/**
+ * # ToMain
+ * Renderer -> Main
+ */
 class ToMain extends EventEmitter {
     constructor() {
         super()

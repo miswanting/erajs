@@ -1,58 +1,77 @@
-const { EventEmitter } = require('events')
-
-const React = require('../../node_modules/react')
-const ReactDOM = require('../../node_modules/react-dom')
-
-// const Header = require('../components/header')
-const Intro = require('../ui/intro')
-const Game = require('../ui/game')
-module.exports = class DisplayManager extends EventEmitter {
+// const Vue = require('../../node_modules/vue/dist/vue')
+class DisplayManager {
+    #app
     constructor() {
-        super()
-    }
-    start = () => {
-        document.getElementById('root').addEventListener("mouseup", (e) => {
+        document.body.addEventListener("mouseup", (e) => {
             console.log('[DEBG]鼠标点击：', e.which);
             let data = {
                 type: 'MOUSE_CLICK',
                 value: e.which
             }
-            this.pull(data)
         })
-        document.getElementById('root').addEventListener("keyup", (e) => {
+        document.body.addEventListener("keyup", (e) => {
             console.log('[DEBG]键盘按下：', e.key);
+            if (e.key == '`') {
+                if (this.#app.data.data.ui != 'console') {
+                    this.#app.data.data.lastUi = this.#app.data.data.ui
+                    this.#app.data.data.ui = 'console'
+                } else if (this.#app.data.data.ui == 'console') {
+                    this.#app.data.data.ui = this.#app.data.data.lastUi
+                }
+            } else if (e.key == 'Escape') {
+                if (this.#app.data.data.ui == 'game') {
+                    this.#app.data.data.ui = 'pause'
+                } else if (this.#app.data.data.ui == 'pause') {
+                    this.#app.data.data.ui = 'game'
+                }
+            }
         })
     }
-    push = (data) => {
-        // console.log(data);
-        this.update(data)
+    register(data) {
+        this.#app = new Vue({
+            el: '#root',
+            data: { data: data },
+            methods: {
+                callback: function () {
+                    let event = new CustomEvent('pull', {
+                        detail: data
+                    })
+                    document.dispatchEvent(event)
+                }
+            },
+            template: '<i-program :data=data></i-program>',
+        })
     }
-    pull = (data) => { this.emit('pull', data) }
-    update = (data) => {
-        let container = null
-        if (data.interfaceType == 'intro') {
-            container = Intro(data)
-        } else if (data.interfaceType == 'game') {
-            container = Game(data)
+}
+Vue.component('i-program', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        if (this.data.data.ui == 'console') {
+            return createElement('i-console', {
+                props: {
+                    data: this.data
+                }
+            })
+        } else if (this.data.data.ui == 'intro') {
+            return createElement('i-intro', {
+                props: {
+                    data: this.data
+                }
+            })
+        } else if (this.data.data.ui == 'pause') {
+            return createElement('i-pause', {
+                props: {
+                    data: this.data
+                }
+            })
+        } else if (this.data.data.ui == 'game') {
+            return createElement('i-game', {
+                props: {
+                    data: this.data
+                }
+            })
         }
-        ReactDOM.render(
-            Window(data),
-            document.getElementById('root')
-        )
     }
-}
-function Window(props) {
-    let container = null
-    if (props.interfaceType == 'intro') {
-        container = Intro(props)
-    } else if (props.interfaceType == 'game') {
-        container = Game(props)
-    }
-    return (
-        React.createElement(
-            'div',
-            { className: 'window' },
-            container
-        )
-    )
-}
+})

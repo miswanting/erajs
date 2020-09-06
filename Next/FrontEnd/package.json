@@ -25,10 +25,12 @@
     "electron-devtools-installer": "latest"
   },
   "dependencies": {
+    "animate.css": "latest",
     "animejs": "latest",
     "csshake": "latest",
     "d3": "latest",
     "electron-is-dev": "latest",
+    "hover.css": "latest",
     "normalize.css": "latest",
     "react": "latest",
     "react-dom": "latest",

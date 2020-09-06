@@ -1,70 +1,153 @@
-const React = require('../../node_modules/react')
-const anime = require('../../node_modules/animejs')
-const Header = require('../components/header')
-const Container = require('../components/container')
-const Footer = require('../components/footer')
-module.exports = function Game(props) {
-    return (
-        React.createElement(
-            'div',
-            { className: 'game' },
-            React.createElement(Header, props),
-            React.createElement(ToastSystem, props),
-            React.createElement(Container, props),
-            React.createElement(Footer, props)
+// const { json } = require("d3")
+
+Vue.component('i-game', {
+    props: {
+        data: Object
+    },
+    template: '<body><i-header :data=data></i-header><i-main :data=data></i-main><i-footer :data=data></i-footer></body>'
+})
+Vue.component('i-main', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        let sections = []
+        for (let i = 0; i < this.data.children.game.children.length; i++) {
+            sections.push(createElement('i-section',
+                {
+                    key: i,
+                    props: {
+                        data: this.data.children.game.children[i]
+                    }
+                }
+            ))
+        }
+        return createElement(
+            'main',
+            {},
+            sections
         )
-    )
-}
-function ToastSystem(props) {
-    return (
-        React.createElement(
-            'div',
-            { className: 'toast-bar' },
-            React.createElement(
-                'div',
-                { className: 'toast-anchor' },
-                React.createElement(ToastList)
-            )
-        )
-    )
-}
-function ToastList(props) {
-    return (
-        React.createElement(
-            'div',
-            { className: 'toast-list' },
-            [
-                // React.createElement(ToastItem),
-                // React.createElement(ToastItem)
-            ]
-        )
-    )
-}
-function ToastItem(props) {
-    // const [show, setShow] = React.useState(false)
-    React.useEffect(() => {
-        anime({
-            targets: '.toast-item',
-            translateX: [150, 0],
-            delay: 1000,
-            duration: 4000,
-            easing: 'easeOutCubic',
-            complete: () => {
-                anime({
-                    targets: '.toast-item',
-                    translateX: [0, 150],
-                    delay: 1000,
-                    duration: 4000,
-                    easing: 'easeOutCubic'
-                });
+    }
+})
+Vue.component('i-section', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        let blocks = [];
+        for (let i = 0; i < this.data.children.length; i++) {
+            blocks.push(createElement('i-block',
+                {
+                    key: i,
+                    props: {
+                        data: this.data.children[i]
+                    }
+                }
+            ))
+        }
+        return createElement('section', {}, blocks)
+    }
+})
+Vue.component('i-block', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        let blockType = null;
+        if (this.data.type == 'line') { blockType = 'i-line' }
+        return createElement(blockType, {
+            props: {
+                data: this.data
             }
-        });
-    }, [])
-    return (
-        React.createElement(
-            'div',
-            { className: 'toast-item' },
-            '弹出消息'
+        })
+    }
+})
+Vue.component('i-line', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        let inlines = [];
+        for (let i = 0; i < this.data.children.length; i++) {
+            inlines.push(createElement('i-inline',
+                {
+                    key: i,
+                    props: {
+                        data: this.data.children[i]
+                    }
+                }
+            ))
+        }
+        return createElement('div',
+            { class: 'line' },
+            inlines
         )
-    )
-}
+    }
+})
+Vue.component('i-inline', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        let inlineType = null;
+        console.log(this.data.type);
+        if (this.data.type == 'text') { inlineType = 'i-text' }
+        else if (this.data.type == 'button') { inlineType = 'i-button' }
+        else { inlineType = 'i-other' }
+        return createElement(inlineType, {
+            props: {
+                data: this.data
+            }
+        })
+    }
+})
+Vue.component('i-text', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {},
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-button', {
+    props: {
+        data: Object
+    },
+    methods: {
+        click: function () {
+            this.$root.callback({
+                type: 'pull',
+                data: {
+                    type: 'BUTTON_CLICK',
+                    target: this.data.data.hash
+                }
+            })
+        }
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {
+                class: 'button',
+                on: {
+                    click: this.click
+                }
+            },
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-other', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        console.log(this.data);
+        return createElement('span',
+            {},
+            JSON.stringify(this.data)
+        )
+    }
+})

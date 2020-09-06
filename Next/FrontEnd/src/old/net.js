@@ -44,7 +44,7 @@ class ToBack extends EventEmitter {
         })
     }
     start = () => {
-        this.server.listen(11994, '127.0.0.1')
+        this.server.listen(11994)
     }
     send = (data) => {
         if (this.socket) {
