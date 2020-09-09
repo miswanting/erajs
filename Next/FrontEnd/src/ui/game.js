@@ -118,12 +118,9 @@ Vue.component('i-button', {
     },
     methods: {
         click: function () {
-            this.$root.callback({
-                type: 'pull',
-                data: {
-                    type: 'BUTTON_CLICK',
-                    target: this.data.data.hash
-                }
+            this.$root.pull({
+                type: 'BUTTON_CLICK',
+                hash: this.data.data.hash
             })
         }
     },

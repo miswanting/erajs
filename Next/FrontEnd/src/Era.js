@@ -5,9 +5,10 @@ class Erajs {
         this.dis = new DisplayManager()
         this.dis.register(this.dat.getData())
         this.net = new NetManager('main')
+        this.net.start()
         this.net.on('recv', (data) => { this.dat.recv(data) })
-        document.addEventListener('send', function (data) {
-            this.net.send(data)
+        document.addEventListener('send', data => {
+            this.net.send(data.detail)
         })
     }
 }

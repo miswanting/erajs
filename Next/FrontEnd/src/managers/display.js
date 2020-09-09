@@ -32,10 +32,11 @@ class DisplayManager {
             el: '#root',
             data: { data: data },
             methods: {
-                callback: function () {
-                    let event = new CustomEvent('pull', {
-                        detail: data
-                    })
+                pull: function (data) {
+                    AST.parse(this.$root, data)
+                },
+                send: function (data) {
+                    let event = new CustomEvent('send', { detail: data })
                     document.dispatchEvent(event)
                 }
             },

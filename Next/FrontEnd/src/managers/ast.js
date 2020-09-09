@@ -16,6 +16,8 @@ class AST {
             this.addElement(vm, data)
         } else if (data.type == 'button') {
             this.addElement(vm, data)
+        } else if (data.type == 'BUTTON_CLICK') {
+            vm.send(data)
         }
     }
     /**

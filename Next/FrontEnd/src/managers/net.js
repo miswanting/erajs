@@ -16,7 +16,7 @@ module.exports = class NetManager extends EventEmitter {
         this.#core.on('recv', this.recv)
     }
     start() { this.#core.start() }
-    send = (data) => { this.core.send(data) }
+    send = (data) => { this.#core.send(data) }
     recv = (data) => { this.emit('recv', data) }
 }
 /**

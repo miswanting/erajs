@@ -295,7 +295,7 @@ def button(text, callback, *arg, **kw):
     e.push('button', data, style)
 
     def on_click(e):
-        if e['target'] == data['hash']:
+        if e['hash'] == data['hash']:
             callback(*arg, **kw)
     e.on('BUTTON_CLICK', on_click, data['hash'])
     e.unlock()
