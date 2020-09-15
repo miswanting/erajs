@@ -1,4 +1,3 @@
-// const Vue = require('../../node_modules/vue/dist/vue')
 class DisplayManager {
     #app
     constructor() {

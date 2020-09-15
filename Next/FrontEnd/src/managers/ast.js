@@ -1,6 +1,6 @@
 class AST {
     static parse(vm, data) {
-        console.log(data);
+        console.log('Parse:', data);
         if (data.type == 'connection') {
             vm.data.ui = 'intro'
         } else if (data.type == 'set_loading_title') {
@@ -9,16 +9,13 @@ class AST {
             vm.data.loadingText = data.value
         } else if (data.type == 'loaded') {
             vm.data.ui = 'game'
-        } else if (data.type == 'page') {
-            this.addElement(vm, data)
         } else if (data.type == 'mode') {
-        } else if (data.type == 'text') {
-            this.addElement(vm, data)
-        } else if (data.type == 'button') {
-            this.addElement(vm, data)
+        } else if (['page', 'text', 'button', 'heading', 'link', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(data.type) != -1) {
+            this.push(vm, data)
         } else if (data.type == 'BUTTON_CLICK') {
             vm.send(data)
         }
+        console.log('Final:', vm);
     }
     /**
      * # 生成抽象元素
@@ -44,7 +41,7 @@ class AST {
     }
     static touchPage(vm) {
         if (!this.isPageExist(vm)) {
-            this.addElement(vm, this.newElement('page'))
+            vm.children.game.children.push(this.newElement('page', el.data, el.style))
         }
     }
     static getLastPage(vm) {
@@ -54,6 +51,11 @@ class AST {
     static isBlockExist(vm) {
         return this.getLastPage(vm).children.length != 0
     }
+    /**
+     * # 当前模式是否与最后的Block一致？
+     * @param {*} vm 
+     * @returns {boolean} bbb
+     */
     static isBlockSame(vm) {
         if (!this.isBlockExist(vm)) {
             return false
@@ -74,14 +76,6 @@ class AST {
         });
         return true
     }
-    static touchBlock(vm) {
-        if (!this.isBlockExist(vm)) {
-            // this.addElement(vm, this.newElement(vm.data.blockMode.type))
-        }
-    }
-    static isLastBlockAddable(vm) {
-        return this.getLastPage(vm).type != 'divider'
-    }
     static getLastBlock(vm) {
         let lastPage = this.getLastPage(vm)
         return lastPage.children[lastPage.children.length - 1]
@@ -96,9 +90,6 @@ class AST {
     static resetBlockMode(vm) {
         this.changeBlockMode(vm, 'line')
     }
-    // static touchPageAmount(vm) {
-    //     vm.data.children.splice(0, vm.data.children.length - vm.data.maxPages)
-    // }
     static addBlock(vm) {
         let lastPage = this.getLastPage(vm)
         if (vm.data.blockMode.type == 'line') {
@@ -107,21 +98,16 @@ class AST {
             lastPage.children.push(this.newElement(vm.data.blockMode.type, { column: vm.data.blockMode.column }))
         }
     }
-    static addInline(vm, data) {
-        console.log(this.isBlockSame(vm));
-        if (!this.isBlockSame(vm)) {
-            this.addBlock(vm)
-        }
-        let lastBlock = this.getLastBlock(vm)
-        lastBlock.children.push(data)
-    }
-    static addElement(vm, el) {
+    static push(vm, el) {
         if (el.type == 'page') {
-            vm.children.game.children.push(this.newElement(el.type, el.data, el.style))
-        } else if (el.type == 'text') {
-            this.addInline(vm, el)
-        } else if (el.type == 'button') {
-            this.addInline(vm, el)
+            vm.children.game.children.push(this.newElement('page', el.data, el.style))
+        } else if (['text', 'button', 'heading', 'link', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
+            if (this.isBlockSame(vm)) {
+                this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
+            } else {
+                this.addBlock(vm)
+                this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
+            }
         }
     }
 }

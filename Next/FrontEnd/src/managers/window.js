@@ -27,7 +27,6 @@ module.exports = class WindowManager extends EventEmitter {
                 )
             }
             tmp()
-
             // const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer')
             // installExtension(VUEJS_DEVTOOLS)
             //     .then((name) => console.log(`Extension Added!: ${name}`))

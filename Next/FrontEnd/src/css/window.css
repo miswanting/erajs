@@ -46,7 +46,6 @@ header > .title {
 }
 main {
   flex-grow: 1;
-  display: flex;
 }
 .loading-banner {
   align-self: center;

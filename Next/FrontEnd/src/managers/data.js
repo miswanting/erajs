@@ -65,10 +65,6 @@ class DataManager {
     getData() {
         return this.#data
     }
-    // send(data) {
-    //     let event = new CustomEvent('send', { detail: data })
-    //     document.dispatchEvent(event)
-    // }
     recv = (data) => {
         AST.parse(this.#data, data)
     }

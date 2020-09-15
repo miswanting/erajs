@@ -8,11 +8,11 @@ h6 {
   margin: 0;
 }
 /* Span Charm */
-.page {
+section {
   position: relative;
   margin: 0.5rem;
 }
-.page.disabled > .disable-mask {
+section.disabled > .disable-mask {
   content: "";
   position: absolute;
   top: 0;
@@ -49,7 +49,8 @@ h2 {
 }
 .link {
   cursor: pointer;
-  text-decoration: dotted;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
 }
 .link:hover {
   text-decoration: underline;

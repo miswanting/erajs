@@ -93,6 +93,10 @@ Vue.component('i-inline', {
         console.log(this.data.type);
         if (this.data.type == 'text') { inlineType = 'i-text' }
         else if (this.data.type == 'button') { inlineType = 'i-button' }
+        else if (this.data.type == 'heading') { inlineType = 'i-heading' }
+        else if (this.data.type == 'link') { inlineType = 'i-link' }
+        else if (this.data.type == 'progress') { inlineType = 'i-progress' }
+        else if (this.data.type == 'rate') { inlineType = 'i-rate' }
         else { inlineType = 'i-other' }
         return createElement(inlineType, {
             props: {
@@ -128,6 +132,192 @@ Vue.component('i-button', {
         return createElement('span',
             {
                 class: 'button',
+                on: {
+                    click: this.click
+                }
+            },
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-heading', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        return createElement('h' + this.data.data.rank.toString(),
+            {},
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-link', {
+    props: {
+        data: Object
+    },
+    methods: {
+        click: function () {
+            this.$root.pull({
+                type: 'LINK_CLICK',
+                hash: this.data.data.hash
+            })
+        }
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {
+                class: 'link',
+                on: {
+                    click: this.click
+                }
+            },
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-progress', {
+    props: {
+        data: Object
+    },
+    render: function (createElement) {
+        if (!this.data.style[0].hasOwnProperty('width')) {
+            this.data.style[0].width = '100px'
+        }
+        this.data.style[1].width = `${this.data.data.now / this.data.data.max * 100}%`
+        return createElement('span', {
+            class: 'progress',
+            style: this.data.style[0]
+        },
+            [
+                createElement('span', {
+                    class: 'bar',
+                    style: this.data.style[1]
+                },
+                    this.data.data.text
+                )
+            ]
+        )
+    }
+})
+Vue.component('i-rate', {
+    props: {
+        data: Object
+    },
+    data: function () {
+        return {
+            now: this.data.data.now,
+            falseIcon: '☆',
+            trueIcon: '★',
+        }
+    },
+    methods: {
+        click: function () {
+            this.$root.pull({
+                type: 'LINK_CLICK',
+                hash: this.data.data.hash
+            })
+        }
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {
+                class: 'link',
+                on: {
+                    click: this.click
+                }
+            },
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-check', {
+    props: {
+        data: Object
+    },
+    methods: {
+        click: function () {
+            this.$root.pull({
+                type: 'LINK_CLICK',
+                hash: this.data.data.hash
+            })
+        }
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {
+                class: 'link',
+                on: {
+                    click: this.click
+                }
+            },
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-radio', {
+    props: {
+        data: Object
+    },
+    methods: {
+        click: function () {
+            this.$root.pull({
+                type: 'LINK_CLICK',
+                hash: this.data.data.hash
+            })
+        }
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {
+                class: 'link',
+                on: {
+                    click: this.click
+                }
+            },
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-input', {
+    props: {
+        data: Object
+    },
+    methods: {
+        click: function () {
+            this.$root.pull({
+                type: 'LINK_CLICK',
+                hash: this.data.data.hash
+            })
+        }
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {
+                class: 'link',
+                on: {
+                    click: this.click
+                }
+            },
+            this.data.data.text
+        )
+    }
+})
+Vue.component('i-dropdown', {
+    props: {
+        data: Object
+    },
+    methods: {
+        click: function () {
+            this.$root.pull({
+                type: 'LINK_CLICK',
+                hash: this.data.data.hash
+            })
+        }
+    },
+    render: function (createElement) {
+        return createElement('span',
+            {
+                class: 'link',
                 on: {
                     click: this.click
                 }
