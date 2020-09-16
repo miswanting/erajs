@@ -18,10 +18,10 @@ class DisplayManager {
                     this.#app.data.data.ui = this.#app.data.data.lastUi
                 }
             } else if (e.key == 'Escape') {
-                if (this.#app.data.data.ui == 'game') {
+                if (this.#app.data.data.ui == 'main') {
                     this.#app.data.data.ui = 'pause'
                 } else if (this.#app.data.data.ui == 'pause') {
-                    this.#app.data.data.ui = 'game'
+                    this.#app.data.data.ui = 'main'
                 }
             }
         })
@@ -66,8 +66,8 @@ Vue.component('i-program', {
                     data: this.data
                 }
             })
-        } else if (this.data.data.ui == 'game') {
-            return createElement('i-game', {
+        } else if (this.data.data.ui == 'main') {
+            return createElement('i-main', {
                 props: {
                     data: this.data
                 }

@@ -22,7 +22,7 @@ Vue.component('menu-bar', {
                 })
             )
         }
-        return createElement('div', { class: "menu-bar" }, menus)
+        return createElement('div', { class: "menu-bar", ref: "menuBar" }, menus)
     }
 })
 Vue.component('i-menu', {
@@ -37,8 +37,18 @@ Vue.component('i-menu', {
     methods: {
         click: function () {
             this.show = !this.show
+        },
+        documentClick: function (e) {
+            let el = this.$refs.menuBar
+            let target = e.target
+            console.log(el);
+            if (el !== target && !el.contains(target)) {
+                this.show = false
+            }
         }
     },
+    created() { document.addEventListener('click', this.documentClick) },
+    destroyed() { document.removeEventListener('click', this.documentClick) },
     render: function (createElement) {
         let menuList = null
         if (this.data.hasOwnProperty('submenu')) {
@@ -111,5 +121,5 @@ Vue.component('operator-bar', {
             remote.getCurrentWindow().close()
         }
     },
-    template: '<div class="operator-bar"><div class="min" @click="min()">●</div><div class="max" @click="max()">●</div><div class="close" @click="close()">●</div></div>'
+    template: '<div class="operator-bar"><div class="operator min" @click="min()">●</div><div class="operator max" @click="max()">●</div><div class="operator close" @click="close()">●</div></div>'
 })

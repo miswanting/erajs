@@ -442,7 +442,7 @@ def dropdown(text_list, callback, default_index, search, multiple, placeholder, 
     node = {'value': default_index}
 
     def on_click(e):
-        if e['target'] == data['hash']:
+        if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
     e.on('DROPDOWN_CHANGE', on_click, data['hash'])

@@ -2,9 +2,11 @@
   font-family: "Microsoft YaHei";
   src: unset;
 }
+html {
+  font: 1em "MicroSoft YaHei", sans-serif;
+}
 html,
-body,
-#root {
+body {
   height: 100%;
   overflow: hidden;
 }

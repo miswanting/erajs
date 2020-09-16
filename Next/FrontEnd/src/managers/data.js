@@ -50,7 +50,7 @@ class DataManager {
                 // 下可以呼出上
                 console: AST.newElement('console'),
                 pause: AST.newElement('pause'),
-                game: AST.newElement('game'),
+                main: AST.newElement('main'),
                 intro: AST.newElement('intro'),
             }
         }

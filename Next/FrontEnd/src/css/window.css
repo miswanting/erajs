@@ -1,20 +1,35 @@
-@font-face {
-  font-family: "Microsoft YaHei";
-  src: unset;
-}
-html,
-body {
-  height: 100%;
-}
-body {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+/* header */
+header {
+  user-select: none;
+  z-index: 10;
 }
 header,
 .menu-bar,
 .operator-bar {
   display: flex;
+}
+.menu-button,
+.operator {
+  cursor: pointer;
+}
+.menu-button:hover,
+.operator:hover {
+  background-color: var(--hover-back);
+}
+.menu-button:hover {
+  color: var(--hover-front);
+}
+.operator.min:hover {
+  color: #0f0;
+}
+.operator.max:hover {
+  color: #ff0;
+}
+.operator.close:hover {
+  color: #f00;
+}
+.title {
+  cursor: grab;
 }
 .menu {
   display: flex;
@@ -24,29 +39,30 @@ header,
 }
 .menu-button,
 .title,
-.operator-bar > div,
-main,
-footer {
+.operator {
   color: var(--default-front);
   background-color: var(--default-back);
-}
-.menu-button,
-.title,
-.operator-bar > div,
-footer {
   padding: 0 0.2rem;
 }
 .menu-list {
   position: absolute;
   width: fit-content;
+  min-width: 50px;
 }
 header > .title {
   flex-grow: 1;
   text-align: center;
   -webkit-app-region: drag;
 }
-main {
+/* intro */
+.intro {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.intro > main {
   flex-grow: 1;
+  display: flex;
 }
 .loading-banner {
   align-self: center;
@@ -58,6 +74,7 @@ main {
   align-self: center;
   text-align: center;
 }
+/* pause */
 .pause-banner {
   align-self: center;
   width: 100%;
@@ -69,4 +86,15 @@ main {
 }
 .pause-banner > div {
   width: 100%;
+}
+/* main */
+main {
+  color: var(--default-front);
+  background-color: var(--default-back);
+}
+/* footer */
+footer {
+  padding: 0 0.2rem;
+  color: var(--default-front);
+  background-color: var(--default-back);
 }

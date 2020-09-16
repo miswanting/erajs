@@ -1,89 +1,4 @@
-// const { json } = require("d3")
 
-Vue.component('i-game', {
-    props: {
-        data: Object
-    },
-    template: '<body><i-header :data=data></i-header><i-main :data=data></i-main><i-footer :data=data></i-footer></body>'
-})
-Vue.component('i-main', {
-    props: {
-        data: Object
-    },
-    render: function (createElement) {
-        let sections = []
-        for (let i = 0; i < this.data.children.game.children.length; i++) {
-            sections.push(createElement('i-section',
-                {
-                    key: i,
-                    props: {
-                        data: this.data.children.game.children[i]
-                    }
-                }
-            ))
-        }
-        return createElement(
-            'main',
-            {},
-            sections
-        )
-    }
-})
-Vue.component('i-section', {
-    props: {
-        data: Object
-    },
-    render: function (createElement) {
-        let blocks = [];
-        for (let i = 0; i < this.data.children.length; i++) {
-            blocks.push(createElement('i-block',
-                {
-                    key: i,
-                    props: {
-                        data: this.data.children[i]
-                    }
-                }
-            ))
-        }
-        return createElement('section', {}, blocks)
-    }
-})
-Vue.component('i-block', {
-    props: {
-        data: Object
-    },
-    render: function (createElement) {
-        let blockType = null;
-        if (this.data.type == 'line') { blockType = 'i-line' }
-        return createElement(blockType, {
-            props: {
-                data: this.data
-            }
-        })
-    }
-})
-Vue.component('i-line', {
-    props: {
-        data: Object
-    },
-    render: function (createElement) {
-        let inlines = [];
-        for (let i = 0; i < this.data.children.length; i++) {
-            inlines.push(createElement('i-inline',
-                {
-                    key: i,
-                    props: {
-                        data: this.data.children[i]
-                    }
-                }
-            ))
-        }
-        return createElement('div',
-            { class: 'line' },
-            inlines
-        )
-    }
-})
 Vue.component('i-inline', {
     props: {
         data: Object
@@ -376,20 +291,6 @@ Vue.component('i-input', {
             value: this.data.data.default
         }
     },
-    // watch: {
-    //     value: function (v, prev) {
-    //         console.log(v, prev);
-    //     }
-    // },
-    // methods: {
-    //     change: function () {
-    //         this.$root.pull({
-    //             type: 'INPUT_CHANGE',
-    //             value: e.target.value,
-    //             hash: this.data.data.hash
-    //         })
-    //     }
-    // },
     template: `<span class="input">[<editable :data=data :content.sync="value"></editable>]</span>`
 })
 Vue.component('editable', {
@@ -412,24 +313,59 @@ Vue.component('i-dropdown', {
     props: {
         data: Object
     },
+    data: function () {
+        return {
+            icon: '△',
+            show: false,
+            value: this.data.data.default_index
+        }
+    },
     methods: {
         click: function () {
+            this.show = !this.show
+        },
+        clickItem: function (i) {
+            this.show = false
+            this.value = i
             this.$root.pull({
-                type: 'LINK_CLICK',
+                type: 'DROPDOWN_CHANGE',
+                value: i,
                 hash: this.data.data.hash
             })
         }
     },
     render: function (createElement) {
-        return createElement('span',
-            {
-                class: 'link',
-                on: {
-                    click: this.click
-                }
-            },
-            this.data.data.text
-        )
+        let itemList = []
+        itemList.push(createElement('span', {
+            class: 'dropdown-item',
+        }, this.data.data.text_list[this.value]))
+        itemList.push(createElement('span', {
+            class: 'dropdown-icon',
+        }, this.icon))
+        if (this.show) {
+            let menuItemList = []
+            for (let i = 0; i < this.data.data.text_list.length; i++) {
+                menuItemList.push(createElement('div', {
+                    class: 'dropdown-menu-item',
+                    on: {
+                        click: (e) => { e.preventDefault(); this.clickItem(i) }
+                    }
+                }, this.data.data.text_list[i]))
+            }
+            itemList.push(createElement('div', {
+                class: 'dropdown-anchor',
+            }, [
+                createElement('div', {
+                    class: 'dropdown-menu show',
+                }, menuItemList)
+            ]))
+        }
+        return createElement('span', {
+            class: 'dropdown',
+            on: {
+                click: this.click
+            }
+        }, itemList)
     }
 })
 Vue.component('i-other', {

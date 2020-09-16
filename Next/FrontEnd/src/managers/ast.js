@@ -8,7 +8,7 @@ class AST {
         } else if (data.type == 'set_loading_text') {
             vm.data.loadingText = data.value
         } else if (data.type == 'loaded') {
-            vm.data.ui = 'game'
+            vm.data.ui = 'main'
         } else if (data.type == 'mode') {
         } else if (data.type == 'pass') {
             if (vm.data.blockMode.type == 'line') {
@@ -34,7 +34,8 @@ class AST {
             'RATE_CLICK',
             'CHECK_CHANGE',
             'RADIO_CHANGE',
-            'INPUT_CHANGE'
+            'INPUT_CHANGE',
+            'DROPDOWN_CHANGE'
         ].indexOf(data.type) != -1) {
             vm.send(data)
         }
@@ -60,16 +61,16 @@ class AST {
         return el
     }
     static isPageExist(vm) {
-        return vm.children.game.children.length != 0
+        return vm.children.main.children.length != 0
     }
     static touchPage(vm) {
         if (!this.isPageExist(vm)) {
-            vm.children.game.children.push(this.newElement('page', el.data, el.style))
+            vm.children.main.children.push(this.newElement('page', el.data, el.style))
         }
     }
     static getLastPage(vm) {
         this.touchPage(vm)
-        return vm.children.game.children[vm.children.game.children.length - 1]
+        return vm.children.main.children[vm.children.main.children.length - 1]
     }
     static isBlockExist(vm) {
         return this.getLastPage(vm).children.length != 0
@@ -123,7 +124,7 @@ class AST {
     }
     static push(vm, el) {
         if (el.type == 'page') {
-            vm.children.game.children.push(this.newElement('page', el.data, el.style))
+            vm.children.main.children.push(this.newElement('page', el.data, el.style))
         } else if (['text', 'button', 'heading', 'link', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
             if (this.isBlockSame(vm)) {
                 this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
