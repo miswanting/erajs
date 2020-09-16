@@ -10,9 +10,32 @@ class AST {
         } else if (data.type == 'loaded') {
             vm.data.ui = 'game'
         } else if (data.type == 'mode') {
-        } else if (['page', 'text', 'button', 'heading', 'link', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(data.type) != -1) {
+        } else if (data.type == 'pass') {
+            if (vm.data.blockMode.type == 'line') {
+                this.addBlock(vm)
+            }
+        } else if ([
+            'page',
+            'text',
+            'button',
+            'heading',
+            'link',
+            'progress',
+            'rate',
+            'check',
+            'radio',
+            'input',
+            'dropdown'
+        ].indexOf(data.type) != -1) {
             this.push(vm, data)
-        } else if (data.type == 'BUTTON_CLICK') {
+        } else if ([
+            'BUTTON_CLICK',
+            'LINK_CLICK',
+            'RATE_CLICK',
+            'CHECK_CHANGE',
+            'RADIO_CHANGE',
+            'INPUT_CHANGE'
+        ].indexOf(data.type) != -1) {
             vm.send(data)
         }
         console.log('Final:', vm);

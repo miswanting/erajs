@@ -97,6 +97,10 @@ Vue.component('i-inline', {
         else if (this.data.type == 'link') { inlineType = 'i-link' }
         else if (this.data.type == 'progress') { inlineType = 'i-progress' }
         else if (this.data.type == 'rate') { inlineType = 'i-rate' }
+        else if (this.data.type == 'check') { inlineType = 'i-check' }
+        else if (this.data.type == 'radio') { inlineType = 'i-radio' }
+        else if (this.data.type == 'input') { inlineType = 'i-input' }
+        else if (this.data.type == 'dropdown') { inlineType = 'i-dropdown' }
         else { inlineType = 'i-other' }
         return createElement(inlineType, {
             props: {
@@ -204,53 +208,105 @@ Vue.component('i-rate', {
         data: Object
     },
     data: function () {
+        let falseIcon = '☆';
+        let trueIcon = '★';
+        if (this.data.style.hasOwnProperty('false_icon')) {
+            falseIcon = this.data.style.false_icon;
+        }
+
+        if (this.data.style.hasOwnProperty('true_icon')) {
+            trueIcon = this.data.style.true_icon;
+        }
         return {
             now: this.data.data.now,
-            falseIcon: '☆',
-            trueIcon: '★',
+            falseIcon: falseIcon,
+            trueIcon: trueIcon,
         }
     },
     methods: {
-        click: function () {
+        click: function (i) {
+            if (i == this.now) {
+                i = 0
+            }
             this.$root.pull({
-                type: 'LINK_CLICK',
+                type: 'RATE_CLICK',
+                value: i,
                 hash: this.data.data.hash
             })
+            this.now = i
         }
     },
     render: function (createElement) {
-        return createElement('span',
-            {
-                class: 'link',
-                on: {
-                    click: this.click
-                }
-            },
-            this.data.data.text
-        )
+        rateList = []
+        for (let i = 0; i < this.data.data.max; i++) {
+            if (i < this.now) {
+                rateList.push(
+                    createElement('span', {
+                        class: 'rate-item',
+                        on: {
+                            click: () => { this.click(i + 1) }
+                        }
+                    }, this.trueIcon))
+            } else {
+                rateList.push(
+                    createElement('span', {
+                        class: 'rate-item',
+                        on: {
+                            click: () => { this.click(i + 1) }
+                        }
+                    }, this.falseIcon))
+            }
+        }
+        return createElement('span', {
+            class: 'rate',
+            style: this.data.style
+        }, rateList)
     }
 })
 Vue.component('i-check', {
     props: {
         data: Object
     },
+    data: function () {
+        let falseIcon = '◻';
+        let trueIcon = '◼';
+        if (this.data.style.hasOwnProperty('false_icon')) {
+            falseIcon = this.data.style.false_icon;
+        }
+
+        if (this.data.style.hasOwnProperty('true_icon')) {
+            trueIcon = this.data.style.true_icon;
+        }
+        return {
+            value: this.data.data.default,
+            falseIcon: falseIcon,
+            trueIcon: trueIcon,
+        }
+    },
     methods: {
         click: function () {
             this.$root.pull({
-                type: 'LINK_CLICK',
+                type: 'CHECK_CHANGE',
+                value: !this.value,
                 hash: this.data.data.hash
             })
+            this.value = !this.value
         }
     },
     render: function (createElement) {
-        return createElement('span',
-            {
-                class: 'link',
-                on: {
-                    click: this.click
-                }
-            },
-            this.data.data.text
+        let valueText = this.value ? this.trueIcon : this.falseIcon
+        return createElement('span', {
+            class: 'check',
+            on: { click: this.click }
+        },
+            [
+                createElement('span', {
+                    class: 'check-value'
+                }, valueText),
+                createElement('span', {
+                    class: 'check-text'
+                }, this.data.data.text)
+            ]
         )
     }
 })
@@ -258,23 +314,56 @@ Vue.component('i-radio', {
     props: {
         data: Object
     },
+    data: function () {
+        let falseIcon = '◻';
+        let trueIcon = '◼';
+        if (this.data.style.hasOwnProperty('false_icon')) {
+            falseIcon = this.data.style.false_icon;
+        }
+
+        if (this.data.style.hasOwnProperty('true_icon')) {
+            trueIcon = this.data.style.true_icon;
+        }
+        return {
+            value: this.data.data.default_index,
+            falseIcon: falseIcon,
+            trueIcon: trueIcon,
+        }
+    },
     methods: {
-        click: function () {
+        click: function (i) {
             this.$root.pull({
-                type: 'LINK_CLICK',
+                type: 'RADIO_CHANGE',
+                value: i,
                 hash: this.data.data.hash
             })
+            this.value = i
         }
     },
     render: function (createElement) {
+        let radioList = []
+        for (let i = 0; i < this.data.data.text_list.length; i++) {
+            let valueText = this.value == i ? this.trueIcon : this.falseIcon
+            radioList.push(
+                createElement('span', {
+                    class: 'radio-item',
+                    style: this.data.style,
+                    on: {
+                        click: () => { this.click(i) }
+                    }
+                }, [
+                    createElement('span', {
+                        class: 'radio-value',
+                    }, valueText),
+                    createElement('span', {
+                        class: 'radio-text',
+                    }, this.data.data.text_list[i])
+                ])
+            )
+        }
         return createElement('span',
-            {
-                class: 'link',
-                on: {
-                    click: this.click
-                }
-            },
-            this.data.data.text
+            { class: 'radio' },
+            radioList
         )
     }
 })
@@ -282,26 +371,43 @@ Vue.component('i-input', {
     props: {
         data: Object
     },
-    methods: {
-        click: function () {
+    data: function () {
+        return {
+            value: this.data.data.default
+        }
+    },
+    // watch: {
+    //     value: function (v, prev) {
+    //         console.log(v, prev);
+    //     }
+    // },
+    // methods: {
+    //     change: function () {
+    //         this.$root.pull({
+    //             type: 'INPUT_CHANGE',
+    //             value: e.target.value,
+    //             hash: this.data.data.hash
+    //         })
+    //     }
+    // },
+    template: `<span class="input">[<editable :data=data :content.sync="value"></editable>]</span>`
+})
+Vue.component('editable', {
+    template: `<span contenteditable="true" @input="$emit('update:content', $event.target.innerText)"></span>`,
+    props: ['data', 'content'],
+    mounted: function () {
+        this.$el.innerText = this.content;
+    },
+    watch: {
+        content: function () {
             this.$root.pull({
-                type: 'LINK_CLICK',
+                type: 'INPUT_CHANGE',
+                value: this.content,
                 hash: this.data.data.hash
             })
         }
-    },
-    render: function (createElement) {
-        return createElement('span',
-            {
-                class: 'link',
-                on: {
-                    click: this.click
-                }
-            },
-            this.data.data.text
-        )
     }
-})
+});
 Vue.component('i-dropdown', {
     props: {
         data: Object

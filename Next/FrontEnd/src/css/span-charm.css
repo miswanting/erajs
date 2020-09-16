@@ -90,15 +90,22 @@ td {
 .radio {
   margin: 0rem 0.2rem;
 }
-.input {
+/* .input {
   height: 1rem;
   width: 100px;
   background-color: var(--interactable-back);
   border: none;
   color: var(--interactable-front);
   margin: 0rem 0.2rem;
+} */
+.input{
+  background-color: var(--interactable-back);
 }
-input:focus {
+.input > span {
+  display: inline-block;
+  min-width: 30px;
+}
+.input > span:focus {
   outline: none;
 }
 .dropdown {

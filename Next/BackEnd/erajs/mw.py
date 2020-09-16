@@ -321,7 +321,7 @@ def link(text, callback, style, *arg, **kw):
     e.push('link', data, style)
 
     def on_click(e):
-        if e['target'] == data['hash']:
+        if e['hash'] == data['hash']:
             callback(*arg, **kw)
     e.on('LINK_CLICK', on_click, data['hash'])
     e.unlock()
@@ -349,7 +349,7 @@ def rate(now=0, max=5, callback=None, style=None):
 
     def on_click(e):
         # print(e)
-        if e['target'] == data['hash']:
+        if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
     e.on('RATE_CLICK', on_click, data['hash'])
@@ -371,7 +371,7 @@ def check(text, callback, default, style):
     node = {'value': default}
 
     def on_click(e):
-        if e['target'] == data['hash']:
+        if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
     e.on('CHECK_CHANGE', on_click, data['hash'])
@@ -393,7 +393,7 @@ def radio(text_list, callback, default_index, style):
     node = {'value': default_index}
 
     def on_click(e):
-        if e['target'] == data['hash']:
+        if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
     e.on('RADIO_CHANGE', on_click, data['hash'])
@@ -416,7 +416,7 @@ def input(callback, default, is_area, placeholder, style):
     node = {'value': default}
 
     def on_click(e):
-        if e['target'] == data['hash']:
+        if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
     e.on('INPUT_CHANGE', on_click, data['hash'])

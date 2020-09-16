@@ -43,6 +43,7 @@ footer {
 header > .title {
   flex-grow: 1;
   text-align: center;
+  -webkit-app-region: drag;
 }
 main {
   flex-grow: 1;
