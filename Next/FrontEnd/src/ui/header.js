@@ -38,7 +38,7 @@ Vue.component('i-menu', {
         click: function () {
             this.show = !this.show
         },
-        documentClick: function (e) {
+        documentClick: (e) => {
             let el = this.$refs.menuBar
             let target = e.target
             console.log(el);
