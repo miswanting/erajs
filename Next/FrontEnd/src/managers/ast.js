@@ -10,9 +10,17 @@ class AST {
         } else if (data.type == 'loaded') {
             vm.data.ui = 'main'
         } else if (data.type == 'mode') {
+            vm.data.blockMode = { type: data.data.type }
+            if (vm.data.blockMode.type == 'grid') {
+                vm.data.blockMode.column = data.data.arg[0]
+            }
         } else if (data.type == 'pass') {
             if (vm.data.blockMode.type == 'line') {
                 this.addBlock(vm)
+            } else if (vm.data.blockMode.type == 'grid') {
+                this.getLastBlock(vm).children.push(
+                    this.newElement('pass')
+                )
             }
         } else if ([
             'page',
@@ -130,6 +138,7 @@ class AST {
                 this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
             } else {
                 this.addBlock(vm)
+                console.log(vm, el);
                 this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
             }
         }

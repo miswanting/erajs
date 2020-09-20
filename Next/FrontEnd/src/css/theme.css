@@ -48,3 +48,8 @@
   --active-front: var(--default);
   --active-back: var(--active);
 }
+::selection {
+  color: var(--default-back);
+  background-color: #fff;
+  /* outline: #fff dashed 1px; */
+}

@@ -4,9 +4,9 @@ Vue.component('i-main', {
     props: {
         data: Object
     },
-    template: '<body><i-header :data=data></i-header><i-main :data=data></i-main><i-footer :data=data></i-footer></body>'
+    template: '<body class="main"><i-header :data=data></i-header><i-container :data=data></i-container><i-footer :data=data></i-footer></body>'
 })
-Vue.component('i-main', {
+Vue.component('i-container', {
     props: {
         data: Object
     },
@@ -46,41 +46,5 @@ Vue.component('i-section', {
             ))
         }
         return createElement('section', {}, blocks)
-    }
-})
-Vue.component('i-block', {
-    props: {
-        data: Object
-    },
-    render: function (createElement) {
-        let blockType = null;
-        if (this.data.type == 'line') { blockType = 'i-line' }
-        return createElement(blockType, {
-            props: {
-                data: this.data
-            }
-        })
-    }
-})
-Vue.component('i-line', {
-    props: {
-        data: Object
-    },
-    render: function (createElement) {
-        let inlines = [];
-        for (let i = 0; i < this.data.children.length; i++) {
-            inlines.push(createElement('i-inline',
-                {
-                    key: i,
-                    props: {
-                        data: this.data.children[i]
-                    }
-                }
-            ))
-        }
-        return createElement('div',
-            { class: 'line' },
-            inlines
-        )
     }
 })

@@ -92,6 +92,13 @@ main {
   color: var(--default-front);
   background-color: var(--default-back);
 }
+.main {
+  display: flex;
+  flex-direction: column;
+}
+.main > main {
+  flex-grow: 1;
+}
 /* footer */
 footer {
   padding: 0 0.2rem;
