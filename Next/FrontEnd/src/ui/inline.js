@@ -351,15 +351,23 @@ Vue.component('i-dropdown', {
             this.show = !this.show
         },
         clickItem: function (i) {
-            this.show = false
             this.value = i
             this.$root.pull({
                 type: 'DROPDOWN_CHANGE',
                 value: i,
                 hash: this.data.data.hash
             })
+        },
+        documentClick: function (e) {
+            if (['dropdown-item', 'dropdown-icon'].indexOf(e.target.className) != -1) {
+                e.preventDefault()
+            } else {
+                this.show = false
+            }
         }
     },
+    created() { document.addEventListener('click', this.documentClick) },
+    destroyed() { document.removeEventListener('click', this.documentClick) },
     render: function (createElement) {
         let itemList = []
         itemList.push(createElement('span', {
@@ -374,7 +382,10 @@ Vue.component('i-dropdown', {
                 menuItemList.push(createElement('div', {
                     class: 'dropdown-menu-item',
                     on: {
-                        click: (e) => { e.preventDefault(); this.clickItem(i) }
+                        click: (e) => {
+                            this.clickItem(i)
+                            e.preventDefault()
+                        }
                     }
                 }, this.data.data.text_list[i]))
             }
