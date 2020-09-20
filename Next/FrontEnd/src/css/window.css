@@ -114,4 +114,5 @@ footer {
   padding: 0 0.2rem;
   color: var(--default-front);
   background-color: var(--default-back);
+  z-index: 5;
 }

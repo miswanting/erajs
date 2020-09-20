@@ -22,7 +22,7 @@ Vue.component('menu-bar', {
                 })
             )
         }
-        return createElement('div', { class: "menu-bar", ref: "menuBar" }, menus)
+        return createElement('div', { class: "menu-bar" }, menus)
     }
 })
 Vue.component('i-menu', {
@@ -35,14 +35,16 @@ Vue.component('i-menu', {
         }
     },
     methods: {
-        click: function () {
+        clickToShow: function () {
             this.show = !this.show
         },
-        documentClick: (e) => {
-            let el = this.$refs.menuBar
-            let target = e.target
-            console.log(el);
-            if (el !== target && !el.contains(target)) {
+        click: function () {
+            this.$emit('MENU_CLICK')
+        },
+        documentClick: function (e) {
+            if (e.target.className == 'menu-button') {
+                e.preventDefault()
+            } else {
                 this.show = false
             }
         }
@@ -58,6 +60,12 @@ Vue.component('i-menu', {
                     createElement('i-menu',
                         {
                             key: i,
+                            on: {
+                                MENU_CLICK: () => {
+                                    this.show = false
+                                    this.$emit('MENU_CLICK')
+                                }
+                            },
                             props: {
                                 data: this.data.submenu[i]
                             }
@@ -77,12 +85,13 @@ Vue.component('i-menu', {
                 ]
             )
         }
+        let callback = menuList == null ? this.click : this.clickToShow
         return createElement('div', { class: "menu" },
             [
                 createElement('div', {
                     class: "menu-button",
                     on: {
-                        click: this.click
+                        click: callback
                     }
                 }, this.data.label),
                 menuList
