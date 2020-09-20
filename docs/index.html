@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Era.js</title>
+    <style>
+        @font-face {
+            font-family: "Microsoft YaHei";
+            src: unset;
+        }
+
+        html {
+            font: 1em "MicroSoft YaHei", sans-serif;
+            color: #fff;
+            background-color: #333639;
+        }
+    </style>
+    <script src="bios.js"></script>
+    <script>
+        window.onload = function () {
+            CSS_FOLDER = 'css-200314'
+            LOAD_QUEUE = [
+                ['https://unpkg.com/normalize.css', 'Loading Normalize.css...'],
+                ['https://unpkg.com/vue/dist/vue.js', 'OK\nLoading Vue.js...'],
+                ['https://unpkg.com/font-awesome/css/font-awesome.min.css', 'OK\nLoading Font Awesome...'],
+                ['https://unpkg.com/vue/dist/vue.js', 'OK\nLoading Vue.js...'],
+                [CSS_FOLDER + '/base.css', 'OK\nLoading Base.css...'],
+                [CSS_FOLDER + '/theme.css', 'OK\nLoading Theme.css...'],
+                [CSS_FOLDER + '/window.css', 'OK\nLoading Window.css...'],
+                [CSS_FOLDER + '/span-charm.css', 'OK\nLoading SpanCharm.css...'],
+                ['ui/header.js', 'OK\nLoading Header...'],
+                ['ui/main.js', 'OK\nLoading Main Page...'],
+                ['ui/block.js', 'OK\nLoading Block...'],
+                ['ui/inline.js', 'OK\nLoading Inline...'],
+                ['ui/console.js', 'OK\nLoading Console UI...'],
+                ['ui/pause.js', 'OK\nLoading Pause UI...'],
+                ['ui/footer.js', 'OK\nLoading Footer...'],
+                ['managers/ast.js', 'OK\nLoading AST Manager...'],
+                ['managers/display.js', 'OK\nLoading Display Manager...'],
+                ['managers/data.js', 'OK\nLoading Data Manager...'],
+                ['managers/net.js', 'OK\nLoading Net Manager...'],
+                ['Era.js', 'OK\nLoading Era.js...'],
+            ]
+            loadRes1by1(LOAD_QUEUE, (text) => {
+                document.querySelector("#root").innerText += text
+            }, () => {
+                document.querySelector("#root").innerText += 'OK\nDone!'
+                setTimeout(() => {
+                    let erajs = new Erajs()
+                }, 2000)
+            })
+        }
+    </script>
+</head>
+
+<body class="dark-theme">
+    <div id="root"></div>
+</body>
+
+</html>

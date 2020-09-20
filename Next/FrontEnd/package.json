@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/miswanting/Era.js#readme",
   "devDependencies": {
+    "devtron": "latest",
     "electron": "latest",
     "electron-builder": "latest",
     "electron-devtools-installer": "latest"
