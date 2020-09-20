@@ -107,7 +107,10 @@ def title(text, style=None):
 
 
 def footer(text, style=None):
-    pass
+    """
+    # 设置窗口脚注
+    """
+    m.footer(text)
 
 
 def msg(text, style=None):

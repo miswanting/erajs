@@ -228,6 +228,10 @@ def title(text):
     e.push('title', {'text': str(text)}, None)
 
 
+def footer(text):
+    e.push('footer', {'text': str(text)}, None)
+
+
 def page(style):
     e.remove_all_listeners()
     e.push('page', None, style)
@@ -290,7 +294,7 @@ def button(text, callback, *arg, **kw):
     else:
         data['popup'] = ''
     style = None
-    if 'style'in kw:
+    if 'style' in kw:
         style = kw['style']
     e.push('button', data, style)
 

@@ -11,6 +11,8 @@ class AST {
             vm.data.ui = 'main'
         } else if (data.type == 'title') {
             vm.data.title = data.data.text
+        } else if (data.type == 'footer') {
+            vm.data.footer = data.data.text
         } else if (data.type == 'mode') {
             vm.data.blockMode = { type: data.data.type }
             if (vm.data.blockMode.type == 'grid') {
