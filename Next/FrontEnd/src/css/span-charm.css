@@ -8,6 +8,9 @@ h6 {
   margin: 0;
 }
 /* Span Charm */
+/* main.span-charm {
+  background-color: var(--static-back);
+} */
 section {
   position: relative;
   margin: 0.5rem;
@@ -19,7 +22,7 @@ section.disabled > .disable-mask {
   right: 0;
   bottom: 0;
   left: 0;
-  backdrop-filter: blur(0.9px);
+  backdrop-filter: blur(1px);
   z-index: 1;
 }
 /* .disabled {
