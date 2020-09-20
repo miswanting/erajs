@@ -14,6 +14,7 @@ h6 {
 section {
   position: relative;
   margin: 0.5rem;
+  cursor: default;
 }
 section.disabled > .disable-mask {
   content: "";
@@ -38,9 +39,9 @@ h2 {
   font-size: 1.5em;
 }
 .button {
-  cursor: pointer;
   background-color: var(--interactable-back);
   margin: 0px 0.1em;
+  cursor: pointer;
 }
 .button:hover {
   color: var(--hover-front);
@@ -51,9 +52,9 @@ h2 {
   background-color: var(--active-back);
 }
 .link {
-  cursor: pointer;
   text-decoration-line: underline;
   text-decoration-style: dashed;
+  cursor: pointer;
 }
 .link:hover {
   text-decoration: underline;
@@ -89,9 +90,11 @@ td {
 }
 .check {
   margin: 0rem 0.2rem;
+  cursor: pointer;
 }
 .radio {
   margin: 0rem 0.2rem;
+  cursor: pointer;
 }
 /* .input {
   height: 1rem;
@@ -103,6 +106,7 @@ td {
 } */
 .input {
   background-color: var(--interactable-back);
+  cursor: text;
 }
 .input > span {
   display: inline-block;
@@ -111,11 +115,15 @@ td {
 .input > span:focus {
   outline: none;
 }
+.rate{
+  cursor: pointer;
+}
 .dropdown {
   position: relative;
   margin: 0rem 0.2rem;
   user-select: none;
   background-color: var(--interactable-back);
+  cursor: pointer;
 }
 .dropdown-anchor {
   position: absolute;
