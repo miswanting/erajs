@@ -10,6 +10,19 @@ Vue.component('i-container', {
     props: {
         data: Object
     },
+    watch: {
+        data: {
+            deep: true,
+            handler(newValue, oldValue) {
+                this.$nextTick(function () {
+                    let el = this.$refs.main
+                    console.log(el);
+                    el.scrollTop = el.scrollHeight
+                })
+
+            }
+        }
+    },
     render: function (createElement) {
         let sections = []
         for (let i = 0; i < this.data.children.main.children.length; i++) {
@@ -26,6 +39,7 @@ Vue.component('i-container', {
         return createElement(
             'main',
             {
+                ref: 'main',
                 class: {
                     'span-charm': true
                 }
@@ -59,5 +73,5 @@ Vue.component('i-section', {
     }
 })
 Vue.component('i-disable-mask', {
-    template: `<div class="disable-mask"><div>`
+    template: `<div class="disable-mask"></div>`
 })

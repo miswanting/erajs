@@ -5,7 +5,6 @@ Vue.component('i-inline', {
     },
     render: function (createElement) {
         let inlineType = null;
-        console.log(this.data.type);
         if (this.data.type == 'text') { inlineType = 'i-text' }
         else if (this.data.type == 'button') { inlineType = 'i-button' }
         else if (this.data.type == 'heading') { inlineType = 'i-heading' }
@@ -28,9 +27,28 @@ Vue.component('i-text', {
     props: {
         data: Object
     },
+    data: function () {
+        return {
+            shake: false
+        }
+    },
+    mounted: function () {
+        if (this.data.style.hasOwnProperty('shake_duration')) {
+            this.shake = true
+            setTimeout(() => {
+                this.shake = false
+            }, this.data.style.shake_duration * 1000)
+        }
+    },
     render: function (createElement) {
         return createElement('span',
-            {},
+            {
+                class: {
+                    shake: this.shake,
+                    'shake-constant': this.shake
+                },
+                style: this.data.style
+            },
             this.data.data.text
         )
     }
@@ -51,6 +69,7 @@ Vue.component('i-button', {
         return createElement('span',
             {
                 class: 'button',
+                style: this.data.style,
                 on: {
                     click: this.click
                 }
@@ -65,7 +84,9 @@ Vue.component('i-heading', {
     },
     render: function (createElement) {
         return createElement('h' + this.data.data.rank.toString(),
-            {},
+            {
+                style: this.data.style,
+            },
             this.data.data.text
         )
     }
@@ -86,6 +107,7 @@ Vue.component('i-link', {
         return createElement('span',
             {
                 class: 'link',
+                style: this.data.style,
                 on: {
                     click: this.click
                 }
@@ -212,6 +234,7 @@ Vue.component('i-check', {
         let valueText = this.value ? this.trueIcon : this.falseIcon
         return createElement('span', {
             class: 'check',
+            style: this.data.style,
             on: { click: this.click }
         },
             [
@@ -277,7 +300,10 @@ Vue.component('i-radio', {
             )
         }
         return createElement('span',
-            { class: 'radio' },
+            {
+                class: 'radio',
+                style: this.data.style,
+            },
             radioList
         )
     }
@@ -291,7 +317,7 @@ Vue.component('i-input', {
             value: this.data.data.default
         }
     },
-    template: `<span class="input">[<editable :data=data :content.sync="value"></editable>]</span>`
+    template: `<span class="input" style=style>[<editable :data=data :content.sync="value"></editable>]</span>`
 })
 Vue.component('editable', {
     template: `<span contenteditable="true" @input="$emit('update:content', $event.target.innerText)"></span>`,
@@ -362,6 +388,7 @@ Vue.component('i-dropdown', {
         }
         return createElement('span', {
             class: 'dropdown',
+            style: this.data.style,
             on: {
                 click: this.click
             }

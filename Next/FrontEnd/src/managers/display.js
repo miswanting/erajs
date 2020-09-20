@@ -7,6 +7,7 @@ class DisplayManager {
                 type: 'MOUSE_CLICK',
                 value: e.which
             }
+            this.#app.pull(data)
         })
         document.body.addEventListener("keyup", (e) => {
             console.log('[DEBG]键盘按下：', e.key);
@@ -24,6 +25,11 @@ class DisplayManager {
                     this.#app.data.data.ui = 'main'
                 }
             }
+            let data = {
+                type: 'KEY_UP',
+                value: e.key
+            }
+            this.#app.pull(data)
         })
     }
     register(data) {

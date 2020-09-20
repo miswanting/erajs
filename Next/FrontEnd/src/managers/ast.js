@@ -9,6 +9,8 @@ class AST {
             vm.data.loadingText = data.value
         } else if (data.type == 'loaded') {
             vm.data.ui = 'main'
+        } else if (data.type == 'title') {
+            vm.data.title = data.data.text
         } else if (data.type == 'mode') {
             vm.data.blockMode = { type: data.data.type }
             if (vm.data.blockMode.type == 'grid') {
@@ -38,6 +40,8 @@ class AST {
         ].indexOf(data.type) != -1) {
             this.push(vm, data)
         } else if ([
+            'MOUSE_CLICK',
+            'KEY_UP',
             'BUTTON_CLICK',
             'LINK_CLICK',
             'RATE_CLICK',
