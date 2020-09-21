@@ -9,9 +9,9 @@
  */
 // const { EventEmitter } = require('events')
 class DataManager {
-    #data
+    data
     constructor() {
-        this.#data = {
+        this.data = {
             type: 'program',
             data: {
                 title: 'Era.js',
@@ -55,7 +55,7 @@ class DataManager {
             }
         }
         // document.addEventListener('pull', data => {
-        //     AST.parse(this.#data, data.detail.data)
+        //     AST.parse(this.data, data.detail.data)
         // })
     }
     /**
@@ -63,9 +63,9 @@ class DataManager {
      * @returns {object}
      */
     getData() {
-        return this.#data
+        return this.data
     }
     recv = (data) => {
-        AST.parse(this.#data, data)
+        AST.parse(this.data, data)
     }
 }

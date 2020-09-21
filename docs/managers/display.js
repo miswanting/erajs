@@ -1,5 +1,5 @@
 class DisplayManager {
-    #app
+    app
     constructor() {
         document.body.addEventListener("mouseup", (e) => {
             console.log('[DEBG]鼠标点击：', e.which);
@@ -11,23 +11,23 @@ class DisplayManager {
         document.body.addEventListener("keyup", (e) => {
             console.log('[DEBG]键盘按下：', e.key);
             if (e.key == '`') {
-                if (this.#app.data.data.ui != 'console') {
-                    this.#app.data.data.lastUi = this.#app.data.data.ui
-                    this.#app.data.data.ui = 'console'
-                } else if (this.#app.data.data.ui == 'console') {
-                    this.#app.data.data.ui = this.#app.data.data.lastUi
+                if (this.app.data.data.ui != 'console') {
+                    this.app.data.data.lastUi = this.app.data.data.ui
+                    this.app.data.data.ui = 'console'
+                } else if (this.app.data.data.ui == 'console') {
+                    this.app.data.data.ui = this.app.data.data.lastUi
                 }
             } else if (e.key == 'Escape') {
-                if (this.#app.data.data.ui == 'main') {
-                    this.#app.data.data.ui = 'pause'
-                } else if (this.#app.data.data.ui == 'pause') {
-                    this.#app.data.data.ui = 'main'
+                if (this.app.data.data.ui == 'main') {
+                    this.app.data.data.ui = 'pause'
+                } else if (this.app.data.data.ui == 'pause') {
+                    this.app.data.data.ui = 'main'
                 }
             }
         })
     }
     register(data) {
-        this.#app = new Vue({
+        this.app = new Vue({
             el: '#root',
             data: { data: data },
             methods: {
