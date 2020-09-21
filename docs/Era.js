@@ -10,4 +10,7 @@ class Erajs {
         //     this.net.send(data.detail)
         // })
     }
+    recv(data) {
+        this.dat.recv(data)
+    }
 }

@@ -67,6 +67,7 @@ Vue.component('i-section', {
         }
         return createElement('section', {
             class: {
+                page: true,
                 disabled: this.disabled
             }
         }, blocks)

@@ -31,6 +31,7 @@
                 [CSS_FOLDER + '/theme.css', 'OK\nLoading Theme.css...'],
                 [CSS_FOLDER + '/window.css', 'OK\nLoading Window.css...'],
                 [CSS_FOLDER + '/span-charm.css', 'OK\nLoading SpanCharm.css...'],
+                [CSS_FOLDER + '/website.css', 'OK\nLoading Website.css...'],
                 ['ui/header.js', 'OK\nLoading Header...'],
                 ['ui/main.js', 'OK\nLoading Main Page...'],
                 ['ui/block.js', 'OK\nLoading Block...'],
@@ -50,6 +51,7 @@
                 document.querySelector("#root").innerText += 'OK\nDone!'
                 setTimeout(() => {
                     let erajs = new Erajs()
+                    erajs.recv({ type: 'text', data: { text: 'test' } })
                 }, 2000)
             })
         }

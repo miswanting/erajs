@@ -11,7 +11,7 @@ h6 {
 /* main.span-charm {
   background-color: var(--static-back);
 } */
-section {
+section.page {
   position: relative;
   margin: 0.5rem;
   cursor: default;

@@ -9,6 +9,10 @@ class AST {
             vm.data.loadingText = data.value
         } else if (data.type == 'loaded') {
             vm.data.ui = 'main'
+        } else if (data.type == 'title') {
+            vm.data.title = data.data.text
+        } else if (data.type == 'footer') {
+            vm.data.footer = data.data.text
         } else if (data.type == 'mode') {
             vm.data.blockMode = { type: data.data.type }
             if (vm.data.blockMode.type == 'grid') {
@@ -18,9 +22,10 @@ class AST {
             if (vm.data.blockMode.type == 'line') {
                 this.addBlock(vm)
             } else if (vm.data.blockMode.type == 'grid') {
-                this.getLastBlock(vm).children.push(
-                    this.newElement('pass')
-                )
+                if (!this.isBlockSame(vm)) {
+                    this.addBlock(vm)
+                }
+                this.getLastBlock(vm).children.push(this.newElement('pass'))
             }
         } else if ([
             'page',
@@ -37,6 +42,8 @@ class AST {
         ].indexOf(data.type) != -1) {
             this.push(vm, data)
         } else if ([
+            'MOUSE_CLICK',
+            'KEY_UP',
             'BUTTON_CLICK',
             'LINK_CLICK',
             'RATE_CLICK',
@@ -73,7 +80,7 @@ class AST {
     }
     static touchPage(vm) {
         if (!this.isPageExist(vm)) {
-            vm.children.main.children.push(this.newElement('page', el.data, el.style))
+            vm.children.main.children.push(this.newElement('page'))
         }
     }
     static getLastPage(vm) {
@@ -134,13 +141,10 @@ class AST {
         if (el.type == 'page') {
             vm.children.main.children.push(this.newElement('page', el.data, el.style))
         } else if (['text', 'button', 'heading', 'link', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
-            if (this.isBlockSame(vm)) {
-                this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
-            } else {
+            if (!this.isBlockSame(vm)) {
                 this.addBlock(vm)
-                console.log(vm, el);
-                this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
             }
+            this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
         }
     }
 }

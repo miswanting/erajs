@@ -47,12 +47,24 @@ Vue.component('i-homepage', {
     props: {
         data: Object
     },
-    template: `<body>
-    <header></header>
+    template: `<body class="website">
+    <header>
+        <div>Era.js Game Engine</div>
+        <div>Doc</div>
+        <div>Download</div>
+        <div>repo</div>
+    </header>
     <main>
-        <section class="heading"></section>
-        <i-program :data=data></i-program>
-        <section class="description"></section>
+        <section class="heading">
+            <h1>Era.js</h1>
+            <p>Next-Generation Rich-Text Game Engine.</p>
+        </section>
+        <div class="anchor">
+            <i-program :data=data></i-program>
+        </div>
+        <section class="description">
+            <p>test</p>
+        </section>
     </main>
     <footer></footer>
 </body>`
