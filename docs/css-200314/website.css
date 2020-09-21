@@ -5,6 +5,7 @@
   display: flex;
   left: 0px;
   right: 0px;
+  box-shadow: 0 0.5px 1px #000;
 }
 .website > header > div {
   padding: 1rem;
