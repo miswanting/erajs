@@ -9,18 +9,17 @@
 </div>
 
 
-
 <h1 align="center">Era.js</h1>
-<div align="center">Latest Version: v0.2.0-191112</div>
+<div align="center">Latest Version: v0.2.0-200920</div>
 <div align="center"><sub>The following contents is a description of the development target.<br />The current progress is subject to the progress shown in <a href="https://github.com/miswanting/Era.js/projects">Roadmap</a></sub></div>
 
 ## Overview
 
->   Description Updated on: 200326
+>   Description Updated on: 200920
 
-<div align='center'><img src="ss.png" alt="screenshot" width="33%" /></div>
+<div align='center'><img src="ss.png" alt="screenshot" width="50%" /></div>
 
-Era.js is a next-generation cross-platform rich text game engine built by JavaScript + Python3, with Python3 as the game script. It is developed based on the Electron application platform ~~and Semantic UI style library.~~<sub>Deleted on 200326, <a href='docs/en/FAQ.md'>Why?<a></sub>
+Era.js is a next-generation cross-platform rich text game engine built by JavaScript + Python3, with Python3 as the game script. It is developed based on the Electron application platform and ~~Semantic UI style library.~~<sub>Deleted on 200326, <a href='Documents/en/FAQ.md'>Why?<a></sub> homemade style library.
 
 ## Notice
 
@@ -50,10 +49,10 @@ Work In Heavy Progress. Ultra-Experimental.
 ### Core
 
 - The front-end language：[JavaScript]()
-  - User Interface Framework: [React](https://reactjs.org/)
+  - User Interface Framework: [Vue.js 2](https://vuejs.org/)
   - Responsive style library: Span Charm(Homemade)
   - Packaging: [Electron Builder](https://www.electron.build/)
-- The Back-end language(Game Script): [Python3](https://www.python.org/)
+- The Back-end language(Game Script): [Python 3](https://www.python.org/)
   - Packaging: [cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
 ### Application Container for Desktop
 
@@ -67,10 +66,10 @@ Work In Heavy Progress. Ultra-Experimental.
 
 | Platform Support | Web  | Windows | MacOS | Linux | Android | iOS  |
 | :--------------: | :--: | :-----: | :---: | :---: | :-----: | :--: |
-|    Engine dev    |  ×   |    √    |   ?   |   √   |    ×    |  ×   |
-|     Game dev     |  ×   |    √    |   ?   |   √   |    ×    |  ×   |
-|   Game re-dev    |  √   |    √    |   √   |   √   |    √    |  √   |
-|     Game run     |  ×   |    √    |   ?   |   √   |    ×    |  ×   |
+|    Engine dev    |  ×   |    ○    |   ?   |   ○   |    ×    |  ×   |
+|     Game dev     |  ×   |    ○    |   ?   |   ○   |    ×    |  ×   |
+|   Game re-dev    |  ○   |    ○    |   ○   |   ○   |    ○    |  ○   |
+|     Game run     |  ×   |    ○    |   ?   |   ○   |    ×    |  ×   |
 
 ## Directory Structure
 
@@ -78,7 +77,7 @@ Work In Heavy Progress. Ultra-Experimental.
 -   Desktop Container: Application Container for Desktop
 -   Mobile Container: Application Container for Mobile
 -   SDK: Software Development Kit
--   docs：Documents
+-   docs: Documents
 
 ## Thanks
 
