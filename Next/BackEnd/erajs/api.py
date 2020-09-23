@@ -1,5 +1,4 @@
-from ast import Num
-from typing import Any, Callable, Dict, Literal, NoReturn, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 from . import mw as m
 version = '0.2.0-α+200612'
 aka = 'Dark Elf'
@@ -7,7 +6,7 @@ data = None
 
 
 ########## 系统 ##########
-def init(config: Optional[Dict[str, object]] = None):
+def init(config: Optional[Dict[str, Any]] = None) -> None:
     """
     # 初始化引擎
     """
@@ -17,37 +16,36 @@ def init(config: Optional[Dict[str, object]] = None):
     data = m.old_data()
 
 
-def config(data: Optional[Dict[str, object]] = None):
+def config(config: Optional[Dict[str, Any]] = None) -> None:
     """
     # （设置引擎参数） TODO
     """
     current_config = config
-    return current_config
 
 
-def entry(ui_func: Callable[[], NoReturn]):
+def entry(ui_func: Callable[[], None]) -> None:
     """
     # （注册入口界面） TODO
     """
     m.entry(ui_func)
 
 
-def start():
+def start() -> None:
     """
     # （启动引擎） TODO
     """
     m.start()
 
 
-def exit(auto_save: bool = False):
+def exit(auto_save: bool = False) -> None:
     """
-    # 退出程序
+    # 退出程序 TODO
     """
     pass
 
 
 ########## 调试 ##########
-def debug(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
+def debug(*arg: str) -> None:
     """
     # 调试输出：Debug
 
@@ -61,72 +59,75 @@ def debug(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
 
     TODO 可通过`config({debug_level: 'info'})`设置调试等级
     """
-    m.debug(arg)
+    m.debug(*arg)
 
 
-def info(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
+def info(*arg: str) -> None:
     """
     # 调试输出：Info
     """
-    m.info(arg)
+    m.info(*arg)
 
 
-def warn(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
+def warn(*arg: str) -> None:
     """
     # 调试输出
     """
-    m.warn(arg)
+    m.warn(*arg)
 
 
-def error(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
+def error(*arg: str) -> None:
     """
     # 调试输出
     """
-    m.error(arg)
+    m.error(*arg)
 
 
-def critical(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
+def critical(*arg: str) -> None:
     """
     # 调试输出
     """
-    m.critical(arg)
+    m.critical(*arg)
 
 
 ########## 窗口 ##########
-def window(style: Dict[str, str]):
+def window(style: Dict[str, Any]) -> None:
     """
     # 设置窗口样式
     """
     m.window(style)
 
 
-def title(text: str, style: Optional[Dict[str, str]] = None):
+def title(text: str, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 设置窗口标题
     """
-    m.title(text)
+    m.title(text, style)
 
 
-def footer(text, style: Optional[Dict[str, str]] = None):
+def footer(text: str, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 设置窗口脚注
     """
-    m.footer(text)
+    m.footer(text, style)
 
 
-def msg(text, style: Optional[Dict[str, str]] = None):
-    pass
+def msg(text: str, style: Optional[Dict[str, str]] = None) -> None:
+    """
+    # 设置窗口脚注
+    """
+    m.msg(text, style)
 
 
 ########## 页面管理 ##########
-def page(style: Optional[Dict[str, str]] = None):
+def page(style: Optional[Dict[str, str]] = None) -> object:
     """
     # 生成新的空白页面
     """
     m.page(style)
 
 
-def cls(num=0):
+def cls(num: int = 0) -> None:
     """
     # 清屏
     """
@@ -134,14 +135,14 @@ def cls(num=0):
 
 
 ########## 块 ##########
-def mode(type='line', *arg, **kw):
+def mode(type: Optional[str] = 'line', *arg, **kw):
     """
     # 设置新增控件排版模式
     """
     m.mode(type, *arg, **kw)
 
 
-def divider(text=None, style: Optional[Dict[str, str]] = None):
+def divider(text: Optional[str] = None, style: Optional[Dict[str, str]] = None):
     """
     # 插入块级控件：分割线
     """
@@ -189,42 +190,42 @@ def link(text: Optional[str] = None, callback: Optional[Callable[[], NoReturn]] 
 l = link
 
 
-def progress(now: Literal[0] = 0, max: Literal[100] = 100, style: Optional[Dict[str, str]] = None):
+def progress(now: int = 0, max: int = 100, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：进度条
     """
     return m.progress(now, max, style)
 
 
-def rate(now=0, max=5, callback=None, style: Optional[Dict[str, str]] = None):
+def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[int], None]] = None, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：评分
     """
     return m.rate(now, max, callback, style)
 
 
-def check(text=None, callback=None, default=False, style: Optional[Dict[str, str]] = None):
+def check(text: Optional[str] = None, callback: Optional[Callable[[bool], None]] = None, default: bool = False, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：多选
     """
     return m.check(text, callback, default, style)
 
 
-def radio(text_list, callback=None, default_index=0, style: Optional[Dict[str, str]] = None):
+def radio(text_list: List[str], callback: Optional[Callable[[int], None]] = None, default_index: int = 0, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：单选
     """
     return m.radio(text_list, callback, default_index, style)
 
 
-def input(callback=None, default='', is_area=False, placeholder='', style: Optional[Dict[str, str]] = None):
+def input(callback: Optional[Callable[[str], None]] = None, default: str = '', is_area: bool = False, placeholder: str = '', style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：输入框
     """
     return m.input(callback, default, is_area, placeholder, style)
 
 
-def dropdown(text_list=None, callback=None, default_index=0, search=False, multiple=False, placeholder='', allowAdditions=False, style: Optional[Dict[str, str]] = None):
+def dropdown(text_list: Optional[List[str]] = None, callback: Optional[Callable[[int], None]] = None, default_index: int = 0, search: bool = False, multiple: bool = False, placeholder: str = '', allowAdditions: bool = False, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：下拉列表
     """

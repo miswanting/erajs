@@ -1,5 +1,6 @@
 import os
 import time
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from . import engine
 from .modules import tools
@@ -200,24 +201,29 @@ def exit():
     pass
 
 
-def debug(text):
-    e.debug(text)
+def debug(*arg: str):
+    # e.debug(*arg, **kw)
+    e.print('DEBG', ' '.join(arg))
 
 
-def info(text):
-    e.info(text)
+def info(*arg: str):
+    # e.info(*arg, **kw)
+    e.print('INFO', ' '.join(arg))
 
 
-def warn(text):
-    e.warn(text)
+def warn(*arg: str):
+    # e.warn(*arg, **kw)
+    e.print('WARN', ' '.join(arg))
 
 
-def error(text):
-    e.error(text)
+def error(*arg: str):
+    # e.error(*arg, **kw)
+    e.print('ERRO', ' '.join(arg))
 
 
-def critical(text):
-    e.critical(text)
+def critical(*arg: str):
+    # e.critical(*arg, **kw)
+    e.print('!!!!', ' '.join(arg))
 
 
 def window(style):
