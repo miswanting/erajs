@@ -135,7 +135,7 @@ def cls(num: int = 0) -> None:
 
 
 ########## 块 ##########
-def mode(type: Optional[str] = 'line', *arg, **kw):
+def mode(type: Optional[str] = 'line', *arg: Any, **kw: Any):
     """
     # 设置新增控件排版模式
     """
@@ -170,7 +170,7 @@ def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[st
 t = text
 
 
-def button(text: Optional[str] = None, callback: Optional[Callable[[], NoReturn]] = None, *arg, **kw):
+def button(text: Optional[str] = None, callback: Optional[Callable[[], None]] = None, *arg: Any, **kw: Any):
     """
     # 插入行内控件：按钮
     """
@@ -180,7 +180,7 @@ def button(text: Optional[str] = None, callback: Optional[Callable[[], NoReturn]
 b = button
 
 
-def link(text: Optional[str] = None, callback: Optional[Callable[[], NoReturn]] = None, style: Optional[Dict[str, str]] = None, *arg, **kw):
+def link(text: Optional[str] = None, callback: Optional[Callable[[], None]] = None, style: Optional[Dict[str, str]] = None, *arg: Any, **kw: Any):
     """
     # 插入行内控件：链接
     """
@@ -234,14 +234,14 @@ def dropdown(text_list: Optional[List[str]] = None, callback: Optional[Callable[
 
 
 ########## 样式管理 ##########
-def set_style(widget, style):
+def set_style(widget: Callable[[], Any], style: Dict[str, str]):
     """
     # 设置样式
     """
     m.set_style(widget, style)
 
 
-def reset_style(widget):
+def reset_style(widget: Callable[[], Any]):
     """
     # 重置样式
     """
@@ -249,35 +249,35 @@ def reset_style(widget):
 
 
 ########## 界面逻辑 ##########
-def goto(ui_func, *arg, **kw):
+def goto(ui_func: Callable[[], Any], *arg: Any, **kw: Any):
     """
     # 将界面节点添加到界面栈的末尾，并触发
     """
     m.goto(ui_func, *arg, **kw)
 
 
-def back(num=1, *arg, **kw):
+def back(num: int = 1, *arg: Any, **kw: Any):
     """
     # 从界面栈删除n（默认为1）个界面节点，并触发删除之后的末尾节点
     """
-    m.back(num, *arg, **kw)
+    m.back(num, *arg: Any, **kw: Any)
 
 
-def repeat(*arg, **kw):
+def repeat(*arg: Any, **kw: Any):
     """
     # 不对界面栈进行修改，并触发末尾节点
     """
     pass
 
 
-def clear(num=0):
+def clear(num: int = 0):
     """
     # 清空界面栈
     """
     pass
 
 
-def insert(ui_func, *arg, **kw):
+def insert(ui_func: Callable[[], Any], *arg: Any, **kw: Any):
     """
     # 将界面节点添加到界面栈的末尾，但不触发
     """
@@ -292,56 +292,56 @@ def get_gui_stack():
 
 
 ########## 数据管理 ##########
-def cfg(dot_path=None):
+def cfg(dot_path: Optional[str] = None):
     """
     # 返回设置数据
     """
     return m.cfg(dot_path)
 
 
-def dat(dot_path=None):
+def dat(dot_path: Optional[str] = None):
     """
     # 返回静态数据
     """
     return m.dat(dot_path)
 
 
-def sav(dot_path=None):
+def sav(dot_path: Optional[str] = None):
     """
     # 返回存档数据
     """
     return m.sav(dot_path)
 
 
-def tmp(key=None) -> Dict[Any, Any]:
+def tmp(key: Optional[str] = None) -> Dict[Any, Any]:
     """
     # 返回临时数据
     """
     return m.tmp(key)
 
 
-def write_cfg(dot_path=None, ext='ini'):
+def write_cfg(dot_path: Optional[str] = None, ext: str = 'ini'):
     """
     # 转储设置数据
     """
     return m.write_cfg(dot_path, ext)
 
 
-def write_dat(dot_path=None, ext='ini'):
+def write_dat(dot_path: Optional[str] = None, ext: str = 'ini'):
     """
     # 转储静态数据
     """
     return m.write_dat(dot_path, ext)
 
 
-def write_sav(filename_without_ext=None):
+def write_sav(filename_without_ext: str = None):
     """
     # 转储存档数据
     """
     m.write_sav(filename_without_ext)
 
 
-def read_sav(filename_without_ext=None):
+def read_sav(filename_without_ext: str = None):
     """
     # 转储存档数据
     """
@@ -349,28 +349,28 @@ def read_sav(filename_without_ext=None):
 
 
 ########## 事件 ##########
-def on(event_name, listener):
+def on(event_name: str, listener: Callable[[], Any]):
     """
     # 注册侦听器
     """
     pass
 
 
-def once(event_name, listener):
+def once(event_name: str, listener: Callable[[], Any]):
     """
     # 注册一次性侦听器
     """
     pass
 
 
-def off(event_name, listener):
+def off(event_name: str, listener: Callable[[], Any]):
     """
     # 注销侦听器
     """
     pass
 
 
-def emit(event_name, *arg, **kw):
+def emit(event_name: str, *arg: Any, **kw: Any):
     """
     # 发布事件
     """
@@ -386,7 +386,7 @@ def dangerously_get_engine_core():
 
 
 ########## 工具 ##########
-def random_hash(level=4):
+def random_hash(level: int = 4):
     """
     # 获取哈希随机值
     """
@@ -440,7 +440,7 @@ def clear(num=0):
     pass
 
 
-def append_gui(ui_func, *arg, **kw):
+def append_gui(ui_func, *arg: Any, **kw: Any):
     """
     # 添加界面节点但不触发
     """
