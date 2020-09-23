@@ -1,4 +1,5 @@
-from typing import Any, Dict
+from ast import Num
+from typing import Any, Callable, Dict, Literal, NoReturn, Optional, Tuple
 from . import mw as m
 version = '0.2.0-α+200612'
 aka = 'Dark Elf'
@@ -6,7 +7,7 @@ data = None
 
 
 ########## 系统 ##########
-def init(config: dict = None):
+def init(config: Optional[Dict[str, object]] = None):
     """
     # 初始化引擎
     """
@@ -16,7 +17,7 @@ def init(config: dict = None):
     data = m.old_data()
 
 
-def config(data: dict = None):
+def config(data: Optional[Dict[str, object]] = None):
     """
     # （设置引擎参数） TODO
     """
@@ -24,7 +25,7 @@ def config(data: dict = None):
     return current_config
 
 
-def entry(ui_func: callable = None):
+def entry(ui_func: Callable[[], NoReturn]):
     """
     # （注册入口界面） TODO
     """
@@ -46,7 +47,7 @@ def exit(auto_save: bool = False):
 
 
 ########## 调试 ##########
-def debug(*arg, **kw):
+def debug(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
     """
     # 调试输出：Debug
 
@@ -63,62 +64,62 @@ def debug(*arg, **kw):
     m.debug(arg)
 
 
-def info(text):
+def info(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
     """
     # 调试输出：Info
     """
-    m.info(text)
+    m.info(arg)
 
 
-def warn(text):
+def warn(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
     """
     # 调试输出
     """
-    m.warn(text)
+    m.warn(arg)
 
 
-def error(text):
+def error(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
     """
     # 调试输出
     """
-    m.error(text)
+    m.error(arg)
 
 
-def critical(text):
+def critical(*arg: Tuple[str, None], **kw: Dict[str, Tuple[Any]]):
     """
     # 调试输出
     """
-    m.critical(text)
+    m.critical(arg)
 
 
 ########## 窗口 ##########
-def window(style=None):
+def window(style: Dict[str, str]):
     """
     # 设置窗口样式
     """
     m.window(style)
 
 
-def title(text, style=None):
+def title(text: str, style: Optional[Dict[str, str]] = None):
     """
     # 设置窗口标题
     """
     m.title(text)
 
 
-def footer(text, style=None):
+def footer(text, style: Optional[Dict[str, str]] = None):
     """
     # 设置窗口脚注
     """
     m.footer(text)
 
 
-def msg(text, style=None):
+def msg(text, style: Optional[Dict[str, str]] = None):
     pass
 
 
 ########## 页面管理 ##########
-def page(style=None):
+def page(style: Optional[Dict[str, str]] = None):
     """
     # 生成新的空白页面
     """
@@ -140,7 +141,7 @@ def mode(type='line', *arg, **kw):
     m.mode(type, *arg, **kw)
 
 
-def divider(text=None, style=None):
+def divider(text=None, style: Optional[Dict[str, str]] = None):
     """
     # 插入块级控件：分割线
     """
@@ -148,82 +149,82 @@ def divider(text=None, style=None):
 
 
 ########## 行 ##########
-def heading(text=None, rank=1, style=None):
+def heading(text: Optional[str] = None, rank: int = 1, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：标题
     """
-    m.heading(text, rank, style)
+    return m.heading(text, rank, style)
 
 
 h = heading
 
 
-def text(text=None, wait=False, style=None):
+def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：文本
     """
-    m.text(text, wait, style)
+    return m.text(text, wait, style)
 
 
 t = text
 
 
-def button(text=None, callback=None, *arg, **kw):
+def button(text: Optional[str] = None, callback: Optional[Callable[[], NoReturn]] = None, *arg, **kw):
     """
     # 插入行内控件：按钮
     """
-    m.button(text, callback, *arg, **kw)
+    return m.button(text, callback, *arg, **kw)
 
 
 b = button
 
 
-def link(text=None, callback=None, style=None, *arg, **kw):
+def link(text: Optional[str] = None, callback: Optional[Callable[[], NoReturn]] = None, style: Optional[Dict[str, str]] = None, *arg, **kw):
     """
     # 插入行内控件：链接
     """
-    m.link(text, callback, style, *arg, **kw)
+    return m.link(text, callback, style, *arg, **kw)
 
 
 l = link
 
 
-def progress(now=0, max=100, style=None):
+def progress(now: Literal[0] = 0, max: Literal[100] = 100, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：进度条
     """
-    m.progress(now, max, style)
+    return m.progress(now, max, style)
 
 
-def rate(now=0, max=5, callback=None, style=None):
+def rate(now=0, max=5, callback=None, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：评分
     """
     return m.rate(now, max, callback, style)
 
 
-def check(text=None, callback=None, default=False, style=None):
+def check(text=None, callback=None, default=False, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：多选
     """
     return m.check(text, callback, default, style)
 
 
-def radio(text_list, callback=None, default_index=0, style=None):
+def radio(text_list, callback=None, default_index=0, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：单选
     """
     return m.radio(text_list, callback, default_index, style)
 
 
-def input(callback=None, default='', is_area=False, placeholder='', style=None):
+def input(callback=None, default='', is_area=False, placeholder='', style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：输入框
     """
     return m.input(callback, default, is_area, placeholder, style)
 
 
-def dropdown(text_list=None, callback=None, default_index=0, search=False, multiple=False, placeholder='', allowAdditions=False, style=None):
+def dropdown(text_list=None, callback=None, default_index=0, search=False, multiple=False, placeholder='', allowAdditions=False, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：下拉列表
     """
