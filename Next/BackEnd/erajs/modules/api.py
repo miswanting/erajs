@@ -47,7 +47,7 @@ class APIModule(data.DataModule, lock.LockModule, protocol.ProtocolModule):
             func.__name__, self._show_gui_list()))
         self.__gui_list.append((func, arg, kw))
 
-    def clear_gui(self, num=0):
+    def clear(self, num=0):
         if num == 0:
             self.debug('CLEAR_ALL_GUI: Set [{}] to []'.format(
                 self._show_gui_list()))
