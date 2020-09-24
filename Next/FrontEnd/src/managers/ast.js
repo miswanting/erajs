@@ -140,6 +140,7 @@ class AST {
     static push(vm, el) {
         if (el.type == 'page') {
             vm.children.main.children.push(this.newElement('page', el.data, el.style))
+            vm.children.main.children.splice(0, vm.children.main.children.length - vm.data.maxPages)
         } else if (['text', 'button', 'heading', 'link', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) != -1) {
             if (!this.isBlockSame(vm)) {
                 this.addBlock(vm)
