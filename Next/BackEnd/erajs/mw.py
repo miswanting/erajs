@@ -475,8 +475,8 @@ def repeat():
     pass
 
 
-def clear():
-    pass
+def clear(num: int = 0):
+    e.clear(num)
 
 
 def insert():
