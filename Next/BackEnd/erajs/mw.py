@@ -230,8 +230,8 @@ def window(style):
     e.push('window', None, style)
 
 
-def title(text):
-    e.push('title', {'text': str(text)}, None)
+def title(text, style):
+    e.push('title', {'text': str(text)}, style)
 
 
 def footer(text):
