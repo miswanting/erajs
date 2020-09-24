@@ -170,7 +170,7 @@ def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[st
 t = text
 
 
-def button(text: Optional[str] = None, callback: Optional[Callable[[], None]] = None, *arg: Any, **kw: Any) -> object:
+def button(text: Optional[str] = None, callback: Optional[Callable[[Any], None]] = None, *arg: Any, **kw: Any) -> object:
     """
     # 插入行内控件：按钮
     """
@@ -260,21 +260,21 @@ def back(num: int = 1, *arg: Any, **kw: Any) -> None:
     """
     # 从界面栈删除n（默认为1）个界面节点，并触发删除之后的末尾节点
     """
-    m.back(num, *arg: Any, **kw: Any)
+    m.back(num, *arg, **kw)
 
 
 def repeat(*arg: Any, **kw: Any) -> None:
     """
     # 不对界面栈进行修改，并触发末尾节点
     """
-    pass
+    m.repeat(*arg, **kw)
 
 
 def clear(num: int = 0) -> None:
     """
     # 清空界面栈
     """
-    pass
+    m.clear(num)
 
 
 def insert(ui_func: Callable[[], Any], *arg: Any, **kw: Any) -> None:
