@@ -19,20 +19,20 @@ class DebugModule(singleton.Singleton):
             self.__logger.addHandler(stream_handler)
             self.__logger.addHandler(file_handler)
 
-    # def debug(self, text: str = '') -> None:
-    #     self.print('DEBG', text)
+    def debug(self, text: str = '') -> None:
+        self.print('DEBG', text)
 
-    # def info(self, text: str = '') -> None:
-    #     self.print('INFO', text)
+    def info(self, text: str = '') -> None:
+        self.print('INFO', text)
 
-    # def warn(self, text: str = '') -> None:
-    #     self.print('WARN', text)
+    def warn(self, text: str = '') -> None:
+        self.print('WARN', text)
 
-    # def error(self, text: str = '') -> None:
-    #     self.print('ERRO', text)
+    def error(self, text: str = '') -> None:
+        self.print('ERRO', text)
 
-    # def critical(self, text: str = '') -> None:
-    #     self.print('!!!!', text)
+    def critical(self, text: str = '') -> None:
+        self.print('!!!!', text)
 
     def print(self, logo: str = 'DEBG', text: str = '') -> None:
         temp = '[{}]({}){}'
