@@ -69,7 +69,8 @@ Vue.component('i-section', {
             class: {
                 page: true,
                 disabled: this.disabled
-            }
+            },
+            style: this.data.style
         }, blocks)
     }
 })
