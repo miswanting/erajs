@@ -1,65 +1,65 @@
 const React = require('../../node_modules/react')
 const Block = require('../components/blocks')
-module.exports = function Container(props) {
-    // const [pageIndex, setPageIndex] = React.useState(0)
-    React.useEffect(() => {
-        let el = document.querySelector('.container')
-        el.scrollTop = el.scrollHeight
-    })
-    let pages = []
-    for (let i = 0; i < props.children.length; i++) {
-        const p = props.children[i];
-        // console.log(p);
-        if (i < props.children.length - 1) {
-            p.disabled = true
-        }
-        p.key = i
-        pages.push(
-            React.createElement(Page, p)
-        )
+module.exports = function Container (props) {
+  // const [pageIndex, setPageIndex] = React.useState(0)
+  React.useEffect(() => {
+    const el = document.querySelector('.container')
+    el.scrollTop = el.scrollHeight
+  })
+  const pages = []
+  for (let i = 0; i < props.children.length; i++) {
+    const p = props.children[i]
+    // console.log(p);
+    if (i < props.children.length - 1) {
+      p.disabled = true
     }
-    // console.log(pages);
-    return (
-        React.createElement(
-            'div',
-            { className: 'container' },
-            pages
-        )
-    );
+    p.key = i
+    pages.push(
+      React.createElement(Page, p)
+    )
+  }
+  // console.log(pages);
+  return (
+    React.createElement(
+      'div',
+      { className: 'container' },
+      pages
+    )
+  )
 }
-function Page(props) {
-    let blocks = [React.createElement(DisableMask, { key: '-1' })]
-    // console.log(p, blocks);
-    for (let i = 0; i < props.children.length; i++) {
-        const el = props.children[i];
-        el.key = i
-        blocks.push(React.createElement(Block, el))
-    }
-    let c = ['page']
-    if (props.hasOwnProperty('disabled') && props.disabled) {
-        c.push('disabled')
-    }
-    // console.log(blocks);
+function Page (props) {
+  const blocks = [React.createElement(DisableMask, { key: '-1' })]
+  // console.log(p, blocks);
+  for (let i = 0; i < props.children.length; i++) {
+    const el = props.children[i]
+    el.key = i
+    blocks.push(React.createElement(Block, el))
+  }
+  const c = ['page']
+  if (props.hasOwnProperty('disabled') && props.disabled) {
+    c.push('disabled')
+  }
+  // console.log(blocks);
 
-    return (
-        React.createElement(
-            'div',
-            { className: c.join(' ') },
-            blocks
-        )
+  return (
+    React.createElement(
+      'div',
+      { className: c.join(' ') },
+      blocks
     )
+  )
 }
-function DisableMask(props) {
-    let c = 'disable-mask'
-    if (props.hasOwnProperty('disabled') && props.disabled) {
-        c += ' disabled'
-    }
-    return (
-        React.createElement(
-            'div',
-            { className: c }
-        )
+function DisableMask (props) {
+  let c = 'disable-mask'
+  if (props.hasOwnProperty('disabled') && props.disabled) {
+    c += ' disabled'
+  }
+  return (
+    React.createElement(
+      'div',
+      { className: c }
     )
+  )
 }
 // function Page(props) {
 //     let blocks = []

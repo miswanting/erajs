@@ -28,13 +28,13 @@ class APIModule(data.DataModule, lock.LockModule, protocol.ProtocolModule):
         ui_func(*arg, **kw)
 
     def back(self, num=1, *arg, **kw):
-        for i in range(num):
+        for _ in range(num):
             self.debug('BACK: Pop [{}] from [{}]'.format(
                 self.__gui_list[-1][0].__name__, self._show_gui_list()))
             self.__gui_list.pop()
         self.debug('BACK: & run last')
-        self.__gui_list[-1][0](*self.__gui_list[-1][1], **
-                               self.__gui_list[-1][2])  # repeat
+        self.__gui_list[-1][0](*self.__gui_list[-1][1],
+                               **self.__gui_list[-1][2])  # repeat
 
     def repeat(self, *arg, **kw):
         self.debug('REPEAT: Run [{}] in [{}]'.format(
@@ -53,7 +53,7 @@ class APIModule(data.DataModule, lock.LockModule, protocol.ProtocolModule):
                 self._show_gui_list()))
             self.__gui_list.clear()
         else:
-            for i in range(num):
+            for _ in range(num):
                 self.debug('CLEAR_LAST_GUI: Pop [{}] from [{}]'.format(
                     self.__gui_list[-1][0].__name__, self._show_gui_list()))
                 self.__gui_list.pop()

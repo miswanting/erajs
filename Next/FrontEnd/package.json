@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npm i",
     "start": "chcp 65001 && npx electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx standard",
     "build": "npx electron-builder --dir"
   },
   "repository": {
@@ -23,7 +23,8 @@
     "devtron": "latest",
     "electron": "latest",
     "electron-builder": "latest",
-    "electron-devtools-installer": "latest"
+    "electron-devtools-installer": "latest",
+    "standard": "^14.3.4"
   },
   "dependencies": {
     "animate.css": "latest",
@@ -48,5 +49,17 @@
     "win": {
       "icon": "../../Game Assets/Engine Icon/icon.png"
     }
+  },
+  "standard": {
+    "globals": [
+      "Vue",
+      "anime",
+      "DataManager",
+      "DisplayManager",
+      "lines"
+    ],
+    "ignore": [
+      "src/old"
+    ]
   }
 }

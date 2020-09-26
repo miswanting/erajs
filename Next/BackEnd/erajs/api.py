@@ -433,11 +433,11 @@ def generate_map():
     pass
 
 
-def clear(num=0):
-    """
-    # 初始化引擎
-    """
-    pass
+# def clear(num=0):
+#     """
+#     # 初始化引擎
+#     """
+#     pass
 
 
 def append_gui(ui_func, *arg: Any, **kw: Any):
