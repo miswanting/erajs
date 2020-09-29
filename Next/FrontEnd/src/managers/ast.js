@@ -11,6 +11,8 @@ class AST {
       vm.data.ui = 'main'
     } else if (data.type === 'title') {
       vm.data.title = data.data.text
+    } else if (data.type === 'msg') {
+      vm.data.msgs.push(data)
     } else if (data.type === 'footer') {
       vm.data.footer = data.data.text
     } else if (data.type === 'mode') {
@@ -53,6 +55,8 @@ class AST {
       'DROPDOWN_CHANGE'
     ].indexOf(data.type) !== -1) {
       vm.send(data)
+    } else if (data.type === 'MSG_TIMEOUT') {
+      vm.data.data.msgs = []
     }
     console.log('Final:', vm)
   }

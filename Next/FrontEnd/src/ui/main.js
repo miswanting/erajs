@@ -4,7 +4,7 @@ Vue.component('i-main', {
   props: {
     data: Object
   },
-  template: '<body class="main"><i-header :data=data></i-header><i-container :data=data></i-container><i-footer :data=data></i-footer></body>'
+  template: '<body class="main"><i-header :data=data></i-header><i-message :data=data></i-message><i-container :data=data></i-container><i-footer :data=data></i-footer></body>'
 })
 Vue.component('i-container', {
   props: {
@@ -13,7 +13,7 @@ Vue.component('i-container', {
   watch: {
     data: {
       deep: true,
-      handler (newValue, oldValue) {
+      handler(newValue, oldValue) {
         this.$nextTick(function () {
           const el = this.$refs.main
           console.log(el)
@@ -75,4 +75,45 @@ Vue.component('i-section', {
 })
 Vue.component('i-disable-mask', {
   template: '<div class="disable-mask"></div>'
+})
+Vue.component('i-message', {
+  props: {
+    data: Object
+  },
+  render: function (createElement) {
+    const msgList = []
+    for (let i = 0; i < this.data.data.msgs.length; i++) {
+      msgList.push(
+        createElement('i-message-item', {
+          props: {
+            data: this.data.data.msgs[i]
+          }
+        })
+      )
+    }
+    return createElement('div', {
+      class: 'message'
+    }, [
+      createElement('div', {
+        class: 'message-anchor'
+      }, msgList)
+    ])
+  }
+})
+Vue.component('i-message-item', {
+  props: {
+    data: Object
+  },
+  created: function () {
+    setTimeout(() => {
+      this.$root.pull({
+        type: 'MSG_TIMEOUT'
+      })
+    }, 3000)
+  },
+  render: function (createElement) {
+    return createElement('div', {
+      class: 'message-item'
+    }, this.data.data.text)
+  }
 })

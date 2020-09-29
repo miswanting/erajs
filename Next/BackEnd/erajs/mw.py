@@ -238,6 +238,10 @@ def footer(text):
     e.push('footer', {'text': str(text)}, None)
 
 
+def msg(text: str, style: Optional[Dict[str, str]] = None):
+    e.push('msg', {'text': str(text)}, None)
+
+
 def page(style):
     e.remove_all_listeners()
     e.push('page', None, style)
