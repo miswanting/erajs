@@ -1,5 +1,5 @@
 class AST {
-  static parse (vm, data) {
+  static parse(vm, data) {
     console.log('Parse:', data)
     if (data.type === 'connection') {
       vm.data.ui = 'intro'
@@ -68,7 +68,7 @@ class AST {
      * @param {Object} style 样式数据
      * @param  {...any} children 子
      */
-  static newElement (type, data = null, style = null, children = null) {
+  static newElement(type, data = null, style = null, children = null) {
     if (!data) { data = new Map() }
     if (!style) { style = new Map() }
     if (!children) { children = [] }
@@ -81,22 +81,22 @@ class AST {
     return el
   }
 
-  static isPageExist (vm) {
+  static isPageExist(vm) {
     return vm.children.main.children.length !== 0
   }
 
-  static touchPage (vm) {
+  static touchPage(vm) {
     if (!this.isPageExist(vm)) {
       vm.children.main.children.push(this.newElement('page'))
     }
   }
 
-  static getLastPage (vm) {
+  static getLastPage(vm) {
     this.touchPage(vm)
     return vm.children.main.children[vm.children.main.children.length - 1]
   }
 
-  static isBlockExist (vm) {
+  static isBlockExist(vm) {
     return this.getLastPage(vm).children.length !== 0
   }
 
@@ -105,7 +105,7 @@ class AST {
      * @param {*} vm
      * @returns {boolean} bbb
      */
-  static isBlockSame (vm) {
+  static isBlockSame(vm) {
     if (!this.isBlockExist(vm)) {
       return false
     }
@@ -126,12 +126,12 @@ class AST {
     return true
   }
 
-  static getLastBlock (vm) {
+  static getLastBlock(vm) {
     const lastPage = this.getLastPage(vm)
     return lastPage.children[lastPage.children.length - 1]
   }
 
-  static changeBlockMode (vm, type, data = null) {
+  static changeBlockMode(vm, type, data = null) {
     if (data === null) {
       data = {}
     }
@@ -139,11 +139,11 @@ class AST {
     vm.data.blockMode = data
   }
 
-  static resetBlockMode (vm) {
+  static resetBlockMode(vm) {
     this.changeBlockMode(vm, 'line')
   }
 
-  static addBlock (vm) {
+  static addBlock(vm) {
     const lastPage = this.getLastPage(vm)
     if (vm.data.blockMode.type === 'line') {
       lastPage.children.push(this.newElement(vm.data.blockMode.type))
@@ -152,7 +152,7 @@ class AST {
     }
   }
 
-  static push (vm, el) {
+  static push(vm, el) {
     if (el.type === 'page') {
       vm.children.main.children.push(this.newElement('page', el.data, el.style))
       vm.children.main.children.splice(0, vm.children.main.children.length - vm.data.maxPages)
