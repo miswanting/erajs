@@ -28,17 +28,18 @@
     "standard": "latest"
   },
   "dependencies": {
+    "@popperjs/core": "latest",
     "animate.css": "latest",
     "animejs": "latest",
     "csshake": "latest",
     "d3": "latest",
-    "d3-delaunay": "^5.3.0",
+    "d3-delaunay": "latest",
     "electron-is-dev": "latest",
     "hover.css": "latest",
     "normalize.css": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "simplex-noise": "^2.4.0",
+    "simplex-noise": "latest",
     "vue": "latest"
   },
   "build": {
