@@ -40,7 +40,8 @@
     "react": "latest",
     "react-dom": "latest",
     "simplex-noise": "latest",
-    "vue": "latest"
+    "vue": "next",
+    "vuex": "next"
   },
   "build": {
     "appId": "net.erajs.next",
@@ -55,13 +56,18 @@
   "standard": {
     "globals": [
       "Vue",
+      "Vuex",
       "anime",
       "DataManager",
       "DisplayManager",
-      "lines"
+      "lines",
+      "store",
+      "components",
+      "app"
     ],
     "ignore": [
-      "src/old"
+      "src/old",
+      "src/old2"
     ]
   }
 }

@@ -33,7 +33,7 @@ class DisplayManager {
         })
     }
     register(data) {
-        window.app = new Vue({
+        this.app = new Vue({
             el: '#root',
             data: { data: data },
             methods: {

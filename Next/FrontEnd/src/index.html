@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Era.js</title>
+    <script>
+        window.components = [] //for Vue 3 Global
+    </script>
     <link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="../node_modules/animate.css/animate.min.css">
     <link rel="stylesheet" href="../node_modules/hover.css/css/hover-min.css">
@@ -15,24 +18,23 @@
     <link rel="stylesheet" href="css/window.css">
     <link rel="stylesheet" href="css/span-charm.css">
     <script src="../node_modules/animejs/lib/anime.js"></script>
-    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue/dist/vue.global.js"></script>
+    <script src="../node_modules/vuex/dist/vuex.global.js"></script>
     <script src="../node_modules/@popperjs/core/dist/umd/popper-lite.js"></script>
     <script src="ui/console.js"></script>
     <script src="ui/intro.js"></script>
     <script src="ui/header.js"></script>
     <script src="ui/main.js"></script>
     <script src="ui/pause.js"></script>
-    <script src="ui/footer.js"></script>
     <script src="ui/block.js"></script>
     <script src="ui/inline.js"></script>
-    <script src="managers/ast.js"></script>
+    <script src="ui/system.js"></script>
+    <!-- <script src="managers/ast.js"></script> -->
     <script src="managers/data.js"></script>
-    <script src="managers/display.js"></script>
+    <!-- <script src="managers/display.js"></script> -->
     <script src="Era.js"></script>
 </head>
 
-<body class="dark-theme">
-    <div id="root"></div>
-</body>
+<body id="app" class="dark-theme"></body>
 
 </html>
