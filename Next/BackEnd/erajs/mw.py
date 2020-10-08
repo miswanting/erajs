@@ -238,8 +238,8 @@ def footer(text):
     e.push('footer', {'text': str(text)}, None)
 
 
-def msg(text: str, style: Optional[Dict[str, str]] = None):
-    e.push('msg', {'text': str(text)}, None)
+def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):
+    e.push('msg', {'text': str(text), 'duration': duration}, style)
 
 
 def page(style):
@@ -306,6 +306,7 @@ def button(text, callback, *arg, **kw):
     style = None
     if 'style' in kw:
         style = kw['style']
+        del kw['style']
     e.push('button', data, style)
 
     def on_click(e):

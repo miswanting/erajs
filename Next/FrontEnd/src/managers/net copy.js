@@ -1,7 +1,12 @@
 const { EventEmitter } = require('events')
 const { Server } = require('net')
 const { BrowserWindow, ipcRenderer, ipcMain } = require('electron')
+/** 
+ * # NetManager
+ */
 module.exports = class NetManager extends EventEmitter {
+    // type
+    // core
     constructor(type) {
         super()
         this.type = type  // back, main, renderer

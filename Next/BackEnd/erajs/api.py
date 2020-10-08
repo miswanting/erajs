@@ -1,3 +1,4 @@
+from ast import Num
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from . import mw as m
 version = '0.2.0-α+200612'
@@ -112,11 +113,11 @@ def footer(text: str, style: Optional[Dict[str, str]] = None) -> object:
     m.footer(text, style)
 
 
-def msg(text: str, style: Optional[Dict[str, str]] = None) -> None:
+def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None) -> None:
     """
     # 设置窗口脚注
     """
-    m.msg(text, style)
+    m.msg(text, duration, style)
 
 
 ########## 页面管理 ##########
@@ -190,7 +191,7 @@ def link(text: Optional[str] = None, callback: Optional[Callable[[], None]] = No
 l = link
 
 
-def progress(now: int = 0, max: int = 100, style: Optional[Dict[str, str]] = None) -> object:
+def progress(now: float = 0, max: float = 100, style: Optional[List[Dict[str, str]]] = None) -> object:
     """
     # 插入行内控件：进度条
     """

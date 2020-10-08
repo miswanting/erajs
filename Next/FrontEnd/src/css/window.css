@@ -23,6 +23,9 @@ header,
 .menu-button:hover {
   color: var(--hover-front);
 }
+.menu-list > .menu > .menu-button {
+  width: -webkit-fill-available;
+}
 .operator.min:hover {
   color: #0f0;
 }
@@ -104,32 +107,15 @@ main.intro {
 .message > .message-anchor {
   position: absolute;
   right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .message-anchor > div {
   backdrop-filter: blur(1px) brightness(90%);
   padding: 0.1rem 0.5rem;
   margin: 0.1rem;
   color: var(--default-front);
-}
-/* main */
-main .main {
-  color: var(--default-front);
-  background-color: var(--default-back);
-}
-.main {
-  display: flex;
-  flex-direction: column;
-}
-.main > main {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-.main > main::-webkit-scrollbar {
-  width: 6px;
-}
-.main > main::-webkit-scrollbar-thumb {
-  background: var(--interactable-back);
-  border-radius: 3px;
 }
 /* footer */
 footer {

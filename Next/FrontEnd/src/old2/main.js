@@ -13,7 +13,7 @@ Vue.component('i-container', {
   watch: {
     data: {
       deep: true,
-      handler (newValue, oldValue) {
+      handler(newValue, oldValue) {
         this.$nextTick(function () {
           const el = this.$refs.main
           console.log(el)
@@ -109,7 +109,7 @@ Vue.component('i-message-item', {
       this.$root.pull({
         type: 'MSG_TIMEOUT'
       })
-    }, 3000)
+    }, this.data.data.duration * 1000)
   },
   render: function (createElement) {
     return createElement('div', {

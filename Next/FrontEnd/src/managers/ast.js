@@ -1,66 +1,4 @@
 class AST {
-  static parse (vm, data) {
-    console.log('Parse:', data)
-    if (data.type === 'connection') {
-      vm.data.ui = 'intro'
-    } else if (data.type === 'set_loading_title') {
-      vm.data.loadingTitle = data.value
-    } else if (data.type === 'set_loading_text') {
-      vm.data.loadingText = data.value
-    } else if (data.type === 'loaded') {
-      vm.data.ui = 'main'
-    } else if (data.type === 'title') {
-      vm.data.title = data.data.text
-    } else if (data.type === 'msg') {
-      vm.data.msgs.push(data)
-    } else if (data.type === 'footer') {
-      vm.data.footer = data.data.text
-    } else if (data.type === 'mode') {
-      vm.data.blockMode = { type: data.data.type }
-      if (vm.data.blockMode.type === 'grid') {
-        vm.data.blockMode.column = data.data.arg[0]
-      }
-    } else if (data.type === 'pass') {
-      if (vm.data.blockMode.type === 'line') {
-        this.addBlock(vm)
-      } else if (vm.data.blockMode.type === 'grid') {
-        if (!this.isBlockSame(vm)) {
-          this.addBlock(vm)
-        }
-        this.getLastBlock(vm).children.push(this.newElement('pass'))
-      }
-    } else if ([
-      'page',
-      'text',
-      'button',
-      'heading',
-      'link',
-      'progress',
-      'rate',
-      'check',
-      'radio',
-      'input',
-      'dropdown'
-    ].indexOf(data.type) !== -1) {
-      this.push(vm, data)
-    } else if ([
-      'MOUSE_CLICK',
-      'KEY_UP',
-      'BUTTON_CLICK',
-      'LINK_CLICK',
-      'RATE_CLICK',
-      'CHECK_CHANGE',
-      'RADIO_CHANGE',
-      'INPUT_CHANGE',
-      'DROPDOWN_CHANGE'
-    ].indexOf(data.type) !== -1) {
-      vm.send(data)
-    } else if (data.type === 'MSG_TIMEOUT') {
-      vm.data.data.msgs = []
-    }
-    console.log('Final:', vm)
-  }
-
   /**
      * # 生成抽象元素
      * @param {String} type 元素类型：`program`, `page`, `line`, `grid`, `text`……
@@ -68,7 +6,7 @@ class AST {
      * @param {Object} style 样式数据
      * @param  {...any} children 子
      */
-  static newElement (type, data = null, style = null, children = null) {
+  static newElement(type, data = null, style = null, children = null) {
     if (!data) { data = new Map() }
     if (!style) { style = new Map() }
     if (!children) { children = [] }
@@ -81,37 +19,37 @@ class AST {
     return el
   }
 
-  static isPageExist (vm) {
-    return vm.children.main.children.length !== 0
+  static isPageExist(state) {
+    return state.main.children.length !== 0
   }
 
-  static touchPage (vm) {
-    if (!this.isPageExist(vm)) {
-      vm.children.main.children.push(this.newElement('page'))
+  static touchPage(state) {
+    if (!this.isPageExist(state)) {
+      state.main.children.push(this.newElement('page'))
     }
   }
 
-  static getLastPage (vm) {
-    this.touchPage(vm)
-    return vm.children.main.children[vm.children.main.children.length - 1]
+  static getLastPage(state) {
+    this.touchPage(state)
+    return state.main.children[state.main.children.length - 1]
   }
 
-  static isBlockExist (vm) {
-    return this.getLastPage(vm).children.length !== 0
+  static isBlockExist(state) {
+    return this.getLastPage(state).children.length !== 0
   }
 
   /**
      * # 当前模式是否与最后的Block一致？
-     * @param {*} vm
+     * @param {*} state
      * @returns {boolean} bbb
      */
-  static isBlockSame (vm) {
-    if (!this.isBlockExist(vm)) {
+  static isBlockSame(state) {
+    if (!this.isBlockExist(state)) {
       return false
     }
-    const lastPage = this.getLastPage(vm)
+    const lastPage = this.getLastPage(state)
     const lastBlock = lastPage.children[lastPage.children.length - 1]
-    const blockMode = vm.data.blockMode
+    const blockMode = state.blockMode
     if (lastBlock.type !== blockMode.type) { return false }
     Object.keys(lastBlock.data).forEach(key => {
       if (lastBlock.data[key] !== blockMode[key]) {
@@ -126,41 +64,54 @@ class AST {
     return true
   }
 
-  static getLastBlock (vm) {
-    const lastPage = this.getLastPage(vm)
+  static getLastBlock(state) {
+    const lastPage = this.getLastPage(state)
     return lastPage.children[lastPage.children.length - 1]
   }
 
-  static changeBlockMode (vm, type, data = null) {
-    if (data === null) {
-      data = {}
+  // static changeBlockMode(vm, type, data = null) {
+  //   if (data === null) {
+  //     data = {}
+  //   }
+  //   data.type = type
+  //   vm.data.blockMode = data
+  // }
+
+  // static resetBlockMode(vm) {
+  //   this.changeBlockMode(vm, 'line')
+  // }
+
+  static addBlock(state) {
+    const lastPage = this.getLastPage(state)
+    if (state.blockMode.type === 'line') {
+      lastPage.children.push(this.newElement(state.blockMode.type))
+    } else if (state.blockMode.type === 'grid') {
+      lastPage.children.push(this.newElement(state.blockMode.type, { column: state.blockMode.column }))
     }
-    data.type = type
-    vm.data.blockMode = data
   }
 
-  static resetBlockMode (vm) {
-    this.changeBlockMode(vm, 'line')
-  }
-
-  static addBlock (vm) {
-    const lastPage = this.getLastPage(vm)
-    if (vm.data.blockMode.type === 'line') {
-      lastPage.children.push(this.newElement(vm.data.blockMode.type))
-    } else if (vm.data.blockMode.type === 'grid') {
-      lastPage.children.push(this.newElement(vm.data.blockMode.type, { column: vm.data.blockMode.column }))
-    }
-  }
-
-  static push (vm, el) {
-    if (el.type === 'page') {
-      vm.children.main.children.push(this.newElement('page', el.data, el.style))
-      vm.children.main.children.splice(0, vm.children.main.children.length - vm.data.maxPages)
-    } else if (['text', 'button', 'heading', 'link', 'progress', 'rate', 'check', 'radio', 'input', 'dropdown'].indexOf(el.type) !== -1) {
-      if (!this.isBlockSame(vm)) {
-        this.addBlock(vm)
+  static push(state, pkg) {
+    if (pkg.type === 'page') {
+      state.main.children.push(this.newElement('page', pkg.data, pkg.style))
+      state.main.children.splice(0, state.main.children.length - state.maxPages)
+    } else if ([
+      'text',
+      'button',
+      'heading',
+      'link',
+      'progress',
+      'rate',
+      'check',
+      'radio',
+      'input',
+      'dropdown'
+    ].indexOf(pkg.type) !== -1) {
+      if (!this.isBlockSame(state)) {
+        this.addBlock(state)
       }
-      this.getLastBlock(vm).children.push(this.newElement(el.type, el.data, el.style))
+      this.getLastBlock(state).children.push(this.newElement(pkg.type, pkg.data, pkg.style))
+    } else if (pkg.type === 'divider') {
+      this.getLastPage(state).children.push(this.newElement(pkg.type, pkg.data, pkg.style))
     }
   }
 }

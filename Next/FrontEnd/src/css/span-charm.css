@@ -1,3 +1,19 @@
+/* main */
+main.span-charm {
+  color: var(--default-front);
+  background-color: var(--default-back);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+main.span-charm::-webkit-scrollbar {
+  width: 6px;
+}
+main.span-charm::-webkit-scrollbar-thumb {
+  background: var(--interactable-back);
+  border-radius: 3px;
+}
 /* Span Charm Normalize */
 h1,
 h2,
@@ -53,6 +69,40 @@ h2 {
 .button:active {
   color: var(--active-front);
   background-color: var(--active-back);
+}
+.button.disabled {
+  color: var(--disabled-front);
+  background-color: var(--disabled-back);
+  cursor: default;
+}
+.button.disabled:hover {
+  color: var(--disabled-front);
+  background-color: var(--disabled-back);
+}
+.button.disabled:active {
+  color: var(--disabled-front);
+  background-color: var(--disabled-back);
+}
+.tippy-box[data-theme~="span-charm"] {
+  backdrop-filter: blur(1px) brightness(90%);
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+.tippy-box[data-theme~="span-charm"][data-placement^="top"]
+  > .tippy-arrow::before {
+  border-top-color: var(--hover-back);
+}
+.tippy-box[data-theme~="span-charm"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  border-bottom-color: var(--hover-back);
+}
+.tippy-box[data-theme~="span-charm"][data-placement^="left"]
+  > .tippy-arrow::before {
+  border-left-color: var(--hover-back);
+}
+.tippy-box[data-theme~="span-charm"][data-placement^="right"]
+  > .tippy-arrow::before {
+  border-right-color: var(--hover-back);
 }
 .link {
   text-decoration-line: underline;
@@ -120,6 +170,19 @@ td {
 }
 .rate {
   cursor: pointer;
+  background-color: var(--interactable-back);
+}
+.rate > .rate-item:hover {
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+.rate.disabled {
+  cursor: default;
+  background-color: var(--default-back);
+}
+.rate.disabled > .rate-item:hover {
+  color: var(--default-front);
+  background-color: var(--default-back);
 }
 .dropdown {
   position: relative;

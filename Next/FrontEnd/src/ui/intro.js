@@ -1,5 +1,5 @@
 window.components.push(['i-intro', {
-  render() {
+  render () {
     return [
       Vue.h(app.component('i-header')),
       Vue.h(app.component('i-intro-main'))
@@ -7,7 +7,7 @@ window.components.push(['i-intro', {
   }
 }])
 window.components.push(['i-intro-main', {
-  render() {
+  render () {
     return Vue.h('main', { class: 'intro' }, [
       Vue.h('div', { class: 'loading-banner' }, [
         Vue.h('div', { class: 'loading-group' }, [
@@ -21,7 +21,7 @@ window.components.push(['i-intro-main', {
   }
 }])
 window.components.push(['loading-heading', {
-  mounted() {
+  mounted () {
     anime({
       targets: '#loading-heading',
       delay: 7000,
@@ -31,12 +31,12 @@ window.components.push(['loading-heading', {
       }]
     })
   },
-  render() {
+  render () {
     return Vue.h('div', { id: 'loading-heading' }, this.$store.state.loadingTitle)
   }
 }])
 window.components.push(['loading-text', {
-  mounted() {
+  mounted () {
     anime({
       targets: '.loading-text',
       delay: 9000,
@@ -46,9 +46,9 @@ window.components.push(['loading-text', {
       }]
     })
   },
-  render() {
-    let lines = this.$store.state.loadingText.split('\n')
-    let texts = []
+  render () {
+    const lines = this.$store.state.loadingText.split('\n')
+    const texts = []
     for (let i = 0; i < lines.length; i++) {
       texts.push(Vue.h('div', {}, lines[i]))
     }
@@ -56,11 +56,11 @@ window.components.push(['loading-text', {
   }
 }])
 window.components.push(['loading-logo', {
-  data() {
+  data () {
     return { eyeMoveRate: { value: 0.0 } }
   },
   methods: {
-    updateLogo(e) {
+    updateLogo (e) {
       e.preventDefault()
       const w = 30; const h = 30 // 眼动参数
       const i = document.querySelector('#icon-eye')
@@ -75,7 +75,11 @@ window.components.push(['loading-logo', {
       j.style.transform = 'translate(' + x + 'px,' + y + 'px)'
     }
   },
-  mounted() {
+  unmounted () {
+    document.removeEventListener('mousemove', this.updateLogo)
+    document.removeEventListener('touchmove', this.updateLogo)
+  },
+  mounted () {
     document.addEventListener('mousemove', this.updateLogo)
     document.addEventListener('touchmove', this.updateLogo)
     anime({

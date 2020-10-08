@@ -1,35 +1,96 @@
 const { remote } = require('electron')
-window.components.push(['i-header', {
+components.push(['i-header', {
   template: `<header>
     <menu-bar></menu-bar>
     <i-title></i-title>
     <operator-bar></operator-bar>
   </header>`
 }])
-window.components.push(['menu-bar', {
-  render() {
-    for (let i = 0; i < this.$store.state.menu.length; i++) {
-      const element = array[i];
-
+components.push(['menu-bar', {
+  methods: {
+    generateMenus (menu) {
+      const menus = []
+      return menus
     }
-    return Vue.h('div', { class: 'menu-bar' }, [])
+  },
+  render () {
+    menus = []
+    for (let i = 0; i < this.$store.state.menu.length; i++) {
+      menus.push(
+        Vue.h(
+          app.component('i-menu'),
+          {
+            data: this.$store.state.menu[i]
+          }
+        )
+      )
+    }
+    return Vue.h('div', { class: 'menu-bar' }, menus)
   }
 }])
-window.components.push(['i-menu', {
-  template: `<div class="menu-bar">
-    <i-menu v-for=""></i-menu>
-  </div>`
+components.push(['i-menu', {
+  props: {
+    data: Object
+  },
+  data () {
+    return { show: false }
+  },
+  methods: {
+    click () {
+      if (this.data.hasOwnProperty('submenu')) {
+        this.show = !this.show
+      } else {
+        this.$emit('MENU_CLICK', this.data.label)
+      }
+    },
+    documentClick (e) {
+      if (e.target.className === 'menu-button') {
+        e.preventDefault()
+      } else {
+        this.show = false
+      }
+    }
+  },
+  mounted () { document.addEventListener('click', this.documentClick) },
+  unmounted () { document.addEventListener('click', this.documentClick) },
+  render () {
+    const menuStruct = [
+      Vue.h('div', { class: 'menu-button', onClick: this.click }, this.data.label)
+    ]
+    if (this.data.hasOwnProperty('submenu') && this.show) {
+      const submenus = []
+      for (let i = 0; i < this.data.submenu.length; i++) {
+        submenus.push(
+          Vue.h(app.component('i-menu'),
+            {
+              data: this.data.submenu[i],
+              onMENU_CLICK: (label) => {
+                this.show = false
+                this.$emit('MENU_CLICK', label)
+              }
+            }
+          )
+        )
+      }
+      menuStruct.push(
+        Vue.h('div', { class: 'menu-anchor' }, [
+          Vue.h('div', { class: 'menu-list' }, submenus)
+        ])
+      )
+    }
+    return Vue.h('div', { class: 'menu' }, menuStruct)
+  }
 }])
-window.components.push(['i-title', {
+components.push(['i-title', {
   template: `<div class="title">
     {{this.$store.state.title}}
   </div>`
 }])
-window.components.push(['operator-bar', {
+components.push(['operator-bar', {
   methods: {
-    min() { },
-    max() { },
-    close() { }
+    min () { },
+    max () { },
+    close () { }
   },
   template: `<div class="operator-bar">
     <div class="operator min" @click="min()">●</div>

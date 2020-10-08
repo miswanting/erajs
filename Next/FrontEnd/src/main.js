@@ -6,29 +6,31 @@ const NetManager = require('./managers/net')
  * 提供渲染窗口、前/后端网络模块容器
  */
 class MainManager {
-    init = () => {
-        // 初始化模块
-        this.win = new WindowManager()
-        this.back = new NetManager('back')
-        this.renderer = new NetManager('renderer')
-        // 侦听网络管理器事件
-        this.back.on('recv', this.onBackRecv)
-        this.renderer.on('recv', this.onRendererRecv)
-    }
-    start = () => {
-        this.win.start()
-        this.back.start()
-        this.renderer.start()
-    }
-    onBackRecv = (data) => {
-        console.log('MainManager', 'Recv', data);
-        this.renderer.send(data)
-    }
-    onRendererRecv = (data) => {
-        console.log('MainManager', 'Send', data);
-        this.back.send(data)
-    }
+  constructor() {
+    // 初始化模块
+    this.win = new WindowManager()
+    this.back = new NetManager('back')
+    this.renderer = new NetManager('renderer')
+    // 侦听网络管理器事件
+    this.back.on('recv', this.onBackRecv)
+    this.renderer.on('recv', this.onRendererRecv)
+  }
+
+  start = () => {
+    this.win.start()
+    this.back.start()
+    this.renderer.start()
+  }
+
+  onBackRecv = (data) => {
+    console.log('MainManager', 'Recv', data)
+    this.renderer.send(data)
+  }
+
+  onRendererRecv = (data) => {
+    console.log('MainManager', 'Send', data)
+    this.back.send(data)
+  }
 }
 const main = new MainManager()
-main.init()
 app.whenReady().then(main.start)

@@ -40,6 +40,7 @@
     "react": "latest",
     "react-dom": "latest",
     "simplex-noise": "latest",
+    "tippy.js": "latest",
     "vue": "next",
     "vuex": "next"
   },
@@ -63,7 +64,9 @@
       "lines",
       "store",
       "components",
-      "app"
+      "app",
+      "CustomEvent",
+      "AST"
     ],
     "ignore": [
       "src/old",

@@ -119,14 +119,14 @@ Vue.component('i-progress', {
       class: 'progress',
       style: this.data.style[0]
     },
-    [
-      createElement('span', {
-        class: 'bar',
-        style: this.data.style[1]
-      },
-      this.data.data.text
-      )
-    ]
+      [
+        createElement('span', {
+          class: 'bar',
+          style: this.data.style[1]
+        },
+          this.data.data.text
+        )
+      ]
     )
   }
 })
@@ -227,14 +227,14 @@ Vue.component('i-check', {
       style: this.data.style,
       on: { click: this.click }
     },
-    [
-      createElement('span', {
-        class: 'check-value'
-      }, valueText),
-      createElement('span', {
-        class: 'check-text'
-      }, this.data.data.text)
-    ]
+      [
+        createElement('span', {
+          class: 'check-value'
+        }, valueText),
+        createElement('span', {
+          class: 'check-text'
+        }, this.data.data.text)
+      ]
     )
   }
 })
@@ -356,8 +356,8 @@ Vue.component('i-dropdown', {
       }
     }
   },
-  created () { document.addEventListener('click', this.documentClick) },
-  destroyed () { document.removeEventListener('click', this.documentClick) },
+  created() { document.addEventListener('click', this.documentClick) },
+  destroyed() { document.removeEventListener('click', this.documentClick) },
   render: function (createElement) {
     const itemList = []
     itemList.push(createElement('span', {
