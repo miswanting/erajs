@@ -8,12 +8,12 @@ components.push(['i-header', {
 }])
 components.push(['menu-bar', {
   methods: {
-    generateMenus (menu) {
+    generateMenus(menu) {
       const menus = []
       return menus
     }
   },
-  render () {
+  render() {
     menus = []
     for (let i = 0; i < this.$store.state.menu.length; i++) {
       menus.push(
@@ -32,18 +32,18 @@ components.push(['i-menu', {
   props: {
     data: Object
   },
-  data () {
+  data() {
     return { show: false }
   },
   methods: {
-    click () {
+    click() {
       if (this.data.hasOwnProperty('submenu')) {
         this.show = !this.show
       } else {
         this.$emit('MENU_CLICK', this.data.label)
       }
     },
-    documentClick (e) {
+    documentClick(e) {
       if (e.target.className === 'menu-button') {
         e.preventDefault()
       } else {
@@ -51,9 +51,9 @@ components.push(['i-menu', {
       }
     }
   },
-  mounted () { document.addEventListener('click', this.documentClick) },
-  unmounted () { document.addEventListener('click', this.documentClick) },
-  render () {
+  mounted() { document.addEventListener('click', this.documentClick) },
+  unmounted() { document.addEventListener('click', this.documentClick) },
+  render() {
     const menuStruct = [
       Vue.h('div', { class: 'menu-button', onClick: this.click }, this.data.label)
     ]
@@ -87,10 +87,22 @@ components.push(['i-title', {
   </div>`
 }])
 components.push(['operator-bar', {
+  data() {
+    return {
+      isMax: false
+    }
+  },
   methods: {
-    min () { },
-    max () { },
-    close () { }
+    min() { remote.getCurrentWindow().minimize() },
+    max() {
+      if (this.isMax) {
+        remote.getCurrentWindow().unmaximize()
+      } else {
+        remote.getCurrentWindow().maximize()
+      }
+      this.isMax = !this.isMax
+    },
+    close() { remote.getCurrentWindow().close() }
   },
   template: `<div class="operator-bar">
     <div class="operator min" @click="min()">●</div>
