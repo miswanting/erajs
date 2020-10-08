@@ -202,28 +202,28 @@ def exit():
 
 
 def debug(*arg: str):
-    # e.debug(*arg, **kw)
-    e.print('DEBG', ' '.join(arg))
+    e.debug(*arg, **kw)
+    # e.print('DEBG', ' '.join(arg))
 
 
 def info(*arg: str):
-    # e.info(*arg, **kw)
-    e.print('INFO', ' '.join(arg))
+    e.info(*arg, **kw)
+    # e.print('INFO', ' '.join(arg))
 
 
 def warn(*arg: str):
-    # e.warn(*arg, **kw)
-    e.print('WARN', ' '.join(arg))
+    e.warn(*arg, **kw)
+    # e.print('WARN', ' '.join(arg))
 
 
 def error(*arg: str):
-    # e.error(*arg, **kw)
-    e.print('ERRO', ' '.join(arg))
+    e.error(*arg, **kw)
+    # e.print('ERRO', ' '.join(arg))
 
 
 def critical(*arg: str):
-    # e.critical(*arg, **kw)
-    e.print('!!!!', ' '.join(arg))
+    e.critical(*arg, **kw)
+    # e.print('!!!!', ' '.join(arg))
 
 
 def window(style):
@@ -458,12 +458,16 @@ def dropdown(text_list, callback, default_index, search, multiple, placeholder, 
     if style is None:
         style = {}
     e.push('dropdown', data, style)
-    node = {'value': default_index}
+    node = {
+        'index': default_index,
+        'value': text_list[default_index]
+    }
 
     def on_click(e):
         if e['hash'] == data['hash']:
-            node['value'] = e['value']
-            callback(e['value'])
+            node['index'] = e['index']
+            node['value'] = text_list[node['index']]
+            callback(node)
     e.on('DROPDOWN_CHANGE', on_click, data['hash'])
     return node
 
@@ -480,8 +484,8 @@ def back(num, *arg, **kw):
     e.back(num, *arg, **kw)
 
 
-def repeat():
-    pass
+def repeat(*arg, **kw):
+    e.repeat(*arg, **kw)
 
 
 def clear(num: int = 0):
@@ -514,24 +518,28 @@ def tmp(dot_path=None):
 
 def write_cfg(dot_path=None, ext='yaml'):
     # dot_path转换为path
-    path = 'config\\'+e.dot2path(dot_path)
+    path = 'config\\'+e.dot2path(dot_path, ext)
     # 将data导出到path
-    e.write(e.dat(dot_path), path)
+    e.write(e.get_data(dot_path, 'config'), path)
 
 
 def write_dat(dot_path=None, ext='json'):
     # dot_path转换为path
     path = 'data\\'+e.dot2path(dot_path, ext)
     # 将data导出到path
-    e.write(e.dat(dot_path), path)
+    e.write(e.get_data(dot_path), path)
 
 
-def write_sav(filename_without_ext):
-    e.write_save(filename_without_ext)
+def save(filename_without_ext=None, meta_info=None):
+    e.save(filename_without_ext, meta_info)
 
 
-def read_sav(filename_without_ext):
-    e.read_save(filename_without_ext)
+def load(filename_without_ext=None):
+    e.load(filename_without_ext)
+
+
+def scan_save_file():
+    return e.scan_save_file()
 
 
 def on():
@@ -558,11 +566,23 @@ def random_hash(level=4):
     return tools.random_hash(level)
 
 
-def show_save_to_save():
+def get_current_timestamp():
+    return tools.get_current_timestamp()
+
+
+def widget_save():
     pass
 
 
-def show_save_to_load():
+def widget_load():
+    pass
+
+
+def ui_save():
+    pass
+
+
+def ui_load():
     pass
 
 

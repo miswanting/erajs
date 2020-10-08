@@ -405,7 +405,7 @@ window.components.push(['i-dropdown', {
     return {
       icon: '△',
       show: false,
-      value: this.data.data.default_index
+      index: this.data.data.default_index
     }
   },
   mounted() { document.addEventListener('click', this.documentClick) },
@@ -414,11 +414,12 @@ window.components.push(['i-dropdown', {
     click() {
       this.show = !this.show
     },
-    clickItem() {
-      this.value = i
+    clickItem(i) {
+      this.index = i
       this.$store.commit('handleEvent', {
         type: 'DROPDOWN_CHANGE',
-        value: i,
+        index: this.index,
+        value: this.data.data.text_list[this.index],
         hash: this.data.data.hash
       })
     },
@@ -434,7 +435,7 @@ window.components.push(['i-dropdown', {
     const itemList = []
     itemList.push(Vue.h('span', {
       class: 'dropdown-item'
-    }, this.data.data.text_list[this.value]))
+    }, this.data.data.text_list[this.index]))
     itemList.push(Vue.h('span', {
       class: 'dropdown-icon'
     }, this.icon))

@@ -43,7 +43,7 @@ def fix_path():
 
 
 def get_current_timestamp():
-    return datetime.datetime.isoformat(datetime.datetime.now())
+    return datetime.datetime.today().strftime("%y%m%d-%H%M%S-%f")
 
 # def fix_path():
 #     if getattr(sys, 'frozen', False):

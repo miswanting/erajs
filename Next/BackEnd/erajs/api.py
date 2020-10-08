@@ -321,32 +321,36 @@ def tmp(key: Optional[str] = None) -> Any:
     return m.tmp(key)
 
 
-def write_cfg(dot_path: Optional[str] = None, ext: str = 'ini') -> None:
+def dump_cfg(dot_path: Optional[str] = None, ext: str = 'yaml') -> None:
     """
-    # 转储设置数据
+    # 保存设置数据
     """
     return m.write_cfg(dot_path, ext)
 
 
-def write_dat(dot_path: Optional[str] = None, ext: str = 'ini') -> None:
+def dump_dat(dot_path: Optional[str] = None, ext: str = 'json') -> None:
     """
-    # 转储静态数据
+    # 保存静态数据
     """
     return m.write_dat(dot_path, ext)
 
 
-def write_sav(filename_without_ext: Optional[str] = None) -> None:
+def save(filename_without_ext: Optional[str] = None, meta_info: Optional[Dict[str, str]] = None) -> None:
     """
     # 转储存档数据
     """
-    m.write_sav(filename_without_ext)
+    m.save(filename_without_ext, meta_info)
 
 
-def read_sav(filename_without_ext: Optional[str] = None):
+def load(filename_without_ext: Optional[str] = None):
     """
     # 转储存档数据
     """
-    m.read_sav(filename_without_ext)
+    m.load(filename_without_ext)
+
+
+def scan_save_file():
+    return m.scan_save_file()
 
 
 ########## 事件 ##########
@@ -389,24 +393,74 @@ def dangerously_get_engine_core() -> object:
 ########## 工具 ##########
 def random_hash(level: int = 4) -> str:
     """
-    # 获取哈希随机值
+    # 获取随机哈希值
     """
     return m.random_hash(level)
 
 
+def get_current_timestamp() -> str:
+    """
+    # 获取时间戳
+    """
+    return m.get_current_timestamp()
+
+
 ########## 预设控件 ##########
-def show_save_to_save() -> None:
+def widget_save() -> None:
     """
     # 插入块级复合控件：存档保存列表（单页）
     """
-    pass
+    def save_file(i, filename_without_ext):
+        if i == -1:
+            save(get_current_timestamp())
+        else:
+            save(filename_without_ext)
+        repeat()
+    mode()
+    for i, each in enumerate(scan_save_file()):
+        b('{}. {}'.format(i, each[0]), save_file, i, each[0])
+        t()
+    b('+', save_file, -1, '')
+    t()
 
 
-def show_save_to_load() -> None:
+def widget_load(callback) -> None:
     """
     # 插入块级复合控件：存档加载列表（单页）
     """
-    pass
+    def load_file(i, filename_without_ext):
+        load(filename_without_ext)
+        callback()
+    mode()
+    for i, each in enumerate(scan_save_file()):
+        b('{}. {}'.format(i, each[0]), load_file, i, each[0])
+        t()
+
+
+def ui_save() -> None:
+    """
+    # 插入块级复合控件：存档保存列表（单页）
+    """
+    page()
+    h('保存存档')
+    t()
+    t()
+    widget_save()
+    t()
+    b('返回', back)
+
+
+def ui_load(callback) -> None:
+    """
+    # 插入块级复合控件：存档加载列表（单页）
+    """
+    page()
+    h('加载存档')
+    t()
+    t()
+    widget_load(callback)
+    t()
+    b('返回', back)
 
 
 ########## 弃用 ##########

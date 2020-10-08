@@ -371,30 +371,50 @@ class DataModule(event.EventModule):
     #     """
     #     pass
 
-    def write_save(self, filename_without_ext=None):
-        self.__data['save']['manifest'] = {
-            'timestamp': tools.get_current_timestamp(),
-            'name': filename_without_ext
-        }
+    def save(self, filename_without_ext=None, meta_info=None):
+        if meta_info:
+            self.__data['save']['meta'] = meta_info
+        else:
+            self.__data['save']['meta'] = {
+                'timestamp': tools.get_current_timestamp(),
+                'name': filename_without_ext
+            }
+            if not filename_without_ext:
+                self.__data['save']['meta']['name'] = filename_without_ext
         path = ''
-        if filename_without_ext == None:
+        if not filename_without_ext:
             path = 'save\\quick.save'
-            self.__data['save']['manifest']['name'] = 'quick'
         else:
             path = 'save\\'+self.dot2path(filename_without_ext, 'save')
         self.write(self.__data['save'], path)
 
-    def read_save(self, filename_without_ext=None):
-        self.__data['save']['meta'].clear()
-        self.__data['save']['data'].clear()
+    def load(self, filename_without_ext=None):
         path = ''
-        if filename_without_ext == None:
+        if not filename_without_ext:
             path = 'save\\quick.save'
             if not os.path.isfile(path):
                 return
         else:
             path = 'save\\'+self.dot2path(filename_without_ext, 'save')
+        self.__data['save']['meta'].clear()
+        self.__data['save']['data'].clear()
         self.__data['save'] = self.read(path)
+
+    def scan_save_file(self):
+        unsorted_list = []
+        sorted_list = []
+        save_file_path_list = self.scan('save')
+        for save_file_path in save_file_path_list:
+            filename_without_ext = save_file_path.split(
+                'save\\')[1].split('.save')[0]
+            save_data = self.read(save_file_path)
+            meta_info = save_data['meta']
+            if filename_without_ext == 'quick':
+                sorted_list.append([filename_without_ext, meta_info])
+            else:
+                unsorted_list.append([filename_without_ext, meta_info])
+        sorted_list.extend(unsorted_list)
+        return sorted_list
 
     # def import_data(self):
     #     """

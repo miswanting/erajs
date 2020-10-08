@@ -1,6 +1,6 @@
 import logging
 import sys
-from datetime import datetime
+import datetime
 
 from ..prototypes import singleton
 
@@ -36,6 +36,6 @@ class DebugModule(singleton.Singleton):
 
     def print(self, logo: str = 'DEBG', text: str = '') -> None:
         temp = '[{}]({}){}'
-        date = datetime.today()
+        date = datetime.datetime.today()
         text = temp.format(logo, date.strftime("%y%m%d-%H%M%S-%f"), text)
         self.__logger.debug(text)
