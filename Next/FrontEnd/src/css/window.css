@@ -12,6 +12,12 @@ header,
 .operator-bar {
   display: flex;
 }
+.menu-bar > .menu:first-child > .menu-button {
+  border-top-left-radius: 0.5em;
+}
+.operator-bar > .operator.close {
+  border-top-right-radius: 0.5em;
+}
 .menu-button,
 .operator {
   cursor: pointer;
