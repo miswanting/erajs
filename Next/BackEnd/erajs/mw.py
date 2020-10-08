@@ -405,12 +405,16 @@ def radio(text_list, callback, default_index, style):
     if style is None:
         style = {}
     e.push('radio', data, style)
-    node = {'value': default_index}
+    node = {
+        'index': default_index,
+        'value': text_list[default_index]
+    }
 
     def on_click(e):
         if e['hash'] == data['hash']:
-            node['value'] = e['value']
-            callback(e['value'])
+            node['index'] = e['index']
+            node['value'] = text_list[node['index']]
+            callback(node)
     e.on('RADIO_CHANGE', on_click, data['hash'])
     return node
 

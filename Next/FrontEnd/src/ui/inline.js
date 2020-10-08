@@ -317,7 +317,7 @@ window.components.push(['i-radio', {
       trueIcon = this.data.style.true_icon
     }
     return {
-      value: this.data.data.default_index,
+      index: this.data.data.default_index,
       falseIcon: falseIcon,
       trueIcon: trueIcon
     }
@@ -326,16 +326,16 @@ window.components.push(['i-radio', {
     click(i) {
       this.$store.commit('handleEvent', {
         type: 'RADIO_CHANGE',
-        value: i,
+        index: i,
         hash: this.data.data.hash
       })
-      this.value = i
+      this.index = i
     }
   },
   render() {
     const radioList = []
     for (let i = 0; i < this.data.data.text_list.length; i++) {
-      const valueText = this.value === i ? this.trueIcon : this.falseIcon
+      const icon = this.index === i ? this.trueIcon : this.falseIcon
       radioList.push(
         Vue.h('span', {
           class: 'radio-item',
@@ -344,7 +344,7 @@ window.components.push(['i-radio', {
         }, [
           Vue.h('span', {
             class: 'radio-value'
-          }, valueText),
+          }, icon),
           Vue.h('span', {
             class: 'radio-text'
           }, this.data.data.text_list[i])
@@ -369,7 +369,7 @@ window.components.push(['i-input', {
     }
   },
   mounted() {
-    this.$el.innerText = this.value
+    this.$refs.input.innerText = this.value
   },
   watch: {
     value() {
@@ -380,7 +380,22 @@ window.components.push(['i-input', {
       })
     }
   },
-  template: '<span class="input" style=style contenteditable @input="$emit(\'update: value\', $event.target.value)></span>'
+  render() {
+    return Vue.h('span', {
+      class: 'input',
+      style: this.data.style
+    }, [
+      '[',
+      Vue.h('span', {
+        ref: 'input',
+        contenteditable: 'true',
+        onInput: $event => {
+          this.value = $event.target.innerText
+        }
+      }),
+      ']'
+    ])
+  }
 }])
 window.components.push(['i-dropdown', {
   props: {
