@@ -144,10 +144,37 @@ td {
 .check {
   margin: 0rem 0.2rem;
   cursor: pointer;
+  background-color: var(--interactable-back);
+}
+.check:hover {
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+.check.disabled {
+  cursor: default;
+  background-color: var(--default-back);
+}
+.check.disabled:hover {
+  color: var(--default-front);
+  background-color: var(--default-back);
 }
 .radio {
   margin: 0rem 0.2rem;
   cursor: pointer;
+  background-color: var(--interactable-back);
+}
+.radio > .radio-item:hover {
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+.radio.disabled {
+  margin: 0rem 0.2rem;
+  cursor: default;
+  background-color: var(--default-back);
+}
+.radio.disabled > .radio-item:hover {
+  color: var(--default-front);
+  background-color: var(--default-back);
 }
 /* .input {
   height: 1rem;
