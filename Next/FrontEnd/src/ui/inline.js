@@ -101,10 +101,12 @@ window.components.push(['i-button', {
   },
   unmounted() {
     if (this.data.data.popup) {
+      if (this.$refs.button) {
+        this.$refs.button.removeEventListener('mouseenter', this.show)
+        this.$refs.button.removeEventListener('mouseleave', this.hide)
+      }
       this.tippy.unmount()
       this.tippy.destroy()
-      this.$refs.button.removeEventListener('mouseenter', this.show)
-      this.$refs.button.removeEventListener('mouseleave', this.hide)
     }
   },
   render() {
