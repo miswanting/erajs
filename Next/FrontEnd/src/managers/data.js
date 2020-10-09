@@ -1,5 +1,5 @@
 window.store = Vuex.createStore({
-  state () {
+  state() {
     return {
       style: {},
       title: 'Era.js',
@@ -39,9 +39,9 @@ window.store = Vuex.createStore({
     }
   },
   mutations: {
-    changeUI () { },
-    appendComponent () { },
-    parsePackage (state, pkg) {
+    changeUI() { },
+    appendComponent() { },
+    parsePackage(state, pkg) {
       console.log('Parse:', pkg)
       if (pkg.type === 'connection') {
         state.ui = 'intro'
@@ -74,6 +74,8 @@ window.store = Vuex.createStore({
           }
           AST.getLastBlock(state).children.push(AST.newElement('pass'))
         }
+      } else if (pkg.type === 'console_output') {
+        state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
       } else if ([
         'page',
         'text',
@@ -92,7 +94,7 @@ window.store = Vuex.createStore({
       }
       console.log('Final:', state)
     },
-    handleEvent (state, pkg) {
+    handleEvent(state, pkg) {
       if ([
         'MOUSE_CLICK',
         'KEY_UP',
@@ -102,10 +104,14 @@ window.store = Vuex.createStore({
         'CHECK_CHANGE',
         'RADIO_CHANGE',
         'INPUT_CHANGE',
-        'DROPDOWN_CHANGE'
+        'DROPDOWN_CHANGE',
+        'CONSOLE_INPUT'
       ].indexOf(pkg.type) !== -1) {
         const event = new CustomEvent('send', { detail: pkg })
         document.dispatchEvent(event)
+        if (pkg.type === 'CONSOLE_INPUT') {
+          state.console.children.push(AST.newElement('input', { value: pkg.value }))
+        }
       } else if (pkg.type === 'MSG_TIMEOUT') {
         for (let i = 0; i < state.msgs.length; i++) {
           if (state.msgs[i].data.hash === pkg.hash) {

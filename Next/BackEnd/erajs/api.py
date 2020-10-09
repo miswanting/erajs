@@ -390,6 +390,13 @@ def dangerously_get_engine_core() -> object:
     return m.dangerously_get_engine_core()
 
 
+def set_console_parser(parser: Callable[[str], str]) -> None:
+    """
+    # 设置终端命令处理函数
+    """
+    m.set_console_parser(parser)
+
+
 ########## 工具 ##########
 def random_hash(level: int = 4) -> str:
     """

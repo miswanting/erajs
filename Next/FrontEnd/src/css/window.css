@@ -122,6 +122,9 @@ main.intro {
   color: var(--default-front);
   background-color: var(--default-back);
 }
+.console > .console-input > span {
+  outline: none;
+}
 /* message */
 .message {
   z-index: 10;

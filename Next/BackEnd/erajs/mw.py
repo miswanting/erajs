@@ -562,6 +562,12 @@ def dangerously_get_engine_core():
     return e
 
 
+def set_console_parser(parser):
+    def on_console_input(pkg):
+        e.push('console_output', {'value': parser(pkg['value'])}, None)
+    e.on('CONSOLE_INPUT', on_console_input)
+
+
 def random_hash(level=4):
     return tools.random_hash(level)
 
