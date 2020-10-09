@@ -24,17 +24,24 @@ class ModModule(api.APIModule):
             'load_queue': []
         }
 
+    def isExist(self, mod_name):
+        cfg = self.get_data('sys', 'config')
+        for i, mod in enumerate(cfg['mod']):
+            if mod_name == mod['name']:
+                return i
+        return -1
+
     def scan_mods(self):
         mod_info_list = []
         # 验证配置有效性
         cfg = self.get_data('sys', 'config')
-        for key in cfg['mod'].keys():
-            if os.path.isdir(cfg['mod'][key]['path']):
-                meta_path = cfg['mod'][key]['path']+'\\meta.json'
+        for i, mod in enumerate(cfg['mod']):
+            if os.path.isdir(mod['path']):
+                meta_path = mod['path']+'\\meta.json'
                 if os.path.isfile(meta_path):
                     mod_info = self.read(meta_path)
                     compare_result = semver.compare(
-                        mod_info['version'], cfg['mod'][mod_info['name']]['version'])
+                        mod_info['version'], mod['version'])
                     if compare_result == 1:
                         # 新版本：更新信息
                         self.send({
@@ -42,7 +49,7 @@ class ModModule(api.APIModule):
                             'data': mod_info
                         })
             else:
-                del cfg['mod'][key]
+                del cfg['mod'][i]
         # 搜索mod文件夹
         for entry_name in os.listdir('mod'):
             path = 'mod\\{}'.format(entry_name)
@@ -54,33 +61,35 @@ class ModModule(api.APIModule):
                     # self.__data['load_queue'].append([mod_info['name'], path])
                     self.emit('mod_found', {'value': mod_info['name']})
                     if 'mod' not in cfg:
-                        cfg['mod'] = {}
-                    if mod_info['name'] in cfg['mod']:
-                        if semver.compare(mod_info['version'], cfg['mod'][mod_info['name']]['version']) == 1:
+                        cfg['mod'] = []
+                    index = self.isExist(mod_info['name'])
+                    if index > -1:
+                        if semver.compare(mod_info['version'], cfg['mod'][index]['version']) == 1:
                             # TODO 当前版本更大
                             pass
-                    if mod_info['name'] not in cfg['mod']:
-                        cfg['mod'][mod_info['name']] = {
+                    if index == -1:
+                        cfg['mod'].append({
+                            'name': mod_info['name'],
                             'version': mod_info['version'],
                             'enabled': False,
                             'path': path
-                        }
+                        })
                     self.write(cfg, 'config\\sys.yaml')
 
     def load_mods(self):
         cfg = self.get_data('sys', 'config')
-        for key in cfg['mod'].keys():
-            if cfg['mod'][key]['enabled']:
-                print(cfg['mod'][key])
+        for i, mod in enumerate(cfg['mod']):
+            if mod['enabled']:
+                # print(mod)
                 # print(self.__data['load_queue'])
                 # pair = self.__data['load_queue'].pop()
-                self.emit('mod_loading', {'value': key})
-                self.load_mod(key)
-                self.emit('mod_loaded', {'value': key})
+                self.emit('mod_loading', {'value': mod['name']})
+                self.load_mod(mod['name'])
+                self.emit('mod_loaded', {'value': mod['name']})
 
     def load_mod(self, name):
         cfg = self.get_data('sys', 'config')
-        path = cfg['mod'][name]['path']
+        path = cfg['mod'][self.isExist(name)]['path']
         meta_path = path+'\\meta.json'
         info = self.read(meta_path)
         main_path = '{}\\{}'.format(path, info['main'])

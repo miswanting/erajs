@@ -28,7 +28,7 @@ def init(config: dict = None):
         if event['value'] == 'config\\sys.yaml':
             init_sys_cfg_data = {
                 'resolution': [800, 600],
-                'mod': {}
+                'mod': []
             }
             e.write(init_sys_cfg_data, event['value'])
         else:
