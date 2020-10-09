@@ -6,7 +6,7 @@ class AST {
      * @param {Object} style 样式数据
      * @param  {...any} children 子
      */
-  static newElement(type, data = null, style = null, children = null) {
+  static newElement (type, data = null, style = null, children = null) {
     if (!data) { data = new Map() }
     if (!style) { style = new Map() }
     if (!children) { children = [] }
@@ -19,22 +19,22 @@ class AST {
     return el
   }
 
-  static isPageExist(state) {
+  static isPageExist (state) {
     return state.main.children.length !== 0
   }
 
-  static touchPage(state) {
+  static touchPage (state) {
     if (!this.isPageExist(state)) {
       state.main.children.push(this.newElement('page'))
     }
   }
 
-  static getLastPage(state) {
+  static getLastPage (state) {
     this.touchPage(state)
     return state.main.children[state.main.children.length - 1]
   }
 
-  static isBlockExist(state) {
+  static isBlockExist (state) {
     return this.getLastPage(state).children.length !== 0
   }
 
@@ -43,7 +43,7 @@ class AST {
      * @param {*} state
      * @returns {boolean} bbb
      */
-  static isBlockSame(state) {
+  static isBlockSame (state) {
     if (!this.isBlockExist(state)) {
       return false
     }
@@ -64,7 +64,7 @@ class AST {
     return true
   }
 
-  static getLastBlock(state) {
+  static getLastBlock (state) {
     const lastPage = this.getLastPage(state)
     return lastPage.children[lastPage.children.length - 1]
   }
@@ -81,7 +81,7 @@ class AST {
   //   this.changeBlockMode(vm, 'line')
   // }
 
-  static addBlock(state) {
+  static addBlock (state) {
     const lastPage = this.getLastPage(state)
     if (state.blockMode.type === 'line') {
       lastPage.children.push(this.newElement(state.blockMode.type))
@@ -90,7 +90,7 @@ class AST {
     }
   }
 
-  static push(state, pkg) {
+  static push (state, pkg) {
     if (pkg.type === 'page') {
       state.main.children.push(this.newElement('page', pkg.data, pkg.style))
       state.main.children.splice(0, state.main.children.length - state.maxPages)

@@ -1,10 +1,6 @@
 const { remote } = require('electron')
 components.push(['i-header', {
-  template: `<header>
-    <menu-bar></menu-bar>
-    <i-title></i-title>
-    <operator-bar></operator-bar>
-  </header>`
+  template: '<header><menu-bar></menu-bar><i-title></i-title><operator-bar></operator-bar></header>'
 }])
 components.push(['menu-bar', {
   methods: {

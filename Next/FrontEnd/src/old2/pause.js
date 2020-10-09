@@ -2,7 +2,7 @@ Vue.component('i-pause', {
   props: {
     data: Object
   },
-  template: '<body><i-header :data=data></i-header><main :data=data><pause-banner :data=data></pause-banner></main><i-footer :data=data></i-footer></body>'
+  template: '<body><i-header></i-header><main><pause-banner></pause-banner></main><i-footer></i-footer></body>'
 })
 Vue.component('pause-banner', {
   props: {

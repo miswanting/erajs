@@ -44,9 +44,19 @@ window.components.push(['i-message-item', {
             duration: 1000,
             easing: 'easeInQuart',
             complete: (anim) => {
-              this.$store.commit('handleEvent', {
-                type: 'MSG_TIMEOUT',
-                hash: this.data.data.hash
+              anime({
+                targets: this.$el,
+                height: '0px',
+                padding: '0px',
+                margin: '0px',
+                duration: 1000,
+                easing: 'easeOutQuart',
+                complete: (anim) => {
+                  this.$store.commit('handleEvent', {
+                    type: 'MSG_TIMEOUT',
+                    hash: this.data.data.hash
+                  })
+                }
               })
             }
           })

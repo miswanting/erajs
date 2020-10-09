@@ -1,5 +1,5 @@
 window.store = Vuex.createStore({
-  state() {
+  state () {
     return {
       style: {},
       title: 'Era.js',
@@ -39,9 +39,9 @@ window.store = Vuex.createStore({
     }
   },
   mutations: {
-    changeUI() { },
-    appendComponent() { },
-    parsePackage(state, pkg) {
+    changeUI () { },
+    appendComponent () { },
+    parsePackage (state, pkg) {
       console.log('Parse:', pkg)
       if (pkg.type === 'connection') {
         state.ui = 'intro'
@@ -92,7 +92,7 @@ window.store = Vuex.createStore({
       }
       console.log('Final:', state)
     },
-    handleEvent(state, pkg) {
+    handleEvent (state, pkg) {
       if ([
         'MOUSE_CLICK',
         'KEY_UP',

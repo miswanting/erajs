@@ -2,7 +2,7 @@ window.components.push(['i-block', {
   props: {
     data: Object
   },
-  render() {
+  render () {
     let blockType = null
     if (this.data.type === 'line') {
       blockType = 'i-line'
@@ -22,7 +22,7 @@ window.components.push(['i-line', {
   props: {
     data: Object
   },
-  render() {
+  render () {
     const inlines = []
     if (this.data.children.length === 0) {
       inlines.push(Vue.h('br'))
@@ -44,7 +44,7 @@ window.components.push(['i-grid', {
   props: {
     data: Object
   },
-  render() {
+  render () {
     const columns = []
     let column = []
     for (let i = 0; i < this.data.children.length; i++) {
@@ -90,9 +90,9 @@ window.components.push(['i-grid', {
         class: 'line',
         style: null
       },
-        Vue.h('tbody', {
-          style: null
-        }, rows)
+      Vue.h('tbody', {
+        style: null
+      }, rows)
       )
     ]
   }
@@ -101,7 +101,7 @@ window.components.push(['i-divider', {
   props: {
     data: Object
   },
-  render() {
+  render () {
     return [
       Vue.h('div', {
         class: 'divider'

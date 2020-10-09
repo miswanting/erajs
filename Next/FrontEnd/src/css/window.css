@@ -94,17 +94,33 @@ main.intro {
   font-size: small;
 }
 /* pause */
+.pause {
+  flex-grow: 1;
+  display: flex;
+  color: var(--default-front);
+  background-color: var(--default-back);
+}
 .pause-banner {
   align-self: center;
   width: 100%;
   margin: 0 10%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: center;
 }
-.pause-banner > div {
-  width: 100%;
+.pause-banner > h1 {
+  margin: 1rem 0;
+}
+.pause-banner > div:hover {
+  cursor: pointer;
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+/* console */
+.console {
+  flex-grow: 1;
+  color: var(--default-front);
+  background-color: var(--default-back);
 }
 /* message */
 .message {

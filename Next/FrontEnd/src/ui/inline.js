@@ -2,7 +2,7 @@ window.components.push(['i-inline', {
   props: {
     data: Object
   },
-  render() {
+  render () {
     let inlineType = null
     if (this.data.type === 'text') {
       inlineType = 'i-text'
@@ -43,7 +43,7 @@ window.components.push(['i-text', {
       shake: false
     }
   },
-  mounted() {
+  mounted () {
     if (this.data.style.hasOwnProperty('shake_duration')) {
       this.shake = true
       setTimeout(() => {
@@ -51,7 +51,7 @@ window.components.push(['i-text', {
       }, this.data.style.shake_duration * 1000)
     }
   },
-  render() {
+  render () {
     return [
       Vue.h('span', {
         class: {
@@ -67,14 +67,14 @@ window.components.push(['i-button', {
   props: {
     data: Object
   },
-  data() {
+  data () {
     return {
       showPopup: false,
       tippy: null
     }
   },
   methods: {
-    click() {
+    click () {
       if (!this.data.data.disabled) {
         this.$store.commit('handleEvent', {
           type: 'BUTTON_CLICK',
@@ -82,14 +82,14 @@ window.components.push(['i-button', {
         })
       }
     },
-    hover(e) {
+    hover (e) {
       this.tippy.show()
     },
-    notHover(e) {
+    notHover (e) {
       this.tippy.hide()
     }
   },
-  mounted() {
+  mounted () {
     if (this.data.data.popup) {
       this.tippy = tippy(this.$refs.button, {
         content: this.data.data.popup,
@@ -99,7 +99,7 @@ window.components.push(['i-button', {
       this.$refs.button.addEventListener('mouseleave', this.hide)
     }
   },
-  unmounted() {
+  unmounted () {
     if (this.data.data.popup) {
       if (this.$refs.button) {
         this.$refs.button.removeEventListener('mouseenter', this.show)
@@ -109,7 +109,7 @@ window.components.push(['i-button', {
       this.tippy.destroy()
     }
   },
-  render() {
+  render () {
     return [
       Vue.h('span', {
         class: {
@@ -132,7 +132,7 @@ window.components.push(['i-heading', {
       shake: false
     }
   },
-  mounted() {
+  mounted () {
     if (this.data.style.hasOwnProperty('shake_duration')) {
       this.shake = true
       setTimeout(() => {
@@ -140,7 +140,7 @@ window.components.push(['i-heading', {
       }, this.data.style.shake_duration * 1000)
     }
   },
-  render() {
+  render () {
     return [
       Vue.h('h' + this.data.data.rank.toString(), {
         class: {
@@ -157,14 +157,14 @@ window.components.push(['i-link', {
     data: Object
   },
   methods: {
-    click() {
+    click () {
       this.$store.commit('handleEvent', {
         type: 'LINK_CLICK',
         hash: this.data.data.hash
       })
     }
   },
-  render() {
+  render () {
     return [
       Vue.h('span', {
         class: 'link',
@@ -178,7 +178,7 @@ window.components.push(['i-progress', {
   props: {
     data: Object
   },
-  render() {
+  render () {
     if (!this.data.style[0].hasOwnProperty('width')) {
       this.data.style[0].width = '100px'
     }
@@ -200,7 +200,7 @@ window.components.push(['i-rate', {
   props: {
     data: Object
   },
-  data() {
+  data () {
     let falseIcon = '☆'
     let trueIcon = '★'
     if (this.data.style.hasOwnProperty('false_icon')) {
@@ -216,7 +216,7 @@ window.components.push(['i-rate', {
     }
   },
   methods: {
-    click(i) {
+    click (i) {
       if (!this.data.data.disabled) {
         if (i === this.now) {
           i = 0
@@ -230,7 +230,7 @@ window.components.push(['i-rate', {
       }
     }
   },
-  render() {
+  render () {
     const rateList = []
     for (let i = 0; i < this.data.data.max; i++) {
       if (i < this.now) {
@@ -262,7 +262,7 @@ window.components.push(['i-check', {
   props: {
     data: Object
   },
-  data() {
+  data () {
     let falseIcon = '◻'
     let trueIcon = '◼'
     if (this.data.style.hasOwnProperty('false_icon')) {
@@ -278,7 +278,7 @@ window.components.push(['i-check', {
     }
   },
   methods: {
-    click() {
+    click () {
       this.$store.commit('handleEvent', {
         type: 'CHECK_CHANGE',
         value: !this.value,
@@ -287,7 +287,7 @@ window.components.push(['i-check', {
       this.value = !this.value
     }
   },
-  render() {
+  render () {
     const valueText = this.value ? this.trueIcon : this.falseIcon
     return [
       Vue.h('span', {
@@ -309,7 +309,7 @@ window.components.push(['i-radio', {
   props: {
     data: Object
   },
-  data() {
+  data () {
     let falseIcon = '◻'
     let trueIcon = '◼'
     if (this.data.style.hasOwnProperty('false_icon')) {
@@ -325,7 +325,7 @@ window.components.push(['i-radio', {
     }
   },
   methods: {
-    click(i) {
+    click (i) {
       this.$store.commit('handleEvent', {
         type: 'RADIO_CHANGE',
         index: i,
@@ -334,7 +334,7 @@ window.components.push(['i-radio', {
       this.index = i
     }
   },
-  render() {
+  render () {
     const radioList = []
     for (let i = 0; i < this.data.data.text_list.length; i++) {
       const icon = this.index === i ? this.trueIcon : this.falseIcon
@@ -365,16 +365,16 @@ window.components.push(['i-input', {
   props: {
     data: Object
   },
-  data() {
+  data () {
     return {
       value: this.data.data.default
     }
   },
-  mounted() {
+  mounted () {
     this.$refs.input.innerText = this.value
   },
   watch: {
-    value() {
+    value () {
       this.$store.commit('handleEvent', {
         type: 'INPUT_CHANGE',
         value: this.value,
@@ -382,7 +382,7 @@ window.components.push(['i-input', {
       })
     }
   },
-  render() {
+  render () {
     return Vue.h('span', {
       class: 'input',
       style: this.data.style
@@ -403,20 +403,20 @@ window.components.push(['i-dropdown', {
   props: {
     data: Object
   },
-  data() {
+  data () {
     return {
       icon: '△',
       show: false,
       index: this.data.data.default_index
     }
   },
-  mounted() { document.addEventListener('click', this.documentClick) },
-  unmounted() { document.removeEventListener('click', this.documentClick) },
+  mounted () { document.addEventListener('click', this.documentClick) },
+  unmounted () { document.removeEventListener('click', this.documentClick) },
   methods: {
-    click() {
+    click () {
       this.show = !this.show
     },
-    clickItem(i) {
+    clickItem (i) {
       this.index = i
       this.$store.commit('handleEvent', {
         type: 'DROPDOWN_CHANGE',
@@ -425,7 +425,7 @@ window.components.push(['i-dropdown', {
         hash: this.data.data.hash
       })
     },
-    documentClick(e) {
+    documentClick (e) {
       if (['dropdown-item', 'dropdown-icon'].indexOf(e.target.className) !== -1) {
         e.preventDefault()
       } else {
@@ -433,7 +433,7 @@ window.components.push(['i-dropdown', {
       }
     }
   },
-  render() {
+  render () {
     const itemList = []
     itemList.push(Vue.h('span', {
       class: 'dropdown-item'
@@ -473,7 +473,7 @@ window.components.push(['i-other', {
   props: {
     data: Object
   },
-  render() {
+  render () {
     console.log(this.data)
     return [
       Vue.h('span', {}, JSON.stringify(this.data))

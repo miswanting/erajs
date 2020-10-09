@@ -14,17 +14,17 @@ class DisplayManager {
         document.body.addEventListener("keyup", (e) => {
             console.log('[DEBG]键盘按下：', e.key);
             if (e.key == '`') {
-                if (this.app.data.data.ui != 'console') {
-                    this.app.data.data.lastUi = this.app.data.data.ui
-                    this.app.data.data.ui = 'console'
-                } else if (this.app.data.data.ui == 'console') {
-                    this.app.data.data.ui = this.app.data.data.lastUi
+                if (store.state.ui != 'console') {
+                    store.state.lastUi = store.state.ui
+                    store.state.ui = 'console'
+                } else if (store.state.ui == 'console') {
+                    store.state.ui = store.state.lastUi
                 }
             } else if (e.key == 'Escape') {
-                if (this.app.data.data.ui == 'main') {
-                    this.app.data.data.ui = 'pause'
-                } else if (this.app.data.data.ui == 'pause') {
-                    this.app.data.data.ui = 'main'
+                if (store.state.ui == 'main') {
+                    store.state.ui = 'pause'
+                } else if (store.state.ui == 'pause') {
+                    store.state.ui = 'main'
                 }
             }
             let data = {
