@@ -21,6 +21,7 @@ class EventModule(debug.DebugModule):
             'arg': arg,
             'kw': kw
         }
+        # print('On:', new_listener)
         self.__listener_list.append(new_listener)
     add_listener = on
 
@@ -41,14 +42,20 @@ class EventModule(debug.DebugModule):
     off = remove_listener
 
     def remove_all_listeners(self) -> None:
-        self.__listener_list.clear()
+        new_listener_list = []
+        for listener in self.__listener_list:
+            if listener['type'] == 'CONSOLE_INPUT':
+                new_listener_list.append(listener)
+        self.__listener_list = new_listener_list
 
     def emit(self, type: str, data: Any = None) -> None:
+        # print('Emit:', data)
         event = {
             'type': type,
             'data': data
         }
         i = 0
+        # print('Emit:', self.__listener_list)
         while i < len(self.__listener_list):
             listener = self.__listener_list[i]
             if event['type'] != listener['type']:

@@ -1,5 +1,4 @@
-from ast import Num
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional
 from . import mw as m
 version = '0.2.0-α+200612'
 aka = 'Dark Elf'
@@ -10,6 +9,7 @@ data = None
 def init(config: Optional[Dict[str, Any]] = None) -> None:
     """
     # 初始化引擎
+    除了工具类API之外，其他API均需要在初始化引擎之后才能使用。
     """
     m.init(config)
     # 兼容
@@ -139,6 +139,7 @@ def cls(num: int = 0) -> None:
 def mode(type: Optional[str] = 'line', *arg: Any, **kw: Any) -> None:
     """
     # 设置新增控件排版模式
+    在旧版排版模式会被page()重置，而现在不会了。
     """
     m.mode(type, *arg, **kw)
 

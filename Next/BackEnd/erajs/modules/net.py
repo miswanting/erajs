@@ -29,7 +29,7 @@ class NetModule(event.EventModule):
         self.s.send(json.dumps(data, ensure_ascii=False).encode())
 
     def recv(self, data):
-        self.debug('Recv: '+str(data))
+        # self.debug('Recv: '+str(data))
         self.emit(data['type'], data)
 
     def connector(self, host, port):

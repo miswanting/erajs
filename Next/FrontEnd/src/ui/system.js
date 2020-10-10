@@ -8,6 +8,8 @@ window.components.push(['i-program', {
       return Vue.h(app.component('i-pause'))
     } else if (this.$store.state.ui === 'main') {
       return Vue.h(app.component('i-main'))
+    } else if (this.$store.state.ui === 'mod-manager') {
+      return Vue.h(app.component('i-mod-manager'))
     }
   }
 }])

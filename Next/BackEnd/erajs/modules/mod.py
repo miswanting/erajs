@@ -96,7 +96,8 @@ class ModModule(api.APIModule):
         spec = importlib.util.spec_from_file_location(name, main_path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        module.init()
+        if 'init' in dir(module):
+            module.init()
 
         # def scan_plugins(self):
         #     # scan收集文件信息

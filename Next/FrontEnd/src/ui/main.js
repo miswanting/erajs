@@ -1,5 +1,5 @@
 window.components.push(['i-main', {
-  render() {
+  render () {
     return [
       Vue.h(app.component('i-header')),
       Vue.h(app.component('i-message')),
@@ -9,7 +9,7 @@ window.components.push(['i-main', {
   }
 }])
 window.components.push(['i-message', {
-  render() {
+  render () {
     const msgList = []
     for (let i = 0; i < this.$store.state.msgs.length; i++) {
       msgList.push(
@@ -30,7 +30,7 @@ window.components.push(['i-message-item', {
   props: {
     data: Object
   },
-  mounted() {
+  mounted () {
     anime({
       targets: this.$el,
       translateX: [this.$el.clientWidth, 0],
@@ -70,7 +70,7 @@ window.components.push(['i-container', {
   watch: {
     '$store.state.main': {
       deep: true,
-      handler(newValue, oldValue) {
+      handler (newValue, oldValue) {
         this.$nextTick(() => {
           const el = this.$refs.main
           el.scrollTop = el.scrollHeight
@@ -78,7 +78,7 @@ window.components.push(['i-container', {
       }
     }
   },
-  render() {
+  render () {
     const sections = []
     for (let i = 0; i < this.$store.state.main.children.length; i++) {
       sections.push(Vue.h(app.component('i-section'), {
@@ -104,7 +104,7 @@ window.components.push(['i-section', {
     data: Object,
     disabled: Boolean
   },
-  render() {
+  render () {
     const blocks = [Vue.h(app.component('i-disable-mask'))]
     for (let i = 0; i < this.data.children.length; i++) {
       blocks.push(Vue.h(app.component('i-block'), {

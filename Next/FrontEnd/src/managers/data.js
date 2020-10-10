@@ -29,7 +29,17 @@ window.store = Vuex.createStore({
         ]
       },
       { label: '编辑' },
-      { label: '窗口' },
+      {
+        label: '工具',
+        submenu: [
+          {
+            label: 'Mod管理器',
+            click: () => {
+              store.state.ui = 'mod-manager'
+            }
+          }
+        ]
+      },
       { label: '帮助' },
       { label: '+' }],
       console: AST.newElement('console'),
@@ -58,6 +68,12 @@ window.store = Vuex.createStore({
         window.crypto.getRandomValues(n)
         pkg.data.hash = n[0]
         state.msgs.push(pkg)
+      } else if (pkg.type === 'cls') {
+        if (pkg.data.num === 0) {
+          state.main.children.splice(0, state.main.children.length)
+        } else {
+          state.main.children.splice(state.main.children.length - pkg.data.num, pkg.data.num)
+        }
       } else if (pkg.type === 'footer') {
         state.footer = pkg.data.text
       } else if (pkg.type === 'mode') {

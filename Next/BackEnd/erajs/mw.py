@@ -248,7 +248,7 @@ def page(style):
 
 
 def cls(num):
-    e.push('clear', {'num': num}, None)
+    e.push('cls', {'num': num}, None)
 
 
 def mode(type, *arg, **kw):
@@ -565,6 +565,7 @@ def dangerously_get_engine_core():
 def set_console_parser(parser):
     def on_console_input(pkg):
         e.push('console_output', {'value': parser(pkg['value'])}, None)
+    print(parser)
     e.on('CONSOLE_INPUT', on_console_input)
 
 

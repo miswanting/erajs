@@ -2,14 +2,14 @@ window.components.push(['i-console', {
   template: '<i-header></i-header><console-main></console-main>'
 }])
 window.components.push(['console-main', {
-  mounted() { this.$refs.console.addEventListener('mouseup', this.focus) },
-  unmounted() { this.$refs.console.removeEventListener('mouseup', this.focus) },
+  mounted () { this.$refs.console.addEventListener('mouseup', this.focus) },
+  unmounted () { this.$refs.console.removeEventListener('mouseup', this.focus) },
   methods: {
-    focus() {
+    focus () {
       document.querySelector('#input-span').focus()
     }
   },
-  render() {
+  render () {
     const ioList = []
     for (let i = 0; i < this.$store.state.console.children.length; i++) {
       if (this.$store.state.console.children[i].type === 'input') {
@@ -18,7 +18,7 @@ window.components.push(['console-main', {
         ioList.push(Vue.h(app.component('console-output'), { data: this.$store.state.console.children[i] }))
       }
     }
-    return Vue.h('main', { class: 'console', ref: "console" }, [
+    return Vue.h('main', { class: 'console', ref: 'console' }, [
       ioList,
       Vue.h(app.component('console-input'), { data: {}, disabled: false })
     ])
@@ -29,28 +29,28 @@ window.components.push(['console-input', {
     data: Object,
     disabled: Boolean
   },
-  mounted() {
-    console.log();
+  mounted () {
+    console.log()
     this.$el.addEventListener('keyup', this.keyUp)
   },
-  unmounted() { this.$el.removeEventListener('keyup', this.keyUp) },
+  unmounted () { this.$el.removeEventListener('keyup', this.keyUp) },
   methods: {
-    keyUp(e) {
+    keyUp (e) {
       if (!this.disabled && e.key === 'Enter') {
-        let pkg = {
+        const pkg = {
           type: 'CONSOLE_INPUT',
           value: document.querySelector('#input-span').innerText.trim()
         }
-        console.log(pkg);
+        console.log(pkg)
         document.querySelector('#input-span').innerText = ''
         store.commit('handleEvent', pkg)
         this.$nextTick(() => { this.$refs.input.focus() })
       }
     }
   },
-  render() {
+  render () {
     return Vue.h('div', {
-      class: ['console-input', { disabled: this.disabled }],
+      class: ['console-input', { disabled: this.disabled }]
     }, [
       Vue.h('span', {}, '$>'),
       Vue.h('span', {
@@ -63,7 +63,7 @@ window.components.push(['console-input', {
 }])
 window.components.push(['console-output', {
   props: {
-    data: Object,
+    data: Object
   },
   template: '<div class="console-output"><span>{{data.data.value}}</span></div>'
 }])
