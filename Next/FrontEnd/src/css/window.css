@@ -125,6 +125,12 @@ main.intro {
 .console > .console-input > span {
   outline: none;
 }
+/* map */
+.map {
+  flex-grow: 1;
+  color: var(--default-front);
+  background-color: var(--default-back);
+}
 /* message */
 .message {
   z-index: 10;

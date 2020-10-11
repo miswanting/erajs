@@ -25,6 +25,10 @@ class DisplayManager {
                     store.state.ui = 'pause'
                 } else if (store.state.ui == 'pause') {
                     store.state.ui = 'main'
+                } else if (store.state.ui == 'mod-manager') {
+                    store.state.ui = 'main'
+                } else if (store.state.ui == 'map-manager') {
+                    store.state.ui = 'main'
                 }
             }
             let data = {

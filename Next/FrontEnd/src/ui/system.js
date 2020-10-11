@@ -10,6 +10,8 @@ window.components.push(['i-program', {
       return Vue.h(app.component('i-main'))
     } else if (this.$store.state.ui === 'mod-manager') {
       return Vue.h(app.component('i-mod-manager'))
+    } else if (this.$store.state.ui === 'map-manager') {
+      return Vue.h(app.component('i-map-manager'))
     }
   }
 }])

@@ -66,7 +66,9 @@
       "components",
       "app",
       "CustomEvent",
-      "AST"
+      "AST",
+      "SimplexNoise",
+      "d3"
     ],
     "ignore": [
       "src/old",

@@ -622,3 +622,7 @@ class OldData:
 
     def __len__(self):
         print('len')
+
+
+def generate_map():
+    e.push('generate_map')

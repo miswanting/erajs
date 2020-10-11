@@ -33,9 +33,14 @@ window.store = Vuex.createStore({
         label: '工具',
         submenu: [
           {
-            label: 'Mod管理器',
+            label: '模组管理器',
             click: () => {
               store.state.ui = 'mod-manager'
+            }
+          }, {
+            label: '地图管理器',
+            click: () => {
+              store.state.ui = 'map-manager'
             }
           }
         ]
@@ -45,7 +50,8 @@ window.store = Vuex.createStore({
       console: AST.newElement('console'),
       pause: AST.newElement('pause'),
       main: AST.newElement('main'),
-      intro: AST.newElement('intro')
+      intro: AST.newElement('intro'),
+      map: AST.newElement('map')
     }
   },
   mutations: {
@@ -91,6 +97,8 @@ window.store = Vuex.createStore({
           AST.getLastBlock(state).children.push(AST.newElement('pass'))
         }
       } else if (pkg.type === 'console_output') {
+        state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
+      } else if (pkg.type === 'generate_map') {
         state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
       } else if ([
         'page',
@@ -139,3 +147,17 @@ window.store = Vuex.createStore({
     }
   }
 })
+function dispersePoints(pointsList, n = 5) {
+  for (let i = 0; i < n; i++) {
+    const delaunay = d3.Delaunay.from(pointsList)
+    const voronoi = delaunay.voronoi([0, 0, this.$refs.map.clientWidth, this.$refs.map.clientHeight])
+    for (let j = 0; j < this.points.length; j++) {
+      const cvt = []
+      for (let k = 0; k < voronoi.cellPolygon(j).length; k++) {
+        var [x, y] = voronoi.cellPolygon(j)[k]
+        cvt.push([x, y])
+      }
+      [this.points[j][0], this.points[j][1]] = d3.polygonCentroid(cvt)
+    }
+  }
+}

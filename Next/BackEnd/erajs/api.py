@@ -492,9 +492,12 @@ def shake():
     pass
 
 
-def generate_map():
+def disperse_points(point_list: List[List[float]], disperse_times: int = 5):
     pass
 
+
+def generate_map(point_list: List[List[float]]):
+    return m.generate_map(point_list)
 
 # def clear(num=0):
 #     """
