@@ -355,7 +355,17 @@ class DataModule(event.EventModule):
         """
         # 挂载数据文件到内存（覆盖）
         """
-        path = scope+'\\'+self.dot2path(dot_path)
+        file_level = 'main'
+        path = ''
+        if os.path.exists(scope+'\\'+self.dot2path(dot_path)):
+            path = scope+'\\'+self.dot2path(dot_path)
+        else:
+            cfg = self.get_data('sys', 'config')
+            for mod_info in self.get_data('sys', 'config')['mod']:
+                if mod_info['enabled'] and dot_path.split('.')[0] == mod_info['name']:
+                    path = '{}\\{}\\{}'.format(
+                        mod_info['path'], scope, self.dot2path(dot_path))
+
         data = self.read(path)
         self.__data[scope][dot_path] = data
 
