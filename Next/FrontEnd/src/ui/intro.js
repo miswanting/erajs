@@ -9,6 +9,7 @@ window.components.push(['i-intro', {
 window.components.push(['i-intro-main', {
   render () {
     return Vue.h('main', { class: 'intro' }, [
+      Vue.h(app.component('i-sp-canvas')),
       Vue.h('div', { class: 'loading-banner' }, [
         Vue.h('div', { class: 'loading-group' }, [
           Vue.h(app.component('loading-logo')),
@@ -19,6 +20,129 @@ window.components.push(['i-intro-main', {
       ])
     ])
   }
+}])
+window.components.push(['i-sp-canvas', {
+  mounted () {
+    const particalCount = 400
+    const speedRadiusRate = 1.0
+    const vanishRadius = 120
+    const particalData = new Map()
+    glMatrix.glMatrix.setMatrixArrayType(Array)
+    const main = document.querySelector('main')
+    let viewportSize = glMatrix.vec2.fromValues(main.clientWidth, main.clientHeight)
+    console.log(main.clientWidth)
+    let screenCenter = glMatrix.vec2.scale([], viewportSize, 0.5)
+    let ScreenRadius = glMatrix.vec2.length(screenCenter)
+    // ScreenRadius = 200
+    const canvas = document.querySelector('canvas')
+    canvas.setAttribute('width', viewportSize[0])
+    canvas.setAttribute('height', viewportSize[1])
+    // canvas.setAttribute('style', 'height:100%')
+    // main.appendChild(canvas)
+    const ctx = canvas.getContext('2d')
+    ctx.fillStyle = '#333639'
+    ctx.fillRect(0, 0, viewportSize[0], viewportSize[1])
+    function getRandomColor () {
+      let color = ''
+      if (Math.random() > 0.1) {
+        color = '#999'
+      } else if (Math.random() > 0.1) {
+        color = '#900'
+      } else if (Math.random() > 0.1) {
+        color = '#099'
+      } else {
+        color = '#990'
+      }
+      return color
+    }
+    function newPartical () {
+      if (Math.random() > 0.5) {
+        const array = new Uint32Array(1)
+        crypto.getRandomValues(array)
+        const birthAngle = Math.random() * Math.PI * 2
+        const p = {
+          p: glMatrix.vec2.fromValues(
+            screenCenter[0] + Math.cos(birthAngle) * ScreenRadius,
+            screenCenter[1] + Math.sin(birthAngle) * ScreenRadius
+          ),
+          s: glMatrix.vec2.random([]),
+          a: glMatrix.vec2.random([]),
+          r: Math.random() * 1.5 + 0.5,
+          c: getRandomColor()
+        }
+        // console.log(JSON.stringify(p));
+        particalData.set(array[0], p)
+      }
+    }
+
+    function drive (p) {
+      // if (p.a > Math.PI) {
+      //     p.a = p.a % Math.PI
+      // } else if (p.a < - Math.PI) {
+      //     p.a = -(-p.a % Math.PI)
+      // }
+      const targetSpeed = 1
+      const sd = glMatrix.vec2.normalize([], p.s)
+      const speed = glMatrix.vec2.length(p.s)
+      const td = glMatrix.vec2.normalize([], glMatrix.vec2.subtract([], screenCenter, p.p))
+      const distance = glMatrix.vec2.length(glMatrix.vec2.subtract([], screenCenter, p.p))
+      const will = 1 - (distance - vanishRadius) / ScreenRadius
+      const newA = glMatrix.vec2.create()
+      // console.log(will);
+      if (Math.random() > 1.6 - will) {
+        glMatrix.vec2.add(newA, newA, glMatrix.vec2.scale([], glMatrix.vec2.rotate([], sd, [0, 0], Math.PI / 2), glMatrix.vec2.cross([], sd, td)[2] / 4))
+      } else {
+        glMatrix.vec2.add(newA, newA, glMatrix.vec2.scale([], glMatrix.vec2.rotate([], sd, [0, 0], Math.PI / 2), (Math.random() - 0.5) / 1.5))
+      }
+      glMatrix.vec2.add(newA, newA, glMatrix.vec2.scale([], sd, (targetSpeed - speed) / 10))
+      p.a = newA
+      // console.log(speed);
+      // glMatrix.vec2.normalize(p.a, glMatrix.vec2.subtract([], screenCenter, p.p))
+      glMatrix.vec2.add(p.s, p.s, p.a)
+      glMatrix.vec2.add(p.p, p.p, p.s)
+      return p
+    }
+    window.addEventListener('resize', () => {
+      viewportSize = glMatrix.vec2.fromValues(main.clientWidth, main.clientHeight)
+      canvas.setAttribute('width', viewportSize[0])
+      canvas.setAttribute('height', viewportSize[1])
+      screenCenter = glMatrix.vec2.scale([], viewportSize, 0.5)
+      ScreenRadius = glMatrix.vec2.length(screenCenter)
+    })
+    function render () {
+      ctx.beginPath()
+      ctx.fillStyle = '#33363925'
+      ctx.fillRect(0, 0, viewportSize[0], viewportSize[1])
+      for (let i = 0; i < particalCount - particalData.size; i++) {
+        newPartical()
+      }
+      particalData.forEach((v, k) => {
+        if (
+          glMatrix.vec2.length(glMatrix.vec2.subtract([], screenCenter, v.p)) < vanishRadius ||
+          glMatrix.vec2.length(glMatrix.vec2.subtract([], screenCenter, v.p)) > ScreenRadius + vanishRadius
+        ) {
+          particalData.delete(k)
+        }
+        // console.log(v.p);
+        v = drive(v)
+        ctx.beginPath()
+        ctx.fillStyle = v.c
+        ctx.arc(v.p[0], v.p[1], v.r, 0, 2 * Math.PI)
+        ctx.fill()
+        // helper
+        // ctx.beginPath();
+        // ctx.lineWidth = 1
+        // ctx.strokeStyle = '#f00'
+        // ctx.moveTo(v.p[0], v.p[1])
+        // ctx.lineTo(v.p[0] + v.s[0] * 10, v.p[1] + v.s[1] * 10)
+        // ctx.lineTo(v.p[0] + v.s[0] * 10 + v.a[0] * 20, v.p[1] + v.s[1] * 10 + v.a[1] * 20)
+        // ctx.stroke()
+      })
+      window.requestAnimationFrame(render)
+    }
+    window.requestAnimationFrame(render)
+  },
+  template: '<canvas id="sp" style="position:absolute"><canvas>'
 }])
 window.components.push(['loading-heading', {
   mounted () {
@@ -147,18 +271,11 @@ window.components.push(['loading-logo', {
       }]
     })
     anime({
-      targets: '#logo-text-mask',
-      delay: 5000,
-      keyframes: [{
-        translateX: -250,
-        duration: 1000
-      }]
-    })
-    anime({
       targets: '#logo-text',
       delay: 5000,
       keyframes: [{
         translateX: 100,
+        scaleX: [0, 1],
         duration: 1000
       }]
     })
@@ -174,12 +291,11 @@ window.components.push(['loading-logo', {
   template: `<svg width="300px" height="150px">
     <g style="transform:translate(150px,75px)scale(0.5,0.5)">
       <text id="logo-text" fill="var(--default-front)" style="text-anchor:middle;font-weight:bold;font-size:120px;transform:translateX(0px)translateY(47px)">Era.js</text>
-      <rect id="logo-text-mask" x="-160" y="-140" width="320px" height="280px" fill="var(--default-back)"></rect>
     </g>
     <g id="logo-icon" style="transform:translate(150px,75px)scale(0.5,0.5)">
       <g id="icon-eye">
         <g id="eye-pupil">
-          <circle id="pupil-core" r=50 fill="red" style="transform:scale(0)"></circle>
+          <circle id="pupil-core" r=50 fill="#d00" style="transform:scale(0)"></circle>
         </g>
         <polygon id="eye-tri1" points="-50,-50 50,-50 -50,50" fill="var(--default-front)" style="opacity:0"></polygon>
         <polygon id="eye-tri2" points="50,50 50,-50 -50,50" fill="var(--default-front)" style="opacity:0"></polygon>

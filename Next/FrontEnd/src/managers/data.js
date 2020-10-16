@@ -1,5 +1,5 @@
 window.store = Vuex.createStore({
-  state() {
+  state () {
     return {
       style: {},
       title: 'Era.js',
@@ -55,9 +55,9 @@ window.store = Vuex.createStore({
     }
   },
   mutations: {
-    changeUI() { },
-    appendComponent() { },
-    parsePackage(state, pkg) {
+    changeUI () { },
+    appendComponent () { },
+    parsePackage (state, pkg) {
       console.log('Parse:', pkg)
       if (pkg.type === 'connection') {
         state.ui = 'intro'
@@ -118,7 +118,7 @@ window.store = Vuex.createStore({
       }
       console.log('Final:', state)
     },
-    handleEvent(state, pkg) {
+    handleEvent (state, pkg) {
       if ([
         'MOUSE_CLICK',
         'KEY_UP',
@@ -147,7 +147,7 @@ window.store = Vuex.createStore({
     }
   }
 })
-function dispersePoints(pointsList, n = 5) {
+function dispersePoints (pointsList, n = 5) {
   for (let i = 0; i < n; i++) {
     const delaunay = d3.Delaunay.from(pointsList)
     const voronoi = delaunay.voronoi([0, 0, this.$refs.map.clientWidth, this.$refs.map.clientHeight])

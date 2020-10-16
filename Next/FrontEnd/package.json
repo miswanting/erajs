@@ -34,13 +34,18 @@
     "csshake": "latest",
     "d3": "latest",
     "d3-delaunay": "latest",
+    "d3-geo-voronoi": "latest",
     "electron-is-dev": "latest",
+    "gl-matrix": "latest",
     "hover.css": "latest",
     "normalize.css": "latest",
     "react": "latest",
     "react-dom": "latest",
     "simplex-noise": "latest",
+    "three": "latest",
     "tippy.js": "latest",
+    "topojson": "latest",
+    "versor": "latest",
     "vue": "next",
     "vuex": "next"
   },
@@ -68,6 +73,8 @@
       "CustomEvent",
       "AST",
       "SimplexNoise",
+      "THREE",
+      "glMatrix",
       "d3"
     ],
     "ignore": [
