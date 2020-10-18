@@ -3,6 +3,7 @@ import importlib.util
 import os
 import sys
 from pathlib import Path
+from typing import Any, Dict, Text
 
 import semver
 
@@ -20,18 +21,18 @@ class ModModule(api.APIModule):
 
     def __init__(self):
         super().__init__()
-        self.__data = {
+        self.__data: Dict[Text, Any] = {
             'load_queue': []
         }
 
-    def isExist(self, mod_name):
+    def isExist(self, mod_name: Text):
         cfg = self.get_data('sys', 'config')
         for i, mod in enumerate(cfg['mod']):
             if mod_name == mod['name']:
                 return i
         return -1
 
-    def scan_mods(self):
+    def scan_mods(self) -> None:
         mod_info_list = []
         # 验证配置有效性
         cfg = self.get_data('sys', 'config')
@@ -87,7 +88,7 @@ class ModModule(api.APIModule):
                 self.load_mod(mod['name'])
                 self.emit('mod_loaded', {'value': mod['name']})
 
-    def load_mod(self, name):
+    def load_mod(self, name: Text):
         cfg = self.get_data('sys', 'config')
         path = cfg['mod'][self.isExist(name)]['path']
         meta_path = path+'\\meta.json'

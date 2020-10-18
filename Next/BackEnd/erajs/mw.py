@@ -1,6 +1,7 @@
+from erajs.engine import Engine
 import os
 import time
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Text, Tuple
 
 from . import engine
 from .modules import tools
@@ -8,7 +9,7 @@ from .modules import tools
 e = engine.Engine()
 
 
-def init(config: dict = None):
+def init(config: Optional[Dict[Text, Any]] = None):
     """
     # Initialization Process
     """
@@ -185,15 +186,15 @@ def init(config: dict = None):
     })
 
 
-def config(data):
+def config(data: Dict[Text, Any]):
     e.set_config(data)
 
 
-def entry(entry_func):
+def entry(entry_func: Callable[[], Any]):
     e.register_entry(entry_func)
 
 
-def start(host='0.0.0.0', port=80):
+def start(host: Text = '0.0.0.0', port: int = 80):
     e.listen(host, port)
 
 
@@ -201,40 +202,40 @@ def exit():
     pass
 
 
-def debug(*arg: str):
-    e.debug(*arg, **kw)
-    # e.print('DEBG', ' '.join(arg))
+# def debug(*arg: str, **kw: Dict[Text, Any]):
+#     e.debug(*arg, **kw)
+#     # e.print('DEBG', ' '.join(arg))
 
 
-def info(*arg: str):
-    e.info(*arg, **kw)
-    # e.print('INFO', ' '.join(arg))
+# def info(*arg: str, **kw: Dict[Text, Any]):
+#     e.info(*arg, **kw)
+#     # e.print('INFO', ' '.join(arg))
 
 
-def warn(*arg: str):
-    e.warn(*arg, **kw)
-    # e.print('WARN', ' '.join(arg))
+# def warn(*arg: str, **kw: Dict[Text, Any]):
+#     e.warn(*arg, **kw)
+#     # e.print('WARN', ' '.join(arg))
 
 
-def error(*arg: str):
-    e.error(*arg, **kw)
-    # e.print('ERRO', ' '.join(arg))
+# def error(*arg: str, **kw: Dict[Text, Any]):
+#     e.error(*arg, **kw)
+#     # e.print('ERRO', ' '.join(arg))
 
 
-def critical(*arg: str):
-    e.critical(*arg, **kw)
-    # e.print('!!!!', ' '.join(arg))
+# def critical(*arg: str, **kw: Dict[Text, Any]):
+#     e.critical(*arg, **kw)
+#     # e.print('!!!!', ' '.join(arg))
 
 
-def window(style):
+def window(style: Dict[Text, Any]):
     e.push('window', None, style)
 
 
-def title(text, style):
+def title(text: Text, style: Dict[Text, Any]):
     e.push('title', {'text': str(text)}, style)
 
 
-def footer(text):
+def footer(text: Text):
     e.push('footer', {'text': str(text)}, None)
 
 
@@ -242,28 +243,28 @@ def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):
     e.push('msg', {'text': str(text), 'duration': duration}, style)
 
 
-def page(style):
+def page(style: Dict[Text, Any]):
     e.remove_all_listeners()
     e.push('page', None, style)
 
 
-def cls(num):
+def cls(num: int = 0):
     e.push('cls', {'num': num}, None)
 
 
-def mode(type, *arg, **kw):
+def mode(type: Text, *arg: List[Any], **kw: Dict[Text, Any]):
     e.push('mode', {'type': type, 'arg': arg}, None)
 
 
-def divider(text, style):
+def divider(text: Text, style: Dict[Text, Any]):
     e.push('divider', {'text': text}, style)
 
 
-def heading(text, rank, style):
+def heading(text: Text, rank: int, style: Dict[Text, Any]):
     e.push('heading', {'text': str(text), 'rank': rank}, style)
 
 
-def text(text, wait, style):
+def text(text: Text, wait: bool, style: Dict[Text, Any]):
     if text == None or text == '':
         e.push('pass', None, None)
     else:
@@ -286,7 +287,7 @@ def text(text, wait, style):
         e.wait_for_unlock()
 
 
-def button(text, callback, *arg, **kw):
+def button(text: Text, callback: Callable[[], None], *arg: List[Any], **kw: Dict[Text, Any]):
     data = {
         'text': str(text),
         'hash': tools.random_hash()
@@ -316,7 +317,7 @@ def button(text, callback, *arg, **kw):
     e.unlock()
 
 
-def link(text, callback, style, *arg, **kw):
+def link(text: Text, callback: Callable[[], None], style: Dict[Text, Any], *arg: List[Any], **kw: Dict[Text, Any]):
     data = {
         'text': str(text),
         'hash': tools.random_hash()
@@ -342,13 +343,13 @@ def link(text, callback, style, *arg, **kw):
     e.unlock()
 
 
-def progress(now=0, max=100, style=None):
+def progress(now: int = 0, max: int = 100, style: Optional[Dict[Text, Any]] = None):
     if style is None:
         style = [{}, {}]
     e.push('progress', {'now': now, 'max': max}, style)
 
 
-def rate(now=0, max=5, callback=None, style=None):
+def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[float], None]] = None, style: Optional[Dict[Text, Any]] = None):
     data = {
         'now': now,
         'max': max,
@@ -371,7 +372,7 @@ def rate(now=0, max=5, callback=None, style=None):
     return node
 
 
-def check(text, callback, default, style):
+def check(text: Text, callback: Callable[[bool], None], default: bool, style: Dict[Text, Any]):
     data = {
         'text': str(text),
         'default': default,
@@ -393,7 +394,7 @@ def check(text, callback, default, style):
     return node
 
 
-def radio(text_list, callback, default_index, style):
+def radio(text_list: List[Text], callback: Callable[[Dict[Text, Tuple[int, Text]]], None], default_index: int, style: Dict[Text, Any]):
     data = {
         'text_list': text_list,
         'default_index': default_index,
@@ -419,7 +420,7 @@ def radio(text_list, callback, default_index, style):
     return node
 
 
-def input(callback, default, is_area, placeholder, style):
+def input(callback: Callable[[Text], None], default: Text, is_area, placeholder, style: Dict[Text, Any]):
     data = {
         'default': default,
         'is_area': is_area,
@@ -442,7 +443,7 @@ def input(callback, default, is_area, placeholder, style):
     return node
 
 
-def dropdown(text_list, callback, default_index, search, multiple, placeholder, allowAdditions, style):
+def dropdown(text_list, callback, default_index, search, multiple, placeholder, allowAdditions, style: Dict[Text, Any]):
     data = {
         'text_list': text_list,
         'default_index': default_index,
@@ -500,30 +501,30 @@ def get_gui_stack():
     pass
 
 
-def cfg(dot_path=None):
+def cfg(dot_path: Text = ''):
     return e.get_data(dot_path, 'config')
 
 
-def dat(dot_path=None):
+def dat(dot_path: Text = ''):
     return e.get_data(dot_path)
 
 
-def sav(dot_path=None):
+def sav(dot_path: Text = ''):
     return e.get_data(dot_path, 'save')
 
 
-def tmp(dot_path=None):
+def tmp(dot_path: Text = ''):
     return e.get_data(dot_path, 'temp')
 
 
-def write_cfg(dot_path=None, ext='yaml'):
+def write_cfg(dot_path: Text = '', ext='yaml'):
     # dot_path转换为path
     path = 'config\\'+e.dot2path(dot_path, ext)
     # 将data导出到path
     e.write(e.get_data(dot_path, 'config'), path)
 
 
-def write_dat(dot_path=None, ext='json'):
+def write_dat(dot_path: Text = '', ext='json'):
     # dot_path转换为path
     path = 'data\\'+e.dot2path(dot_path, ext)
     # 将data导出到path
@@ -569,7 +570,7 @@ def set_console_parser(parser):
     e.on('CONSOLE_INPUT', on_console_input)
 
 
-def random_hash(level=4):
+def random_hash(level: int = 4):
     return tools.random_hash(level)
 
 

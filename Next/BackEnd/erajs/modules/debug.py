@@ -9,7 +9,7 @@ from ..prototypes import singleton
 class DebugModule(singleton.Singleton):
     def __init__(self) -> None:
         super().__init__()
-        formatter = logging.Formatter('')
+        formatter = logging.Formatter()
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setFormatter(formatter)
         file_handler = logging.FileHandler('Erajs.log', 'w', 'utf-8')

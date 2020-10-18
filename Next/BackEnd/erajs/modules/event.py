@@ -1,5 +1,5 @@
 import threading
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Text, Tuple
 
 from . import debug
 
@@ -11,9 +11,9 @@ class EventModule(debug.DebugModule):
 
     def __init__(self) -> None:
         super().__init__()
-        self.__listener_list: List[Dict[str, str | None]] = []
+        self.__listener_list: List[Dict[str, Any]] = []
 
-    def on(self, type: str, listener: Callable[[Any, Any], Any], *arg: Tuple[Any, Any], **kw: Dict[Any, Any]) -> None:
+    def on(self, type: str, listener: Callable[[], Any], *arg: Tuple[Any, Any], **kw: Dict[Any, Any]) -> None:
         new_listener = {
             'type': type,
             'listener': listener,
@@ -84,5 +84,5 @@ class EventModule(debug.DebugModule):
         for each in self.__listener_list:
             print(each)
 
-    def get_listener_list(self) -> List[dict]:
+    def get_listener_list(self) -> List[Dict[Text, Any]]:
         return self.__listener_list

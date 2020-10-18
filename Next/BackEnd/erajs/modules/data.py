@@ -1,11 +1,12 @@
 import os
-from typing import Any, Dict, List, Text, Tuple
-# from typing import Any, Dict, List
+from typing import Any, Dict, List, Literal, Optional, Text, Tuple
 
 from ..file_format_support import (cfg_file, csv_file, json_file, save_file,
                                    text_file, yaml_file, zip_file)
 # from . import DotPath  # EventManager, LogManager, Prototypes, Tools
 from . import event, tools
+
+# from typing import Any, Dict, List
 
 
 class DataModule(event.EventModule):
@@ -217,7 +218,7 @@ class DataModule(event.EventModule):
         #     event_type.DATA_FILES_LOAD_FINISHED, len(file_list)
         # )
 
-    def get_data(self, dot_path=None, scope='data'):
+    def get_data(self, dot_path: Text = '', scope: Literal['config', 'data', 'save', 'temp'] = 'data'):
         if scope == 'config':
             if dot_path is None:
                 return self.__data[scope]
@@ -279,12 +280,12 @@ class DataModule(event.EventModule):
     # def tmp(self):
     #     return self.__data['temp']
 
-    def read(self, path: Text, mode=None) -> Tuple[Dict[Text, Any], List[Any]]:
+    def read(self, path: Text):
         """
         # 读取文件到数据
         """
         ext = os.path.splitext(path)[1][1:].lower()
-        data = None
+        data: Any = None
         if ext in ['inf', 'ini', 'cfg', 'config']:
             data = cfg_file.read(path)
         elif ext == 'csv':
@@ -301,7 +302,7 @@ class DataModule(event.EventModule):
             data = save_file.read(path)
         return data
 
-    def write(self, data, path, mode=None):
+    def write(self, data: Any, path: Text):
         """
         # 写入数据到文件
         """
@@ -337,7 +338,7 @@ class DataModule(event.EventModule):
         ext = path.split('.')[-1]
         return [dot_path, ext]
 
-    def dot2path(self, dot_path, ext='json'):
+    def dot2path(self, dot_path: Text, ext: Literal['json', 'save'] = 'json'):
         """
         # 将点路径转换为路径
         ## 要求
@@ -352,7 +353,7 @@ class DataModule(event.EventModule):
         #         paths.append(root+'\\'+tmp_path)
         return path
 
-    def mount(self, dot_path: str, scope='data') -> None:
+    def mount(self, dot_path: Text, scope: Literal['config', 'data', 'save', 'temp'] = 'data') -> None:
         """
         # 挂载数据文件到内存（覆盖）
         """
@@ -382,7 +383,7 @@ class DataModule(event.EventModule):
     #     """
     #     pass
 
-    def save(self, filename_without_ext=None, meta_info=None):
+    def save(self, filename_without_ext: Text = '', meta_info: Optional[Dict[Text, Any]] = None):
         if meta_info:
             self.__data['save']['meta'] = meta_info
         else:
@@ -396,10 +397,10 @@ class DataModule(event.EventModule):
         if not filename_without_ext:
             path = 'save\\quick.save'
         else:
-            path = 'save\\'+self.dot2path(filename_without_ext, 'save')
+            path: Text = 'save\\'+self.dot2path(filename_without_ext, 'save')
         self.write(self.__data['save'], path)
 
-    def load(self, filename_without_ext=None):
+    def load(self, filename_without_ext: Text = ''):
         path = ''
         if not filename_without_ext:
             path = 'save\\quick.save'

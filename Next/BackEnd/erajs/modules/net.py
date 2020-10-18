@@ -3,6 +3,7 @@ import os
 import socket
 import threading
 import time
+from typing import Any, Text
 
 from . import debug, event
 
@@ -13,7 +14,7 @@ class NetModule(event.EventModule):
         self.isConnected = False
         self.s = None  # socket
 
-    def connect(self, host='localhost', port=11994):
+    def connect(self, host: Text = 'localhost', port:int=11994):
         t = threading.Thread(
             None,
             self.connector,
@@ -24,15 +25,15 @@ class NetModule(event.EventModule):
         while not self.isConnected:
             time.sleep(0.1)
 
-    def send(self, data):
+    def send(self, data: Any):
         # self.debug('Send: '+str(data))
         self.s.send(json.dumps(data, ensure_ascii=False).encode())
 
-    def recv(self, data):
+    def recv(self, data: Any):
         # self.debug('Recv: '+str(data))
         self.emit(data['type'], data)
 
-    def connector(self, host, port):
+    def connector(self, host: Text, port: int):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             self.s = s
             try:

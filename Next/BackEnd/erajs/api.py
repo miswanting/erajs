@@ -23,7 +23,8 @@ def config(config: Optional[Dict[str, Any]] = None) -> None:
     """
     # （设置引擎参数） TODO
     """
-    current_config = config
+    # current_config = config
+    pass
 
 
 def entry(ui_func: Callable[[], None]) -> None:

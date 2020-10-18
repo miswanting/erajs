@@ -4,9 +4,10 @@ import os
 import random
 import secrets
 import sys
+from typing import Text
 
 
-def file_hash(path):
+def file_hash(path: Text):
     """
     # 获取文件MD5值
     """
@@ -22,7 +23,7 @@ def file_hash(path):
     return hasher.hexdigest().upper()
 
 
-def random_hash(level=4):
+def random_hash(level: int = 4):
     """
     # 随机哈希值生成器
     返回随机生成的哈希字符串

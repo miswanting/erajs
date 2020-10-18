@@ -25,7 +25,7 @@ class LockModule:
         else:
             return False
 
-    def lock_passed(self) -> None:
+    def lock_passed(self) -> bool:
         # print('lock_passed')
         if self.__lock_status[0] == -1:
             return True
