@@ -124,11 +124,11 @@ def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None) 
 
 
 ########## 页面管理 ##########
-def page(style: Optional[Dict[str, str]] = None) -> object:
+def page(style: Optional[Dict[str, str]] = None, *exception_tags: List[str]) -> object:
     """
     # 生成新的空白页面
     """
-    m.page(style)
+    m.page(style, *exception_tags)
 
 
 def cls(num: int = 0) -> None:
@@ -387,7 +387,7 @@ def emit(event_name: str, *arg: Any, **kw: Any) -> None:
 
 
 ########## 实验性 ##########
-def dangerously_get_engine_core() -> object:
+def dangerously_get_engine_core():
     """
     # 获取引擎核心（危险）
     """

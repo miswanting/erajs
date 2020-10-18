@@ -13,25 +13,23 @@ class EventModule(debug.DebugModule):
         super().__init__()
         self.__listener_list: List[Dict[str, Any]] = []
 
-    def on(self, type: str, listener: Callable[[], Any], *arg: Tuple[Any, Any], **kw: Dict[Any, Any]) -> None:
+    def on(self, type: str, listener: Callable[[], Any],  *tags: List[str]) -> None:
         new_listener = {
             'type': type,
             'listener': listener,
-            'one_time': False,
-            'arg': arg,
-            'kw': kw
+            'once': False,
+            'tags': tags
         }
         # print('On:', new_listener)
         self.__listener_list.append(new_listener)
     add_listener = on
 
-    def once(self, type: str, listener: Callable[[Any, Any], Any], *arg: Tuple[Any, Any], **kw: Dict[Any, Any]) -> None:
+    def once(self, type: str, listener: Callable[[Any, Any], Any], *tags: List[str]) -> None:
         new_listener = {
             'type': type,
             'listener': listener,
-            'one_time': True,
-            'arg': arg,
-            'kw': kw
+            'once': True,
+            'tags': tags
         }
         self.__listener_list.append(new_listener)
 
@@ -41,10 +39,12 @@ class EventModule(debug.DebugModule):
                 self.__listener_list.pop(i)
     off = remove_listener
 
-    def remove_all_listeners(self) -> None:
+    def remove_all_listeners(self, *exception_tags: List[str]) -> None:
         new_listener_list = []
         for listener in self.__listener_list:
             if listener['type'] == 'CONSOLE_INPUT':
+                new_listener_list.append(listener)
+            elif listener['tags'] in exception_tags:
                 new_listener_list.append(listener)
         self.__listener_list = new_listener_list
 
@@ -61,7 +61,7 @@ class EventModule(debug.DebugModule):
             if event['type'] != listener['type']:
                 i += 1
                 continue
-            if listener['one_time']:
+            if listener['once']:
                 self.__listener_list.pop(i)
                 i -= 1
             ##

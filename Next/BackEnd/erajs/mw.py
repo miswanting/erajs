@@ -243,8 +243,8 @@ def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):
     e.push('msg', {'text': str(text), 'duration': duration}, style)
 
 
-def page(style: Dict[Text, Any]):
-    e.remove_all_listeners()
+def page(style: Optional[Dict[str, str]] = None, *exception_tags: List[str]):
+    e.remove_all_listeners(*exception_tags)
     e.push('page', None, style)
 
 

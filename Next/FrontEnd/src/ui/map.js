@@ -2,9 +2,9 @@ components.push(['i-map-manager', {
   template: '<i-header></i-header><map-main></map-main>'
 }])
 components.push(['map-main', {
-  mounted() {
+  mounted () {
     const AreaQuantity = 50000
-    function generatePointsUsingFibonacci(pointAmount) {
+    function generatePointsUsingFibonacci (pointAmount) {
       const points = []
       const phi = 180 * (3 - Math.sqrt(5))
       for (let i = 0; i < pointAmount; i++) {
@@ -15,7 +15,7 @@ components.push(['map-main', {
       }
       return points
     }
-    function coordinates2XYZ(lon, lat) {
+    function coordinates2XYZ (lon, lat) {
       const rlon = lon / 180 * Math.PI
       const rlat = lat / 180 * Math.PI
       const x = Math.cos(rlon) * Math.cos(rlat)
@@ -23,9 +23,9 @@ components.push(['map-main', {
       const z = Math.sin(rlon) * Math.cos(rlat)
       return [x, y, z]
     }
-    function XYZ2Coordinates(x, y, z) { }
-    function convertFromGeoJSON(polygons) { }
-    function convertFromGeo(polygons) {
+    function XYZ2Coordinates (x, y, z) { }
+    function convertFromGeoJSON (polygons) { }
+    function convertFromGeo (polygons) {
       const noise = new SimplexNoise()
       const data = []
       for (let i = 0; i < polygons.features.length; i++) {
@@ -81,14 +81,14 @@ components.push(['map-main', {
       }
       return data
     }
-    function randomizePoints(points) {
+    function randomizePoints (points) {
       for (let i = 0; i < points.length; i++) {
         points[i][0] = points[i][0] + (Math.random() - 0.5) * 10
         // points[i][1] = points[i][1] + (Math.random() - 0.5) * 10
       }
       return points
     }
-    function scratterPoints(points, n) {
+    function scratterPoints (points, n) {
       for (let i = 0; i < n; i++) {
         const polygons = d3.geoVoronoi(points).polygons()
         for (let j = 0; j < polygons.features.length; j++) {
@@ -196,7 +196,7 @@ components.push(['map-main', {
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2()
 
-    function onMouseMove(e) {
+    function onMouseMove (e) {
       // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
       mouse.x = (e.clientX / viewportSize[0]) * 2 - 1
       mouse.y = -(e.clientY / viewportSize[1]) * 2 + 1
@@ -206,7 +206,7 @@ components.push(['map-main', {
     let needResize = false
     addEventListener('resize', () => { needResize = true })
 
-    function render() {
+    function render () {
       if (needResize) {
         glMatrix.vec2.set(
           viewportSize,
