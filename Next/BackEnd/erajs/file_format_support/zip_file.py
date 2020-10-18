@@ -1,8 +1,9 @@
 import json
 import zipfile
+from typing import Any, Text
 
 
-def read(file_path):
+def read(file_path: Text):
     with zipfile.ZipFile(file_path) as z:
         data = {}
         for file_name in z.namelist():
@@ -13,7 +14,7 @@ def read(file_path):
     return data
 
 
-def write(file_path, data):
+def write(file_path: Text, data: Any):
     with zipfile.ZipFile(file_path, 'w', zipfile.ZIP_LZMA) as z:
         for key in data:
             z.writestr(

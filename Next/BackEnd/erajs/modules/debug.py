@@ -1,6 +1,7 @@
+import datetime
 import logging
 import sys
-import datetime
+from typing import Literal, Text
 
 from ..prototypes import singleton
 
@@ -19,23 +20,32 @@ class DebugModule(singleton.Singleton):
             self.__logger.addHandler(stream_handler)
             self.__logger.addHandler(file_handler)
 
-    def debug(self, text: str = '') -> None:
-        self.print('DEBG', text)
+    def debug(self, text: Text = '') -> None:
+        self.__print('DEBG', text)
 
-    def info(self, text: str = '') -> None:
-        self.print('INFO', text)
+    def info(self, text: Text = '') -> None:
+        self.__print('INFO', text)
 
-    def warn(self, text: str = '') -> None:
-        self.print('WARN', text)
+    def warn(self, text: Text = '') -> None:
+        self.__print('WARN', text)
 
-    def error(self, text: str = '') -> None:
-        self.print('ERRO', text)
+    def error(self, text: Text = '') -> None:
+        self.__print('ERRO', text)
 
-    def critical(self, text: str = '') -> None:
-        self.print('!!!!', text)
+    def critical(self, text: Text = '') -> None:
+        self.__print('!!!!', text)
 
-    def print(self, logo: str = 'DEBG', text: str = '') -> None:
-        temp = '[{}]({}){}'
+    def __print(
+        self,
+        logo: Literal[
+            'DEBG',
+            'INFO',
+            'WARN',
+            'ERRO',
+            '!!!!'] = 'DEBG',
+        text: Text = ''
+    ) -> None:
+        template = '[{}]({}){}'
         date = datetime.datetime.today()
-        text = temp.format(logo, date.strftime("%y%m%d-%H%M%S-%f"), text)
+        text = template.format(logo, date.strftime("%y%m%d-%H%M%S-%f"), text)
         self.__logger.debug(text)

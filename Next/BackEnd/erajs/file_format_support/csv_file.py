@@ -1,7 +1,8 @@
 import csv
+from typing import Any, Dict, List, Literal, Optional, Text, Tuple
 
 
-def read(file_path, mode='list'):
+def read(file_path: Text, mode: Literal['list', 'dict'] = 'list'):
     """
     # 读取CSV文件
     ## 两种模式
@@ -11,6 +12,7 @@ def read(file_path, mode='list'):
     """
     with open(file_path, 'r', newline='', encoding='utf-8') as f:
         reader = csv.reader(f)
+        data: Optional[Tuple[List[List[Text]], Dict[Text, Any]]] = None
         if mode == 'list':
             data = []
             for row in reader:
@@ -20,7 +22,7 @@ def read(file_path, mode='list'):
     return data
 
 
-def write(file_path, data):
+def write(file_path: Text, data: Tuple[List[List[Text]], Dict[Text, Any]]):
     if isinstance(data, list):
         with open(file_path, 'w', newline='', encoding='utf-8') as f:
             reader = csv.writer(f)

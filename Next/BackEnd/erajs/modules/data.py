@@ -1,9 +1,10 @@
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Text, Tuple
+# from typing import Any, Dict, List
 
-from ..file_format_support import (cfg_file, csv_file, json_file, text_file,
-                                   yaml_file, zip_file, save_file)
-from . import DotPath  # EventManager, LogManager, Prototypes, Tools
+from ..file_format_support import (cfg_file, csv_file, json_file, save_file,
+                                   text_file, yaml_file, zip_file)
+# from . import DotPath  # EventManager, LogManager, Prototypes, Tools
 from . import event, tools
 
 
@@ -60,7 +61,7 @@ class DataModule(event.EventModule):
 
         """
         super().__init__()
-        self.__data = {
+        self.__data: Dict[Text, Any] = {
             "system": {},  # cfg【NEW】
             "config": {},  # cfg【NEW】
             'data': {},  # dat【NEW】
@@ -166,9 +167,9 @@ class DataModule(event.EventModule):
     #     elif ext == 'txt':
     #         text_file.write(file_path, data)
 
-    def scan(self, path):
+    def scan(self, path: Text):
         files = []
-        for dirpath, dirnames, filenames in os.walk(path, True):
+        for dirpath, _, filenames in os.walk(path, True):
             for filename in filenames:
                 files.append(dirpath + '\\' + filename)
                 # dispatcher.dispatch(
@@ -278,7 +279,7 @@ class DataModule(event.EventModule):
     # def tmp(self):
     #     return self.__data['temp']
 
-    def read(self, path, mode=None):
+    def read(self, path: Text, mode=None) -> Tuple[Dict[Text, Any], List[Any]]:
         """
         # 读取文件到数据
         """
@@ -325,7 +326,7 @@ class DataModule(event.EventModule):
     #     path = "{}/{}.{}".format(folder_path, file_name, file_extension)
     #     return path
 
-    def path2dot(self, path):
+    def path2dot(self, path: Text) -> List[Text]:
         """
         # 将路径转换为点路径
         ## 要求
