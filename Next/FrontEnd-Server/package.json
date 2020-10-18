@@ -1,0 +1,32 @@
+{
+  "name": "erajs-frontend-server",
+  "version": "0.1.0",
+  "description": "Next-Generation HyperText Game Engine.",
+  "main": "src/server.js",
+  "scripts": {
+    "setup": "npm i",
+    "start": "node .",
+    "check": "npx standard",
+    "fix": "npx standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/Era.js.git"
+  },
+  "author": "Miswanting",
+  "license": "GPL-3.0+",
+  "dependencies": {
+    "@popperjs/core": "latest",
+    "animejs": "latest",
+    "csshake": "latest",
+    "normalize.css": "latest",
+    "simplex-noise": "latest",
+    "three": "latest",
+    "tippy.js": "latest",
+    "vue": "next",
+    "vuex": "next"
+  },
+  "devDependencies": {
+    "standard": "latest"
+  }
+}
