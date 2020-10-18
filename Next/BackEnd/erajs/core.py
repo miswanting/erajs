@@ -172,16 +172,27 @@ class DataManager(EventManager):
 
 
 class DomainManager(DataManager):
+    """
+    1. 服务器上线，读取entry后待机
+    2. 用户登入，
+        - 游客：无User ID，无Cookie（登录/注册）
+        - 注册用户：有User ID，无Cookie（登录/注册）
+        - 非活动用户：有User ID，有Cookie
+    3. 调用entry
+
+    """
+
     def __init__(self):
         super().__init__()
         self.__data = {
             'domain': {}
         }
 
-    def new_domain(self):
-        return {
-            hash
-        }
+    def join(self):
+        pass
+
+    def leave(self):
+        pass
 
 
 class NetManager(DomainManager):
