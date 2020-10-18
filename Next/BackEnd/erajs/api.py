@@ -1,5 +1,7 @@
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Text
+
 from . import mw as m
+
 version = '0.2.0-α+200612'
 aka = 'Dark Elf'
 data = None
@@ -399,7 +401,7 @@ def set_console_parser(parser: Callable[[str], str]) -> None:
 
 
 ########## 工具 ##########
-def random_hash(level: int = 4) -> str:
+def random_hash(level: int = 4) -> Text:
     """
     # 获取随机哈希值
     """
