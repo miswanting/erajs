@@ -235,8 +235,8 @@ def title(text: Text, style: Dict[Text, Any]):
     e.push('title', {'text': str(text)}, style)
 
 
-def footer(text: Text):
-    e.push('footer', {'text': str(text)}, None)
+def footer(text: str, style: Optional[Dict[str, Any]] = None):
+    e.push('footer', {'text': str(text)}, style)
 
 
 def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):

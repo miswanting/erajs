@@ -124,7 +124,7 @@ def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None) 
 
 
 ########## 页面管理 ##########
-def page(style: Optional[Dict[str, str]] = None, *exception_tags: List[str]) -> object:
+def page(style: Optional[Dict[str, str]] = None, *exception_tags: str) -> object:
     """
     # 生成新的空白页面
     """
@@ -521,3 +521,7 @@ def get_gui_list():
     # 初始化引擎
     """
     pass
+
+
+def sleep(secs: float):
+    m.sleep(secs)
