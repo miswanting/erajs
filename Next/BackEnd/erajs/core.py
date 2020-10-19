@@ -130,12 +130,12 @@ class EventManager(DebugManager):
         return listener
 
     def off(self, event_type: str, callback: Callable[[Any], Any]):
-        for key in self.__data['listeners']:
+        for key in list(self.__data['listeners'].keys()):
             if self.__data['listeners'][key]['type'] == event_type and self.__data['listeners'][key]['callback'].__name__ == callback.__name__:
                 del self.__data['listeners'][key]
 
     def emit(self, event_type: str, *arg: List[Any], **kw: Dict[Any, Any]):
-        for key in self.__data['listeners']:
+        for key in list(self.__data['listeners'].keys()):
             if self.__data['listeners'][key]['type'] == event_type:
                 threading.Thread(
                     target=self.__data['listeners'][key]['callback'],
@@ -146,7 +146,7 @@ class EventManager(DebugManager):
                     del self.__data['listeners'][key]
 
     def remove_all_listeners(self, *exception_tags: List[str]):
-        for key in self.__data['listeners']:
+        for key in list(self.__data['listeners'].keys()):
             is_exception = False
             for tag in self.__data['listeners'][key]['tags']:
                 if tag in exception_tags:
