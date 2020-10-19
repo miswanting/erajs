@@ -627,3 +627,7 @@ class OldData:
 
 def generate_map():
     e.push('generate_map')
+
+
+def sleep(secs: float):
+    time.sleep(secs)
