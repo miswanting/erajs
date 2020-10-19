@@ -61,7 +61,7 @@ window.store = Vuex.createStore({
     changeUI() { },
     appendComponent() { },
     parsePackage(state, pkg) {
-      console.log('Parse:', pkg)
+      // console.log('Parse:', pkg)
       if (pkg.type === 'connection') {
         state.ui = 'intro'
       } else if (pkg.type === 'set_loading_title') {
@@ -105,16 +105,17 @@ window.store = Vuex.createStore({
         state.space.data.rawPlanetData = generatePlanet()
         state.space.data.nextIndex = 0
         const pkg = {
-          type: 'PLANET_GENERATED'
+          type: 'PLANET_GENERATED',
+          data: { length: state.space.data.rawPlanetData.length }
         }
         const event = new CustomEvent('send', { detail: pkg })
         document.dispatchEvent(event)
       } else if (pkg.type === 'get_area_data') {
         const pkg = {
           type: 'AREA_DATA',
-          data: state.space.data.rawPlanetData.slice(state.space.data.nextIndex, state.space.data.nextIndex + 100)
+          data: state.space.data.rawPlanetData.slice(state.space.data.nextIndex, state.space.data.nextIndex + 50)
         }
-        state.space.data.nextIndex += 100
+        state.space.data.nextIndex += 50
         const event = new CustomEvent('send', { detail: pkg })
         document.dispatchEvent(event)
       } else if (pkg.type === 'generate_planet') {
@@ -140,7 +141,7 @@ window.store = Vuex.createStore({
       ].indexOf(pkg.type) !== -1) {
         AST.push(state, pkg)
       }
-      console.log('Final:', state)
+      // console.log('Final:', state)
     },
     handleEvent(state, pkg) {
       if ([
@@ -253,7 +254,6 @@ function generatePlanet() {
     for (let i = 0; i < n; i++) {
       let t1 = performance.now()
       const polygons = d3.geoVoronoi(points).polygons()
-      console.log(performance.now - t1);
       for (let j = 0; j < polygons.features.length; j++) {
         points[j] = d3.geoCentroid(polygons.features[j])
       }
