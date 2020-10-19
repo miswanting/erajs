@@ -14,7 +14,7 @@ class NetModule(event.EventModule):
         self.isConnected = False
         self.s = None  # socket
 
-    def connect(self, host: Text = 'localhost', port:int=11994):
+    def connect(self, host: Text = 'localhost', port: int = 11994):
         t = threading.Thread(
             None,
             self.connector,
@@ -56,7 +56,7 @@ class NetModule(event.EventModule):
             data = data.decode().split('}{')
             for i in range(len(data)):
                 if not i == 0:
-                    data[i] = '}' + data[i]
+                    data[i] = '{' + data[i]
                 if not i == len(data) - 1:
                     data[i] = data[i] + '}'
             for i, each in enumerate(data):
