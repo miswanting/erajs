@@ -104,11 +104,11 @@ window.store = Vuex.createStore({
       } else if (pkg.type === 'generate_planet') {
         state.space.data.rawPlanetData = generatePlanet()
         state.space.data.nextIndex = 0
-        const pkg = {
+        const e = {
           type: 'PLANET_GENERATED',
           data: { length: state.space.data.rawPlanetData.length }
         }
-        const event = new CustomEvent('send', { detail: pkg })
+        const event = new CustomEvent('send', { detail: e })
         document.dispatchEvent(event)
       } else if (pkg.type === 'get_area_data') {
         const pkg = {
