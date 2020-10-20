@@ -102,7 +102,7 @@ window.store = Vuex.createStore({
       } else if (pkg.type === 'console_output') {
         state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
       } else if (pkg.type === 'generate_planet') {
-        state.space.data.rawPlanetData = generatePlanet()
+        state.space.data.rawPlanetData = generatePlanet(pkg.data.area_quantity)
         state.space.data.nextIndex = 0
         const e = {
           type: 'PLANET_GENERATED',
@@ -173,7 +173,7 @@ window.store = Vuex.createStore({
   }
 })
 
-function generatePlanet() {
+function generatePlanet(n) {
   function generatePointsUsingFibonacci(pointAmount) {
     const points = []
     const phi = 180 * (3 - Math.sqrt(5))
