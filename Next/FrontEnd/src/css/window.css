@@ -135,6 +135,60 @@ main.intro {
 .map > canvas {
   outline: none;
 }
+/* mod */
+.mod {
+  display: flex;
+  flex-grow: 1;
+  color: var(--default-front);
+  background-color: var(--default-back);
+}
+.mod > div {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+.mod .right-panel {
+  flex-grow: 1;
+}
+.mod .mod-list {
+  flex-grow: 1;
+}
+.mod-title-bar {
+  display: flex;
+}
+.mod-title-bar > div {
+  display: flex;
+  padding: 0.5rem;
+}
+.mod .mod-back-btn {
+  color: var(--interactable-front);
+  background-color: var(--interactable-back);
+}
+.mod .mod-back-btn:hover {
+  color: var(--hover-front);
+  background-color: var(--hover-back);
+}
+.mod .mod-title {
+  font-size: large;
+  font-weight: bold;
+}
+.mod .mod-list {
+  margin: 1rem 0rem;
+  background-color: var(--disable);
+}
+.mod .mod-list > div {
+  padding: 0.5rem;
+  color: var(--interactable-front);
+  background-color: var(--interactable-back);
+}
+.mod .mod-content-title {
+  text-align: center;
+  font-size: large;
+}
+.mod .mod-content-version {
+  text-align: center;
+  font-size: x-small;
+}
 /* message */
 .message {
   z-index: 10;

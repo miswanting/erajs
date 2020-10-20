@@ -69,12 +69,19 @@ class ModModule(api.APIModule):
                             # TODO 当前版本更大
                             pass
                     if index == -1:
-                        cfg['mod'].append({
+                        new_item = {
                             'name': mod_info['name'],
                             'version': mod_info['version'],
                             'enabled': False,
                             'path': path
-                        })
+                        }
+                        if 'alias' in mod_info:
+                            new_item['alias'] = mod_info['alias']
+                        if 'description' in mod_info:
+                            new_item['description'] = mod_info['description']
+                        if 'dependencies' in mod_info:
+                            new_item['dependencies'] = mod_info['dependencies']
+                        cfg['mod'].append(new_item)
                     self.write(cfg, 'config\\sys.yaml')
 
     def load_mods(self):
