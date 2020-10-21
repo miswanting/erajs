@@ -6,12 +6,17 @@ import sys
 import threading
 from typing import Any, Callable, ClassVar, Dict, List, Optional
 
+from .file_format_support import (cfg_file, csv_file, json_file, save_file,
+                                  text_file, yaml_file, zip_file)
 from .modules.dot_path import DotPath
 
 
 class Tools:
     @staticmethod
     def fix_path():
+        """
+        # 修正根路径
+        """
         if getattr(sys, 'frozen', False):
             # 生产环境（已打包）
             path = os.path.dirname(sys.executable)
@@ -160,8 +165,9 @@ class DataManager(EventManager):
     def __init__(self):
         super().__init__()
         self.__data = {
-            "sys": {},
-            "cfg": {},
+            'cfg': {
+                'resolution': [800, 600]
+            },
             'dat': {},
             'sav': {
                 'meta': {},
@@ -169,6 +175,66 @@ class DataManager(EventManager):
             },
             'tmp': {}
         }
+
+    @property
+    def data(self):
+        return self.__data
+
+    @data.setter
+    def data(self, value: Any):
+        self.__data = value
+
+    def read(self, path: str):
+        """
+        # 读取文件到数据
+        """
+        ext = os.path.splitext(path)[1].lower()
+        data: Any = None
+        if ext in ['.inf', '.ini', '.cfg', '.conf', '.config']:
+            data = cfg_file.read(path)
+        elif ext == '.csv':
+            data = csv_file.read(path)
+        elif ext == '.json':
+            data = json_file.read(path)
+        elif ext in ['.yml', '.yaml']:
+            data = yaml_file.read(path)
+        elif ext == '.zip':
+            data = zip_file.read(path)
+        elif ext == '.txt':
+            data = text_file.read(path)
+        elif ext in ['.save', '.sav']:
+            data = save_file.read(path)
+        return data
+
+    def write(self, path: str, data: Any):
+        """
+        # 写入数据到文件
+        """
+        ext = os.path.splitext(path)[1].lower()
+        if ext in ['.inf', '.ini', '.cfg', '.conf', '.config']:
+            cfg_file.write(path, data)
+        elif ext == '.csv':
+            csv_file.write(path, data)
+        elif ext == '.json':
+            json_file.write(path, data)
+        elif ext in ['.yml', '.yaml']:
+            yaml_file.write(path, data)
+        elif ext == '.zip':
+            zip_file.write(path, data)
+        elif ext == '.txt':
+            text_file.write(path, data)
+        elif ext in ['.save', '.sav']:
+            save_file.write(path, data)
+
+    def scan(self, path: str):
+        """
+        # 递归文件夹路径下文件的路径
+        """
+        files: List[str] = []
+        for dirpath, _, filenames in os.walk(path, True):
+            for filename in filenames:
+                files.append('{}\\{}'.format(dirpath, filename))
+        return files
 
 
 class DomainManager(DataManager):
