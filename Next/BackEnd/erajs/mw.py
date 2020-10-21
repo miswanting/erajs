@@ -73,6 +73,13 @@ def init(config: Optional[Dict[Text, Any]] = None):
     e.info('├─ Connecting...')
     e.connect()
     e.info('│  └─ Connected!')
+
+    def on_get_config():
+        e.get_data('', 'config')
+        # e.send
+
+    e.on('GET_CONFIG', on_get_config)
+
     e.info('├─ Scanning Data Files...')
     e.send({
         'type': 'set_loading_title',

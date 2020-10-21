@@ -2,6 +2,11 @@ components.push(['i-mod-manager', {
   template: '<i-header></i-header><mod-main></mod-main>'
 }])
 components.push(['mod-main', {
+  mounted() {
+    this.$store.commit('handleEvent', {
+      type: 'GET_CONFIG'
+    })
+  },
   render() {
     const modList = [
       Vue.h('div', { class: 'mod-item' }, [

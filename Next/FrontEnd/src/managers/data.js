@@ -154,11 +154,12 @@ window.store = Vuex.createStore({
         'RADIO_CHANGE',
         'INPUT_CHANGE',
         'DROPDOWN_CHANGE',
-        'CONSOLE_INPUT'
+        'CONSOLE_INPUT',
+        'GET_CONFIG'
       ].indexOf(pkg.type) !== -1) {
         const event = new CustomEvent('send', { detail: pkg })
         document.dispatchEvent(event)
-        if (pkg.type === 'CONSOLE_INPUT') {
+        if (['CONSOLE_INPUT'].indexOf(pkg.type) !== -1) {
           state.console.children.push(AST.newElement('input', { value: pkg.value }))
         }
       } else if (pkg.type === 'MSG_TIMEOUT') {
