@@ -76,15 +76,10 @@ main.intro {
   color: var(--default-front);
   background-color: var(--default-back);
 }
-.loading-banner {
-  align-self: center;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
-}
 .loading-group {
-  align-self: center;
+  width: max-content;
+  margin: auto;
+  z-index: 1;
   text-align: center;
 }
 #loading-heading {

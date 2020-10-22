@@ -10,13 +10,11 @@ window.components.push(['i-intro-main', {
   render () {
     return Vue.h('main', { class: 'intro' }, [
       Vue.h(app.component('i-sp-canvas')),
-      Vue.h('div', { class: 'loading-banner' }, [
-        Vue.h('div', { class: 'loading-group' }, [
-          Vue.h(app.component('loading-logo')),
-          Vue.h(app.component('loading-heading')),
-          Vue.h(app.component('loading-text')),
-          Vue.h('br')
-        ])
+      Vue.h('div', { class: 'loading-group' }, [
+        Vue.h(app.component('loading-logo')),
+        Vue.h(app.component('loading-heading')),
+        Vue.h(app.component('loading-text')),
+        Vue.h('br')
       ])
     ])
   }
