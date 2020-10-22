@@ -2,12 +2,12 @@ components.push(['i-mod-manager', {
   template: '<i-header></i-header><mod-main></mod-main>'
 }])
 components.push(['mod-main', {
-  mounted() {
+  mounted () {
     this.$store.commit('handleEvent', {
       type: 'GET_CONFIG'
     })
   },
-  render() {
+  render () {
     const modList = [
       Vue.h('div', { class: 'mod-item' }, [
         '∷',
@@ -28,7 +28,7 @@ components.push(['mod-main', {
         '∷',
         '◻',
         'TestMod4'
-      ]),
+      ])
     ]
     return Vue.h('main', { class: 'mod' }, [
       Vue.h('div', { class: 'left-panel' }, [

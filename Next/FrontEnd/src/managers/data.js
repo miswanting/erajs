@@ -1,7 +1,7 @@
 const { running } = require('animejs')
 
 window.store = Vuex.createStore({
-  state() {
+  state () {
     return {
       style: {},
       title: 'Era.js',
@@ -58,9 +58,9 @@ window.store = Vuex.createStore({
     }
   },
   mutations: {
-    changeUI() { },
-    appendComponent() { },
-    parsePackage(state, pkg) {
+    changeUI () { },
+    appendComponent () { },
+    parsePackage (state, pkg) {
       // console.log('Parse:', pkg)
       if (pkg.type === 'connection') {
         state.ui = 'intro'
@@ -143,7 +143,7 @@ window.store = Vuex.createStore({
       }
       // console.log('Final:', state)
     },
-    handleEvent(state, pkg) {
+    handleEvent (state, pkg) {
       if ([
         'MOUSE_CLICK',
         'KEY_UP',
@@ -174,8 +174,8 @@ window.store = Vuex.createStore({
   }
 })
 
-function generatePlanet(n) {
-  function generatePointsUsingFibonacci(pointAmount) {
+function generatePlanet (n) {
+  function generatePointsUsingFibonacci (pointAmount) {
     const points = []
     const phi = 180 * (3 - Math.sqrt(5))
     for (let i = 0; i < pointAmount; i++) {
@@ -186,7 +186,7 @@ function generatePlanet(n) {
     }
     return points
   }
-  function coordinates2XYZ(lon, lat) {
+  function coordinates2XYZ (lon, lat) {
     const rlon = lon / 180 * Math.PI
     const rlat = lat / 180 * Math.PI
     const x = Math.cos(rlon) * Math.cos(rlat)
@@ -194,7 +194,7 @@ function generatePlanet(n) {
     const z = Math.sin(rlon) * Math.cos(rlat)
     return [x, y, z]
   }
-  function convertFromGeo(polygons) {
+  function convertFromGeo (polygons) {
     const noise = new SimplexNoise()
     const data = []
     for (let i = 0; i < polygons.features.length; i++) {
@@ -244,16 +244,16 @@ function generatePlanet(n) {
     }
     return data
   }
-  function randomizePoints(points) {
+  function randomizePoints (points) {
     for (let i = 0; i < points.length; i++) {
       points[i][0] = points[i][0] + (Math.random() - 0.5) * 10
       // points[i][1] = points[i][1] + (Math.random() - 0.5) * 10
     }
     return points
   }
-  function scratterPoints(points, n) {
+  function scratterPoints (points, n) {
     for (let i = 0; i < n; i++) {
-      let t1 = performance.now()
+      const t1 = performance.now()
       const polygons = d3.geoVoronoi(points).polygons()
       for (let j = 0; j < polygons.features.length; j++) {
         points[j] = d3.geoCentroid(polygons.features[j])
