@@ -236,6 +236,9 @@ class DataManager(EventManager):
                 files.append('{}\\{}'.format(dirpath, filename))
         return files
 
+    def mount(self, dot_path: str,scope:str):
+        pass
+
 
 class DomainManager(DataManager):
     """
@@ -270,4 +273,7 @@ class ModManager(NetManager):
 
 
 class Engine(ModManager):
+    """
+    # 这次重构的目的是使用”大中台“
+    """
     pass

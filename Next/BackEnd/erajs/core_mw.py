@@ -2,6 +2,7 @@ import os
 from typing import Any, Dict
 
 from .core import Engine, Tools
+from .modules.dot_path import DotPath
 
 e = Engine()
 
@@ -55,7 +56,31 @@ def fix_fs_hierarchy():
 def scan_configs():
     files = e.scan('config')
     for path in files:
-        pass
+        dot_path = DotPath.path2dot(path)
+
+
+def cfg(dot_path: str = ''):
+    scope = 'config'
+    if dot_path == '':
+        return e.data[scope]
+    elif dot_path in e.data:
+        return e.data[scope][dot_path]
+    elif e.mount(dot_path):
+        return e.data[scope][dot_path]
+    else:
+        e.data[scope][dot_path]
+
+
+def dat():
+    pass
+
+
+def sav():
+    pass
+
+
+def tmp():
+    pass
 
 
 def load_configs():
