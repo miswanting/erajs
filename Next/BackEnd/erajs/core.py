@@ -1,9 +1,14 @@
+from base64 import encode
 import datetime
+import enum
+import json
 import logging
 import os
 import secrets
+import socket
 import sys
 import threading
+import time
 from typing import Any, Callable, ClassVar, Dict, List, Optional
 
 from .file_format_support import (cfg_file, csv_file, json_file, save_file,
@@ -92,22 +97,22 @@ class DebugManager(Singleton):
             self.__logger.addHandler(stream_handler)
             self.__logger.addHandler(file_handler)
 
-    def debug(self, *arg: List[Any], **kw: Dict[Any, Any]):
+    def debug(self, *arg: Any, **kw: Any):
         self.__log(0, *arg, **kw)
 
-    def info(self,  *arg: List[Any], **kw: Dict[Any, Any]):
+    def info(self,  *arg: Any, **kw: Any):
         self.__log(1, *arg, **kw)
 
-    def warn(self, *arg: List[Any], **kw: Dict[Any, Any]):
+    def warn(self, *arg: Any, **kw: Any):
         self.__log(2, *arg, **kw)
 
-    def error(self, *arg: List[Any], **kw: Dict[Any, Any]):
+    def error(self, *arg: Any, **kw: Any):
         self.__log(3, *arg, **kw)
 
-    def critical(self,  *arg: List[Any], **kw: Dict[Any, Any]):
+    def critical(self,  *arg: Any, **kw: Any):
         self.__log(4, *arg, **kw)
 
-    def __log(self, level: int, *arg: List[Any], **kw: Dict[Any, Any]):
+    def __log(self, level: int, *arg: Any, **kw: Any):
         template = '[{}]({}){}'
         prefix = self.DEBUG_LEVEL_PREFIX_TEXT[level]
         timestamp = Tools.timestamp()
@@ -236,7 +241,7 @@ class DataManager(EventManager):
                 files.append('{}\\{}'.format(dirpath, filename))
         return files
 
-    def mount(self, dot_path: str,scope:str):
+    def mount(self, dot_path: str, scope: str):
         pass
 
 
@@ -264,8 +269,83 @@ class DomainManager(DataManager):
         pass
 
 
-class NetManager(DomainManager):
-    pass
+class NetManager(DataManager):
+    def __init__(self):
+        super().__init__()
+        self.__data = {
+            'connected': False,
+            'socket': None
+        }
+
+    def connect(self, host: str = 'localhost', port: int = 11994):
+        t = threading.Thread(
+            target=self.__connector,
+            args=(host, port)
+        )
+        t.start()
+        o = 0
+        while not self.__data['connected']:
+            if o > 100:
+                self.warn('Connect TimeOut!')
+                break
+            else:
+                o += 1
+            time.sleep(0.1)
+
+    def send(self, data: Any):
+        # self.debug('Send: '+str(data))
+        s = json.dumps(data)
+        s = str(len(s))+':'+s
+        self.__data['socket'].sendall(s.encode())
+
+    def recv(self, data: bytes):
+        # self.debug('Recv: '+str(data))
+        data = json.loads(data)
+        self.emit(data['type'], data)
+
+    def __connector(self, host: str, port: int):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
+            self.__data['socket'] = socket
+            try:
+                self.__data['socket'].connect((host, port))
+                self.__data['connected'] = True
+                self.__core()
+            except OSError as e:
+                if e.errno == 10061:
+                    self.warn('   └─ [!] Please Start FrontEnd First!')
+                else:
+                    self.warn(e)
+                sys.exit()
+
+    def __core(self):
+        length = 0
+        length_string = ''
+        last_binary = ''
+        next_binary = ''
+        while True:
+            raw_data: bytes = self.__data['socket'].recv(1024)
+            if not raw_data:
+                self.warn('Recv None Data!')
+            else:
+                if length == 0:
+                    for i, char in enumerate(raw_data):
+                        if char == ':':
+                            length = int(length_string.decode())
+                            length_string = ''
+                            next_binary += raw_data[i+1:]
+                            break
+                        else:
+                            length_string += char
+                else:
+                    next_binary += raw_data
+                if len(next_binary) >= length:
+                    self.recv(last_binary+next_binary[0:length])
+                    length = 0
+                    last_binary = ''
+                    next_binary = next_binary[length:]
+                else:
+                    last_binary += next_binary
+                    length -= len(next_binary)
 
 
 class ModManager(NetManager):
