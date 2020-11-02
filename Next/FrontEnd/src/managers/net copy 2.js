@@ -37,12 +37,6 @@ class ToBack extends EventEmitter {
                 console.log('Disconnected!');
             })
         })
-        this.tmp = {
-            length: 0,
-            lengthString: '',
-            lastBinary: '',
-            nextBinary: ''
-        }
     }
     start = () => {
         this.server.listen(11994, '127.0.0.1')
@@ -54,40 +48,19 @@ class ToBack extends EventEmitter {
     }
     recv = (data) => {
         // Handling Sticky Packages
-        const rawData = data.toString()
-        console.log(rawData);
-        if (!rawData) {
-            console.log('Recv None Data!');
-        } else {
-            while (true) {
-                if (this.tmp.length === 0) {
-                    for (let i = 0; i < rawData.length; i++) {
-                        if (rawData[i] === ':') {
-                            this.tmp.length = parseInt(this.tmp.lengthString)
-                            this.tmp.lengthString = ''
-                            this.tmp.nextBinary += rawData.slice(i + 1)
-                            break
-                        } else {
-                            this.tmp.lengthString += rawData[i]
-                        }
-                    }
-                } else {
-                    this.tmp.nextBinary += rawData
-                }
-                if (this.tmp.nextBinary.length >= this.tmp.length) {
-                    const pkg = this.tmp.lastBinary + this.tmp.nextBinary.slice(0, this.tmp.length)
-                    console.log(pkg);
-                    let data = JSON.parse(pkg)
-                    this.emit('recv', data)
-                    this.tmp.length = 0
-                    this.tmp.lastBinary = ''
-                    this.tmp.nextBinary = this.tmp.nextBinary.slice(this.tmp.length)
-                } else {
-                    this.tmp.lastBinary += this.tmp.nextBinary
-                    this.tmp.length -= len(this.tmp.nextBinary)
-                    break
-                }
+        let pieces = data.toString().split('}{')
+        for (let i = 0; i < pieces.length; i++) {
+            if (i != pieces.length - 1) {
+                pieces[i] += '}'
             }
+            if (i != 0) {
+                pieces[i] = '{' + pieces[i]
+            }
+        }
+        console.log(pieces);
+        for (let i = 0; i < pieces.length; i++) {
+            let data = JSON.parse(pieces[i])
+            this.emit('recv', data)
         }
     }
 }
