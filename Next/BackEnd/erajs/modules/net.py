@@ -1,6 +1,7 @@
 import json
 import os
 import socket
+import sys
 import threading
 import time
 from typing import Any, Text
@@ -11,56 +12,77 @@ from . import debug, event
 class NetModule(event.EventModule):
     def __init__(self):
         super().__init__()
-        self.isConnected = False
-        self.s = None  # socket
+        self.__data = {
+            'connected': False,
+            'socket': None
+        }
 
     def connect(self, host: Text = 'localhost', port: int = 11994):
         t = threading.Thread(
-            None,
-            self.connector,
-            'connector',
-            (host, port)
+            target=self.__connector,
+            args=(host, port)
         )
         t.start()
-        while not self.isConnected:
+        o = 0
+        while not self.__data['connected']:
+            if o > 100:
+                self.warn('Connect TimeOut!')
+                break
+            else:
+                o += 1
             time.sleep(0.1)
 
     def send(self, data: Any):
         # self.debug('Send: '+str(data))
-        self.s.send(json.dumps(data, ensure_ascii=False).encode())
+        s = json.dumps(data, ensure_ascii=False)
+        s = str(len(s))+':'+s
+        self.__data['socket'].sendall(s.encode())
 
     def recv(self, data: Any):
         # self.debug('Recv: '+str(data))
+        data = json.loads(data)
         self.emit(data['type'], data)
 
-    def connector(self, host: Text, port: int):
+    def __connector(self, host: Text, port: int):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            self.s = s
+            self.__data['socket'] = s
             try:
-                # self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.s.connect((host, port))
-                self.isConnected = True
-                self.core()
-            except OSError as err:
-                if err.errno == 10061:
+                self.__data['socket'].connect((host, port))
+                self.__data['connected'] = True
+                self.__core()
+            except OSError as e:
+                if e.errno == 10061:
                     self.warn('   └─ [!] Please Start FrontEnd First!')
                 else:
-                    self.warn(err)
-                os._exit(1)
+                    self.warn(e)
+                sys.exit(0)
 
-    def core(self):
+    def __core(self):
+        length = 0
+        length_string = ''
+        last_binary = ''
+        next_binary = ''
         while True:
-            data = self.s.recv(4096000)
-            if not data:
-                self.warn('Recieve None Data!')
-            data = data.decode().split('}{')
-            for i in range(len(data)):
-                if not i == 0:
-                    data[i] = '{' + data[i]
-                if not i == len(data) - 1:
-                    data[i] = data[i] + '}'
-            for i, each in enumerate(data):
-                if each != '':
-                    data[i] = json.loads(each)
-            for each in data:
-                self.recv(each)
+            raw_data: bytes = self.__data['socket'].recv(1024)
+            if not raw_data:
+                self.warn('Recv None Data!')
+            else:
+                if length == 0:
+                    for i, char in enumerate(raw_data):
+                        if char == ':':
+                            length = int(length_string.decode())
+                            length_string = ''
+                            next_binary += raw_data[i+1:]
+                            break
+                        else:
+                            length_string += char
+                else:
+                    next_binary += raw_data
+                if len(next_binary) >= length:
+                    self.recv(last_binary+next_binary[0:length])
+                    length = 0
+                    last_binary = ''
+                    next_binary = next_binary[length:]
+                else:
+                    last_binary += next_binary
+                    length -= len(next_binary)
