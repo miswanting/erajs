@@ -28,7 +28,6 @@ window.components.push(['i-sp-canvas', {
     glMatrix.glMatrix.setMatrixArrayType(Array)
     const main = document.querySelector('main')
     let viewportSize = glMatrix.vec2.fromValues(main.clientWidth, main.clientHeight)
-    console.log(main.clientWidth)
     let screenCenter = glMatrix.vec2.scale([], viewportSize, 0.5)
     let ScreenRadius = glMatrix.vec2.length(screenCenter)
     // ScreenRadius = 200
