@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexagon Grid</title>
+    <script>
+        addEventListener('load', function () {
+            const main = document.querySelector('main')
+            const svgNamespace = 'http://www.w3.org/2000/svg'
+            const svg = document.createElementNS(svgNamespace, 'svg')
+            svg.setAttribute('width', 300)
+            svg.setAttribute('height', 300)
+            const poly = document.createElementNS(svgNamespace, 'polygon')
+            poly.setAttribute('points', '100 0,0 100,-100 0')
+            poly.setAttribute('x', 100)
+            poly.setAttribute('y', 100)
+            svg.appendChild(poly)
+            main.appendChild(svg)
+        })
+    </script>
+</head>
+
+<body>
+    <main></main>
+</body>
+
+</html>
