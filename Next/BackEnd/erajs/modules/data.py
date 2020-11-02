@@ -1,8 +1,8 @@
 import os
 from typing import Any, Dict, List, Literal, Optional, Text, Tuple
 
-from ..file_format_support import (cfg_file, csv_file, json_file, save_file,
-                                   text_file, yaml_file, zip_file)
+from ..file_format_support import (cfg_file, csv_file, image_file, json_file,
+                                   save_file, text_file, yaml_file, zip_file)
 # from . import DotPath  # EventManager, LogManager, Prototypes, Tools
 from . import event, tools
 
@@ -300,6 +300,8 @@ class DataModule(event.EventModule):
             data = text_file.read(path)
         elif ext in ['save', 'sav']:
             data = save_file.read(path)
+        elif ext in ['png', 'jpg']:
+            data = image_file.read(path)
         return data
 
     def write(self, data: Any, path: Text):

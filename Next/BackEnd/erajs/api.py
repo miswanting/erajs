@@ -525,3 +525,7 @@ def get_gui_list():
 
 def sleep(secs: float):
     m.sleep(secs)
+
+
+def img(dot_path: str):
+    m.img(dot_path)

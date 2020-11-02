@@ -638,3 +638,8 @@ def generate_map():
 
 def sleep(secs: float):
     time.sleep(secs)
+
+
+def img(dot_path: str):
+    data = e.get_data(dot_path, 'data')
+    e.push('img', data, {})
