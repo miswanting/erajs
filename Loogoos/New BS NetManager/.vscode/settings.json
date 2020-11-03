@@ -1,0 +1,9 @@
+{
+    "deno.enable": true,
+    "deno.lint": true,
+    "javascript.format.enable": false,
+    "javascript.suggest.autoImports": false,
+    "typescript.suggest.enabled": false,
+    "typescript.suggest.autoImports": false,
+    "standard.enable": false
+}
