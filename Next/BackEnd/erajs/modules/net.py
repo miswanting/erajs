@@ -1,12 +1,11 @@
 import json
-import os
 import socket
 import sys
 import threading
 import time
 from typing import Any, Text
 
-from . import debug, event
+from . import event
 
 
 class NetModule(event.EventModule):
