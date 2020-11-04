@@ -14,7 +14,7 @@ class NetManager:
         self.__is_connected = False
         self.__state: Any = {
             'length': 0,
-            'length_string': '',
+            'length_bytes': '',
             'content_bytes': b''
         }
 
@@ -35,14 +35,13 @@ class NetManager:
     def handle_recv_once(self, buf: bytes):
         if self.__state['length'] == 0:
             for i, char in enumerate(buf):
-                c = chr(char)
-                if c == ':':
-                    self.__state['length'] = int(self.__state['length_string'])
-                    self.__state['length_string'] = ''
+                if char == b':':
+                    self.__state['length'] = int(self.__state['length_bytes'])
+                    self.__state['length_bytes'] = ''
                     self.handle_recv_once(buf[i+1:])
                     return
                 else:
-                    self.__state['length_string'] += c
+                    self.__state['length_bytes'] += char
         elif len(self.__state['content_bytes']) + self.__buf_size < self.__state['length']:
             self.__state['content_bytes'] += buf
         else:
