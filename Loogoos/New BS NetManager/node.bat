@@ -1,3 +1,3 @@
-@echo off
-node run server.js
+@REM @echo off
+node server.js
 pause

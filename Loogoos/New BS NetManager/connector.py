@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional
 class NetManager:
     def __init__(self) -> None:
         self.__debug = True
-        self.__address: Any = ['127.0.0.1', 12020]
+        self.__address: Any = ['', 80]
         self.__buf_size = 4
         self.__connection: Optional[socket.socket] = None
         self.__is_connected = False
@@ -20,6 +20,7 @@ class NetManager:
 
     def connect(self):
         def connect_core():
+            socket.create_connection((self.__address[0], self.__address[1]))
             with socket.create_connection((self.__address[0], self.__address[1])) as conn:
                 self.__connection = conn
                 self.__is_connected = True
