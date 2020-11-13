@@ -3,7 +3,7 @@ import socket
 import sys
 import threading
 import time
-from typing import Any, Text
+from typing import Any, Optional
 
 from . import event
 
@@ -11,77 +11,63 @@ from . import event
 class NetModule(event.EventModule):
     def __init__(self):
         super().__init__()
-        self.__data = {
-            'connected': False,
-            'socket': None
+        self.__debug = False
+        self.__address: Any = ['127.0.0.1', 12020]
+        self.__buf_size = 1024
+        self.__connection: Optional[socket.socket] = None
+        self.__is_connected = False
+        self.__state: Any = {
+            'length': 0,
+            'length_bytes': '',
+            'content_bytes': b''
         }
 
-    def connect(self, host: Text = 'localhost', port: int = 11994):
-        t = threading.Thread(
-            target=self.__connector,
-            args=(host, port)
-        )
+    def connect(self, host: str = '127.0.0.1', port: int = 12020):
+        def connect_core():
+            with socket.create_connection((host, port)) as conn:
+                self.__connection = conn
+                self.__is_connected = True
+                while True:
+                    self.handle_recv_once(
+                        self.__connection.recv(self.__buf_size))
+
+        t = threading.Thread(target=connect_core)
         t.start()
-        o = 0
-        while not self.__data['connected']:
-            if o > 100:
-                self.warn('Connect TimeOut!')
-                break
-            else:
-                o += 1
+        while not self.__is_connected:
             time.sleep(0.1)
 
+    def handle_recv_once(self, buf: bytes):
+        if self.__state['length'] == 0:
+            for i, char in enumerate(buf):
+                c = chr(char)
+                if c == ':':
+                    self.__state['length'] = int(self.__state['length_bytes'])
+                    self.__state['length_bytes'] = ''
+                    self.handle_recv_once(buf[i+1:])
+                    return
+                else:
+                    self.__state['length_bytes'] += c
+        elif len(self.__state['content_bytes']) + len(buf) < self.__state['length']:
+            self.__state['content_bytes'] += buf
+        else:
+            index = self.__state['length'] - len(self.__state['content_bytes'])
+            self.__state['content_bytes'] += buf[0:index]
+            s = self.__state['content_bytes'].decode()
+            self.recv(s)
+            self.__state['length'] = 0
+            self.__state['content_bytes'] = b''
+            self.handle_recv_once(buf[index:])
+            return
+
     def send(self, data: Any):
-        # self.debug('Send: '+str(data))
-        s = json.dumps(data, ensure_ascii=False)
-        s = str(len(s))+':'+s
-        self.__data['socket'].sendall(s.encode())
+        if self.__connection:
+            msg = json.dumps(data)
+            print(f'Send: {msg}') if self.__debug else None
+            content = msg.encode()
+            b = str(len(content)).encode()+b':'+content
+            self.__connection.sendall(b)
 
-    def recv(self, data: Any):
-        # self.debug('Recv: '+str(data))
-        data = json.loads(data)
+    def recv(self, msg: str):
+        print(f'Recv: {msg}') if self.__debug else None
+        data = json.loads(msg)
         self.emit(data['type'], data)
-
-    def __connector(self, host: Text, port: int):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            self.__data['socket'] = s
-            try:
-                self.__data['socket'].connect((host, port))
-                self.__data['connected'] = True
-                self.__core()
-            except OSError as e:
-                if e.errno == 10061:
-                    self.warn('   └─ [!] Please Start FrontEnd First!')
-                else:
-                    self.warn(e)
-                sys.exit(0)
-
-    def __core(self):
-        length = 0
-        length_string = ''
-        last_binary = ''
-        next_binary = ''
-        while True:
-            raw_data: bytes = self.__data['socket'].recv(1024)
-            if not raw_data:
-                self.warn('Recv None Data!')
-            else:
-                if length == 0:
-                    for i, char in enumerate(raw_data):
-                        if char == ':':
-                            length = int(length_string.decode())
-                            length_string = ''
-                            next_binary += raw_data[i+1:]
-                            break
-                        else:
-                            length_string += char
-                else:
-                    next_binary += raw_data
-                if len(next_binary) >= length:
-                    self.recv(last_binary+next_binary[0:length])
-                    length = 0
-                    last_binary = ''
-                    next_binary = next_binary[length:]
-                else:
-                    last_binary += next_binary
-                    length -= len(next_binary)
