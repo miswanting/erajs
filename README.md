@@ -11,6 +11,8 @@
 
 <img src="https://github.com/miswanting/Era.js/raw/dev/docs/Era.js-Icon.svg" width=50 align="center"></img>
 
+![Era.js Icon](https://github.com/miswanting/Era.js/raw/dev/docs/Era.js-Icon.svg =50x50)
+
 <h1 align="center">Era.js</h1>
 <div align="center">Latest Version: v0.2.0-200920</div>
 <div align="center"><sub>The following contents is a description of the development target.<br />The current progress is subject to the progress shown in <a href="https://github.com/miswanting/Era.js/projects">Roadmap</a></sub></div>
