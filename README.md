@@ -11,7 +11,7 @@
 
 <img src="https://github.com/miswanting/Era.js/raw/dev/docs/Era.js-Icon.svg" width=50 align="center"></img>
 
-![Era.js Icon](https://github.com/miswanting/Era.js/raw/dev/docs/Era.js-Icon.svg =50x50)
+![Era.js Icon](https://github.com/miswanting/Era.js/raw/dev/docs/Era.js-Icon.svg | width=100)
 
 <h1 align="center">Era.js</h1>
 <div align="center">Latest Version: v0.2.0-200920</div>
