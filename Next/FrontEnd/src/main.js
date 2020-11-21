@@ -1,4 +1,4 @@
-const { app } = require('electron')
+const AppManager = require('./managers/app')
 const WindowManager = require('./managers/window')
 const NetManager = require('./managers/net')
 const ScriptManager = require('./managers/script')
@@ -9,31 +9,32 @@ const ScriptManager = require('./managers/script')
 class MainManager {
   constructor() {
     // 初始化模块
+    this.app = new AppManager()
     this.win = new WindowManager()
-    this.back = new NetManager('back')
-    this.renderer = new NetManager('renderer')
-    // 侦听网络管理器事件
-    this.back.on('recv', this.onBackRecv)
-    this.renderer.on('recv', this.onRendererRecv)
+    this.toBack = new NetManager('back')
+    this.toRenderer = new NetManager('renderer')
     this.script = new ScriptManager()
-    this.script.start()
+    // 设置数据管道
+    this.app.once('ready', this.start)
+    this.toBack.on('recv', this.onBackRecv)
+    this.toRenderer.on('recv', this.onRendererRecv)
   }
 
   start = () => {
     this.win.start()
-    this.back.start()
-    this.renderer.start()
+    this.toBack.start()
+    this.toRenderer.start()
+    this.script.start()
   }
 
   onBackRecv = (data) => {
     console.log('MainManager', 'Recv', data)
-    this.renderer.send(data)
+    this.toRenderer.send(data)
   }
 
   onRendererRecv = (data) => {
     console.log('MainManager', 'Send', data)
-    this.back.send(data)
+    this.toBack.send(data)
   }
 }
 const main = new MainManager()
-app.whenReady().then(main.start)

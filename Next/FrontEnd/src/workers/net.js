@@ -1,70 +1,77 @@
+const { parentPort } = require('worker_threads')
 const { createServer } = require('net')
-const { BrowserWindow, ipcRenderer, ipcMain } = require('electron')
-let manager
-onmessage = function (e) {
-  const pkg = e.data
-  console.log(pkg);
-  if (pkg.type === 'init') {
-    createToBack()
-  } else if (pkg.type === 'send' && manager) {
-    manager.send(pkg.data)
-  }
-}
-function createToBack() {
-  const debug = false
-  const address = ['127.0.0.1', 12020]
-  const bufSize = 3
-  let conn = null
-  const state = {
-    length: 0,
-    lengthString: '',
-    contentArray: new Array()
-  }
-  manager = {
-    send(data) {
-      if (conn && !conn.destroyed) {
-        const msg = JSON.stringify(data)
-        debug ? console.log(`Send: ${msg}`) : null
-        const content = new TextEncoder().encode(msg)
-        conn.write(new TextEncoder().encode(content.length.toString() + ':' + msg))
-      }
-    },
-    recv(msg) {
-      debug ? console.log(`Recv: ${msg}`) : null
-      postMessage({ type: 'recv', data: JSON.parse(msg) })
+class Server {
+  constructor() {
+    this.debug = true
+    this.address = ['127.0.0.1', 12020]
+    this.bufSize = 3
+    this.server = null
+    this.conn = null
+    this.state = {
+      length: 0,
+      lengthString: '',
+      contentArray: []
     }
   }
-  function handleRecvOnce(buf) {
-    if (state.length === 0) {
+
+  start() {
+    this.server = createServer((conn) => {
+      this.conn = conn
+      this.conn.on('data', this.handleRecvOnce)
+      this.conn.on('error', (e) => {
+        if (e.code === 'ECONNRESET') { console.log('后端断开连接！') }
+      })
+    })
+    this.server.listen(this.address[1], this.address[0])
+  }
+
+  send = (data) => {
+    if (this.conn && !this.conn.destroyed) {
+      const msg = JSON.stringify(data)
+      this.debug ? console.log(`Send: ${msg}`) : null
+      const content = new TextEncoder().encode(msg)
+      this.conn.write(new TextEncoder().encode(content.length.toString() + ':' + msg))
+    }
+  }
+
+  recv = (msg) => {
+    this.debug ? console.log(`Recv: ${msg}`) : null
+    parentPort.postMessage({ type: 'recv', data: JSON.parse(msg) })
+  }
+
+  handleRecvOnce = (buf) => {
+    if (this.state.length === 0) {
       for (let i = 0; i < buf.length; i++) {
         const c = new TextDecoder().decode(buf.slice(i, i + 1))
         if (c === ':') {
-          state.length = parseInt(state.lengthString)
-          state.lengthString = ''
+          this.state.length = parseInt(this.state.lengthString)
+          this.state.lengthString = ''
           this.handleRecvOnce(buf.slice(i + 1, buf.length))
           return
         } else {
-          state.lengthString += c
+          this.state.lengthString += c
         }
       }
-    } else if (state.contentArray.length + buf.length < state.length) {
-      state.contentArray.push(...Array.from(buf))
+    } else if (this.state.contentArray.length + buf.length < this.state.length) {
+      this.state.contentArray.push(...Array.from(buf))
     } else {
-      const index = state.length - state.contentArray.length
-      state.contentArray.push(...Array.from(buf.slice(0, index)))
-      const s = new TextDecoder().decode(new Uint8Array(state.contentArray))
+      const index = this.state.length - this.state.contentArray.length
+      this.state.contentArray.push(...Array.from(buf.slice(0, index)))
+      const s = new TextDecoder().decode(new Uint8Array(this.state.contentArray))
       this.recv(s)
-      state.length = 0
-      state.contentArray = []
+      this.state.length = 0
+      this.state.contentArray = []
       this.handleRecvOnce(buf.slice(index, buf.length))
     }
   }
-  manager.server = createServer((conn) => {
-    conn = conn
-    conn.on('data', handleRecvOnce)
-    conn.on('error', (e) => {
-      if (e.code === 'ECONNRESET') { console.log('后端断开连接！') }
-    })
-  })
-  manager.server.listen(address[1], address[0])
 }
+let server = null
+parentPort.on('message', (pkg) => {
+  if (pkg.type === 'init') {
+    server = new Server()
+  } else if (pkg.type === 'start') {
+    server.start()
+  } else if (pkg.type === 'send') {
+    server.send(pkg.data)
+  }
+})
