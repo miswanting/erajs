@@ -11,7 +11,8 @@ module.exports = class WindowManager extends EventEmitter {
             useContentSize: true,
             webPreferences: {
                 enableRemoteModule: true,
-                nodeIntegration: true
+                nodeIntegration: true,
+                nodeIntegrationInWorker: true
             }
         })
         // 加载index.html文件
