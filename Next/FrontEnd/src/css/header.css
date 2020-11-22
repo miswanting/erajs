@@ -1,0 +1,65 @@
+.header {
+  user-select: none;
+  display: flex;
+  z-index: 10;
+}
+.header .menu-bar,
+.header .operate-bar {
+  display: flex;
+}
+.header .title-bar {
+  flex-grow: 1;
+  text-align: center;
+  -webkit-app-region: drag;
+  cursor: move;
+}
+.header .menu-bar > .menu-item:first-child > .menu-button {
+  border-top-left-radius: 0.5em;
+}
+.header .close {
+  border-top-right-radius: 0.5em;
+}
+.header .menu-button,
+.header .operate-bar > div {
+  cursor: pointer;
+}
+.header .menu-button:hover,
+.header .operate-bar > div:hover {
+  background-color: var(--hover-back);
+}
+.header .menu-button:active,
+.header .operate-bar > div:active {
+  background-color: var(--active-back);
+}
+.header .menu-button,
+.header .title-bar,
+.header .operate-bar > div {
+  color: var(--default-front);
+  background-color: var(--default-back);
+  padding: 0 0.2rem;
+}
+.header .menu-list {
+  position: absolute;
+  width: fit-content;
+  min-width: 50px;
+  border: 0.5px solid gray;
+  backdrop-filter: blur(5px) opacity(90%);
+}
+.header .menu-item {
+  display: flex;
+}
+.header .menu-bar > .menu-item {
+  display: block;
+}
+.header .menu-list > .menu-item > .menu-button {
+  width: -webkit-fill-available;
+}
+.header .min:hover {
+  color: #0f0;
+}
+.header .max:hover {
+  color: #ff0;
+}
+.header .close:hover {
+  color: #f00;
+}

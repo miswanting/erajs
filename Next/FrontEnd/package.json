@@ -47,6 +47,7 @@
     "topojson": "latest",
     "versor": "latest",
     "vue": "next",
+    "vue-router": "next",
     "vuex": "next"
   },
   "build": {
@@ -75,6 +76,9 @@
       "SimplexNoise",
       "THREE",
       "glMatrix",
+      "routes",
+      "router",
+      "VueRouter",
       "d3"
     ],
     "ignore": [

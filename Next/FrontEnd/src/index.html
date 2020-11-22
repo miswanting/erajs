@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Era.js</title>
     <script>
-        window.components = [] //for Vue 3 Global
+        window.routes = []
+        window.components = []
     </script>
     <link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="../node_modules/animate.css/animate.min.css">
@@ -16,9 +17,12 @@
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/window.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/idle.css">
     <link rel="stylesheet" href="css/span-charm.css">
     <script src="../node_modules/animejs/lib/anime.js"></script>
     <script src="../node_modules/vue/dist/vue.global.js"></script>
+    <script src="../node_modules/vue-router/dist/vue-router.global.js"></script>
     <script src="../node_modules/vuex/dist/vuex.global.js"></script>
     <script src="../node_modules/@popperjs/core/dist/umd/popper.js"></script>
     <script src="../node_modules/tippy.js/dist/tippy-bundle.umd.min.js"></script>
@@ -31,18 +35,25 @@
     <script src="../node_modules/gl-matrix/gl-matrix-min.js"></script>
     <script src="../node_modules/three/build/three.min.js"></script>
     <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
-    <script src="ui/console.js"></script>
-    <script src="ui/intro.js"></script>
-    <script src="ui/header.js"></script>
-    <script src="ui/main.js"></script>
+    <!-- <script src="ui/console.js"></script> -->
+    <!-- <script src="ui/intro.js"></script> -->
+    <!-- <script src="ui/header.js"></script> -->
+    <!-- <script src="ui/main.js"></script> -->
     <script src="ui/mod.js"></script>
     <script src="ui/map.js"></script>
     <script src="ui/pause.js"></script>
-    <script src="ui/block.js"></script>
-    <script src="ui/inline.js"></script>
+    <!-- <script src="ui/block.js"></script> -->
+    <!-- <script src="ui/inline.js"></script> -->
     <script src="ui/system.js"></script>
+    <script src="components/blocks.js"></script>
+    <script src="components/inlines.js"></script>
+    <script src="components/message.js"></script>
+    <script src="components/header.js"></script>
+    <script src="routes/index.js"></script>
+    <script src="routes/idle.js"></script>
     <script src="managers/ast.js"></script>
     <script src="managers/data.js"></script>
+    <script src="managers/router.js"></script>
     <script src="managers/display.js"></script>
     <script src="Era.js"></script>
 </head>
