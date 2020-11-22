@@ -1,7 +1,6 @@
-// const { app } = require('electron')
 const NetManager = require('./managers/net')
 class Erajs {
-  constructor () {
+  constructor() {
     // this.dat = new DataManager()
     this.dis = new DisplayManager()
     this.dis.start()
@@ -13,16 +12,6 @@ class Erajs {
     })
   }
 }
-window.onload = () => {
-  // const options = {
-  //   store: store,
-  //   template: '<i-program></i-program>'
-  // }
-  // window.app = Vue.createApp(options)
-  // app.use(store)
-  // components.forEach(component => {
-  //   app.component(component[0], component[1])
-  // })
-  // app.mount('#app')
+addEventListener('load', function () {
   const erajs = new Erajs()
-}
+})

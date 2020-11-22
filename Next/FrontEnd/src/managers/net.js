@@ -24,7 +24,7 @@ class ToMain extends EventEmitter {
     ipcRenderer.on('data', (e, data) => { this.recv(data) })
   }
   start = () => { }
-  send = (data) => { ipcRenderer.send('data', JSON.stringify(data)) }
+  send = (data) => { ipcRenderer.send('data', data) }
   recv = (data) => { this.emit('recv', data) }
 }
 /**
