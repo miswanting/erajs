@@ -22,7 +22,7 @@ window.components.push(['i-intro-main', {
 window.components.push(['i-sp-canvas', {
   mounted () {
     const particalCount = 400
-    const speedRadiusRate = 1.0
+    // const speedRadiusRate = 1.0
     const vanishRadius = 120
     const particalData = new Map()
     glMatrix.glMatrix.setMatrixArrayType(Array)
