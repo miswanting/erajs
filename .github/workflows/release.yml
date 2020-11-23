@@ -31,7 +31,10 @@ jobs:
           architecture: "x64"
 
       - name: Build Era.js FrontEnd
+        shell: bash
         run: |
+          pwd
+          ls
           cd Era.js\Engine\Desktop\FrontEnd
           npm run setup
           npx electron-builder --dir
