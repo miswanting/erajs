@@ -1,0 +1,51 @@
+:root {
+  --static: #030609;
+  --disabled: #232629;
+  --default: #333639;
+  --interactable: #434649;
+  --hover-sub: #636669;
+  --hover: #939699;
+  --active-sub: #c3c6c9;
+  --active: #f3f6f9;
+}
+
+.light-theme {
+  /* 静态 */
+  --static-front: #f3f6f9;
+  --static-back: #030609;
+  /* 不可用 */
+  --disabled-front: #636669;
+  --disabled-back: #333639;
+  /* 默认 */
+  --default-front: #c3c6c9;
+  --default-back: #333639;
+  /* 可交互 */
+  --react-front: #c3c6c9;
+  --react-back: #434649;
+  /* 悬停 */
+  --hover-front: #333639;
+  --hover-back: #c3c6c9;
+  /* 激活 */
+  --active-front: #030609;
+  --active-back: #f3f6f9;
+}
+.dark-theme {
+  /* 静态 */
+  --static-front: var(--active);
+  --static-back: var(--static);
+  /* 不可用 */
+  --disabled-front: var(--hover);
+  --disabled-back: var(--interactable);
+  /* 默认 */
+  --default-front: var(--active-sub);
+  --default-back: var(--default);
+  /* 可交互 */
+  --interactable-front: var(--active-sub);
+  --interactable-back: var(--interactable);
+  /* 悬停 */
+  --hover-front: var(--default);
+  --hover-back: var(--hover);
+  /* 激活 */
+  --active-front: var(--default);
+  --active-back: var(--active);
+}

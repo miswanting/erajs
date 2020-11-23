@@ -1,0 +1,39 @@
+.website > header {
+  position: fixed;
+  z-index: 10;
+  background-color: var(--default-back);
+  display: flex;
+  left: 0px;
+  right: 0px;
+  box-shadow: 0 0.5px 1px #000;
+}
+.website > header > div {
+  padding: 1rem;
+}
+.website > header > div:first-child {
+  flex-grow: 1;
+}
+.website > main {
+  margin-top: 3rem;
+}
+
+.website > main > .heading {
+  padding: 7rem 0;
+  text-align: center;
+}
+
+.website > main > .anchor {
+  position: absolute;
+  left: 50%;
+}
+.website > main > .anchor > body {
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  box-shadow: 0 0 3px #000;
+}
+.website > main > .description {
+  margin-top: 300px;
+  padding-top: 200px;
+  background-color: #fff;
+}
