@@ -4,8 +4,65 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup": "npm i",
+    "start": "chcp 65001 && npx electron .",
+    "fix": "npx standard --fix",
+    "build": "npx electron-builder --dir"
   },
   "author": "Miswanting",
-  "license": "GPL-3.0+"
+  "license": "GPL-3.0+",
+  "dependencies": {
+    "@popperjs/core": "latest",
+    "animate.css": "latest",
+    "animejs": "latest",
+    "csshake": "latest",
+    "electron-is-dev": "latest",
+    "gl-matrix": "latest",
+    "hover.css": "latest",
+    "normalize.css": "latest",
+    "simplex-noise": "latest",
+    "three": "latest",
+    "tippy.js": "latest",
+    "vue": "next",
+    "vue-router": "next",
+    "vuex": "next"
+  },
+  "devDependencies": {
+    "electron": "^11.0.2",
+    "electron-builder": "^22.9.1",
+    "electron-devtools-installer": "^3.1.1",
+    "standard": "^16.0.3"
+  },
+  "build": {
+    "appId": "net.erajs.next",
+    "productName": "Era.js",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "../../../Assets/Era.js-Icon.png"
+    }
+  },
+  "standard": {
+    "globals": [
+      "Vue",
+      "Vuex",
+      "anime",
+      "DataManager",
+      "DisplayManager",
+      "lines",
+      "store",
+      "components",
+      "app",
+      "CustomEvent",
+      "AST",
+      "SimplexNoise",
+      "THREE",
+      "glMatrix",
+      "routes",
+      "router",
+      "VueRouter",
+      "d3"
+    ]
+  }
 }

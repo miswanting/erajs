@@ -1,0 +1,79 @@
+name: Release Bot
+
+on:
+  push:
+    branches: [main-dev]
+jobs:
+  SDK-Windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Get Build Info
+        id: info
+        shell: bash
+        run: |
+          d=`date +%Y%m%d`
+          echo ::set-output name=DATE::${d:2:6}
+          echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
+
+      - name: Checkout Era.js
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js Enviroment
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+
+      - name: Setup Python 3.9 Enviroment
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          architecture: "x64"
+
+      - name: Build Era.js FrontEnd
+        run: |
+          cd Era.js\Engine\Desktop\FrontEnd
+          npm run setup
+          npx electron-builder --dir
+
+  #     - name: Assemble SDK
+  #       run: |
+  #         mkdir Era.js-SDK\erajs
+  #         xcopy Era.js\Engine\Desktop\BackEnd\erajs Era.js-SDK\erajs\ /E
+  #         Remove-Item Era.js-SDK\prebuilt\*.* -Recurse
+  #         xcopy Era.js\Next\FrontEnd\dist\win-unpacked Era.js-SDK\prebuilt\ /E
+  #         Compress-Archive -Path Era.js-SDK\* -DestinationPath "Era.js SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}.windows-x64.zip" -CompressionLevel Optimal
+
+  #     - name: Create Release
+  #       id: create_release
+  #       uses: actions/create-release@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         tag_name: ${{ steps.info.outputs.TAG_NAME }}
+  #         release_name: Era.js SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}
+  #         body_path: Era.js-SDK\CHANGELOG.md
+  #         draft: true
+  #         prerelease: false
+
+  #     - name: Upload Release Asset
+  #       uses: actions/upload-release-asset@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         upload_url: ${{ steps.create_release.outputs.upload_url }}
+  #         asset_path: "Era.js SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}.windows-x64.zip"
+  #         asset_name: "Era.js-SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}.windows-x64.zip"
+  #         asset_content_type: application/zip
+
+  # Windows-x64-Portable:
+  #   runs-on: windows-latest
+
+  #   steps:
+  #     - name: Get Build Info
+  #       id: info
+  #       shell: bash
+  #       run: |
+  #         d=`date +%Y%m%d`
+  #         echo ::set-output name=DATE::${d:2:6}
+  #         echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
