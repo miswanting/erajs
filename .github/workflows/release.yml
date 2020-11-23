@@ -43,7 +43,7 @@ jobs:
           xcopy Engine\Desktop\FrontEnd\dist\win-unpacked output\Era.js-SDK\runtime\ /E
           xcopy Engine\Desktop\BackEnd\erajs output\Era.js-SDK\erajs\ /E
           xcopy SDK output\Era.js-SDK\ /E /Y
-          Compress-Archive -Path output\Era.js-SDK\* -DestinationPath "output\Era.js-SDK v${{ steps.info.outputs.DATE }}+windows-x64.zip" -CompressionLevel Optimal
+          Compress-Archive -Path output\Era.js-SDK\* -DestinationPath "output\Era.js-SDK v0.1.0+${{ steps.info.outputs.DATE }}+windows-x64.zip" -CompressionLevel Optimal
 
       - name: Create Release
         id: create_release
@@ -63,8 +63,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: output/Era.js-SDK v${{ steps.info.outputs.DATE }}+windows-x64.zip
-          asset_name: Era.js-SDK v${{ steps.info.outputs.DATE }}+windows-x64.zip
+          asset_path: output/Era.js-SDK v0.1.0+${{ steps.info.outputs.DATE }}+windows-x64.zip
+          asset_name: Era.js-SDK v0.1.0+${{ steps.info.outputs.DATE }}+windows-x64.zip
           asset_content_type: application/zip
 
   # Windows-x64-Portable:
