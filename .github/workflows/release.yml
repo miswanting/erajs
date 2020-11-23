@@ -1,4 +1,4 @@
-name: Release Bot
+name: Release
 
 on:
   push:
@@ -33,7 +33,9 @@ jobs:
       - name: Build Era.js FrontEnd
         shell: bash
         run: |
-          cd Engine\Desktop\FrontEnd
+          pwd
+          ls
+          cd Engine/Desktop/FrontEnd
           npm run setup
           npm run build
 
