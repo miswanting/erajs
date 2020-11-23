@@ -28,10 +28,10 @@
     "vuex": "next"
   },
   "devDependencies": {
-    "electron": "^11.0.2",
-    "electron-builder": "^22.9.1",
-    "electron-devtools-installer": "^3.1.1",
-    "standard": "^16.0.3"
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electron-devtools-installer": "latest",
+    "standard": "latest"
   },
   "build": {
     "appId": "net.erajs.next",
@@ -62,7 +62,9 @@
       "routes",
       "router",
       "VueRouter",
-      "d3"
+      "d3",
+      "addEventListener",
+      "tippy"
     ]
   }
 }

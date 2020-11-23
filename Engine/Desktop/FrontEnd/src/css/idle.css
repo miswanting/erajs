@@ -1,0 +1,27 @@
+.idle {
+  flex-grow: 1;
+  display: grid;
+  place-items: center;
+}
+.idle #splash-canvas {
+  position: absolute;
+}
+.idle .center-group {
+  text-align: center;
+  z-index: 1;
+}
+.idle .engine-name {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--o);
+}
+.idle #icon-icon {
+  transform: translate(60px, 60px);
+}
+.idle .load-title {
+  font-weight: bold;
+  color: var(--o);
+}
+.idle .load-text {
+  color: var(--n);
+}
