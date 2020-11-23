@@ -12,7 +12,17 @@ echo.
 echo Press any key to continue after satisfying the requirement; If not, close the window, install Python, and try again.
 pause > nul
 cls
+echo Attention Again!
+echo .
+echo If your antivirus software emits any alerts in the next step, please allow.
+echo If you have any security concerns, feel free to check the source code.
+echo .
+echo If agreed, press any key to continue; If rejected, close the window.
+pause > nul
+cls
 echo Installing Python Dependences...
 pip install -r Requirements.txt
+echo Linking Engine Package...
+mklink /j "erajs" "..\Engine\Desktop\BackEnd\erajs"
 echo Done!
 pause
