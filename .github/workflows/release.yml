@@ -33,19 +33,20 @@ jobs:
       - name: Build Era.js FrontEnd
         shell: bash
         run: |
+          cd Engine\Desktop\FrontEnd
+          npm run setup
+          npm run build
+
+      - name: Assemble SDK
+        shell: bash
+        run: |
           pwd
           ls
-          cd Era.js\Engine\Desktop\FrontEnd
-          npm run setup
-          npx electron-builder --dir
-
-  #     - name: Assemble SDK
-  #       run: |
-  #         mkdir Era.js-SDK\erajs
-  #         xcopy Era.js\Engine\Desktop\BackEnd\erajs Era.js-SDK\erajs\ /E
-  #         Remove-Item Era.js-SDK\prebuilt\*.* -Recurse
-  #         xcopy Era.js\Next\FrontEnd\dist\win-unpacked Era.js-SDK\prebuilt\ /E
-  #         Compress-Archive -Path Era.js-SDK\* -DestinationPath "Era.js SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}.windows-x64.zip" -CompressionLevel Optimal
+          mkdir Era.js-SDK\erajs
+          xcopy Era.js\Engine\Desktop\BackEnd\erajs Era.js-SDK\erajs\ /E
+          Remove-Item Era.js-SDK\prebuilt\*.* -Recurse
+          xcopy Era.js\Next\FrontEnd\dist\win-unpacked Era.js-SDK\prebuilt\ /E
+          Compress-Archive -Path Era.js-SDK\* -DestinationPath "Era.js SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}.windows-x64.zip" -CompressionLevel Optimal
 
   #     - name: Create Release
   #       id: create_release
