@@ -40,12 +40,12 @@ jobs:
       - name: Assemble SDK
         run: |
           echo ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}
-          md output/Era.js-SDK/runtime
-          xcopy Engine/Desktop/FrontEnd/dist/win-unpacked/ output/Era.js-SDK/runtime/ /E
-          xcopy Engine/Desktop/BackEnd/erajs output/Era.js-SDK/
-          xcopy SDK/ output/Era.js-SDK/
-          Compress-Archive -Path output/Era.js-SDK/* -DestinationPath "output/Era.js-SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}.windows-x64.zip" -CompressionLevel Optimal
-          ls output/
+          md output\Era.js-SDK\runtime
+          xcopy Engine\Desktop\FrontEnd\dist\win-unpacked\ output\Era.js-SDK\runtime\ /E
+          xcopy Engine\Desktop\BackEnd\erajs\ output\Era.js-SDK\erajs\ /E
+          xcopy SDK\ output\Era.js-SDK\ /E /Y
+          Compress-Archive -Path output\Era.js-SDK\* -DestinationPath "output\Era.js-SDK ${{ steps.info.outputs.TAG_NAME }}+${{ steps.info.outputs.DATE }}.windows-x64.zip" -CompressionLevel Optimal
+          ls output\
 
       # - name: Create Release
       #   id: create_release
