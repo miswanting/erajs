@@ -1,4 +1,3 @@
-
 components.push(['msg-system', {
   render() {
     const msgList = []

@@ -26,6 +26,21 @@ html {
   --active-sub: #c3c6c9;
   --active: #f3f6f9;
 }
+@media (prefers-color-scheme: light) {
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --default-front: var(--p);
+    --default-back: var(--d);
+    --interactive-front: var(--p);
+    --interactive-back: var(--e);
+    --hover-front: var(--p);
+    --hover-back: var(--f);
+    --active-front: var(--p);
+    --active-back: var(--g);
+  }
+}
 .light-theme {
   /* 静态 */
   --static-front: #f3f6f9;

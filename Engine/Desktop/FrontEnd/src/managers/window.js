@@ -1,5 +1,5 @@
 const { EventEmitter } = require('events')
-const { BrowserWindow, session } = require('electron')
+const { BrowserWindow } = require('electron')
 const isDev = require('electron-is-dev')
 module.exports = class WindowManager extends EventEmitter {
   start() {

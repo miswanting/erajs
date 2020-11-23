@@ -3,7 +3,9 @@ class Erajs {
   constructor() {
     // this.dat = new DataManager()
     this.dis = new DisplayManager()
+    this.dis.start()
     this.net = new NetManager('main')
+    this.net.start()
     this.net.on('recv', (pkg) => { store.commit('parsePackage', pkg) })
     document.addEventListener('send', data => {
       this.net.send(data.detail)
@@ -11,8 +13,8 @@ class Erajs {
   }
 
   start() {
-    this.dis.start()
-    this.net.start()
+    // this.dis.start()
+    // this.net.start()
   }
 }
 addEventListener('load', function () {

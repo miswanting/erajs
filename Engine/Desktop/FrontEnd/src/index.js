@@ -6,7 +6,7 @@ const ScriptManager = require('./managers/script')
  * # 主进程管理器 MainManager
  * 提供渲染窗口、前/后端网络模块容器
  */
-class MainManager {
+class IndexManager {
   constructor() {
     // 初始化模块
     this.app = new AppManager()
@@ -37,4 +37,4 @@ class MainManager {
     this.toBack.send(data)
   }
 }
-const main = new MainManager()
+const index = new IndexManager()

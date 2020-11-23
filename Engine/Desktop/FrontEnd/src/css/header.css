@@ -22,6 +22,8 @@
 .header .menu-button,
 .header .operate-bar > div {
   cursor: pointer;
+  color: var(--o);
+  background-color: var(--d);
 }
 .header .menu-button:hover,
 .header .operate-bar > div:hover {
