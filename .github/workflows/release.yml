@@ -53,7 +53,7 @@ jobs:
         with:
           tag_name: v${{ steps.info.outputs.DATE }}
           release_name: Era.js v${{ steps.info.outputs.DATE }}
-          body_path: Era.js\CHANGELOG.md
+          body_path: CHANGELOG.md
           draft: true
           prerelease: false
 
