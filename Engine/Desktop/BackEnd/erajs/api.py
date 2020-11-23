@@ -1,4 +1,4 @@
-from . import core_mw as m
+from . import mw as m
 
 
 def init():

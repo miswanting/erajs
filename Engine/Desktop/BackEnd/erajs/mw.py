@@ -1,7 +1,7 @@
 import os
 from typing import Any, Dict
 
-from .core import Engine, Tools
+from .engine import Engine, Tools
 from .modules.dot_path import DotPath
 
 e = Engine()
