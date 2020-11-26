@@ -1,35 +1,22 @@
-from base64 import encode
 import datetime
-import enum
 import json
 import logging
 import os
 import secrets
 import socket
 import sys
+from sys import meta_path
 import threading
 import time
 from typing import Any, Callable, ClassVar, Dict, List, Optional
 
+from . import lib
 from .file_format_support import (cfg_file, csv_file, json_file, save_file,
                                   text_file, yaml_file, zip_file)
 from .modules.dot_path import DotPath
 
 
 class Tools:
-    @staticmethod
-    def fix_path():
-        """
-        # 修正根路径
-        """
-        if getattr(sys, 'frozen', False):
-            # 生产环境（已打包）
-            path = os.path.dirname(sys.executable)
-        else:
-            # 开发环境（未打包）
-            path = os.path.join(os.path.dirname(__file__), '../..')
-        os.chdir(path)
-
     @staticmethod
     def random_hash(level: int = 4):
         """
@@ -43,6 +30,7 @@ class Tools:
     def timestamp():
         """
         # 时间戳生成器
+        - 示例：201231-030619-123456
         """
         return datetime.datetime.today().strftime("%y%m%d-%H%M%S-%f")
 
@@ -50,6 +38,7 @@ class Tools:
     def uuid():
         """
         # UUID生成器
+        - 示例：201231-030619-123456
         """
         timestamp = Tools.timestamp()
         hash = '{:0>6d}'.format(secrets.randbelow(1000000))
@@ -170,9 +159,7 @@ class DataManager(EventManager):
     def __init__(self):
         super().__init__()
         self.__data = {
-            'cfg': {
-                'resolution': [800, 600]
-            },
+            'cfg': {},
             'dat': {},
             'sav': {
                 'meta': {},
@@ -211,7 +198,7 @@ class DataManager(EventManager):
             data = save_file.read(path)
         return data
 
-    def write(self, path: str, data: Any):
+    def write(self, path: str, data: Any = None):
         """
         # 写入数据到文件
         """
@@ -244,116 +231,190 @@ class DataManager(EventManager):
     def mount(self, dot_path: str, scope: str):
         pass
 
+    def cfg(self, dot_path: Optional[str] = None):
+        """
+        # CFG
+        """
+        if dot_path is None:
+            return self.__data['cfg']
+        elif dot_path in self.__data['cfg']:
+            return self.__data['cfg'][dot_path]
+        elif self.mount(dot_path, 'cfg'):
+            return self.__data['cfg'][dot_path]
+        else:
+            return None
 
-class DomainManager(DataManager):
-    """
-    1. 服务器上线，读取entry后待机
-    2. 用户登入，
-        - 游客：无User ID，无Cookie（登录/注册）
-        - 注册用户：有User ID，无Cookie（登录/注册）
-        - 非活动用户：有User ID，有Cookie
-    3. 调用entry
+    def dat(self, dot_path: Optional[str] = None):
+        """
+        # CFG
+        """
+        if dot_path is None:
+            return self.__data['dat']
+        elif dot_path in self.__data['dat']:
+            return self.__data['dat'][dot_path]
+        elif self.mount(dot_path, 'dat'):
+            return self.__data['dat'][dot_path]
+        else:
+            return None
 
-    """
+    def sav(self, dot_path: Optional[str] = None) -> Any:
+        """
+        # CFG
+        除非你需要操作存档信息，否则请不要占用“meta”点路径，因为sav('meta')是内置的存档信息保存点。
+        """
+        if dot_path is None:
+            return self.__data['sav']['data']
+        elif dot_path == 'meta':
+            return self.__data['sav']['meta']
+        elif dot_path in self.__data['sav']['data']:
+            return self.__data['sav']['data'][dot_path]
+        else:
+            return None
 
-    def __init__(self):
-        super().__init__()
-        self.__data = {
-            'domain': {}
-        }
-
-    def join(self):
-        pass
-
-    def leave(self):
-        pass
+    def tmp(self, dot_path: Optional[str] = None):
+        """
+        # TMP
+        tmp
+        """
+        if dot_path is None:
+            return self.__data['tmp']
+        elif dot_path in self.__data['tmp']:
+            return self.__data['tmp'][dot_path]
+        else:
+            return None
 
 
 class NetManager(DataManager):
     def __init__(self):
         super().__init__()
-        self.__data = {
-            'connected': False,
-            'socket': None
+        self.__debug = False
+        self.__buf_size = 1024
+        self.__connection: Optional[socket.socket] = None
+        self.__is_connected = False
+        self.__state: Any = {
+            'length': 0,
+            'length_bytes': '',
+            'content_bytes': b''
         }
 
-    def connect(self, host: str = 'localhost', port: int = 11994):
-        t = threading.Thread(
-            target=self.__connector,
-            args=(host, port)
-        )
+    def connect(self, host: str = '127.0.0.1', port: int = 11994):
+        def core():
+            try:
+                with socket.create_connection((host, port)) as conn:
+                    self.info('   └─ Connected!')
+                    self.__connection = conn
+                    self.__is_connected = True
+                    while True:
+                        self.handle_recv_once(
+                            self.__connection.recv(self.__buf_size))
+            except ConnectionRefusedError:
+                self.warn('│  ├─ [!] FrontEnd Not Running!')
+                self.warn('│  ├─ [.] Please Start the FrontEnd First!')
+        self.info('├─ Connecting...')
+        t = threading.Thread(target=core)
         t.start()
         o = 0
-        while not self.__data['connected']:
-            if o > 100:
-                self.warn('Connect TimeOut!')
-                break
+        while not self.__is_connected:
+            if o > 50:
+                self.warn('├<<┴─ Connection TimeOut & Failed!')
+                return False
             else:
                 o += 1
             time.sleep(0.1)
+        return True
+
+    def handle_recv_once(self, buf: bytes):
+        if self.__state['length'] == 0:
+            for i, char in enumerate(buf):
+                c = chr(char)
+                if c == ':':
+                    self.__state['length'] = int(self.__state['length_bytes'])
+                    self.__state['length_bytes'] = ''
+                    self.handle_recv_once(buf[i+1:])
+                    return
+                else:
+                    self.__state['length_bytes'] += c
+        elif len(self.__state['content_bytes']) + len(buf) < self.__state['length']:
+            self.__state['content_bytes'] += buf
+        else:
+            index = self.__state['length'] - len(self.__state['content_bytes'])
+            self.__state['content_bytes'] += buf[0:index]
+            s = self.__state['content_bytes'].decode()
+            self.recv(s)
+            self.__state['length'] = 0
+            self.__state['content_bytes'] = b''
+            self.handle_recv_once(buf[index:])
 
     def send(self, data: Any):
-        # self.debug('Send: '+str(data))
-        s = json.dumps(data)
-        s = str(len(s))+':'+s
-        self.__data['socket'].sendall(s.encode())
+        if self.__connection:
+            msg = json.dumps(data)
+            print(f'Send: {msg}') if self.__debug else None
+            content = msg.encode()
+            b = str(len(content)).encode()+b':'+content
+            self.__connection.sendall(b)
 
-    def recv(self, data: bytes):
-        # self.debug('Recv: '+str(data))
-        data = json.loads(data)
+    def recv(self, msg: str):
+        print(f'Recv: {msg}') if self.__debug else None
+        data = json.loads(msg)
         self.emit(data['type'], data)
-
-    def __connector(self, host: str, port: int):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
-            self.__data['socket'] = socket
-            try:
-                self.__data['socket'].connect((host, port))
-                self.__data['connected'] = True
-                self.__core()
-            except OSError as e:
-                if e.errno == 10061:
-                    self.warn('   └─ [!] Please Start FrontEnd First!')
-                else:
-                    self.warn(e)
-                sys.exit()
-
-    def __core(self):
-        length = 0
-        length_string = ''
-        last_binary = ''
-        next_binary = ''
-        while True:
-            raw_data: bytes = self.__data['socket'].recv(1024)
-            if not raw_data:
-                self.warn('Recv None Data!')
-            else:
-                if length == 0:
-                    for i, char in enumerate(raw_data):
-                        if char == ':':
-                            length = int(length_string.decode())
-                            length_string = ''
-                            next_binary += raw_data[i+1:]
-                            break
-                        else:
-                            length_string += char
-                else:
-                    next_binary += raw_data
-                if len(next_binary) >= length:
-                    self.recv(last_binary+next_binary[0:length])
-                    length = 0
-                    last_binary = ''
-                    next_binary = next_binary[length:]
-                else:
-                    last_binary += next_binary
-                    length -= len(next_binary)
 
 
 class ModManager(NetManager):
-    pass
+        """
+        # 模组管理器
+        # Mod File Structure
+        ```
+        Mod
+        ├─ config
+        │  ├─ *.yml
+        │  ├─ *.json
+        │  └─ ...
+        ├─ data
+        │  ├─ *.yml
+        │  ├─ *.json
+        │  └─ ...
+        ├─ res
+        │  ├─ *.svg
+        │  ├─ *.png
+        │  └─ ...
+        ├─ meta.yml
+        ├─ *.py
+        └─ ...
+        ```
+        # Mod Meta File Structure(meta.yml)
+        ```yml
+        id: test #(required)[Short,NoSpace]
+        name: A Friendly Name #(optional)[AnyStr]
+        version: v0.1.0-beta+201112.fix #(required)[QualifiedSemVer]
+        main: test.py #(required)
+        ```
+        """
+    def __init__(self):
+        super().__init__()
+
+    def scan_mods(self) -> List[Dict[str, Any]]:
+        mods = []
+        for entry_name in os.listdir('mods'):
+            path = os.path.join('mods', entry_name)
+            if os.path.isdir(path):
+                meta_path = os.path.join(path, 'meta.json')
+                if os.path.isfile(path):
+                    dot_path = '.'.join(
+                        DotPath.path2dot(path)[0].split('.')[1:])
+                    self.info(f'│  ├─ Mod [{dot_path}] Found.')
+                    mod_meta = self.read(meta_path)
+                    mod_meta['path'] = path
+                    mods.append(mod_meta)
+        return mods
+
+    def load_mods(self):
+        pass
 
 
 class Engine(ModManager):
     """
     # 这次重构的目的是使用”大中台“
     """
-    pass
+
+    def __init__(self):
+        super().__init__()
