@@ -6,6 +6,6 @@ echo .
 echo Press ANY Button to Continue.
 pause
 cls
-python setup.py build
+python Setup.py build
 echo Done!
 pause

@@ -27,14 +27,14 @@ for dirpath, dirnames, filenames in os.walk('.'):
             build_exe_options['include_files'].append(
                 os.path.join(dirpath, each)
             )
-        # for each in dirnames:
-        #     if each in ['.git', 'build', 'cache', 'prebuilt', 'save']:
-        #         continue
-        #     build_exe_options['include_files'].append(
-        #         os.path.join(dirpath, each)+'/'
-        #     )
-for dirpath, dirnames, filenames in os.walk('prebuilt'):
-    if dirpath == 'prebuilt':
+        for each in dirnames:
+            if each in ['.git', 'build', 'save']:
+                continue
+            build_exe_options['include_files'].append(
+                os.path.join(dirpath, each)+'/'
+            )
+for dirpath, dirnames, filenames in os.walk('runtime'):
+    if dirpath == 'runtime':
         for each in filenames:
             if each in ['README.md', 'prebuilt.zip']:
                 continue
@@ -45,10 +45,14 @@ for dirpath, dirnames, filenames in os.walk('prebuilt'):
             build_exe_options['include_files'].append(
                 os.path.join(dirpath, each)+'/'
             )
+base = None
+if sys.platform == "win32":
+    base = "Win32GUI"
+
 setup(
     name="Era.js",
     version="0.1.0",
     description="Era.js Game Script",
     options={"build_exe": build_exe_options},
-    executables=[Executable("Launcher.py")]
+    executables=[Executable("Launcher.py", base=base)]
 )
