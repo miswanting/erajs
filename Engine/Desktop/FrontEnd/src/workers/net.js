@@ -3,7 +3,7 @@ const { createServer } = require('net')
 class Server {
   constructor() {
     this.debug = true
-    this.address = ['127.0.0.1', 12020]
+    this.address = ['127.0.0.1', 11994]
     this.bufSize = 3
     this.server = null
     this.conn = null
