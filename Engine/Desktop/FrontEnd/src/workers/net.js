@@ -4,7 +4,7 @@ class Server {
   constructor() {
     this.debug = true
     this.address = ['127.0.0.1', 11994]
-    this.bufSize = 3
+    this.bufSize = 1024
     this.server = null
     this.conn = null
     this.state = {

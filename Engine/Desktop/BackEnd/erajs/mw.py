@@ -81,7 +81,7 @@ def init():
                         if file_path == '.\\config\\sys.yml':
                             data = {
                                 'resolution': [800, 600],
-                                'mod': []
+                                'mods': []
                             }
                         e.write(file_path, data)
         e.info('├─ Checking Data Integrity...')
@@ -107,6 +107,11 @@ def init():
                 e.info(f'│  ├─ Config [{dot_path}] Loaded.')
                 n += 1
         e.info(f'│  └─ {n} Configs Loaded!')
+
+    def send_config():
+        e.info('├─ Sending Engine Config...')
+        e.send({'type': 'cfg', 'data': e.cfg('sys')})
+        e.info('│  └─ Configs Sent!')
 
     def load_data_files():
         e.info('├─ Scanning Data Files...')
@@ -134,7 +139,7 @@ def init():
                     if compare(mm['version'], mc['version']) == 1:
                         # New Version
                         mc['version'] = mm['version']
-                        self.info(f'│  ├─ Update Mod [{mc['name']}] Found.')
+                        self.info(f'│  ├─ Update Mod [{mc["name"]}] Found.')
                     found = True
             if found:
                 new_mcs.append(mc)
@@ -157,6 +162,7 @@ def init():
     if not e.connect('127.0.0.1', 11994):
         e.info('└─ Initialization Failed!')
         sys.exit(1)
+    send_config()
     load_data_files()
     load_mods()
     print(e.cfg())

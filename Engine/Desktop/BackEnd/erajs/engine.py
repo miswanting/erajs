@@ -301,7 +301,7 @@ class NetManager(DataManager):
         def core():
             try:
                 with socket.create_connection((host, port)) as conn:
-                    self.info('   └─ Connected!')
+                    self.info('│  └─ Connected!')
                     self.__connection = conn
                     self.__is_connected = True
                     while True:
@@ -360,35 +360,36 @@ class NetManager(DataManager):
 
 
 class ModManager(NetManager):
-        """
-        # 模组管理器
-        # Mod File Structure
-        ```
-        Mod
-        ├─ config
-        │  ├─ *.yml
-        │  ├─ *.json
-        │  └─ ...
-        ├─ data
-        │  ├─ *.yml
-        │  ├─ *.json
-        │  └─ ...
-        ├─ res
-        │  ├─ *.svg
-        │  ├─ *.png
-        │  └─ ...
-        ├─ meta.yml
-        ├─ *.py
-        └─ ...
-        ```
-        # Mod Meta File Structure(meta.yml)
-        ```yml
-        id: test #(required)[Short,NoSpace]
-        name: A Friendly Name #(optional)[AnyStr]
-        version: v0.1.0-beta+201112.fix #(required)[QualifiedSemVer]
-        main: test.py #(required)
-        ```
-        """
+    """
+    # 模组管理器
+    # Mod File Structure
+    ```
+    Mod
+    ├─ config
+    │  ├─ *.yml
+    │  ├─ *.json
+    │  └─ ...
+    ├─ data
+    │  ├─ *.yml
+    │  ├─ *.json
+    │  └─ ...
+    ├─ res
+    │  ├─ *.svg
+    │  ├─ *.png
+    │  └─ ...
+    ├─ meta.yml
+    ├─ *.py
+    └─ ...
+    ```
+    # Mod Meta File Structure(meta.yml)
+    ```yml
+    id: test #(required)[Short,NoSpace]
+    name: A Friendly Name #(optional)[AnyStr]
+    version: v0.1.0-beta+201112.fix #(required)[QualifiedSemVer]
+    main: test.py #(required)
+    ```
+    """
+
     def __init__(self):
         super().__init__()
 

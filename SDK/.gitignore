@@ -1,3 +1,4 @@
 erajs
 *.log
 config/sys.yml
+build
