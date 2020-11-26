@@ -5,14 +5,14 @@ from cx_Freeze import Executable, setup
 
 # Dependencies are automatically detected, but it might need fine tuning.
 build_exe_options = {
-    "packages": ["os", "json", "yaml"],
+    "packages": ["os", "json", "yaml", "semver"],
     "include_files": [],
     "excludes": ["tkinter"]
 }
 for dirpath, dirnames, filenames in os.walk('.'):
     if dirpath == '.':
         for each in filenames:
-            if each in[
+            if each in [
                 '.gitignore',
                 'Debug.bat',
                 'Erajs.log',
@@ -28,7 +28,7 @@ for dirpath, dirnames, filenames in os.walk('.'):
                 os.path.join(dirpath, each)
             )
         for each in dirnames:
-            if each in['.git', 'build', 'cache', 'prebuilt', 'save']:
+            if each in ['.git', 'build', 'cache', 'prebuilt', 'save']:
                 continue
             build_exe_options['include_files'].append(
                 os.path.join(dirpath, each)+'/'
@@ -36,7 +36,7 @@ for dirpath, dirnames, filenames in os.walk('.'):
 for dirpath, dirnames, filenames in os.walk('prebuilt'):
     if dirpath == 'prebuilt':
         for each in filenames:
-            if each in['README.md', 'prebuilt.zip']:
+            if each in ['README.md', 'prebuilt.zip']:
                 continue
             build_exe_options['include_files'].append(
                 os.path.join(dirpath, each)
