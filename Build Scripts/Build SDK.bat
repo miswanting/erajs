@@ -1,7 +1,9 @@
 @echo off
 rd /S /Q dist
 cd ..\Engine\Desktop\FrontEnd
-start npm run build
+call npm run setup
+pause
+call npm run build
 cd ..\..\..
 md dist\Era.js-SDK\runtime
 xcopy Engine\Desktop\BackEnd\erajs dist\Era.js-SDK\erajs\ /E

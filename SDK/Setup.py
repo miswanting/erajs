@@ -14,25 +14,25 @@ for dirpath, dirnames, filenames in os.walk('.'):
         for each in filenames:
             if each in [
                 '.gitignore',
-                'Debug.bat',
                 'Erajs.log',
-                'Front.bat',
-                'LICENSE',
                 'Package.bat',
-                'requirements.txt',
+                'Requirements.txt',
+                'RunBackEnd.bat',
+                'RunFrontEnd.bat',
                 'Setup.bat',
-                'setup.py'
+                'setup.py',
+                'Setup(dev).bat'
             ]:
                 continue
             build_exe_options['include_files'].append(
                 os.path.join(dirpath, each)
             )
-        for each in dirnames:
-            if each in ['.git', 'build', 'cache', 'prebuilt', 'save']:
-                continue
-            build_exe_options['include_files'].append(
-                os.path.join(dirpath, each)+'/'
-            )
+        # for each in dirnames:
+        #     if each in ['.git', 'build', 'cache', 'prebuilt', 'save']:
+        #         continue
+        #     build_exe_options['include_files'].append(
+        #         os.path.join(dirpath, each)+'/'
+        #     )
 for dirpath, dirnames, filenames in os.walk('prebuilt'):
     if dirpath == 'prebuilt':
         for each in filenames:
