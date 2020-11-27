@@ -1,0 +1,31 @@
+{
+  "name": "erajs-frontend",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "repository": "https://github.com/miswanting/Era.js.git",
+  "author": "Miswanting",
+  "license": "GPL-3.0+",
+  "scripts": {
+    "setup": "yarn && yarn add",
+    "fix": "standard --fix",
+    "test": "jest",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/jest": "^26.0.15",
+    "@vue/test-utils": "next",
+    "jest": "^26.6.3",
+    "normalize.css": "latest",
+    "sass": "latest",
+    "standard": "latest",
+    "ts-jest": "^26.4.4",
+    "ts-loader": "latest",
+    "typescript": "latest",
+    "vue": "next",
+    "vue-router": "next",
+    "vuex": "next",
+    "webpack": "latest",
+    "webpack-cli": "latest"
+  }
+}
