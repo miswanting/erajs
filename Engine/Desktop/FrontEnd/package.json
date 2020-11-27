@@ -13,6 +13,7 @@
     "build": "webpack"
   },
   "devDependencies": {
+    "electron": "latest",
     "electron-builder": "latest",
     "electron-is-dev": "latest",
     "html-webpack-plugin": "next",
