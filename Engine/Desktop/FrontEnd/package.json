@@ -12,14 +12,13 @@
     "build": "webpack"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.12.7",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "latest",
     "@vue/test-utils": "next",
-    "jest": "^26.6.3",
+    "jest": "latest",
     "normalize.css": "latest",
     "sass": "latest",
     "standard": "latest",
-    "ts-jest": "^26.4.4",
+    "ts-jest": "latest",
     "ts-loader": "latest",
     "typescript": "latest",
     "vue": "next",
