@@ -7,14 +7,19 @@
   "license": "GPL-3.0+",
   "scripts": {
     "setup": "yarn",
-    "fix": "standard --fix",
+    "standardize": "ts-standard --fix",
+    "package": "webpack",
+    "debug": "electron .",
     "build": "webpack"
   },
   "devDependencies": {
+    "electron-builder": "latest",
+    "electron-is-dev": "latest",
+    "html-webpack-plugin": "next",
     "normalize.css": "latest",
     "sass": "latest",
-    "standard": "latest",
     "ts-loader": "latest",
+    "ts-standard": "latest",
     "typescript": "latest",
     "vue": "next",
     "vue-router": "next",

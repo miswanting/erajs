@@ -1,4 +1,5 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const Main = {
   entry: './src/index.ts',
@@ -40,6 +41,11 @@ const Renderer = {
   output: {
     filename: 'era.js',
     path: path.resolve(__dirname, 'dist')
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Era.js'
+    })
+  ]
 }
 module.exports = [Main, Renderer]
