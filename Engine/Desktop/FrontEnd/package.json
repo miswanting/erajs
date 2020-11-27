@@ -6,19 +6,14 @@
   "author": "Miswanting",
   "license": "GPL-3.0+",
   "scripts": {
-    "setup": "yarn && yarn add",
+    "setup": "yarn",
     "fix": "standard --fix",
-    "test": "jest",
     "build": "webpack"
   },
   "devDependencies": {
-    "@types/jest": "latest",
-    "@vue/test-utils": "next",
-    "jest": "latest",
     "normalize.css": "latest",
     "sass": "latest",
     "standard": "latest",
-    "ts-jest": "latest",
     "ts-loader": "latest",
     "typescript": "latest",
     "vue": "next",
