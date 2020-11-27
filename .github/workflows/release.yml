@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    branches: [neo]
+jobs:
+  SDK-Windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Get Build Info
+        id: info
+        shell: bash
+        run: |
+          d=`date +%Y%m%d`
+          echo ::set-output name=DATE::${d:2:6}
+          echo ::set-output name=TAG_NAME::${GITHUB_REF/refs\/tags\//}
+
+      - name: Checkout Era.js
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js Enviroment
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+
+      - name: Setup Python 3.9 Enviroment
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          architecture: "x64"
+
+      - name: Build Era.js FrontEnd
+        shell: bash
+        run: |
+          cd Engine/Desktop/FrontEnd
+          npm run setup
+          npm run build
+
+      - name: Assemble SDK
+        run: |
+          md output\Era.js-SDK\runtime
+          xcopy Engine\Desktop\FrontEnd\dist\win-unpacked output\Era.js-SDK\runtime\ /E
+          xcopy Engine\Desktop\BackEnd\erajs output\Era.js-SDK\erajs\ /E
+          xcopy SDK output\Era.js-SDK\ /E /Y
+          Compress-Archive -Path output\Era.js-SDK\* -DestinationPath "output\Era.js-SDK v0.1.0-alpha+${{ steps.info.outputs.DATE }}.windows-x64.zip" -CompressionLevel Optimal
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.info.outputs.DATE }}
+          release_name: Era.js v${{ steps.info.outputs.DATE }}
+          body_path: CHANGELOG.md
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: output/Era.js-SDK v0.1.0-alpha+${{ steps.info.outputs.DATE }}.windows-x64.zip
+          asset_name: Era.js-SDK v0.1.0-alpha+${{ steps.info.outputs.DATE }}.windows-x64.zip
+          asset_content_type: application/zip
