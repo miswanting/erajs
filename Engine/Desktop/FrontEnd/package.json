@@ -8,24 +8,36 @@
   "scripts": {
     "setup": "yarn",
     "standardize": "ts-standard --fix",
-    "package": "webpack",
+    "package-dev": "webpack",
+    "package-prod": "webpack --mode=production",
     "debug": "electron .",
+    "P-D": "call yarn run package && call yarn run debug",
     "build": "webpack"
   },
   "devDependencies": {
+    "css-loader": "latest",
     "electron": "latest",
     "electron-builder": "latest",
+    "electron-devtools-installer": "latest",
     "electron-is-dev": "latest",
     "html-webpack-plugin": "next",
+    "mini-css-extract-plugin": "latest",
     "normalize.css": "latest",
+    "pug": "latest",
+    "pug-plain-loader": "latest",
     "sass": "latest",
+    "style-loader": "latest",
+    "stylus": "latest",
+    "stylus-loader": "latest",
     "ts-loader": "latest",
     "ts-standard": "latest",
     "typescript": "latest",
     "vue": "next",
+    "vue-loader": "latest",
     "vue-router": "next",
     "vuex": "next",
     "webpack": "latest",
-    "webpack-cli": "latest"
+    "webpack-cli": "latest",
+    "worker-loader": "latest"
   }
 }
