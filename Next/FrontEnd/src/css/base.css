@@ -10,3 +10,6 @@ body {
   height: 100%;
   overflow: hidden;
 }
+#app>* {
+    white-space: pre
+}
