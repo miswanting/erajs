@@ -86,7 +86,12 @@ class AST {
     if (state.blockMode.type === 'line') {
       lastPage.children.push(this.newElement(state.blockMode.type))
     } else if (state.blockMode.type === 'grid') {
-      lastPage.children.push(this.newElement(state.blockMode.type, { column: state.blockMode.column }))
+      lastPage.children.push(this.newElement(state.blockMode.type,
+        { 
+          column: state.blockMode.column,
+          alignment: state.blockMode.alignment
+        })
+      )
     }
   }
 
