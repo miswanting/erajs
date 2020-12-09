@@ -6,7 +6,7 @@ export class Erajs {
     this.dis = new DisplayManager()
     this.net = new NetManager('main')
     this.store = new StoreManager()
-    this.net.on('recv', (pkg) => { this.net.send(pkg) })
+    this.net.on('recv', (pkg) => { this.store.parsePackage(pkg) })
     // this.dat.on('send', (pkg) => { })
   }
 

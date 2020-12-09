@@ -129,20 +129,30 @@ def init():
 
     def load_data_files():
         e.info('├─ Scanning Data Files...')
+        e.push('set_loading_title', {'value': 'Scanning Data Files...'})
+        e.push('set_loading_text', {'value': ''})
         files = e.scan('data')
         for path in files:
             dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
             e.info(f'│  ├─ Data File [{dot_path}] Found.')
+            e.push('set_loading_text', {
+                   'value': f'Data File [{dot_path}] Found.'})
         e.info(f'│  └─ {len(files)} Data Files Found!')
         e.info('├─ Loading Data Files...')
+        e.push('set_loading_title', {'value': 'Loading Data Files...'})
+        e.push('set_loading_text', {'value': ''})
         for path in files:
             dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
             e.dat()[dot_path] = e.read(path)
             e.info(f'│  ├─ Data File [{dot_path}] Loaded.')
+            e.push('set_loading_text', {
+                   'value': f'Data File [{dot_path}] Loaded.'})
         e.info(f'│  └─ {len(files)} Data Files Loaded!')
 
     def load_mods():
         e.info('├─ Scanning Mods...')
+        e.push('set_loading_title', {'value': 'Scanning Mods...'})
+        e.push('set_loading_text', {'value': ''})
         # Config -> File System : Check Config Deletes
         metas = e.scan_mods()
         configs = e.cfg('sys')['mods']
@@ -166,7 +176,8 @@ def init():
         for id in metas:
             e.info(
                 f'│  ├─ Mod [{metas[id]["name"] if "name" in metas[id] else id}] Found.')
-
+            e.push('set_loading_text', {
+                   'value': f'Mod [{metas[id]["name"] if "name" in metas[id] else id}] Found.'})
             index = e.findModInCfg(id)
             if index == -1:
                 new_config = {
@@ -188,12 +199,15 @@ def init():
         e.info(f'│  └─ {len(metas)} Mods Found!')
         # Load Mods
         e.info('├─ Loading Mods...')
+        e.push('set_loading_title', {'value': 'Loading Mods...'})
+        e.push('set_loading_text', {'value': ''})
         n = 0
         for config in configs:
             if config['enabled']:
                 e.info(
-                    f'│  ├─ Mod [{config["name"] if "name" in config else config["id"]}] Loading...'
-                )
+                    f'│  ├─ Mod [{config["name"] if "name" in config else config["id"]}] Loading...')
+                e.push('set_loading_text', {
+                       'value': f'Mod [{config["name"] if "name" in config else config["id"]}] Loading...'})
                 e.load_mod(config['id'])
                 n += 1
         e.info(f'│  └─ {n} Mods Loaded!')
@@ -208,6 +222,7 @@ def init():
     send_config()
     load_data_files()
     load_mods()
+    e.push('loaded')
     e.info('Initialization Done!')
 
 
@@ -298,7 +313,7 @@ def button(text: str, callback: Optional[Callable[[], None]], *arg: List[Any], *
     e.unlock()
 
 
-def link(text: str, callback: Optional[Callable[[], None]], style: Optional[Dict[str, Any]], *arg: List[Any], **kw: Dict[Text, Any]):
+def link(text: str, callback: Optional[Callable[[], None]], style: Optional[Dict[str, Any]], *arg: List[Any], **kw: Dict[str, Any]):
     data = {
         'text': str(text),
         'hash': Tools.random_hash()

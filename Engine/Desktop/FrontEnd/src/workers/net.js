@@ -16,6 +16,7 @@ class NetWorker {
   start(ip = '', port = 0) {
     this.server = createServer((conn) => {
       this.conn = conn
+      parentPort.postMessage({ type: 'connection' })
       this.conn.on('data', this.handleRecvOnce)
       this.conn.on('error', (e) => {
         if (e.code === 'ECONNRESET') { console.log('后端断开连接！') }

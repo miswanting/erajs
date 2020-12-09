@@ -8,7 +8,6 @@ import socket
 import sys
 import threading
 import time
-from sys import meta_path
 from typing import Any, Callable, ClassVar, Dict, List, Optional
 
 from . import lib
@@ -516,4 +515,9 @@ class Engine(ModManager):
     def __init__(self):
         super().__init__()
 
-    def push(self, type: str, data: Optional[Dict[str, Any]] = None, style: Optional[Dict[str, Any]] = None)
+    def push(self, type: str, data: Optional[Dict[str, Any]] = None, style: Optional[Dict[str, Any]] = None):
+        self.send({
+            'type': type,
+            'data': data,
+            'style': style,
+        })

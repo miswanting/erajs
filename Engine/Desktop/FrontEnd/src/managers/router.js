@@ -1,18 +1,18 @@
 import { EventEmitter } from 'events'
 import { createRouter, createWebHashHistory } from 'vue-router'
-// import AppIdle from '../components/AppIdle'
+import AppIndex from '../components/AppIndex.vue'
 import AppIdle from '../components/AppIdle.vue'
 export class RouterManager extends EventEmitter {
-  constructor () {
+  constructor() {
     super()
-    this.router = createRouter({
+    window.router = createRouter({
       history: createWebHashHistory(),
       routes: [
-        { path: '/', component: null },
+        { path: '/', component: AppIndex },
         { path: '/idle', component: AppIdle }
       ]
     })
   }
 
-  getVueRouter () { return this.router }
+  getVueRouter() { return window.router }
 }

@@ -140,8 +140,8 @@ def heading():
 h = heading
 
 
-def text():
-    pass
+def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, str]] = None):
+    m.text(text, wait, style)
 
 
 t = text
