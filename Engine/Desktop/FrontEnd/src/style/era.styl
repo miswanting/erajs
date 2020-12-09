@@ -1,0 +1,56 @@
+@import 'normalize.css'
+
+html
+  --a #030609
+  --b #131619
+  --c #232629
+  --d #333639
+  --e #434649
+  --f #535659
+  --g #636669
+  --h #737679
+  --i #838689
+  --j #939699
+  --k #a3a6a9
+  --l #b3b6b9
+  --m #c3c6c9
+  --n #d3d6d9
+  --o #e3e6e9
+  --p #f3f6f9
+
+@media (prefers-color-scheme light)
+  html
+    --static-front var(--p)
+    --static-back var(--a)
+    --disabled-front var(--d)
+    --disabled-back var(--m)
+    --default-front var(--p)
+    --default-back var(--d)
+    --interactable-front var(--p)
+    --interactable-back var(--e)
+    --hover-front var(--p)
+    --hover-back var(--f)
+    --active-front var(--p)
+    --active-back var(--g)
+
+@media (prefers-color-scheme dark)
+  html
+    --static-front var(--p)
+    --static-back var(--a)
+    --disabled-front var(--h)
+    --disabled-back var(--c)
+    --default-front var(--m)
+    --default-back var(--d)
+    --interactable-front var(--p)
+    --interactable-back var(--e)
+    --hover-front var(--p)
+    --hover-back var(--f)
+    --active-front var(--p)
+    --active-back var(--g)
+
+html, body
+  height 100vh
+
+body
+  display flex
+  flex-direction column

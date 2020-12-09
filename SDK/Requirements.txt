@@ -1,0 +1,10 @@
+bson
+cx_freeze
+flask
+flask-socketio
+pytest
+pyyaml
+semver
+setuptools 
+twine
+wheel

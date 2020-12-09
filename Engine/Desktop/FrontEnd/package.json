@@ -1,0 +1,50 @@
+{
+  "name": "erajs-frontend",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "repository": "https://github.com/miswanting/Era.js.git",
+  "author": "Miswanting",
+  "license": "GPL-3.0+",
+  "scripts": {
+    "setup": "yarn",
+    "standardize": "standard --fix",
+    "package-dev": "webpack --config webpack.config.dev.js",
+    "package-prod": "webpack --config webpack.config.prod.js",
+    "debug": "chcp 65001 && electron .",
+    "P-D": "call yarn run package-dev && call yarn run debug",
+    "build": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "latest",
+    "animejs": "latest",
+    "clean-webpack-plugin": "latest",
+    "css-loader": "latest",
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electron-devtools-installer": "latest",
+    "electron-is-dev": "latest",
+    "gl-matrix": "latest",
+    "html-webpack-plugin": "latest",
+    "normalize.css": "latest",
+    "pug": "latest",
+    "pug-plain-loader": "latest",
+    "standard": "latest",
+    "style-loader": "latest",
+    "stylus": "latest",
+    "stylus-loader": "latest",
+    "vue": "next",
+    "vue-loader": "next",
+    "vue-router": "next",
+    "vue-style-loader": "latest",
+    "vuex": "next",
+    "webpack": "latest",
+    "webpack-cli": "latest",
+    "worker-loader": "latest",
+    "worker-plugin": "latest"
+  },
+  "standard": {
+    "ignore": [
+      "/dist/"
+    ]
+  }
+}
