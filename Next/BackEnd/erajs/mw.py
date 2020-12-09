@@ -283,11 +283,17 @@ def nxtgrid(num: int):
         num -= 1
 
 
-def text(text: Text, wait: bool, style: Dict[Text, Any]):
+def space(num: int = 4):
+    e.push('text', {'text': text}, None)
+
+
+def text(text: Text, wait: bool, style: Dict[Text, Any], L: int):
     if text == None or text == '':
         e.push('pass', None, None)
     else:
         e.push('text', {'text': text}, style)
+
+    if L:nxtline(L)
 
     if wait and not e.lock_passed():
         e.lock()
@@ -306,7 +312,47 @@ def text(text: Text, wait: bool, style: Dict[Text, Any]):
         e.wait_for_unlock()
 
 
-def button(text: Text, callback: Callable[[], None], *arg: List[Any], **kw: Dict[Text, Any]):
+def text_split(text, length, just, mono):
+    if mono: size = lambda c:1+(not c.isascii())
+    else:    size = lambda c:1
+
+    if   just=='l': alt = lambda a,b:a+' '*b
+    elif just=='r': alt = lambda a,b:' '*b+a
+    elif just=='c':
+        def alt(a,b):
+            if (n:=b//2) == b/2:
+                return ' '*n+a+' '*n
+            else:
+                return ' '*n+a+' '*(n+1)
+    else: alt = lambda a,b:a
+
+    while text:
+        curlen = pin = 0
+        while True:
+            if text[pin] == '\n': # 读到换行符, 跳过并立即返回当前读取值
+                piece, text = text[:pin], text[pin+1:]
+                yield alt(piece, length-curlen)
+                break
+
+            curlen += size(text[pin])
+            pin += 1
+
+            if curlen == length: # (-1) + (1)
+                piece, text = text[:pin], text[pin:]
+                yield alt(piece, 0)
+                break
+
+            if curlen == length+1: # (-1) + 2
+                piece, text = text[:pin-1], text[pin-1:]
+                yield alt(piece, 1)
+                break
+
+            if pin >= len(text): # 字符串终止
+                yield alt(text, length-curlen)
+                return
+
+
+def button(text: Text, callback: Callable[[], None], *arg: List[Any], F=0, B=0, L=0, **kw: Dict[Text, Any]):
     data = {
         'text': str(text),
         'hash': tools.random_hash()
@@ -327,7 +373,11 @@ def button(text: Text, callback: Callable[[], None], *arg: List[Any], **kw: Dict
     if 'style' in kw:
         style = kw['style']
         del kw['style']
+
+    if F:space(F)
     e.push('button', data, style)
+    if B:space(B)
+    if L:nxtline(L)
 
     def on_click(e):
         if e['hash'] == data['hash']:
