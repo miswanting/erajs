@@ -102,10 +102,10 @@ window.components.push(['i-divider', {
     data: Object
   },
   render () {
-    return [
-      Vue.h('div', {
-        class: 'divider'
-      }, [
+    if (this.data.data.text == null) {
+      elements = [Vue.h('div', {class: 'divider-line'})]
+    } else {
+      elements = [
         Vue.h('div', {
           class: 'divider-line'
         }),
@@ -115,7 +115,12 @@ window.components.push(['i-divider', {
         Vue.h('div', {
           class: 'divider-line'
         })
-      ])
+      ]
+    }
+    return [
+      Vue.h('div', {
+        class: 'divider'
+      }, elements)
     ]
   }
 }])
