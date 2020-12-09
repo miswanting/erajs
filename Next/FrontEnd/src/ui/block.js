@@ -47,6 +47,9 @@ window.components.push(['i-grid', {
   render () {
     const columns = []
     let column = []
+    var alignment = this.data.data.alignment.split('').map(
+      (a) => ({c:'center',l:'left',r:'right'}[a])
+    )
     for (let i = 0; i < this.data.children.length; i++) {
       const rawElement = this.data.children[i]
       if (rawElement.type !== 'pass') {
@@ -58,7 +61,7 @@ window.components.push(['i-grid', {
           column.push(Vue.h('br'))
         }
         columns.push(Vue.h('td', {
-          style: null
+          style: {'text-align': [alignment.shift()]}
         }, column))
         column = []
       }
