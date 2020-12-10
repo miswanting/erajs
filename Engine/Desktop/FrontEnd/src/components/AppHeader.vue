@@ -51,6 +51,7 @@ export default {
     text-align center
     color var(--default-front)
     background-color var(--default-back)
+    -webkit-app-region drag
 
   .operate-bar
     display flex
