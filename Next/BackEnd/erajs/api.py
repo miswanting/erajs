@@ -168,8 +168,6 @@ h = heading
 def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 插入行内控件：文本
-    # 调用参数同text_split
-    # 当未给定length时, 将会以'\n'作为分隔符分割text, 并以最长一句的长度作为length的取值
     """
     return m.text(text, wait, style)
 

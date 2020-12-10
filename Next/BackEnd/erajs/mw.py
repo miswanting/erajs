@@ -293,7 +293,7 @@ def text(text: Text, wait: bool, style: Dict[Text, Any]):
         e.wait_for_unlock()
 
 
-def button(text: Text, callback: Callable[[], None], *arg: List[Any], F=0, B=0, L=0, **kw: Dict[Text, Any]):
+def button(text: Text, callback: Callable[[], None], *arg: List[Any], **kw: Dict[Text, Any]):
     data = {
         'text': str(text),
         'hash': tools.random_hash()
