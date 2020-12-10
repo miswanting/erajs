@@ -216,7 +216,7 @@ def heading():
 h = heading
 
 
-def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, str]] = None):
+def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, Any]] = None):
     """
     # 插入行内控件：文本
     """
