@@ -259,7 +259,7 @@ def cls(num: int = 0):
     e.push('cls', {'num': num}, None)
 
 
-def mode(type: Text, *arg: List[Any], **kw: Dict[Text, Any]):
+def mode(type: Text,  *arg: List[Any], **kw: Dict[Text, Any]):
     e.push('mode', {'type': type, 'arg': arg}, None)
 
 
@@ -276,7 +276,6 @@ def text(text: Text, wait: bool, style: Dict[Text, Any]):
         e.push('pass', None, None)
     else:
         e.push('text', {'text': text}, style)
-
     if wait and not e.lock_passed():
         e.lock()
 
