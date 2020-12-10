@@ -167,27 +167,14 @@ h = heading
 
 def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, str]] = None) -> object:
     """
-    # 打印一个段落
+    # 插入行内控件：文本
     # 调用参数同text_split
     # 当未给定length时, 将会以'\n'作为分隔符分割text, 并以最长一句的长度作为length的取值
     """
-    if not length:
-
-        if not just:
-            for line in text.split('\n'):
-                tl(line, style=style)
-            return
-
-        if mono:
-            len = lambda x:sum( ( lambda c:1+(not c.isascii()) )(c) for c in x)
-        lines = text.split('\n')
-        length = len(max(lines, key=len))
-
-    for line in m.text_split(text, length, just, mono):
-        tl(line, style=style)
+    return m.text(text, wait, style)
 
 
-prgp = paragraph
+t = text
 
 
 def button(text: Optional[str] = None, callback: Optional[Callable[[Any], None]] = None, *arg: Any, **kw: Any) -> object:
@@ -198,11 +185,6 @@ def button(text: Optional[str] = None, callback: Optional[Callable[[Any], None]]
 
 
 b = button
-# button 的亚种
-bl = partial(button, L=1)
-bf = partial(button, F=4)
-bb = partial(button, B=4)
-bfl = partial(button, F=4, L=1)
 
 
 def link(text: Optional[str] = None, callback: Optional[Callable[[], None]] = None, style: Optional[Dict[str, str]] = None, *arg: Any, **kw: Any) -> object:
@@ -549,14 +531,3 @@ def sleep(secs: float):
 
 def img(dot_path: str):
     m.img(dot_path)
-
-
-class Void: # 无论怎么玩弄都不用担心的对象
-    def __getattr__(self, k):return self
-    def __getitem__(self, k):return self
-    def __setattr__(self, k, v):pass
-    def __setitem__(self, k, v):pass
-    def __delattr__(self, k):pass
-    def __call__(self, *args, **kw):return self
-    def __iter__(self):return [].__iter__()
-void = Void()

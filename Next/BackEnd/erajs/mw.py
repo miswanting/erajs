@@ -276,10 +276,6 @@ def text(text: Text, wait: bool, style: Dict[Text, Any]):
         e.push('pass', None, None)
     else:
         e.push('text', {'text': text}, style)
-
-    if L:
-        nxtline(L)
-
     if wait and not e.lock_passed():
         e.lock()
 
@@ -295,51 +291,6 @@ def text(text: Text, wait: bool, style: Dict[Text, Any]):
         e.on('MOUSE_CLICK', on_click)
         e.show_listener_list()
         e.wait_for_unlock()
-
-
-def text_split(text, length, just, mono):
-    if mono:
-        def size(c): return 1+(not c.isascii())
-    else:
-        def size(c): return 1
-
-    if just == 'l':
-        def alt(a, b): return a+' '*b
-    elif just == 'r':
-        def alt(a, b): return ' '*b+a
-    elif just == 'c':
-        def alt(a, b):
-            if (n := b//2) == b/2:
-                return ' '*n+a+' '*n
-            else:
-                return ' '*n+a+' '*(n+1)
-    else:
-        def alt(a, b): return a
-
-    while text:
-        curlen = pin = 0
-        while True:
-            if text[pin] == '\n':  # 读到换行符, 跳过并立即返回当前读取值
-                piece, text = text[:pin], text[pin+1:]
-                yield alt(piece, length-curlen)
-                break
-
-            curlen += size(text[pin])
-            pin += 1
-
-            if curlen == length:  # (-1) + (1)
-                piece, text = text[:pin], text[pin:]
-                yield alt(piece, 0)
-                break
-
-            if curlen == length+1:  # (-1) + 2
-                piece, text = text[:pin-1], text[pin-1:]
-                yield alt(piece, 1)
-                break
-
-            if pin >= len(text):  # 字符串终止
-                yield alt(text, length-curlen)
-                return
 
 
 def button(text: Text, callback: Callable[[], None], *arg: List[Any], F=0, B=0, L=0, **kw: Dict[Text, Any]):
@@ -363,14 +314,7 @@ def button(text: Text, callback: Callable[[], None], *arg: List[Any], F=0, B=0, 
     if 'style' in kw:
         style = kw['style']
         del kw['style']
-
-    if F:
-        space(F)
     e.push('button', data, style)
-    if B:
-        space(B)
-    if L:
-        nxtline(L)
 
     def on_click(e):
         if e['hash'] == data['hash']:
