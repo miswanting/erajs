@@ -143,19 +143,6 @@ def mode(type: Optional[str] = 'line', *arg: Any, **kw: Any) -> None:
     """
     # 设置新增控件排版模式
     在旧版排版模式会被page()重置，而现在不会了。
-
-    设置为grid模式时, 可通过传入align指定每列的对齐方式
-
-    align : str, optional
-        由l,c,r三字符组成的字符串, 对应该列的对其方式
-        l - 左对齐
-        c - 置中
-        r - 右对齐
-        当未指定时默认所有列置中
-
-        Example:
-            mode('grid', 3, 'lcr')
-            mode('grid', 5)
     """
     m.mode(type, *arg, **kw)
 

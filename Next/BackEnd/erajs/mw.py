@@ -259,10 +259,8 @@ def cls(num: int = 0):
     e.push('cls', {'num': num}, None)
 
 
-def mode(type: Text, col=0, align=None, *arg: List[Any], **kw: Dict[Text, Any]):
-    if col > 0 and align is None:
-        align = 'c'*col
-    e.push('mode', {'type': type, 'col':col, 'align':align.lower()}, None)
+def mode(type: Text, *arg: List[Any], **kw: Dict[Text, Any]):
+    e.push('mode', {'type': type, 'arg': arg}, None)
 
 
 def divider(text: Text, style: Dict[Text, Any]):

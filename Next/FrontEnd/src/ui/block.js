@@ -47,9 +47,6 @@ window.components.push(['i-grid', {
   render () {
     const columns = []
     let column = []
-    var alignment = this.data.data.alignment.split('').map(
-      (a) => ({c:'center',l:'left',r:'right'}[a])
-    )
     for (let i = 0; i < this.data.children.length; i++) {
       const rawElement = this.data.children[i]
       if (rawElement.type !== 'pass') {
@@ -61,7 +58,7 @@ window.components.push(['i-grid', {
           column.push(Vue.h('br'))
         }
         columns.push(Vue.h('td', {
-          style: {'text-align': [alignment.shift()]}
+          style: null
         }, column))
         column = []
       }
@@ -105,10 +102,10 @@ window.components.push(['i-divider', {
     data: Object
   },
   render () {
-    if (this.data.data.text == null) {
-      elements = [Vue.h('div', {class: 'divider-line'})]
-    } else {
-      elements = [
+    return [
+      Vue.h('div', {
+        class: 'divider'
+      }, [
         Vue.h('div', {
           class: 'divider-line'
         }),
@@ -118,12 +115,7 @@ window.components.push(['i-divider', {
         Vue.h('div', {
           class: 'divider-line'
         })
-      ]
-    }
-    return [
-      Vue.h('div', {
-        class: 'divider'
-      }, elements)
+      ])
     ]
   }
 }])
