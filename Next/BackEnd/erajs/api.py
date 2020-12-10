@@ -180,39 +180,6 @@ h = heading
 
 def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, str]] = None) -> object:
     """
-    # 插入行内控件：文本
-    """
-    return m.text(text, wait, style)
-
-
-t = text
-# text 的亚种
-tl = partial(text, L=1)
-tw = partial(text, wait=True)
-tlw = partial(text, L=1, wait=True)
-
-
-def text_split(text: Text, length: int, just: Optional[str] = None, mono: Optional[bool] = True):
-    """
-    # 分割字符串
-    text
-        待分割的字符串
-    length
-        分割后每句的长度
-    just
-        对齐方式
-        l - 左对齐, 右端补空格
-        r - 右对齐, 左端补空格
-        c - 置中, 两边补空格
-        None - 不对齐
-    mono
-        当指定为True时, 非ascii字符(如汉字)宽度将视为2
-    """
-    return m.text_split(text, length, just, mono)
-
-
-def paragraph(text: Text, length: Optional[int] = 0, just: Optional[str] = None, mono: Optional[bool] = True, style=None):
-    """
     # 打印一个段落
     # 调用参数同text_split
     # 当未给定length时, 将会以'\n'作为分隔符分割text, 并以最长一句的长度作为length的取值
