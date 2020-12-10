@@ -2,7 +2,7 @@ window.components.push(['i-block', {
   props: {
     data: Object
   },
-  render () {
+  render() {
     let blockType = null
     if (this.data.type === 'line') {
       blockType = 'i-line'
@@ -22,7 +22,7 @@ window.components.push(['i-line', {
   props: {
     data: Object
   },
-  render () {
+  render() {
     const inlines = []
     if (this.data.children.length === 0) {
       inlines.push(Vue.h('br'))
@@ -44,12 +44,9 @@ window.components.push(['i-grid', {
   props: {
     data: Object
   },
-  render () {
+  render() {
     const columns = []
     let column = []
-    var alignment = this.data.data.alignment.split('').map(
-      (a) => ({c:'center',l:'left',r:'right'}[a])
-    )
     for (let i = 0; i < this.data.children.length; i++) {
       const rawElement = this.data.children[i]
       if (rawElement.type !== 'pass') {
@@ -60,9 +57,7 @@ window.components.push(['i-grid', {
         if (column.length === 0) {
           column.push(Vue.h('br'))
         }
-        columns.push(Vue.h('td', {
-          style: {'text-align': [alignment.shift()]}
-        }, column))
+        columns.push(Vue.h('td', { style: null }, column))
         column = []
       }
     }
@@ -93,9 +88,9 @@ window.components.push(['i-grid', {
         class: 'line',
         style: null
       },
-      Vue.h('tbody', {
-        style: null
-      }, rows)
+        Vue.h('tbody', {
+          style: null
+        }, rows)
       )
     ]
   }
@@ -104,9 +99,9 @@ window.components.push(['i-divider', {
   props: {
     data: Object
   },
-  render () {
+  render() {
     if (this.data.data.text == null) {
-      elements = [Vue.h('div', {class: 'divider-line'})]
+      elements = [Vue.h('div', { class: 'divider-line' })]
     } else {
       elements = [
         Vue.h('div', {

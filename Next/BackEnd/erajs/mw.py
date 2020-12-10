@@ -259,10 +259,8 @@ def cls(num: int = 0):
     e.push('cls', {'num': num}, None)
 
 
-def mode(type: Text, col=0, align=None, *arg: List[Any], **kw: Dict[Text, Any]):
-    if col > 0 and align is None:
-        align = 'c'*col
-    e.push('mode', {'type': type, 'col':col, 'align':align.lower()}, None)
+def mode(type: Text,  *arg: List[Any], **kw: Dict[Text, Any]):
+    e.push('mode', {'type': type, 'arg': arg}, None)
 
 
 def divider(text: Text, style: Dict[Text, Any]):
@@ -279,7 +277,8 @@ def text(text: Text, wait: bool, style: Dict[Text, Any]):
     else:
         e.push('text', {'text': text}, style)
 
-    if L:nxtline(L)
+    if L:
+        nxtline(L)
 
     if wait and not e.lock_passed():
         e.lock()
@@ -299,23 +298,28 @@ def text(text: Text, wait: bool, style: Dict[Text, Any]):
 
 
 def text_split(text, length, just, mono):
-    if mono: size = lambda c:1+(not c.isascii())
-    else:    size = lambda c:1
+    if mono:
+        def size(c): return 1+(not c.isascii())
+    else:
+        def size(c): return 1
 
-    if   just=='l': alt = lambda a,b:a+' '*b
-    elif just=='r': alt = lambda a,b:' '*b+a
-    elif just=='c':
-        def alt(a,b):
-            if (n:=b//2) == b/2:
+    if just == 'l':
+        def alt(a, b): return a+' '*b
+    elif just == 'r':
+        def alt(a, b): return ' '*b+a
+    elif just == 'c':
+        def alt(a, b):
+            if (n := b//2) == b/2:
                 return ' '*n+a+' '*n
             else:
                 return ' '*n+a+' '*(n+1)
-    else: alt = lambda a,b:a
+    else:
+        def alt(a, b): return a
 
     while text:
         curlen = pin = 0
         while True:
-            if text[pin] == '\n': # 读到换行符, 跳过并立即返回当前读取值
+            if text[pin] == '\n':  # 读到换行符, 跳过并立即返回当前读取值
                 piece, text = text[:pin], text[pin+1:]
                 yield alt(piece, length-curlen)
                 break
@@ -323,17 +327,17 @@ def text_split(text, length, just, mono):
             curlen += size(text[pin])
             pin += 1
 
-            if curlen == length: # (-1) + (1)
+            if curlen == length:  # (-1) + (1)
                 piece, text = text[:pin], text[pin:]
                 yield alt(piece, 0)
                 break
 
-            if curlen == length+1: # (-1) + 2
+            if curlen == length+1:  # (-1) + 2
                 piece, text = text[:pin-1], text[pin-1:]
                 yield alt(piece, 1)
                 break
 
-            if pin >= len(text): # 字符串终止
+            if pin >= len(text):  # 字符串终止
                 yield alt(text, length-curlen)
                 return
 
@@ -360,10 +364,13 @@ def button(text: Text, callback: Callable[[], None], *arg: List[Any], F=0, B=0, 
         style = kw['style']
         del kw['style']
 
-    if F:space(F)
+    if F:
+        space(F)
     e.push('button', data, style)
-    if B:space(B)
-    if L:nxtline(L)
+    if B:
+        space(B)
+    if L:
+        nxtline(L)
 
     def on_click(e):
         if e['hash'] == data['hash']:
