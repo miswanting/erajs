@@ -1,5 +1,4 @@
 from typing import Any, Callable, Dict, List, Optional, Text
-from functools import partial
 
 from . import mw as m
 
@@ -177,37 +176,6 @@ def heading(text: Optional[str] = None, rank: int = 1, style: Optional[Dict[str,
 
 
 h = heading
-
-
-def nxtline(num: int = 1):
-    """
-    # 换行
-    """
-    return m.nxtline(num)
-
-
-nl = nxtline
-
-
-def nxtgrid(num: int = 1):
-    """
-    # 换行
-    # 当在grid排版模式下时, 不换列
-    """
-    return m.nxtgrid(num)
-
-
-ng = nxtgrid
-
-
-def space(num: int = 4):
-    """
-    # 打印指定数目的空格
-    """
-    return m.space(num)
-
-
-sp = space
 
 
 def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[str, str]] = None) -> object:

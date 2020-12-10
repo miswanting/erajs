@@ -273,23 +273,7 @@ def heading(text: Text, rank: int, style: Dict[Text, Any]):
     e.push('heading', {'text': str(text), 'rank': rank}, style)
 
 
-def nxtline(num: int):
-    while num:
-        e.push('text', {'text': '\n'}, None)
-        num -= 1
-
-
-def nxtgrid(num: int):
-    while num:
-        e.push('pass', None, None)
-        num -= 1
-
-
-def space(num: int = 4):
-    e.push('text', {'text': text}, None)
-
-
-def text(text: Text, wait: bool, style: Dict[Text, Any], L: int):
+def text(text: Text, wait: bool, style: Dict[Text, Any]):
     if text == None or text == '':
         e.push('pass', None, None)
     else:
