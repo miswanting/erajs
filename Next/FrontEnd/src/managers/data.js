@@ -88,7 +88,8 @@ window.store = Vuex.createStore({
       } else if (pkg.type === 'mode') {
         state.blockMode = { type: pkg.data.type }
         if (state.blockMode.type === 'grid') {
-          state.blockMode.column = pkg.data.arg[0]
+          state.blockMode.column = pkg.data.col
+          state.blockMode.alignment = pkg.data.align
         }
       } else if (pkg.type === 'pass') {
         if (state.blockMode.type === 'line') {
