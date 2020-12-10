@@ -50,6 +50,7 @@ export default {
     flex-grow 1
     text-align center
     color var(--default-front)
+    background-color var(--default-back)
 
   .operate-bar
     display flex
@@ -58,6 +59,7 @@ export default {
 
     > div
       padding 0 .2rem
+      background-color var(--default-back)
 
     :hover
       background-color var(--hover-back)

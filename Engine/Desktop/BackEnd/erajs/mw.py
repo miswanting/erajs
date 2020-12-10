@@ -544,3 +544,23 @@ def ui_load():
 
 def dangerously_get_engine_core():
     return e
+
+
+def Experimental(func: Callable[[], Any]):
+    """
+    # 实验性接口
+    """
+    def wrapper(*args: Any, **kw: Any):
+        print(f'API {func.__name__}() is unstable.')
+        return func(*args, **kw)
+    return wrapper
+
+
+def Deprecated(func: Callable[[], Any]):
+    """
+    # 该接口即将被弃用
+    """
+    def wrapper(*args: Any, **kw: Any):
+        print(f'API {func.__name__}() is unstable.')
+        return func(*args, **kw)
+    return wrapper

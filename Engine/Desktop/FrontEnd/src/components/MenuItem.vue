@@ -48,6 +48,7 @@ export default {
   .menu-button
     padding 0 .2rem
     color var(--default-front)
+    background-color var(--default-back)
     cursor pointer
     width -webkit-fill-available
 

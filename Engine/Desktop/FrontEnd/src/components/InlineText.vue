@@ -1,5 +1,5 @@
 <template lang="pug">
-span.text {{ this.data.data.text }}
+span.text(:style="this.data.style") {{ this.data.data.text }}
 </template>
 <script>
 export default {

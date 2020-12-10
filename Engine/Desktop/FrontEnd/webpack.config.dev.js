@@ -6,6 +6,7 @@ const WorkerPlugin = require('worker-plugin')
 const Main = {
   entry: './src/index.js',
   mode: 'development',
+  devtool: 'inline-source-map',
   target: 'electron-main',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -19,6 +20,7 @@ const Main = {
 const Renderer = {
   entry: './src/era.js',
   mode: 'development',
+  devtool: 'inline-source-map',
   target: 'electron-renderer',
   module: {
     rules: [
