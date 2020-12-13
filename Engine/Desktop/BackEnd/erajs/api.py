@@ -1,7 +1,10 @@
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 from . import mw as m
 from .mw import Experimental
+version = '0.2.0-α+201213'
+codename = 'Dark Elf'
+data = None
 
 
 # Debug
@@ -125,7 +128,9 @@ def init(config: Optional[Dict[str, Any]] = None):
     - ↑上面的 API 可以在初始化之前使用
     - ↓下面的 API 只能在初始化之后使用
     """
-    return m.init()
+    m.init(config)
+    global data
+    data = m.old_data()
 
 
 # Data
@@ -146,71 +151,71 @@ def tmp(key: Optional[str] = None):
 
 
 # Window
-def window():
+def window(style: Dict[str, Any]):
     """
     # 设置窗口样式
     """
-    pass
+    m.window(style)
 
 
-def title():
+def title(text: str, style: Optional[Dict[str, str]] = None):
     """
     # 设置窗口标题
     """
-    pass
+    m.title(text, style)
 
 
-def footer():
+def footer(text: str, style: Optional[Dict[str, str]] = None):
     """
     # 设置窗口脚注
     """
-    pass
+    m.footer(text, style)
 
 
-def msg():
+def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):
     """
     # 设置窗口脚注
     """
-    pass
+    m.msg(text, duration, style)
 
 
 # Page
-def page():
+def page(style: Optional[Dict[str, str]] = None, *exception_tags: List[str]):
     """
     # 生成新的空白页面
     """
-    pass
+    m.page(style, *exception_tags)
 
 
-def cls():
+def cls(num: int = 0):
     """
     # 清屏
     """
-    pass
+    m.cls(num)
 
 
 # Block
-def mode():
+def mode(type: Optional[str] = 'line', *arg: Any, **kw: Any):
     """
     # 设置新增控件排版模式
     在旧版排版模式会被page()重置，而现在不会了。
     """
-    pass
+    m.mode(type, *arg, **kw)
 
 
-def divider():
+def divider(text: Optional[str] = None, style: Optional[Dict[str, str]] = None):
     """
     # 插入块级控件：分割线
     """
-    pass
+    return m.divider(text, style)
 
 
 # Inline
-def heading():
+def heading(text: Optional[str] = None, rank: int = 1, style: Optional[Dict[str, str]] = None):
     """
     # 插入行内控件：标题
     """
-    pass
+    return m.heading(text, rank, style)
 
 
 h = heading
@@ -226,113 +231,114 @@ def text(text: Optional[str] = None, wait: bool = False, style: Optional[Dict[st
 t = text
 
 
-def button():
+def button(text: Optional[str] = None, callback: Optional[Callable[[Any], None]] = None, *arg: Any, **kw: Any):
     """
     # 插入行内控件：按钮
     """
-    pass
+    return m.button(text, callback, *arg, **kw)
 
 
 b = button
 
 
-def link():
+def link(text: Optional[str] = None, callback: Optional[Callable[[], None]] = None, style: Optional[Dict[str, str]] = None, *arg: Any, **kw: Any):
     """
     # 插入行内控件：链接
     """
-    pass
+    return m.link(text, callback, style, *arg, **kw)
 
 
 l = link
 
 
-def progress():
+def progress(now: float = 0, max: float = 100, style: Optional[List[Dict[str, str]]] = None):
     """
     # 插入行内控件：进度条
     """
-    pass
+    return m.progress(now, max, style)
 
 
-def rate():
+def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[int], None]] = None, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 插入行内控件：评分
     """
-    pass
+    return m.rate(now, max, callback, style)
 
 
-def check():
+def check(text: Optional[str] = None, callback: Optional[Callable[[bool], None]] = None, default: bool = False, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 插入行内控件：多选
     """
-    pass
+    return m.check(text, callback, default, style)
 
 
-def radio():
+def radio(text_list: List[str], callback: Optional[Callable[[int], None]] = None, default_index: int = 0, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 插入行内控件：单选
     """
-    pass
+    return m.radio(text_list, callback, default_index, style)
 
 
-def input():
+def input(callback: Optional[Callable[[str], None]] = None, default: str = '', is_area: bool = False, placeholder: str = '', style: Optional[Dict[str, str]] = None) -> object:
     """
     # 插入行内控件：输入框
     """
-    pass
+    return m.input(callback, default, is_area, placeholder, style)
 
 
-def dropdown():
+def dropdown(text_list: Optional[List[str]] = None, callback: Optional[Callable[[int], None]] = None, default_index: int = 0, search: bool = False, multiple: bool = False, placeholder: str = '', allowAdditions: bool = False, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 插入行内控件：下拉列表
     """
-    pass
+    return m.dropdown(text_list, callback, default_index, search,
+                      multiple, placeholder, allowAdditions, style)
 
 
 # Style
-def set_style():
+def set_style(widget: Callable[[], Any], style: Dict[str, str]):
     """
     # 设置样式
     """
-    pass
+    m.set_style(widget, style)
 
 
-def reset_style():
+def reset_style(widget: Callable[[], Any]):
     """
     # 重置样式
     """
-    pass
+    m.reset_style(widget)
 
 
 # GUI
-def goto():
+def goto(ui_func: Callable[[], Any], *arg: Any, **kw: Any):
     """
     # 将界面节点添加到界面栈的末尾，并触发
     """
-    pass
+    m.goto(ui_func, *arg, **kw)
 
 
-def back():
+def back(num: int = 1, *arg: Any, **kw: Any) -> None:
     """
     # 从界面栈删除n（默认为1）个界面节点，并触发删除之后的末尾节点
     """
-    pass
+    m.back(num, *arg, **kw)
 
 
-def repeat():
+def repeat(*arg: Any, **kw: Any) -> None:
     """
     # 不对界面栈进行修改，并触发末尾节点
     """
-    pass
+    m.repeat(*arg, **kw)
 
 
-def clear():
+def clear(num: int = 0) -> None:
     """
     # 清空界面栈
     """
-    pass
+    m.clear(num)
 
 
-def append():
+def append(ui_func: Callable[[], Any], *arg: Any, **kw: Any):
     """
     # 将界面节点添加到界面栈的末尾，但不触发
     """
@@ -343,28 +349,40 @@ def get_gui_stack():
     """
     # 返回界面栈，以界面名称列表的格式
     """
-    pass
+    return m.get_gui_stack()
 
 
 # Data Utilities
-def dump_cfg():
-    pass
+def dump_cfg(dot_path: Optional[str] = None, ext: str = 'yaml') -> None:
+    """
+    # 保存设置数据
+    """
+    return m.write_cfg(dot_path, ext)
 
 
-def dump_dat():
-    pass
+def dump_dat(dot_path: Optional[str] = None, ext: str = 'json') -> None:
+    """
+    # 保存静态数据
+    """
+    return m.write_dat(dot_path, ext)
 
 
-def save():
-    pass
+def save(filename_without_ext: Optional[str] = None, meta_info: Optional[Dict[str, str]] = None) -> None:
+    """
+    # 转储存档数据
+    """
+    m.save(filename_without_ext, meta_info)
 
 
-def load():
-    pass
+def load(filename_without_ext: Optional[str] = None):
+    """
+    # 转储存档数据
+    """
+    m.load(filename_without_ext)
 
 
 def scan_save_file():
-    pass
+    return m.scan_save_file()
 
 
 # Hook
@@ -373,20 +391,61 @@ def set_console_parser():
 
 
 # Preset
-def widget_save():
-    pass
+def widget_save() -> None:
+    """
+    # 插入块级复合控件：存档保存列表（单页）
+    """
+    def save_file(i, filename_without_ext):
+        if i == -1:
+            save(get_current_timestamp())
+        else:
+            save(filename_without_ext)
+        repeat()
+    mode()
+    for i, each in enumerate(scan_save_file()):
+        b('{}. {}'.format(i, each[0]), save_file, i, each[0])
+        t()
+    b('+', save_file, -1, '')
+    t()
 
 
-def widget_load():
-    pass
+def widget_load(callback) -> None:
+    """
+    # 插入块级复合控件：存档加载列表（单页）
+    """
+    def load_file(i, filename_without_ext):
+        load(filename_without_ext)
+        callback()
+    mode()
+    for i, each in enumerate(scan_save_file()):
+        b('{}. {}'.format(i, each[0]), load_file, i, each[0])
+        t()
 
 
 def ui_save():
-    pass
+    """
+    # 插入块级复合控件：存档保存列表（单页）
+    """
+    page()
+    h('保存存档')
+    t()
+    t()
+    widget_save()
+    t()
+    b('返回', back)
 
 
-def ui_load():
-    pass
+def ui_load(callback):
+    """
+    # 插入块级复合控件：存档加载列表（单页）
+    """
+    page()
+    h('加载存档')
+    t()
+    t()
+    widget_load(callback)
+    t()
+    b('返回', back)
 
 
 # Experimental

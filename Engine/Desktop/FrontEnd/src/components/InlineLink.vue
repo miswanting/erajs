@@ -1,9 +1,9 @@
 <template lang="pug">
-span.button(
+span.link(
   :class="{ disabled: data.data.disabled }",
   :style="data.style",
   @click="click",
-  ref="button"
+  ref="link"
 ) {{ data.data.text }}
 </template>
 <script>
@@ -21,7 +21,7 @@ export default {
       if (!this.data.data.disabled) {
         e.stopPropagation();
         this.$store.commit("handleEvent", {
-          type: "BUTTON_CLICK",
+          type: "LINK_CLICK",
           hash: this.data.data.hash,
         });
       }
@@ -46,29 +46,33 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.button
-  background-color var(--interactable-back)
+.link
+  color var(--interactable-front)
+  text-decoration-line underline
+  text-decoration-style dashed
   margin 0px .1em
   cursor pointer
 
   &:hover
+    text-decoration underline
     color var(--hover-front)
-    background-color var(--hover-back)
 
   &:active
     color var(--active-front)
-    background-color var(--active-back)
 
   &.disabled
     color var(--disabled-front)
-    background-color var(--disabled-back)
     cursor default
+    text-decoration-line underline
+    text-decoration-style dashed
 
     &:hover
       color var(--disabled-front)
-      background-color var(--disabled-back)
+      text-decoration-line underline
+      text-decoration-style dashed
 
     &:active
       color var(--disabled-front)
-      background-color var(--disabled-back)
+      text-decoration-line underline
+      text-decoration-style dashed
 </style>

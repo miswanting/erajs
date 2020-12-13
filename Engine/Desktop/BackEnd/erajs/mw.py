@@ -47,7 +47,7 @@ def exit():
     pass
 
 
-def init():
+def init(config: Optional[Dict[str, Any]]):
     """
     # 初始化 Era.js 游戏引擎
     绝大部分游戏引擎的功能只能在初始化后使用
@@ -255,7 +255,7 @@ def mode(type: str, *arg: List[Any], **kw: Dict[str, Any]):
     e.push('mode', {'type': type, 'arg': arg, 'kw': kw})
 
 
-def divider(ext: str, style: Dict[str, Any]):
+def divider(text: str, style: Dict[str, Any]):
     e.push('divider', {'text': text}, style)
 
 
@@ -273,6 +273,7 @@ def text(text: Optional[str] = None, wait: Optional[bool] = False, style: Option
         e.lock()
 
         def on_click(event: Dict[str, Any]):
+            print(event)
             if event['value'] == 1:  # 左键
                 if e.is_locked():
                     e.unlock()
@@ -309,7 +310,7 @@ def button(text: str, callback: Optional[Callable[[], None]], *arg: List[Any], *
     def on_click(e):
         if e['hash'] == data['hash']:
             callback(*arg, **kw)
-    e.on('BUTTON_CLICK', on_click, data['hash'])
+    e.on('BUTTON_CLICK', on_click)
     e.unlock()
 
 
@@ -333,7 +334,7 @@ def link(text: str, callback: Optional[Callable[[], None]], style: Optional[Dict
     def on_click(e):
         if e['hash'] == data['hash']:
             callback(*arg, **kw)
-    e.on('LINK_CLICK', on_click, data['hash'])
+    e.on('LINK_CLICK', on_click)
     e.unlock()
 
 
@@ -362,7 +363,7 @@ def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[float], None]]
         if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
-    e.on('RATE_CLICK', on_click, data['hash'])
+    e.on('RATE_CLICK', on_click)
     return node
 
 
@@ -384,7 +385,7 @@ def check(text: str, callback: Callable[[bool], None], default: bool, style: Dic
         if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
-    e.on('CHECK_CHANGE', on_click, data['hash'])
+    e.on('CHECK_CHANGE', on_click)
     return node
 
 
@@ -410,7 +411,7 @@ def radio(text_list: List[str], callback: Callable[[Dict[str, Tuple[int, str]]],
             node['index'] = e['index']
             node['value'] = text_list[node['index']]
             callback(node)
-    e.on('RADIO_CHANGE', on_click, data['hash'])
+    e.on('RADIO_CHANGE', on_click)
     return node
 
 
@@ -433,7 +434,7 @@ def input(callback: Callable[[str], None], default: str, is_area: bool, placehol
         if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
-    e.on('INPUT_CHANGE', on_click, data['hash'])
+    e.on('INPUT_CHANGE', on_click)
     return node
 
 
@@ -463,7 +464,7 @@ def dropdown(text_list: List[str], callback: Optional[Callable[[], None]], defau
             node['index'] = e['index']
             node['value'] = text_list[node['index']]
             callback(node)
-    e.on('DROPDOWN_CHANGE', on_click, data['hash'])
+    e.on('DROPDOWN_CHANGE', on_click)
     return node
 
 
@@ -564,3 +565,35 @@ def Deprecated(func: Callable[[], Any]):
         print(f'API {func.__name__}() is unstable.')
         return func(*args, **kw)
     return wrapper
+######################################
+
+
+def old_data():
+    return OldData()
+
+
+class OldData:
+    def __setitem__(self, key, value):
+        scope = key.split('.')[0]
+        if scope == 'data':
+            dat()['.'.join(key.split('.')[1:])] = value
+        elif scope == 'db':
+            for key in value.keys():
+                sav()[key] = value[key]
+        else:
+            tmp()
+
+    def __getitem__(self, key):
+        scope = key.split('.')[0]
+        if scope == 'data':
+            return dat('.'.join(key.split('.')[1:]))
+        elif scope == 'db':
+            return sav()
+        else:
+            return tmp(key)
+
+    def __delitem__(self, key):
+        print('del', key)
+
+    def __len__(self):
+        print('len')

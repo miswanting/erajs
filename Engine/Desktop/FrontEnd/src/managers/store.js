@@ -1,9 +1,11 @@
 import { EventEmitter } from 'events'
 import { createStore } from 'vuex'
 import { AST } from './ast'
+let toMain
 export class StoreManager extends EventEmitter {
-  constructor() {
+  constructor(net) {
     super()
+    toMain = net
     this.store = createStore({
       state() {
         return {
@@ -125,8 +127,9 @@ export class StoreManager extends EventEmitter {
             'CONSOLE_INPUT',
             'GET_CONFIG'
           ].indexOf(pkg.type) !== -1) {
-            const event = new CustomEvent('send', { detail: pkg })
-            document.dispatchEvent(event)
+            toMain.send(pkg)
+            // const event = new CustomEvent('send', { detail: pkg })
+            // document.dispatchEvent(event)
             if (['CONSOLE_INPUT'].indexOf(pkg.type) !== -1) {
               state.console.children.push(AST.newElement('input', { value: pkg.value }))
             }

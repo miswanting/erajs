@@ -6,6 +6,7 @@ import os
 import secrets
 import socket
 import sys
+import copy
 import threading
 import time
 from typing import Any, Callable, ClassVar, Dict, List, Optional
@@ -127,15 +128,15 @@ class EventManager(DebugManager):
             'listeners': {}
         }
 
-    def on(self, event_type: str, callback: Callable[[Any], Any], once: bool = False, *tags: List[str]):
+    def on(self, event_type: str, callback: Callable[[Any], Any], once: bool = False, tags: Optional[List[str]] = None):
         listener = {
-            'uuid': Tools.uuid(),
+            'hash': Tools.random_hash(),
             'type': event_type,
             'callback': callback,
             'once': once,
-            'tags': tags
+            'tags': [] if tags is None else tags
         }
-        self.__data['listeners'][listener['uuid']] = listener
+        self.__data['listeners'][listener['hash']] = listener
         return listener
 
     def off(self, event_type: str, callback: Callable[[Any], Any]):
@@ -144,15 +145,16 @@ class EventManager(DebugManager):
                 del self.__data['listeners'][key]
 
     def emit(self, event_type: str, *arg: List[Any], **kw: Dict[Any, Any]):
-        for key in list(self.__data['listeners'].keys()):
-            if self.__data['listeners'][key]['type'] == event_type:
-                threading.Thread(
-                    target=self.__data['listeners'][key]['callback'],
+        for hash in list(self.__data['listeners'].keys()):
+            if hash in self.__data['listeners'] and self.__data['listeners'][hash]['type'] == event_type:
+                t = threading.Thread(
+                    target=self.__data['listeners'][hash]['callback'],
                     args=arg,
                     kwargs=kw
                 )
-                if self.__data['listeners'][key]['once']:
-                    del self.__data['listeners'][key]
+                if self.__data['listeners'][hash]['once']:
+                    del self.__data['listeners'][hash]
+                t.start()
 
     def remove_all_listeners(self, *exception_tags: List[str]):
         for key in list(self.__data['listeners'].keys()):
@@ -335,7 +337,8 @@ class DataManager(LockManager):
         elif key in self.__data['tmp']:
             return self.__data['tmp'][key]
         else:
-            return None
+            self.__data['tmp'][key] = {}
+            return self.__data['tmp'][key]
 
 
 class NetManager(DataManager):
@@ -413,7 +416,77 @@ class NetManager(DataManager):
         self.emit(data['type'], data)
 
 
-class ModManager(NetManager):
+class UiManager(NetManager):
+    def __init__(self):
+        super().__init__()
+        self.__gui_list = []
+
+    def register_entry(self, entry_func: Callable[[], None], *arg: List[Any], **kwargs: Dict[str, Any]):
+        self.debug('Register Entry: {}'.format(entry_func.__name__))
+        self.__entry: List[Any] = [entry_func, arg, kwargs]
+
+    def get_entry_func(self):
+        return self.__entry[0]
+
+    def push(self, type: str, data: Any, style: Dict[str, Any]):
+        pkg: Dict[str, Any] = {
+            'type': type,
+            'data': data,
+            'style': style
+        }
+        self.send(pkg)
+
+    def goto(self, ui_func: Callable[[], None], *arg: List[Any], **kw: Dict[str, Any]):
+        self.debug('GOTO: Append [{}] to [{}] & run'.format(
+            ui_func.__name__, self._show_gui_list()))
+        self.__gui_list.append((ui_func, arg, kw))  # append_gui
+        ui_func(*arg, **kw)
+
+    def back(self, num: int = 1, *arg: List[Any], **kw: Dict[str, Any]):
+        for _ in range(num):
+            self.debug('BACK: Pop [{}] from [{}]'.format(
+                self.__gui_list[-1][0].__name__, self._show_gui_list()))
+            self.__gui_list.pop()
+        self.debug('BACK: & run last')
+        self.__gui_list[-1][0](*self.__gui_list[-1][1],
+                               **self.__gui_list[-1][2])  # repeat
+
+    def repeat(self, *arg: List[Any], **kw: Dict[str, Any]):
+        self.debug('REPEAT: Run [{}] in [{}]'.format(
+            self.__gui_list[-1][0].__name__, self._show_gui_list()))
+        self.__gui_list[-1][0](*self.__gui_list[-1][1],
+                               **self.__gui_list[-1][2])
+
+    def append_gui(self, func: Callable[[], None], *arg: List[Any], **kw: Dict[str, Any]):
+        self.debug('APPEND: Append [{}] to [{}]'.format(
+            func.__name__, self._show_gui_list()))
+        self.__gui_list.append((func, arg, kw))
+
+    def clear(self, num: int = 0):
+        if num == 0:
+            self.debug('CLEAR_ALL_GUI: Set [{}] to []'.format(
+                self._show_gui_list()))
+            self.__gui_list.clear()
+        else:
+            for _ in range(num):
+                self.debug('CLEAR_LAST_GUI: Pop [{}] from [{}]'.format(
+                    self.__gui_list[-1][0].__name__, self._show_gui_list()))
+                self.__gui_list.pop()
+
+    def get_gui_list(self):
+        gui_list = []
+        for each in self.__gui_list:
+            gui_list.append(each[0].__name__)
+        return gui_list
+
+    def _show_gui_list(self):
+        gui_list = []
+        for each in self.__gui_list:
+            gui_list.append(each[0].__name__)
+        return ' → '.join(gui_list)
+
+
+class ModManager(UiManager):
     """
     # 模组管理器
     # Mod File Structure
@@ -472,7 +545,7 @@ class ModManager(NetManager):
         config = configs[self.findModInCfg(id)]
         module = self.get_mod_module(config)
         if 'on_loaded' in dir(module):
-            module.on_load()
+            module.on_loaded()
 
     def enable_mod(self, id: str):
         configs = self.cfg('sys')['mods']
@@ -491,11 +564,14 @@ class ModManager(NetManager):
         if 'on_disabled' in dir(module):
             module.on_disabled()
 
-    def get_mod_module(self, config: str):
+    def get_mod_module(self, config: Dict[str, Any]):
         meta_path = os.path.join(config['path'], 'meta.yml')
         meta = self.read(meta_path)
         main_path = os.path.join(config['path'], meta['main'])
-        spec = importlib.util.spec_from_file_location(config['id'], main_path)
+        print(config)
+        modFolderName = os.path.split(config['path'])[1]
+        spec = importlib.util.spec_from_file_location(
+            f'mods.{modFolderName}.', main_path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
