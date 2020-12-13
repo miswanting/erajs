@@ -38,6 +38,7 @@ export default {
       this.tippy = tippy(this.$refs.button, {
         content: this.data.data.popup,
         theme: "span-charm",
+        allowHTML: true,
       });
       this.$refs.button.addEventListener("mouseenter", this.show);
       this.$refs.button.addEventListener("mouseleave", this.hide);

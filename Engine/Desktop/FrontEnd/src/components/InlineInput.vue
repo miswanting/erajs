@@ -45,8 +45,28 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .input
-  background-color var(--interactable-back)
   cursor text
+  background-color var(--interactable-back)
+
+  &:hover
+    color var(--hover-front)
+    background-color var(--hover-back)
+
+  &:active
+    color var(--active-front)
+    background-color var(--active-back)
+
+  &.disabled
+    color var(--disabled-front)
+    background-color var(--disabled-back)
+
+    &:hover
+      color var(--disabled-front)
+      background-color var(--disabled-back)
+
+    &:active
+      color var(--disabled-front)
+      background-color var(--disabled-back)
 
   .value
     display inline-block

@@ -39,7 +39,6 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .check
-  margin 0rem .2rem
   cursor pointer
   background-color var(--interactable-back)
 
@@ -47,11 +46,20 @@ export default {
     color var(--hover-front)
     background-color var(--hover-back)
 
+  &:active
+    color var(--active-front)
+    background-color var(--active-back)
+
   &.disabled
     cursor default
-    background-color var(--default-back)
+    color var(--disabled-front)
+    background-color var(--disabled-back)
 
     &:hover
-      color var(--default-front)
-      background-color var(--default-back)
+      color var(--disabled-front)
+      background-color var(--disabled-back)
+
+    &:active
+      color var(--disabled-front)
+      background-color var(--disabled-back)
 </style>

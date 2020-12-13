@@ -48,7 +48,6 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .radio
-  margin 0rem .2rem
   cursor pointer
   background-color var(--interactable-back)
 
@@ -56,12 +55,20 @@ export default {
     color var(--hover-front)
     background-color var(--hover-back)
 
-  &.disabled
-    margin 0rem .2rem
-    cursor default
-    background-color var(--default-back)
+  .radio-item:active
+    color var(--active-front)
+    background-color var(--active-back)
 
-  &.disabled > .radio-item:hover
-    color var(--default-front)
-    background-color var(--default-back)
+  &.disabled
+    cursor default
+    color var(--disabled-front)
+    background-color var(--disabled-back)
+
+    .radio-item:hover
+      color var(--disabled-front)
+      background-color var(--disabled-back)
+
+    .radio-item:active
+      color var(--disabled-front)
+      background-color var(--disabled-back)
 </style>

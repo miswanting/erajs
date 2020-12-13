@@ -239,7 +239,8 @@ def footer(text: str, style: Optional[Dict[str, Any]] = None):
 
 
 def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):
-    e.push('msg', {'text': str(text), 'duration': duration}, style)
+    e.push('msg', {'text': str(text), 'duration': duration,
+                   'hash': Tools.random_hash()}, style)
 
 
 def page(style: Optional[Dict[str, str]] = None, *exception_tags: List[str]):

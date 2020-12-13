@@ -2,7 +2,11 @@
 AppHeader
 AppMessage
 main.index(ref="index")
-  section.page(v-for="page in $store.state.main.children")
+  section.page(
+    v-for="(page, i) in $store.state.main.children",
+    :class="{ disabled: i < $store.state.main.children.length - 1 }"
+  )
+    .disable-mask
     Block(v-for="block in page.children", :data="block")
 footer {{ $store.state.footer }}
 </template>
@@ -81,6 +85,17 @@ export default {
     padding .3rem
     border 1px solid var(--hover-back)
     border-radius .3rem
+    position relative
+
+    &.disabled
+      .disable-mask
+        position absolute
+        top 0
+        right 0
+        bottom 0
+        left 0
+        backdrop-filter blur(1px)
+        z-index 1
 
 footer
   color var(--default-front)

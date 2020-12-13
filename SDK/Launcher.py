@@ -170,15 +170,15 @@ def ui_widgets():
     a.page()
     a.h('控件一览', 1, {'color': '#eee'})
     a.mode('line')
-    a.t('【我是几个文字】')
-    a.t('【我跟在左边文字后面】')
+    a.t('[我是几个文字]')
+    a.t('[我跟在左边文字后面]')
     a.t()  # 换行
-    a.t('【我被换行了……】')
+    a.t('[我被换行了……]')
     a.t('而我有色彩', style={'color': '#f00', 'background-color': '#0f0'})
     a.t()  # 再换行
-    a.t('【当你看见我时，你需要点鼠标左键或右键】', True)
+    a.t('[当你看见我时，你需要点鼠标左键或右键]', True)
     a.t()  # 再换行
-    a.t('【当你看见我时，你还是需要点鼠标左键或右键】', True)
+    a.t('[当你看见我时，你还是需要点鼠标左键或右键]', True)
     a.t()  # 再换行
     a.b('我是一个红按钮',  button_result, style={'background-color': '#f00'})
     a.b('我是一个不能按的按钮', button_result,  disabled=True)

@@ -30,7 +30,7 @@ export default {
           items.push(this.falseIcon);
         }
       }
-      return;
+      return items;
     },
   },
   methods: {
@@ -55,15 +55,24 @@ export default {
   cursor pointer
   background-color var(--interactable-back)
 
-.rate > .rate-item:hover
-  color var(--hover-front)
-  background-color var(--hover-back)
+  .rate-item:hover
+    color var(--hover-front)
+    background-color var(--hover-back)
 
-.rate.disabled
-  cursor default
-  background-color var(--default-back)
+  .rate-item:active
+    color var(--active-front)
+    background-color var(--active-back)
 
-.rate.disabled > .rate-item:hover
-  color var(--default-front)
-  background-color var(--default-back)
+  &.disabled
+    cursor default
+    color var(--disabled-front)
+    background-color var(--disabled-back)
+
+    .rate-item:hover
+      color var(--disabled-front)
+      background-color var(--disabled-back)
+
+    .rate-item:active
+      color var(--disabled-front)
+      background-color var(--disabled-back)
 </style>

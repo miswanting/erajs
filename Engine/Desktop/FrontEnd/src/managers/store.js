@@ -30,7 +30,7 @@ export class StoreManager extends EventEmitter {
       },
       mutations: {
         parsePackage(state, pkg) {
-          console.log('Parse:', pkg)
+          // console.log('Parse:', pkg)
           if (pkg.type === 'connection') {
             window.router.push('/idle')
           } else if (pkg.type === 'set_loading_title') {
@@ -43,9 +43,6 @@ export class StoreManager extends EventEmitter {
           } else if (pkg.type === 'title') {
             state.title = pkg.data.text
           } else if (pkg.type === 'msg') {
-            const n = new Uint8Array(1)
-            window.crypto.getRandomValues(n)
-            pkg.data.hash = n[0]
             state.msgs.push(pkg)
           } else if (pkg.type === 'cls') {
             if (pkg.data.num === 0) {
@@ -134,12 +131,7 @@ export class StoreManager extends EventEmitter {
               state.console.children.push(AST.newElement('input', { value: pkg.value }))
             }
           } else if (pkg.type === 'MSG_TIMEOUT') {
-            for (let i = 0; i < state.msgs.length; i++) {
-              if (state.msgs[i].data.hash === pkg.hash) {
-                state.msgs.splice(i, 1)
-                break
-              }
-            }
+            state.msgs = state.msgs.filter(x => x.data.hash !== pkg.hash)
           }
         }
       }

@@ -27,7 +27,7 @@ export default {
                 duration: 1000,
                 easing: "easeOutQuart",
                 complete: (anim) => {
-                  this.$store.commit("handleEvent", {
+                  this.$store.commit("parsePackage", {
                     type: "MSG_TIMEOUT",
                     hash: this.data.data.hash,
                   });

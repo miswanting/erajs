@@ -344,7 +344,7 @@ class DataManager(LockManager):
 class NetManager(DataManager):
     def __init__(self):
         super().__init__()
-        self.__debug = True
+        self.__debug = False
         self.__buf_size = 1024
         self.__connection: Optional[socket.socket] = None
         self.__is_connected = False
@@ -568,7 +568,6 @@ class ModManager(UiManager):
         meta_path = os.path.join(config['path'], 'meta.yml')
         meta = self.read(meta_path)
         main_path = os.path.join(config['path'], meta['main'])
-        print(config)
         modFolderName = os.path.split(config['path'])[1]
         spec = importlib.util.spec_from_file_location(
             f'mods.{modFolderName}.', main_path)

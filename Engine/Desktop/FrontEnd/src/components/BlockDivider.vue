@@ -1,5 +1,6 @@
 <template lang="pug">
 .divider(:style="data.style")
+  br
   .divider-line
   .divider-text(v-if="data.data.text") {{ data.data.text }}
   .divider-line(v-if="data.data.text")

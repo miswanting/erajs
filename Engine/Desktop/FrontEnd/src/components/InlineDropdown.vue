@@ -4,11 +4,11 @@ span.dropdown(
   :style="data.style",
   @click="click"
 ) 
-  span.dropdown-text {{ data.data.text_list[index] }}
   span.dropdown-icon {{ icon }}
+  span.dropdown-text {{ data.data.text_list[index] }}
   span.dropdown-anchor(v-if="show")
-    span.dropdown-list
-      span.dropdown-item(v-for="(item, i) in items", @click="clickItem(i)") {{ item.text }}
+    .dropdown-list
+      .dropdown-item(v-for="(item, i) in items", @click="clickItem(i)") {{ item.text }}
 </template>
 <script>
 export default {
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     items() {
-      items = [];
+      const items = [];
       for (let i = 0; i < this.data.data.text_list.length; i++) {
         items.push({
           text: this.data.data.text_list[i],
@@ -52,7 +52,9 @@ export default {
     },
     documentClick(e) {
       if (
-        ["dropdown-item", "dropdown-icon"].indexOf(e.target.className) !== -1
+        ["dropdown-item", "dropdown-icon", "dropdown-text"].indexOf(
+          e.target.className
+        ) !== -1
       ) {
         e.preventDefault();
       } else {
@@ -65,32 +67,45 @@ export default {
 <style lang="stylus" scoped>
 .dropdown
   position relative
-  margin 0rem .2rem
-  user-select none
-  background-color var(--interactable-back)
   cursor pointer
+  background-color var(--interactable-back)
 
-.dropdown-anchor
-  position absolute
-  top 0rem
-  left 0rem
-  width 0rem
-  height 0rem
+  &:hover
+    color var(--hover-front)
+    background-color var(--hover-back)
 
-.dropdown-menu
-  display none
-  position absolute
-  bottom 0rem
-  left 0rem
-  /* background-color: var(--interactable-back); */
-  width max-content
-  border .5px solid gray
-  backdrop-filter blur(5px) opacity(90%)
+  &:active
+    color var(--active-front)
+    background-color var(--active-back)
 
-.dropdown-menu.show
-  display block
+  .dropdown-icon
+    font-size .5rem
+    vertical-align top
 
-.dropdown-menu-item
-  min-width 50px
-  padding 0 .2rem
+  .dropdown-anchor
+    position absolute
+    top 0rem
+    left 0rem
+    width 0rem
+    height 0rem
+
+  .dropdown-list
+    position absolute
+    bottom 0rem
+    left 0rem
+    width max-content
+    border .5px solid gray
+    backdrop-filter blur(5px) opacity(90%)
+
+  .dropdown-item
+    min-width 50px
+    padding 0 .2rem
+
+    &:hover
+      color var(--hover-front)
+      background-color #fff2
+
+    &:active
+      color var(--active-front)
+      background-color #fff4
 </style>

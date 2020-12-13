@@ -2,7 +2,7 @@ const { parentPort } = require('worker_threads')
 const { createServer } = require('net')
 class NetWorker {
   constructor() {
-    this.debug = true
+    this.debug = false
     this.bufSize = 1024
     this.server = null
     this.conn = null
