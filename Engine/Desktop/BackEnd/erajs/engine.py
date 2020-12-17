@@ -1,3 +1,4 @@
+import copy
 import datetime
 import importlib
 import json
@@ -6,14 +7,13 @@ import os
 import secrets
 import socket
 import sys
-import copy
 import threading
 import time
 from typing import Any, Callable, ClassVar, Dict, List, Optional
 
 from . import lib
-from .file_format_support import (cfg_file, csv_file, json_file, save_file,
-                                  text_file, yaml_file, zip_file)
+from .file_format_support import (cfg_file, csv_file, json_file, raw_file,
+                                  save_file, text_file, yaml_file, zip_file)
 from .modules.dot_path import DotPath
 
 
@@ -166,6 +166,9 @@ class EventManager(DebugManager):
             if not is_exception:
                 del self.__data['listeners'][key]
 
+    def get_listener_list(self):
+        return self.__data['listeners']
+
 
 class LockManager(EventManager):
     # lock 机制：
@@ -221,7 +224,8 @@ class DataManager(LockManager):
                 'meta': {},
                 'data': {}
             },
-            'tmp': {}
+            'tmp': {},
+            'res': {}
         }
 
     @property
@@ -252,6 +256,8 @@ class DataManager(LockManager):
             data = text_file.read(path)
         elif ext in ['.save', '.sav']:
             data = save_file.read(path)
+        else:
+            data = raw_file.read(path)
         return data
 
     def write(self, path: str, data: Any = None):
@@ -345,7 +351,7 @@ class NetManager(DataManager):
     def __init__(self):
         super().__init__()
         self.__debug = False
-        self.__buf_size = 1024
+        self.__buf_size = 4096
         self.__connection: Optional[socket.socket] = None
         self.__is_connected = False
         self.__state: Any = {
@@ -353,6 +359,30 @@ class NetManager(DataManager):
             'length_bytes': '',
             'content_bytes': b''
         }
+
+    def send_msg(sock, msg):
+        # Prefix each message with a 4-byte length (network byte order)
+        msg = struct.pack('>I', len(msg)) + msg
+        sock.sendall(msg)
+
+    def recv_msg(sock):
+        # Read message length and unpack it into an integer
+        raw_msglen = recvall(sock, 4)
+        if not raw_msglen:
+            return None
+        msglen = struct.unpack('>I', raw_msglen)[0]
+        # Read the message data
+        return recvall(sock, msglen)
+
+    def recvall(sock, n):
+        # Helper function to recv n bytes or return None if EOF is hit
+        data = bytearray()
+        while len(data) < n:
+            packet = sock.recv(n - len(data))
+            if not packet:
+                return None
+            data.extend(packet)
+        return data
 
     def connect(self, host: str = '127.0.0.1', port: int = 11994):
         def core():

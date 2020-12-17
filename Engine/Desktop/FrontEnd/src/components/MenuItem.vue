@@ -48,7 +48,6 @@ export default {
   .menu-button
     padding 0 .2rem
     color var(--default-front)
-    background-color var(--default-back)
     cursor pointer
     width -webkit-fill-available
 
@@ -58,5 +57,5 @@ export default {
   .menu-list
     position absolute
     width fit-content
-    backdrop-filter blur(2px) brightness(.7)
+    backdrop-filter blur(2px) brightness(1.2)
 </style>

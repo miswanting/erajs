@@ -1,5 +1,5 @@
 <template lang="pug">
-.header
+header.header
   .menu-bar
     MenuItem(v-for="menuItem in $store.state.menu", :data="menuItem")
   .title-bar {{ $store.state.title }}
@@ -39,12 +39,14 @@ export default {
 <style lang="stylus" scoped>
 .header
   display flex
+  z-index 10
 
   .menu-bar
     display flex
 
     >.menu-item
       display block
+      background-color var(--default-back)
 
   .title-bar
     flex-grow 1

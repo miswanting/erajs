@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import { createStore } from 'vuex'
 import { AST } from './ast'
+import MapWorkerManager from './map'
 let toMain
 export class StoreManager extends EventEmitter {
   constructor(net) {
@@ -31,15 +32,10 @@ export class StoreManager extends EventEmitter {
       mutations: {
         parsePackage(state, pkg) {
           // console.log('Parse:', pkg)
-          if (pkg.type === 'connection') {
-            window.router.push('/idle')
-          } else if (pkg.type === 'set_loading_title') {
+          if (pkg.type === 'set_loading_title') {
             state.loadTitle = pkg.data.value
           } else if (pkg.type === 'set_loading_text') {
             state.loadText = pkg.data.value
-          } else if (pkg.type === 'loaded') {
-            window.router.push('/')
-            // state.ui = 'main'
           } else if (pkg.type === 'title') {
             state.title = pkg.data.text
           } else if (pkg.type === 'msg') {
@@ -69,28 +65,29 @@ export class StoreManager extends EventEmitter {
           } else if (pkg.type === 'console_output') {
             state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
           } else if (pkg.type === 'generate_planet') {
-            state.space.data.rawPlanetData = generatePlanet(pkg.data.area_quantity)
-            state.space.data.nextIndex = 0
-            const e = {
-              type: 'PLANET_GENERATED',
-              data: { length: state.space.data.rawPlanetData.length }
-            }
-            const event = new CustomEvent('send', { detail: e })
-            document.dispatchEvent(event)
+
+            // state.space.data.rawPlanetData = generatePlanet(pkg.data.area_quantity)
+            // state.space.data.nextIndex = 0
+            // const e = {
+            //   type: 'PLANET_GENERATED',
+            //   data: { length: state.space.data.rawPlanetData.length }
+            // }
+            // const event = new CustomEvent('send', { detail: e })
+            // document.dispatchEvent(event)
           } else if (pkg.type === 'get_area_data') {
-            const pkg = {
-              type: 'AREA_DATA',
-              data: state.space.data.rawPlanetData.slice(state.space.data.nextIndex, state.space.data.nextIndex + 50)
-            }
-            state.space.data.nextIndex += 50
-            const event = new CustomEvent('send', { detail: pkg })
-            document.dispatchEvent(event)
+            // const pkg = {
+            //   type: 'AREA_DATA',
+            //   data: state.space.data.rawPlanetData.slice(state.space.data.nextIndex, state.space.data.nextIndex + 50)
+            // }
+            // state.space.data.nextIndex += 50
+            // const event = new CustomEvent('send', { detail: pkg })
+            // document.dispatchEvent(event)
           } else if (pkg.type === 'generate_planet') {
-            const pkg = {
-              type: 'MAP_GENERATED',
-              data: generatePlanet()
-            }
-            const event = new CustomEvent('send', { detail: pkg })
+            // const pkg = {
+            //   type: 'MAP_GENERATED',
+            //   data: generatePlanet()
+            // }
+            // const event = new CustomEvent('send', { detail: pkg })
             // document.dispatchEvent(event)
           } else if ([
             'page',
@@ -104,7 +101,9 @@ export class StoreManager extends EventEmitter {
             'radio',
             'input',
             'dropdown',
-            'divider'
+            'divider',
+            'img-inline',
+            'img-block'
           ].indexOf(pkg.type) !== -1) {
             AST.push(state, pkg)
           }
@@ -134,12 +133,111 @@ export class StoreManager extends EventEmitter {
             state.msgs = state.msgs.filter(x => x.data.hash !== pkg.hash)
           }
         }
+      },
+      actions: {
+        parsePackage({ commit }, pkg) {
+          console.log('Parse:', pkg)
+          if (pkg.type === 'connection') {
+            window.router.push('/idle')
+          } else if (pkg.type === 'loaded') {
+            window.router.push('/')
+          } else if (pkg.type === 'generate_planet') {
+            // window.router.push('/')
+            const mw = new MapWorkerManager()
+            mw.generate(pkg.data)
+            mw.on('PLANET_GENERATED', pkg => {
+              window.mapCache = pkg.data
+              toMain.send(pkg)
+            })
+          } else {
+            commit('parsePackage', pkg)
+          }
+          // if (pkg.type === 'connection') {
+          //   window.router.push('/idle')
+          // }
+          // if (pkg.type === 'set_loading_title') {
+          //   state.loadTitle = pkg.data.value
+          // } else if (pkg.type === 'set_loading_text') {
+          //   state.loadText = pkg.data.value
+          // } else if (pkg.type === 'loaded') {
+          //   // state.ui = 'main'
+          // } else if (pkg.type === 'title') {
+          //   state.title = pkg.data.text
+          // } else if (pkg.type === 'msg') {
+          //   state.msgs.push(pkg)
+          // } else if (pkg.type === 'cls') {
+          //   if (pkg.data.num === 0) {
+          //     state.main.children.splice(0, state.main.children.length)
+          //   } else {
+          //     state.main.children.splice(state.main.children.length - pkg.data.num, pkg.data.num)
+          //   }
+          // } else if (pkg.type === 'footer') {
+          //   state.footer = pkg.data.text
+          // } else if (pkg.type === 'mode') {
+          //   state.blockMode = { type: pkg.data.type }
+          //   if (state.blockMode.type === 'grid') {
+          //     state.blockMode.column = pkg.data.arg[0]
+          //   }
+          // } else if (pkg.type === 'pass') {
+          //   if (state.blockMode.type === 'line') {
+          //     AST.addBlock(state)
+          //   } else if (state.blockMode.type === 'grid') {
+          //     if (!AST.isBlockSame(state)) {
+          //       AST.addBlock(state)
+          //     }
+          //     AST.getLastBlock(state).children.push(AST.newElement('pass'))
+          //   }
+          // } else if (pkg.type === 'console_output') {
+          //   state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
+          // } else if (pkg.type === 'generate_planet') {
+
+          // state.space.data.rawPlanetData = generatePlanet(pkg.data.area_quantity)
+          // state.space.data.nextIndex = 0
+          // const e = {
+          //   type: 'PLANET_GENERATED',
+          //   data: { length: state.space.data.rawPlanetData.length }
+          // }
+          // const event = new CustomEvent('send', { detail: e })
+          // document.dispatchEvent(event)
+          // } else if (pkg.type === 'get_area_data') {
+          // const pkg = {
+          //   type: 'AREA_DATA',
+          //   data: state.space.data.rawPlanetData.slice(state.space.data.nextIndex, state.space.data.nextIndex + 50)
+          // }
+          // state.space.data.nextIndex += 50
+          // const event = new CustomEvent('send', { detail: pkg })
+          // document.dispatchEvent(event)
+          // } else if (pkg.type === 'generate_planet') {
+          // const pkg = {
+          //   type: 'MAP_GENERATED',
+          //   data: generatePlanet()
+          // }
+          // const event = new CustomEvent('send', { detail: pkg })
+          // document.dispatchEvent(event)
+          // } else if ([
+          //   'page',
+          //   'text',
+          //   'button',
+          //   'heading',
+          //   'link',
+          //   'progress',
+          //   'rate',
+          //   'check',
+          //   'radio',
+          //   'input',
+          //   'dropdown',
+          //   'divider'
+          // ].indexOf(pkg.type) !== -1) {
+          //   AST.push(state, pkg)
+          // }
+          // console.log('Final:', state)
+        },
       }
     })
   }
 
   getVueStore() { return this.store }
-  parsePackage(pkg) { this.store.commit('parsePackage', pkg) }
+  parsePackage(pkg) { this.store.dispatch('parsePackage', pkg) }
 }
 
 function generateMenu() {
@@ -167,12 +265,12 @@ function generateMenu() {
       {
         label: '模组管理器',
         click: () => {
-          store.state.ui = 'mod-manager'
+          window.router.push('/')
         }
       }, {
         label: '地图管理器',
         click: () => {
-          store.state.ui = 'map-manager'
+          window.router.push('/map')
         }
       }
     ]

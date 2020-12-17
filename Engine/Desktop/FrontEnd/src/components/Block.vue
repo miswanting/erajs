@@ -1,19 +1,21 @@
 <template lang="pug">
 BlockLine(v-if="data.type === 'line'", :data="data") 
 BlockGrid(v-else-if="data.type === 'grid'", :data="data") 
-BlockDivider(v-else-if="data.type === 'divider'", :data="data") 
+BlockImage(v-else-if="data.type === 'img-block'", :data="data") 
 div(v-else) {{ data }}
 </template>
 <script>
 import BlockLine from "./BlockLine.vue";
 import BlockGrid from "./BlockGrid.vue";
 import BlockDivider from "./BlockDivider.vue";
+import BlockImage from "./BlockImage.vue";
 export default {
   props: { data: Object },
   components: {
     BlockLine,
     BlockGrid,
     BlockDivider,
+    BlockImage,
   },
 };
 </script>

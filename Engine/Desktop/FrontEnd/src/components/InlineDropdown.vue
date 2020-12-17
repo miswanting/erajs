@@ -95,7 +95,7 @@ export default {
     left 0rem
     width max-content
     border .5px solid gray
-    backdrop-filter blur(5px) opacity(90%)
+    backdrop-filter blur(2px) opacity(1.2)
 
   .dropdown-item
     min-width 50px

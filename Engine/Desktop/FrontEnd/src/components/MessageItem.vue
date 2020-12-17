@@ -43,7 +43,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .message-item
-  backdrop-filter blur(1px) brightness(70%)
+  backdrop-filter blur(1px) opacity(90%)
   padding .1rem .5rem
   margin .1rem
   color var(--default-front)

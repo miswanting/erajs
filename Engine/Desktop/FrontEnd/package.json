@@ -22,12 +22,14 @@
     "clean-webpack-plugin": "latest",
     "css-loader": "latest",
     "csshake": "latest",
+    "d3-geo-voronoi": "^1.6.0",
     "electron": "latest",
     "electron-builder": "latest",
     "electron-devtools-installer": "latest",
     "electron-is-dev": "latest",
     "gl-matrix": "latest",
     "html-webpack-plugin": "latest",
+    "lodash": "^4.17.20",
     "normalize.css": "latest",
     "pug": "latest",
     "pug-plain-loader": "latest",
@@ -48,9 +50,20 @@
     "worker-loader": "latest",
     "worker-plugin": "latest"
   },
+  "build": {
+    "appId": "net.erajs.frontend",
+    "productName": "Era.js",
+    "directories": {
+      "output": "build"
+    }
+  },
   "standard": {
     "ignore": [
       "/dist/"
+    ],
+    "global": [
+      "onmessage",
+      "postMessage"
     ]
   }
 }

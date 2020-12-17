@@ -49,7 +49,6 @@ class ToBack extends EventEmitter {
   start(ip, port) {
     this.worker = new Worker('./src/workers/net.js')
     this.worker.on('message', (pkg) => {
-      console.log(pkg);
       if (pkg.type === 'connection') {
         this.recv(pkg)
       } else if (pkg.type === 'recv') {

@@ -3,3 +3,4 @@ yarn.lock
 *.log
 old
 *.ttf
+build

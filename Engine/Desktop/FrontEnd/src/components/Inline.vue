@@ -9,6 +9,7 @@ InlineCheck(v-else-if="data.type === 'check'", :data="data")
 InlineRadio(v-else-if="data.type === 'radio'", :data="data") 
 InlineInput(v-else-if="data.type === 'input'", :data="data") 
 InlineDropdown(v-else-if="data.type === 'dropdown'", :data="data") 
+InlineImage(v-else-if="data.type === 'img-inline'", :data="data") 
 br(v-else-if="data.type === 'br'") 
 span(v-else) {{ data }}
 </template>
@@ -23,6 +24,7 @@ import InlineCheck from "./InlineCheck.vue";
 import InlineRadio from "./InlineRadio.vue";
 import InlineInput from "./InlineInput.vue";
 import InlineDropdown from "./InlineDropdown.vue";
+import InlineImage from "./InlineImage.vue";
 export default {
   props: { data: Object },
   components: {
@@ -36,6 +38,7 @@ export default {
     InlineRadio,
     InlineInput,
     InlineDropdown,
+    InlineImage,
   },
 };
 </script>

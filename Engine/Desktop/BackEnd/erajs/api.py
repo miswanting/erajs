@@ -1,5 +1,5 @@
 from typing import Any, Callable, Dict, List, Optional
-
+from time import sleep
 from . import mw as m
 from .mw import Experimental
 version = '0.2.0-α+201213'
@@ -294,6 +294,10 @@ def dropdown(text_list: Optional[List[str]] = None, callback: Optional[Callable[
                       multiple, placeholder, allowAdditions, style)
 
 
+def img(dot_path: str, inline: bool = False, style: Optional[Dict[str, Any]] = None):
+    m.img(dot_path, inline, style)
+
+
 # Style
 def set_style(widget: Callable[[], Any], style: Dict[str, str]):
     """
@@ -386,8 +390,11 @@ def scan_save_file():
 
 
 # Hook
-def set_console_parser():
-    pass
+def set_console_parser(parser: Callable[[str], str]):
+    """
+    # 设置终端命令处理函数
+    """
+    m.set_console_parser(parser)
 
 
 # Preset
@@ -446,6 +453,10 @@ def ui_load(callback):
     widget_load(callback)
     t()
     b('返回', back)
+
+
+# Wrapper
+sleep = sleep
 
 
 # Experimental

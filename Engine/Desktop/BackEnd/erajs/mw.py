@@ -76,7 +76,8 @@ def init(config: Optional[Dict[str, Any]]):
             },
             'data': {},
             'save': {},
-            'mods': {}
+            'mods': {},
+            'res': {}
         }
 
         def fix_one_layer(path: str, template: Dict[str, Any]):
@@ -148,6 +149,29 @@ def init(config: Optional[Dict[str, Any]]):
             e.push('set_loading_text', {
                    'value': f'Data File [{dot_path}] Loaded.'})
         e.info(f'│  └─ {len(files)} Data Files Loaded!')
+
+    def register_resource_files():
+        e.info('├─ Scanning Resource Files...')
+        e.push('set_loading_title', {'value': 'Scanning Resource Files...'})
+        e.push('set_loading_text', {'value': ''})
+        files = e.scan('res')
+        for path in files:
+            dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
+            e.info(f'│  ├─ Resource File [{dot_path}] Found.')
+            e.push('set_loading_text', {
+                   'value': f'Resource File [{dot_path}] Found.'})
+        e.info(f'│  └─ {len(files)} Resource Files Found!')
+        e.info('├─ Register Resource Files...')
+        e.push('set_loading_title', {'value': 'Register Resource Files...'})
+        e.push('set_loading_text', {'value': ''})
+        for path in files:
+            dp_pair = DotPath.path2dot(path)
+            dot_path = '.'.join(dp_pair[0].split('.')[1:])
+            e.data['res'][dot_path] = {'path': path, 'ext': dp_pair[1]}
+            e.info(f'│  ├─ Resource File [{dot_path}] Registered.')
+            e.push('set_loading_text', {
+                   'value': f'Resource File [{dot_path}] Registered.'})
+        e.info(f'│  └─ {len(files)} Resource Files Registered!')
 
     def load_mods():
         e.info('├─ Scanning Mods...')
@@ -221,6 +245,7 @@ def init(config: Optional[Dict[str, Any]]):
         sys.exit(1)
     send_config()
     load_data_files()
+    register_resource_files()
     load_mods()
     e.push('loaded')
     e.info('Initialization Done!')
@@ -469,6 +494,18 @@ def dropdown(text_list: List[str], callback: Optional[Callable[[], None]], defau
     return node
 
 
+def img(dot_path: str, inline: bool, style: Optional[Dict[str, Any]]):
+    if dot_path in e.data['res']:
+        image_data = {
+            'type': e.data['res'][dot_path]['ext'],
+            'data': e.read(e.data['res'][dot_path]['path'])
+        }
+        if inline:
+            e.push('img-inline', image_data, style)
+        else:
+            e.push('img-block', image_data, style)
+
+
 def set_style():
     pass
 
@@ -524,7 +561,6 @@ def scan_save_file():
 def set_console_parser(parser_func: Callable[[str], Any]):
     def on_console_input(pkg):
         e.push('console_output', {'value': parser_func(pkg['value'])})
-    print(parser_func)
     e.on('CONSOLE_INPUT', on_console_input)
 
 

@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import AppIndex from '../components/AppIndex.vue'
 import AppIdle from '../components/AppIdle.vue'
 import AppConsole from '../components/AppConsole.vue'
+import AppMap from '../components/AppMap.vue'
 export class RouterManager extends EventEmitter {
   constructor() {
     super()
@@ -11,7 +12,8 @@ export class RouterManager extends EventEmitter {
       routes: [
         { path: '/', component: AppIndex },
         { path: '/idle', component: AppIdle },
-        { path: '/console', component: AppConsole }
+        { path: '/console', component: AppConsole },
+        { path: '/map', component: AppMap }
       ]
     })
   }

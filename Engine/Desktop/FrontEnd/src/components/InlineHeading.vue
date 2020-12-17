@@ -18,6 +18,7 @@ export default {
       "h" + this.data.data.rank.toString(),
       {
         class: {
+          heading: true,
           shake: this.shake,
           "shake-constant": this.shake,
         },
@@ -28,7 +29,11 @@ export default {
   },
 };
 </script>
-<style lang="stylus" scoped>
-.heading
-  display inline-block
+<style lang="stylus" >
+for level in 1 .. 6
+  h{level}.heading
+    display inline-block
+    font-weight bold
+    margin 0
+    font-size 2.3 - (.3 * level) rem
 </style>
