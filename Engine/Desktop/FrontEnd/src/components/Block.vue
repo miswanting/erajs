@@ -1,6 +1,7 @@
 <template lang="pug">
 BlockLine(v-if="data.type === 'line'", :data="data") 
 BlockGrid(v-else-if="data.type === 'grid'", :data="data") 
+BlockDivider(v-else-if="data.type === 'divider'", :data="data") 
 BlockImage(v-else-if="data.type === 'img-block'", :data="data") 
 div(v-else) {{ data }}
 </template>
