@@ -1,4 +1,5 @@
 @echo off
 chcp 65001 >nul
 title BackEnd
-start runtime/Era.js.exe
+cd runtime
+start Era.js.exe
