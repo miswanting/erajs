@@ -621,8 +621,4 @@ class Engine(ModManager):
         super().__init__()
 
     def push(self, type: str, data: Optional[Dict[str, Any]] = None, style: Optional[Dict[str, Any]] = None):
-        self.send({
-            'type': type,
-            'data': data,
-            'style': style,
-        })
+        self.send({'type': type, 'data': data, 'style': style})

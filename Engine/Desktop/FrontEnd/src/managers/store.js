@@ -12,7 +12,7 @@ export class StoreManager extends EventEmitter {
         return {
           style: {},
           title: 'Era.js',
-          footer: '@Miswanting',
+          footer: { type: 'footer', data: { text: '@Miswanting' }, style: null },
           maxPages: 10,
           lastUi: '',
           ui: 'intro',
@@ -47,7 +47,7 @@ export class StoreManager extends EventEmitter {
               state.main.children.splice(state.main.children.length - pkg.data.num, pkg.data.num)
             }
           } else if (pkg.type === 'footer') {
-            state.footer = pkg.data.text
+            state.footer = pkg
           } else if (pkg.type === 'mode') {
             state.blockMode = { type: pkg.data.type }
             if (state.blockMode.type === 'grid') {

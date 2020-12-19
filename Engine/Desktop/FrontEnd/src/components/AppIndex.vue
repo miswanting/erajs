@@ -8,7 +8,7 @@ main.index(ref="index")
   )
     .disable-mask
     Block(v-for="block in page.children", :data="block")
-footer {{ $store.state.footer }}
+footer(:style="$store.state.footer.style") {{ $store.state.footer.data.text }}
 </template>
 <script>
 import AppHeader from "./AppHeader.vue";
