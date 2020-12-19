@@ -1,5 +1,6 @@
 <template lang="pug">
 .line
+  br(v-if="this.data.children.length === 0")
   Inline(v-for="inline in this.data.children", :data="inline")
 </template>
 <script>
