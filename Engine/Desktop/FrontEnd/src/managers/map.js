@@ -16,6 +16,9 @@ export default class MapWorkerManager extends EventEmitter {
       pkg = pkg.data
       if (pkg.type === 'PLANET_GENERATED') {
         this.emit(pkg.type, pkg)
+        window.cache = {
+          mapData: pkg.data.data
+        }
       }
     })
   }

@@ -4,7 +4,8 @@ main.map(ref="map")
 </template>
 <script>
 import { vec2 } from "gl-matrix";
-import THREE from "three";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import AppHeader from "./AppHeader.vue";
 export default {
   components: {
@@ -38,8 +39,11 @@ export default {
         cameraConfig.far
       );
       camera.position.z = 3;
-
-      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      const loader = new THREE.ObjectLoader();
+      loader.load("models/monster.obj", function (object) {
+        scene.add(object);
+      });
+      const controls = new OrbitControls(camera, renderer.domElement);
       controls.target = new THREE.Vector3(0, 0, 0);
       controls.enablePan = false;
       controls.minDistance = 1.01;
@@ -57,15 +61,25 @@ export default {
       scene.add(aLight);
 
       // papare data
-      let ps = generatePointsUsingFibonacci(AreaQuantity);
-      ps = randomizePoints(ps);
-      ps = scratterPoints(ps, 3);
+      // let ps = generatePointsUsingFibonacci(AreaQuantity);
+      // ps = randomizePoints(ps);
+      // ps = scratterPoints(ps, 3);
 
       // papare data
-      const voronoi = d3.geoVoronoi(ps);
-      const polygons = voronoi.polygons();
-      const data = convertFromGeo(polygons);
+      // const voronoi = d3.geoVoronoi(ps);
+      // const polygons = voronoi.polygons();
+      // const data = convertFromGeo(polygons);
+      const data = window.cache.mapData;
       let cIndex = 0;
+
+      function coordinates2XYZ(lon, lat) {
+        const rlon = (lon / 180) * Math.PI;
+        const rlat = (lat / 180) * Math.PI;
+        const x = Math.cos(rlon) * Math.cos(rlat);
+        const y = Math.sin(rlat);
+        const z = Math.sin(rlon) * Math.cos(rlat);
+        return [x, y, z];
+      }
 
       const planet = new THREE.Geometry();
       for (let i = 0; i < data.length; i++) {
@@ -117,10 +131,11 @@ export default {
       const mouse = new THREE.Vector2();
 
       function onMouseMove(e) {
+        const rect = canvas.getBoundingClientRect();
         // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
-        mouse.x = (e.clientX / viewportSize[0]) * 2 - 1;
-        mouse.y = -(e.clientY / viewportSize[1]) * 2 + 1;
-        console.log(e.clientX, e.clientY);
+        mouse.x = ((e.clientX - rect.left) / viewportSize[0]) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / viewportSize[1]) * 2 + 1;
+        // console.log(e.clientX - rect.left, e.clientY - rect.top);
       }
       canvas.addEventListener("mousemove", onMouseMove);
       let needResize = false;
@@ -141,20 +156,20 @@ export default {
           camera.updateProjectionMatrix();
           renderer.setSize(viewportSize[0], viewportSize[1], false);
         }
-        // raycaster.setFromCamera(mouse, camera)
-        // // 计算物体和射线的焦点
-        // const intersects = raycaster.intersectObjects(scene.children)
-        // if (intersects.length) {
-        //   for (let i = 0; i < data.length; i++) {
-        //     // console.log(intersects);
-        //     if (data[i].childrenIndex.indexOf(intersects[0].faceIndex) !== -1) {
-        //       for (let j = 0; j < data[i].childrenIndex.length; j++) {
-        //         scene.children[3].geometry.faces[data[i].childrenIndex[j]].color.setRGB(255, 255, 255)
-        //         planet.colorsNeedUpdate = true
-        //       }
-        //     }
-        //   }
-        // }
+        raycaster.setFromCamera(mouse, camera)
+        // 计算物体和射线的焦点
+        const intersects = raycaster.intersectObjects(scene.children)
+        if (intersects.length) {
+          for (let i = 0; i < data.length; i++) {
+            // console.log(intersects);
+            if (data[i].childrenIndex.indexOf(intersects[0].faceIndex) !== -1) {
+              for (let j = 0; j < data[i].childrenIndex.length; j++) {
+                scene.children[3].geometry.faces[data[i].childrenIndex[j]].color.setRGB(255, 255, 255)
+                planet.colorsNeedUpdate = true
+              }
+            }
+          }
+        }
         renderer.render(scene, camera);
         requestAnimationFrame(render);
       }
