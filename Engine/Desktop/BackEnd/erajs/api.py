@@ -54,26 +54,26 @@ def critical(*arg: Any, **kw: Any):
 
 
 # Tools
-def random_hash():
+def random_hash(level: int = 4):
     """
     # 获取随机哈希值
     好用，但存在可忽略不计的重复可能性
     """
-    pass
+    return m.random_hash(level)
 
 
 def timestamp():
     """
     # 获取时间戳
     """
-    pass
+    return m.timestamp()
 
 
 def uuid():
     """
     # 获取UUID
     """
-    pass
+    return m.uuid()
 
 
 # Event
