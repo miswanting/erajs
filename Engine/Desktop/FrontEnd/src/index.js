@@ -22,6 +22,7 @@ export class MainManager {
     this.toBack = new NetManager('back')
     this.script = new ScriptManager('Launcher.exe', 1000)
     this.app.once('ready', () => { this.start() })
+    this.app.once('window-all-closed', () => { process.exit() })
     this.onRendererRecv = (data) => { this.toBack.send(data) }
     this.toRenderer.on('recv', this.onRendererRecv)
     this.onBackRecv = (data) => { this.toRenderer.send(data) }
