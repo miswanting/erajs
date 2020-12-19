@@ -136,7 +136,7 @@ export class StoreManager extends EventEmitter {
       },
       actions: {
         parsePackage({ commit }, pkg) {
-          console.log('Parse:', pkg)
+          // console.log('Parse:', pkg)
           if (pkg.type === 'connection') {
             window.router.push('/idle')
           } else if (pkg.type === 'loaded') {

@@ -4,3 +4,4 @@ config/sys.yml
 build
 .vscode/settings.json
 *.pyc
+*.sav

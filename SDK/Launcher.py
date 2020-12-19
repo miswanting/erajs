@@ -353,6 +353,83 @@ def ui_data():
         a.b('返回', a.back)
 
     def ui_save_data():
+        def ui_sl_sample():
+            def ui_save_widget_sample():
+                a.page()
+                a.mode()
+                a.h('保存存档')
+                a.t()
+                a.t()
+                a.widget_save()
+                a.t()
+                a.b('返回', a.back)
+
+            def ui_load_widget_sample(callback=None):
+                a.page()
+                a.mode()
+                a.h('加载存档')
+                a.t()
+                a.t()
+                a.widget_load(callback)
+                a.t()
+                a.b('返回', a.back)
+
+            def ui_custom_save():
+                def save_file(i, filename_without_ext):
+                    if i == -1:
+                        a.save(a.timestamp())
+                    else:
+                        a.save(filename_without_ext)
+                    a.repeat()
+                a.page()
+                a.mode()
+                a.h('保存存档')
+                a.t()
+                a.t()
+                for i, each in enumerate(a.scan_save_file()):
+                    a.b('{}. {}'.format(i, each[0]), save_file, i, each[0])
+                    a.t()
+                a.b('+', save_file, -1, '')
+                a.t()
+                a.t()
+                a.b('返回', a.back)
+
+            def ui_custom_load(callback=None):
+                def load_file(i, filename_without_ext):
+                    a.load(filename_without_ext)
+                    if callback is None:
+                        a.back()
+                    else:
+                        callback()
+                a.page()
+                a.mode()
+                a.h('加载存档')
+                a.t()
+                a.t()
+                for i, each in enumerate(a.scan_save_file()):
+                    a.b('{}. {}'.format(i, each[0]), load_file, i, each[0])
+                    a.t()
+                a.t()
+                a.b('返回', a.back)
+
+            def input_callback(value):
+                a.sav('test')['input'] = value
+            if 'test' not in a.sav():
+                a.sav()['test'] = {'input': '请任意修改'}
+            a.page()
+            a.h('存读档测试')
+            a.t()
+            a.t('测试文本：')
+            a.input(input_callback, a.sav('test')['input'])
+            a.t()
+            a.b('预设存档页面', a.goto, a.ui_save)
+            a.b('预设读档页面', a.goto, a.ui_load)
+            a.t()
+            a.b('预设存档控件示例', a.goto, ui_save_widget_sample)
+            a.b('预设读档控件示例', a.goto, ui_load_widget_sample)
+            a.t()
+            a.b('自定义存档页面示例', a.goto, ui_custom_save)
+            a.b('自定义读档页面示例', a.goto, ui_custom_load)
         a.page()
         a.h('存档数据管理')
         a.t()
@@ -385,6 +462,9 @@ def ui_data():
         a.h('加载存档预设界面', 3)
         a.t()
         a.t('a.ui_load()')
+        a.t()
+        a.t()
+        a.b('示例界面', a.goto, ui_sl_sample)
         a.t()
         a.t()
         a.b('返回', a.back)

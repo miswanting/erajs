@@ -546,38 +546,59 @@ def dump_dat():
     pass
 
 
-def save():
-    pass
+def save(filename_without_ext: str = '', meta_info: Optional[Dict[str, Any]] = None):
+    if meta_info:
+        e.data['sav']['meta'] = meta_info
+    else:
+        e.data['sav']['meta'] = {
+            'timestamp': Tools.timestamp(),
+            'name': filename_without_ext
+        }
+        if not filename_without_ext:
+            e.data['sav']['meta']['name'] = filename_without_ext
+    path = ''
+    if not filename_without_ext:
+        path = 'save\\quick.sav'
+    else:
+        path: str = 'save\\'+DotPath.dot2path(filename_without_ext, 'sav')
+    e.write(path, e.data['sav'])
 
 
-def load():
-    pass
+def load(filename_without_ext: str = ''):
+    path = ''
+    if not filename_without_ext:
+        path = 'save\\quick.sav'
+        if not os.path.isfile(path):
+            return
+    else:
+        path = 'save\\'+DotPath.dot2path(filename_without_ext, 'sav')
+    e.data['sav']['meta'].clear()
+    e.data['sav']['data'].clear()
+    e.data['sav'] = e.read(path)
 
 
 def scan_save_file():
-    pass
+    unsorted_list = []
+    sorted_list = []
+    save_file_path_list = e.scan('save')
+    for save_file_path in save_file_path_list:
+        filename_without_ext, ext = os.path.splitext(
+            os.path.split(save_file_path)[1])
+        if ext.lower() in ['.sav', '.save']:
+            save_data = e.read(save_file_path)
+            meta_info = save_data['meta']
+            if filename_without_ext == 'quick':
+                sorted_list.append([filename_without_ext, meta_info])
+            else:
+                unsorted_list.append([filename_without_ext, meta_info])
+    sorted_list.extend(unsorted_list)
+    return sorted_list
 
 
 def set_console_parser(parser_func: Callable[[str], Any]):
     def on_console_input(pkg):
         e.push('console_output', {'value': parser_func(pkg['value'])})
     e.on('CONSOLE_INPUT', on_console_input)
-
-
-def widget_save():
-    pass
-
-
-def widget_load():
-    pass
-
-
-def ui_save():
-    pass
-
-
-def ui_load():
-    pass
 
 
 def dangerously_get_engine_core():

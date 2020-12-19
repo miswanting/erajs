@@ -142,8 +142,8 @@ def dat(dot_path: Optional[str] = None):
     return m.dat(dot_path)
 
 
-def sav():
-    return m.sav()
+def sav(dot_path: Optional[str] = None):
+    return m.sav(dot_path)
 
 
 def tmp(key: Optional[str] = None):
@@ -404,25 +404,28 @@ def widget_save() -> None:
     """
     def save_file(i, filename_without_ext):
         if i == -1:
-            save(get_current_timestamp())
+            save(timestamp())
         else:
             save(filename_without_ext)
         repeat()
     mode()
-    for i, each in enumerate(scan_save_file()):
+    for i, each in enumerate(m.scan_save_file()):
         b('{}. {}'.format(i, each[0]), save_file, i, each[0])
         t()
     b('+', save_file, -1, '')
     t()
 
 
-def widget_load(callback) -> None:
+def widget_load(callback: Optional[Callable[[], Any]] = None) -> None:
     """
     # 插入块级复合控件：存档加载列表（单页）
     """
     def load_file(i, filename_without_ext):
         load(filename_without_ext)
-        callback()
+        if callback is None:
+            back()
+        else:
+            callback()
     mode()
     for i, each in enumerate(scan_save_file()):
         b('{}. {}'.format(i, each[0]), load_file, i, each[0])
@@ -442,7 +445,7 @@ def ui_save():
     b('返回', back)
 
 
-def ui_load(callback):
+def ui_load(callback: Optional[Callable[[], Any]] = None):
     """
     # 插入块级复合控件：存档加载列表（单页）
     """
