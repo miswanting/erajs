@@ -255,7 +255,7 @@ def window(style: Dict[str, Any]):
     e.push('window', style=style)
 
 
-def title(text: str, style: Dict[str, Any]):
+def title(text: str, style: Optional[Dict[str, Any]] = None):
     e.push('title', {'text': str(text)}, style)
 
 

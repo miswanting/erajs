@@ -2,7 +2,7 @@
 header.header
   .menu-bar
     MenuItem(v-for="menuItem in $store.state.menu", :data="menuItem")
-  .title-bar {{ $store.state.title }}
+  .title-bar(:style="$store.state.title.style") {{ $store.state.title.data.text }}
   .operate-bar
     .min(@click="min") ●
     .max(@click="max") ●

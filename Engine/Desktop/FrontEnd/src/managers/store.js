@@ -11,7 +11,7 @@ export class StoreManager extends EventEmitter {
       state() {
         return {
           style: {},
-          title: 'Era.js',
+          title: { type: 'title', data: { text: 'Era.js' }, style: null },
           footer: { type: 'footer', data: { text: '@Miswanting' }, style: null },
           maxPages: 10,
           lastUi: '',
@@ -37,7 +37,7 @@ export class StoreManager extends EventEmitter {
           } else if (pkg.type === 'set_loading_text') {
             state.loadText = pkg.data.value
           } else if (pkg.type === 'title') {
-            state.title = pkg.data.text
+            state.title = pkg
           } else if (pkg.type === 'msg') {
             state.msgs.push(pkg)
           } else if (pkg.type === 'cls') {
