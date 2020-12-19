@@ -77,20 +77,20 @@ def uuid():
 
 
 # Event
-def on():
-    pass
+def on(event_type: str, callback: Callable[[Any], Any], once: bool = False, tags: Optional[List[str]] = None):
+    m.on(event_type, callback, once, tags)
 
 
-def off():
-    pass
+def off(event_type: str, callback: Callable[[Any], Any]):
+    m.off(event_type, callback)
 
 
-def emit():
-    pass
+def emit(event_type: str, *arg: List[Any], **kw: Dict[Any, Any]):
+    m.emit(event_type, *arg, **kw)
 
 
-def remove_all_listeners():
-    pass
+def remove_all_listeners(*exception_tags: List[str]):
+    m.remove_all_listeners(*exception_tags)
 
 
 # Engine
