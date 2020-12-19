@@ -1,10 +1,18 @@
 <template lang="pug">
-.img-block
+.img-block(:style="{ 'text-align': align }")
   img(:src="content", :style="data.style")
 </template>
 <script>
 export default {
   props: { data: Object },
+  data() {
+    return { align: "center" };
+  },
+  mounted() {
+    if ("text-align" in this.data.style) {
+      this.align = this.data.style["text-align"];
+    }
+  },
   computed: {
     contentType() {
       if (this.data.data.type === "apng") return "image/apng";
@@ -30,6 +38,9 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.img-block
-  text-align center
+
+// .img-block
+
+//   text-align center
+
 </style>
