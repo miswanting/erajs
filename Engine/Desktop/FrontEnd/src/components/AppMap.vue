@@ -1,6 +1,8 @@
 <template lang="pug">
 AppHeader
-main.map(ref="map")
+main.map
+  .canvas(v-if="$store.state.mapGenerated", ref="map")
+  .fail-info(v-else) 尚未生成
 </template>
 <script>
 import { vec2 } from "gl-matrix";
@@ -8,12 +10,9 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import AppHeader from "./AppHeader.vue";
 export default {
-  components: {
-    AppHeader,
-  },
+  components: { AppHeader },
   mounted() {
-    if (!window.mapCache) {
-    } else {
+    if (this.$store.state.mapGenerated) {
       const main = this.$refs.map;
       const viewportSize = vec2.fromValues(
         main.clientWidth,
@@ -24,7 +23,6 @@ export default {
       canvas.setAttribute("height", viewportSize[1]);
       main.appendChild(canvas);
 
-      console.log(THREE);
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
       const cameraConfig = {
         fov: 75,
@@ -39,14 +37,12 @@ export default {
         cameraConfig.far
       );
       camera.position.z = 3;
-      const loader = new THREE.ObjectLoader();
-      loader.load("models/monster.obj", function (object) {
-        scene.add(object);
-      });
+
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.target = new THREE.Vector3(0, 0, 0);
       controls.enablePan = false;
       controls.minDistance = 1.01;
+      controls.rotateSpeed = 1;
       controls.mouseButtons.LEFT = null;
       controls.mouseButtons.RIGHT = THREE.MOUSE.ROTATE;
 
@@ -69,7 +65,7 @@ export default {
       // const voronoi = d3.geoVoronoi(ps);
       // const polygons = voronoi.polygons();
       // const data = convertFromGeo(polygons);
-      const data = window.cache.mapData;
+      const data = window.cache.map.data;
       let cIndex = 0;
 
       function coordinates2XYZ(lon, lat) {
@@ -82,27 +78,32 @@ export default {
       }
 
       const planet = new THREE.Geometry();
-      for (let i = 0; i < data.length; i++) {
-        let pos = coordinates2XYZ(data[i].lon, data[i].lat);
-        cIndex = planet.vertices.length;
-        planet.vertices.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
-        for (let j = 0; j < data[i].children.length; j++) {
-          pos = coordinates2XYZ(data[i].children[j][0], data[i].children[j][1]);
+      for (const key in data) {
+        if (Object.hasOwnProperty.call(data, key)) {
+          const node = data[key];
+          let pos = coordinates2XYZ(node.lon, node.lat);
+          cIndex = planet.vertices.length;
           planet.vertices.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
-          if (j >= 1) {
-            const color = new THREE.Color(data[i].color);
-            var face = new THREE.Face3(
-              cIndex,
-              planet.vertices.length - 2,
-              planet.vertices.length - 1,
-              null,
-              color
-            );
-            data[i].childrenIndex.push(planet.faces.length);
-            planet.faces.push(face);
+          for (let j = 0; j < node.vertices.length; j++) {
+            pos = coordinates2XYZ(node.vertices[j][0], node.vertices[j][1]);
+            planet.vertices.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
+            if (j >= 1) {
+              const color = new THREE.Color(`rgb(${node.color.join(",")})`);
+              var face = new THREE.Face3(
+                cIndex,
+                planet.vertices.length - 2,
+                planet.vertices.length - 1,
+                null,
+                color
+              );
+              node;
+              node.faces.push(planet.faces.length);
+              planet.faces.push(face);
+            }
           }
         }
       }
+
       planet.computeFaceNormals();
       planet.computeVertexNormals();
       const planetMaterial = new THREE.MeshPhongMaterial({
@@ -145,7 +146,7 @@ export default {
 
       function render() {
         if (needResize) {
-          glMatrix.vec2.set(
+          vec2.set(
             viewportSize,
             main.clientWidth,
             window.innerHeight - document.querySelector("header").clientHeight
@@ -156,16 +157,23 @@ export default {
           camera.updateProjectionMatrix();
           renderer.setSize(viewportSize[0], viewportSize[1], false);
         }
-        raycaster.setFromCamera(mouse, camera)
+        raycaster.setFromCamera(mouse, camera);
         // 计算物体和射线的焦点
-        const intersects = raycaster.intersectObjects(scene.children)
+        const intersects = raycaster.intersectObjects(scene.children);
         if (intersects.length) {
-          for (let i = 0; i < data.length; i++) {
-            // console.log(intersects);
-            if (data[i].childrenIndex.indexOf(intersects[0].faceIndex) !== -1) {
-              for (let j = 0; j < data[i].childrenIndex.length; j++) {
-                scene.children[3].geometry.faces[data[i].childrenIndex[j]].color.setRGB(255, 255, 255)
-                planet.colorsNeedUpdate = true
+          for (const key in data) {
+            if (Object.hasOwnProperty.call(data, key)) {
+              const node = data[key];
+              if (node.faces.indexOf(intersects[0].faceIndex) !== -1) {
+                for (let j = 0; j < node.faces.length; j++) {
+                  // console.log(scene.children[3].geometry.faces[node.faces[j]].color);
+                  scene.children[3].geometry.faces[node.faces[j]].color.setRGB(
+                    255,
+                    255,
+                    255
+                  );
+                  planet.colorsNeedUpdate = true;
+                }
               }
             }
           }

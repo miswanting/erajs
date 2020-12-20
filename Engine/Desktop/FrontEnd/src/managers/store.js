@@ -4,11 +4,11 @@ import { AST } from './ast'
 import MapWorkerManager from './map'
 let toMain
 export class StoreManager extends EventEmitter {
-  constructor(net) {
+  constructor (net) {
     super()
     toMain = net
     this.store = createStore({
-      state() {
+      state () {
         return {
           style: {},
           title: { type: 'title', data: { text: 'Era.js' }, style: null },
@@ -25,13 +25,13 @@ export class StoreManager extends EventEmitter {
           pause: AST.newElement('pause'),
           main: AST.newElement('main'),
           intro: AST.newElement('intro'),
-          map: AST.newElement('map'),
-          space: AST.newElement('space')
+          // map: AST.newElement('map'),
+          space: AST.newElement('space'),
+          mapGenerated: false
         }
       },
       mutations: {
-        parsePackage(state, pkg) {
-          // console.log('Parse:', pkg)
+        parsePackage (state, pkg) {
           if (pkg.type === 'set_loading_title') {
             state.loadTitle = pkg.data.value
           } else if (pkg.type === 'set_loading_text') {
@@ -64,31 +64,6 @@ export class StoreManager extends EventEmitter {
             }
           } else if (pkg.type === 'console_output') {
             state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
-          } else if (pkg.type === 'generate_planet') {
-
-            // state.space.data.rawPlanetData = generatePlanet(pkg.data.area_quantity)
-            // state.space.data.nextIndex = 0
-            // const e = {
-            //   type: 'PLANET_GENERATED',
-            //   data: { length: state.space.data.rawPlanetData.length }
-            // }
-            // const event = new CustomEvent('send', { detail: e })
-            // document.dispatchEvent(event)
-          } else if (pkg.type === 'get_area_data') {
-            // const pkg = {
-            //   type: 'AREA_DATA',
-            //   data: state.space.data.rawPlanetData.slice(state.space.data.nextIndex, state.space.data.nextIndex + 50)
-            // }
-            // state.space.data.nextIndex += 50
-            // const event = new CustomEvent('send', { detail: pkg })
-            // document.dispatchEvent(event)
-          } else if (pkg.type === 'generate_planet') {
-            // const pkg = {
-            //   type: 'MAP_GENERATED',
-            //   data: generatePlanet()
-            // }
-            // const event = new CustomEvent('send', { detail: pkg })
-            // document.dispatchEvent(event)
           } else if ([
             'page',
             'text',
@@ -107,9 +82,8 @@ export class StoreManager extends EventEmitter {
           ].indexOf(pkg.type) !== -1) {
             AST.push(state, pkg)
           }
-          // console.log('Final:', state)
         },
-        handleEvent(state, pkg) {
+        handleEvent (state, pkg) {
           if ([
             'MOUSE_CLICK',
             'KEY_UP',
@@ -131,116 +105,53 @@ export class StoreManager extends EventEmitter {
             }
           } else if (pkg.type === 'MSG_TIMEOUT') {
             state.msgs = state.msgs.filter(x => x.data.hash !== pkg.hash)
+          } else if (pkg.type === 'PLANET_GENERATED') {
+            state.mapGenerated = true
           }
         }
       },
       actions: {
-        parsePackage({ commit }, pkg) {
+        parsePackage ({ commit }, pkg) {
           // console.log('Parse:', pkg)
           if (pkg.type === 'connection') {
             window.router.push('/idle')
           } else if (pkg.type === 'loaded') {
             window.router.push('/')
           } else if (pkg.type === 'generate_planet') {
-            // window.router.push('/')
             const mw = new MapWorkerManager()
+            window.cache = { map: {} }
             mw.generate(pkg.data)
             mw.on('PLANET_GENERATED', pkg => {
-              window.mapCache = pkg.data
+              commit('handleEvent', {
+                type: 'PLANET_GENERATED'
+              })
+              window.cache.map.raw = pkg.data.data
+              window.cache.map.data = {}
               toMain.send(pkg)
             })
+          } else if (pkg.type === 'update_map_id') {
+            window.cache.map.raw.forEach((x, i) => {
+              const newNeighbours = []
+              x.neighbours.forEach(n => {
+                newNeighbours.push(pkg.data.reflex[n])
+              })
+              x.neighbours = newNeighbours
+              window.cache.map.data[pkg.data.reflex[i]] = x
+            })
+            delete window.cache.map.raw
           } else {
             commit('parsePackage', pkg)
           }
-          // if (pkg.type === 'connection') {
-          //   window.router.push('/idle')
-          // }
-          // if (pkg.type === 'set_loading_title') {
-          //   state.loadTitle = pkg.data.value
-          // } else if (pkg.type === 'set_loading_text') {
-          //   state.loadText = pkg.data.value
-          // } else if (pkg.type === 'loaded') {
-          //   // state.ui = 'main'
-          // } else if (pkg.type === 'title') {
-          //   state.title = pkg.data.text
-          // } else if (pkg.type === 'msg') {
-          //   state.msgs.push(pkg)
-          // } else if (pkg.type === 'cls') {
-          //   if (pkg.data.num === 0) {
-          //     state.main.children.splice(0, state.main.children.length)
-          //   } else {
-          //     state.main.children.splice(state.main.children.length - pkg.data.num, pkg.data.num)
-          //   }
-          // } else if (pkg.type === 'footer') {
-          //   state.footer = pkg.data.text
-          // } else if (pkg.type === 'mode') {
-          //   state.blockMode = { type: pkg.data.type }
-          //   if (state.blockMode.type === 'grid') {
-          //     state.blockMode.column = pkg.data.arg[0]
-          //   }
-          // } else if (pkg.type === 'pass') {
-          //   if (state.blockMode.type === 'line') {
-          //     AST.addBlock(state)
-          //   } else if (state.blockMode.type === 'grid') {
-          //     if (!AST.isBlockSame(state)) {
-          //       AST.addBlock(state)
-          //     }
-          //     AST.getLastBlock(state).children.push(AST.newElement('pass'))
-          //   }
-          // } else if (pkg.type === 'console_output') {
-          //   state.console.children.push(AST.newElement('output', { value: pkg.data.value }))
-          // } else if (pkg.type === 'generate_planet') {
-
-          // state.space.data.rawPlanetData = generatePlanet(pkg.data.area_quantity)
-          // state.space.data.nextIndex = 0
-          // const e = {
-          //   type: 'PLANET_GENERATED',
-          //   data: { length: state.space.data.rawPlanetData.length }
-          // }
-          // const event = new CustomEvent('send', { detail: e })
-          // document.dispatchEvent(event)
-          // } else if (pkg.type === 'get_area_data') {
-          // const pkg = {
-          //   type: 'AREA_DATA',
-          //   data: state.space.data.rawPlanetData.slice(state.space.data.nextIndex, state.space.data.nextIndex + 50)
-          // }
-          // state.space.data.nextIndex += 50
-          // const event = new CustomEvent('send', { detail: pkg })
-          // document.dispatchEvent(event)
-          // } else if (pkg.type === 'generate_planet') {
-          // const pkg = {
-          //   type: 'MAP_GENERATED',
-          //   data: generatePlanet()
-          // }
-          // const event = new CustomEvent('send', { detail: pkg })
-          // document.dispatchEvent(event)
-          // } else if ([
-          //   'page',
-          //   'text',
-          //   'button',
-          //   'heading',
-          //   'link',
-          //   'progress',
-          //   'rate',
-          //   'check',
-          //   'radio',
-          //   'input',
-          //   'dropdown',
-          //   'divider'
-          // ].indexOf(pkg.type) !== -1) {
-          //   AST.push(state, pkg)
-          // }
-          // console.log('Final:', state)
-        },
+        }
       }
     })
   }
 
-  getVueStore() { return this.store }
-  parsePackage(pkg) { this.store.dispatch('parsePackage', pkg) }
+  getVueStore () { return this.store }
+  parsePackage (pkg) { this.store.dispatch('parsePackage', pkg) }
 }
 
-function generateMenu() {
+function generateMenu () {
   return [{
     label: '文件',
     submenu: [
@@ -265,12 +176,20 @@ function generateMenu() {
       {
         label: '模组管理器',
         click: () => {
-          window.router.push('/')
+          if (window.router.currentRoute.value.path === '/mod') {
+            window.router.back()
+          } else {
+            window.router.push('/mod')
+          }
         }
       }, {
         label: '地图管理器',
         click: () => {
-          window.router.push('/map')
+          if (window.router.currentRoute.value.path === '/map') {
+            window.router.back()
+          } else {
+            window.router.push('/map')
+          }
         }
       }
     ]
