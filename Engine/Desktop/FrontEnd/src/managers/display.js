@@ -5,7 +5,7 @@ import AppRouter from '../components/AppRoot.vue'
 import 'normalize.css'
 import '../style/era.styl'
 export class DisplayManager extends EventEmitter {
-  start(store) {
+  start (store) {
     window.app = createApp(AppRouter)
     this.router = new RouterManager()
     window.app.use(this.router.getVueRouter())

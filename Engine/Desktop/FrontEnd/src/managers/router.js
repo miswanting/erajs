@@ -5,7 +5,7 @@ import AppIdle from '../components/AppIdle.vue'
 import AppConsole from '../components/AppConsole.vue'
 import AppMap from '../components/AppMap.vue'
 export class RouterManager extends EventEmitter {
-  constructor() {
+  constructor () {
     super()
     window.router = createRouter({
       history: createWebHashHistory(),
@@ -18,5 +18,5 @@ export class RouterManager extends EventEmitter {
     })
   }
 
-  getVueRouter() { return window.router }
+  getVueRouter () { return window.router }
 }

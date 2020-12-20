@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 import { Worker } from 'worker_threads'
 import { BrowserWindow, ipcMain, ipcRenderer } from 'electron'
 export default class NetManager extends EventEmitter {
-  constructor(target) {
+  constructor (target) {
     super()
     this.target = target
     switch (this.target) {
@@ -22,31 +22,31 @@ export default class NetManager extends EventEmitter {
     this.core.on('recv', this.recv)
   }
 
-  start(ip = '', port = 0) { this.core.start(ip, port) }
-  send(data) { this.core.send(data) }
+  start (ip = '', port = 0) { this.core.start(ip, port) }
+  send (data) { this.core.send(data) }
 }
 class ToMain extends EventEmitter {
-  constructor() {
+  constructor () {
     super()
     ipcRenderer.on('data', (e, data) => { this.recv(data) })
   }
 
-  start(ip, port) { }
-  send(data) { ipcRenderer.send('data', data) }
-  recv(data) { this.emit('recv', data) }
+  start (ip, port) { }
+  send (data) { ipcRenderer.send('data', data) }
+  recv (data) { this.emit('recv', data) }
 }
 class ToRenderer extends EventEmitter {
-  constructor() {
+  constructor () {
     super()
     ipcMain.on('data', (e, data) => { this.recv(data) })
   }
 
-  start(ip, port) { }
-  send(data) { BrowserWindow.getAllWindows()[0].webContents.send('data', data) }
-  recv(data) { this.emit('recv', data) }
+  start (ip, port) { }
+  send (data) { BrowserWindow.getAllWindows()[0].webContents.send('data', data) }
+  recv (data) { this.emit('recv', data) }
 }
 class ToBack extends EventEmitter {
-  start(ip, port) {
+  start (ip, port) {
     this.worker = new Worker('./src/workers/net.js')
     this.worker.on('message', (pkg) => {
       if (pkg.type === 'connection') {
@@ -64,6 +64,6 @@ class ToBack extends EventEmitter {
     })
   }
 
-  send(data) { this.worker.postMessage({ type: 'send', data: data }) }
-  recv(data) { this.emit('recv', data) }
+  send (data) { this.worker.postMessage({ type: 'send', data: data }) }
+  recv (data) { this.emit('recv', data) }
 }

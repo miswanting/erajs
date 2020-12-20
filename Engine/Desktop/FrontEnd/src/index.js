@@ -3,7 +3,7 @@ import { WindowManager } from './managers/window'
 import NetManager from './managers/net'
 import { ScriptManager } from './managers/script'
 export class MainManager {
-  constructor() {
+  constructor () {
     this.app = new AppManager()
     this.win = new WindowManager({
       width: 800,
@@ -29,7 +29,7 @@ export class MainManager {
     this.toBack.on('recv', this.onBackRecv)
   }
 
-  start() {
+  start () {
     this.win.start()
     this.toRenderer.start()
     this.toBack.start('localhost', 11994)
