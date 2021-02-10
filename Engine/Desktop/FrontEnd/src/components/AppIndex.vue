@@ -4,7 +4,8 @@ AppMessage
 main.index(ref="index")
   section.page(
     v-for="(page, i) in $store.state.main.children",
-    :class="{ disabled: i < $store.state.main.children.length - 1 }"
+    :class="{ disabled: i < $store.state.main.children.length - 1 }",
+    :style="page.style"
   )
     .disable-mask
     Block(v-for="block in page.children", :data="block")

@@ -29,7 +29,7 @@
     "electron-is-dev": "latest",
     "gl-matrix": "latest",
     "html-webpack-plugin": "latest",
-    "lodash": "^4.17.20",
+    "lodash": "latest",
     "normalize.css": "latest",
     "pug": "latest",
     "pug-plain-loader": "latest",
