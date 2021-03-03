@@ -23,13 +23,13 @@ onmessage = function (pkg) {
  * # 生成星球
  * @param {number} n - 区块数量
  */
-function generatePlanet (n) {
+function generatePlanet(n) {
   /**
    * # 生成斐波那契离散点
    * @param {number} pointAmount - 数量
    * @returns {number[][]} 点坐标列表
    */
-  function generatePointsUsingFibonacci (pointAmount) {
+  function generatePointsUsingFibonacci(pointAmount) {
     const points = []
     const phi = 180 * (3 - Math.sqrt(5)) // 黄金分割（角度）
     for (let i = 0; i < pointAmount; i++) {
@@ -46,7 +46,7 @@ function generatePlanet (n) {
    * @param {number} lat - 纬度[-90,90]
    * @returns {number[]} 三维笛卡尔坐标
    */
-  function coordinates2XYZ (lon, lat) {
+  function coordinates2XYZ(lon, lat) {
     const rlon = lon / 180 * Math.PI
     const rlat = lat / 180 * Math.PI
     const x = Math.cos(rlon) * Math.cos(rlat)
@@ -59,7 +59,7 @@ function generatePlanet (n) {
    * @param {number} height - 高度[-2000,8000]
    * @returns {number[]} RGB数值列表[0,255]
    */
-  function heightShader (height) {
+  function heightShader(height) {
     let r, g, b
     if (height > 7500) { // 白
       // r = g = b = (v.height / 256 - 0.9) * 10 * 128 + 128
@@ -77,13 +77,14 @@ function generatePlanet (n) {
     } else { // 深水
       [r, g, b] = [0, 81, 182]
     }
-    return [Math.floor(r), Math.floor(g), Math.floor(b)]
+    return [r / 255, g / 255, b / 255]
+    // return [Math.floor(r), Math.floor(g), Math.floor(b)]
   }
   /**
    * # D3Geo数据转地图数据
    * @param {number} polygons d3.geoVoronoi(points).polygons()
    */
-  function convertFromGeo (polygons) {
+  function convertFromGeo(polygons) {
     const noise = new SimplexNoise()
     const nodes = []
     for (let i = 0; i < polygons.features.length; i++) {
@@ -120,7 +121,7 @@ function generatePlanet (n) {
    * @param {number[][]} points 点坐标列表
    * @returns {number[][]} 点坐标列表
    */
-  function randomizePoints (points) {
+  function randomizePoints(points) {
     for (let i = 0; i < points.length; i++) {
       points[i][0] = points[i][0] + (Math.random() - 0.5) * 10
     }
@@ -132,7 +133,7 @@ function generatePlanet (n) {
    * @param {number} n 离散次数
    * @returns {number[][]} 点坐标列表
    */
-  function scratterPoints (points, n) {
+  function scratterPoints(points, n) {
     for (let i = 0; i < n; i++) {
       const polygons = d3.geoVoronoi(points).polygons()
       for (let j = 0; j < polygons.features.length; j++) {

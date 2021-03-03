@@ -22,7 +22,7 @@
     "clean-webpack-plugin": "latest",
     "css-loader": "latest",
     "csshake": "latest",
-    "d3-geo-voronoi": "^1.6.0",
+    "d3-geo-voronoi": "latest",
     "electron": "latest",
     "electron-builder": "latest",
     "electron-devtools-installer": "latest",

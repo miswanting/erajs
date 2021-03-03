@@ -77,56 +77,195 @@ export default {
         return [x, y, z];
       }
 
-      const planet = new THREE.Geometry();
+      // WIP
+      // const helpers = [];
+      // const PH = [];
+
+      const planet = new THREE.BufferGeometry();
+
+      const indices = []; // 顶点复用索引列表[f0p0i,f0p1i,f0p2i,f1p0i...]
+
+      const positions = []; // 顶点坐标列表[x0,y0,z0,x1...]
+      const normals = [];
+      const colors = [];
+
+      const color = new THREE.Color();
+
+      const pA = new THREE.Vector3();
+      const pB = new THREE.Vector3();
+      const pC = new THREE.Vector3();
+
+      const cb = new THREE.Vector3();
+      const ab = new THREE.Vector3();
+
       for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
           const node = data[key];
+          color.setRGB(node.color[0], node.color[1], node.color[2]);
           let pos = coordinates2XYZ(node.lon, node.lat);
-          cIndex = planet.vertices.length;
-          planet.vertices.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
+          let cpi = positions.length / 3; // Center Point Index
+          // pA.set(pos[0], pos[1], pos[2]);
+          let normal = new THREE.Vector3(pos[0], pos[1], pos[2]);
+          normal.normalize();
+          normals.push(normal.x, normal.y, normal.z);
+          positions.push(pos[0], pos[1], pos[2]);
+          // PH.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
+          colors.push(color.r, color.g, color.b);
+          // console.log(0, node.vertices.length);
+          // console.log(0, positions.length, colors.length, color);
           for (let j = 0; j < node.vertices.length; j++) {
-            pos = coordinates2XYZ(node.vertices[j][0], node.vertices[j][1]);
-            planet.vertices.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
-            if (j >= 1) {
-              const color = new THREE.Color(`rgb(${node.color.join(",")})`);
-              var face = new THREE.Face3(
-                cIndex,
-                planet.vertices.length - 2,
-                planet.vertices.length - 1,
-                null,
-                color
+            let pos = coordinates2XYZ(node.vertices[j][0], node.vertices[j][1]);
+            positions.push(pos[0], pos[1], pos[2]);
+            // PH.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
+            colors.push(color.r, color.g, color.b);
+            // console.log(1, positions.length, colors.length, color);
+
+            let normal = new THREE.Vector3(pos[0], pos[1], pos[2]);
+            normal.normalize();
+            normals.push(normal.x, normal.y, normal.z);
+            if (j > 0) {
+              indices.push(
+                cpi,
+                positions.length / 3 - 2,
+                positions.length / 3 - 1
               );
-              node;
-              node.faces.push(planet.faces.length);
-              planet.faces.push(face);
+              // pB.set(
+              //   positions[positions.length - 6],
+              //   positions[positions.length - 5],
+              //   positions[positions.length - 4]
+              // );
+              // pC.set(
+              //   positions[positions.length - 3],
+              //   positions[positions.length - 2],
+              //   positions[positions.length - 1]
+              // );
+
+              // cb.subVectors(pC, pB);
+              // ab.subVectors(pA, pB);
+              // cb.cross(ab);
+
+              // cb.normalize();
+
+              // normals.push(cb.x, cb.y, cb.z);
+              // normals.push(cb.x, cb.y, cb.z);
+              // normals.push(cb.x, cb.y, cb.z);
             }
           }
+          indices.push(cpi, positions.length / 3 - 1, cpi + 1);
         }
+        // console.log(planet);
+        // break;
       }
 
-      planet.computeFaceNormals();
-      planet.computeVertexNormals();
+      planet.setIndex(indices);
+      planet.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3)
+      );
+      planet.setAttribute(
+        "normal",
+        new THREE.Float32BufferAttribute(normals, 3)
+      );
+      planet.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+      // function disposeArray() {
+      //   this.array = null;
+      // }
+      // planet.setAttribute(
+      //   "position",
+      //   new THREE.Float32BufferAttribute(positions, 3).onUpload(disposeArray)
+      // );
+      // planet.setAttribute(
+      //   "normal",
+      //   new THREE.Float32BufferAttribute(normals, 3).onUpload(disposeArray)
+      // );
+      // planet.setAttribute(
+      //   "color",
+      //   new THREE.Float32BufferAttribute(colors, 3).onUpload(disposeArray)
+      // );
+      // planet.computeBoundingSphere();
+      // WIP
+      // const planet = new THREE.BufferGeometry();
+      // for (const key in data) {
+      //   if (Object.hasOwnProperty.call(data, key)) {
+      //     const node = data[key];
+      //     let pos = coordinates2XYZ(node.lon, node.lat);
+      //     cIndex = planet.vertices.length;
+      //     planet.vertices.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
+      //     for (let j = 0; j < node.vertices.length; j++) {
+      //       pos = coordinates2XYZ(node.vertices[j][0], node.vertices[j][1]);
+      //       planet.vertices.push(new THREE.Vector3(pos[0], pos[1], pos[2]));
+      //       if (j >= 1) {
+      //         const color = new THREE.Color(`rgb(${node.color.join(",")})`);
+      //         var face = new THREE.Face3(
+      //           cIndex,
+      //           planet.vertices.length - 2,
+      //           planet.vertices.length - 1,
+      //           null,
+      //           color
+      //         );
+      //         node;
+      //         node.faces.push(planet.faces.length);
+      //         planet.faces.push(face);
+      //       }
+      //     }
+      //   }
+      // }
+
+      // planet.computeFaceNormals();
+      // planet.computeVertexNormals();
+      // WIP
       const planetMaterial = new THREE.MeshPhongMaterial({
         color: 0xffffff,
         vertexColors: THREE.FaceColors,
         shininess: 40,
       });
       scene.add(new THREE.Mesh(planet, planetMaterial));
-
-      const stars = new THREE.Geometry();
+      // XXX
+      // scene.add(new THREE.LineLoop(helpers));
+      // XXX
+      const stars = new THREE.BufferGeometry();
+      positions.splice(0, positions.length);
       for (var i = 0; i < 100; i++) {
-        const p = new THREE.Vector3(
+        positions.push(
           Math.random() * 200 - 100,
           Math.random() * 200 - 100,
           Math.random() * 200 - 100
         );
-        stars.vertices.push(p);
+        // const p = new THREE.Vector3(
+        //   Math.random() * 200 - 100,
+        //   Math.random() * 200 - 100,
+        //   Math.random() * 200 - 100
+        // );
+        // stars.vertices.push(p);
       }
+      stars.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3)
+      );
       const starMaterial = new THREE.PointsMaterial({
         color: 0xffffff,
         size: 0.1,
       });
       scene.add(new THREE.Points(stars, starMaterial));
+
+      // LH
+      // const lineMaterial = new THREE.LineBasicMaterial({
+      //   color: 0xffffff,
+      //   linewidth: 1,
+      // });
+      // const lines = new THREE.BufferGeometry().setFromPoints(PH);
+      // scene.add(new THREE.Line(lines, lineMaterial));
+      // LH
+      // for (let i = 0; i < helpers.length; i++) {
+      //   helpers[i].normalize();
+      //   const arrowHelper = new THREE.ArrowHelper(
+      //     -helpers[i],
+      //     new THREE.Vector3(0, 0, 0),
+      //     1,
+      //     0xffff00
+      //   );
+      //   scene.add(arrowHelper);
+      // }
 
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
