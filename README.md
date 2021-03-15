@@ -1,11 +1,11 @@
-<div align='right'><span>Language:&ensp;</span><span><a href='README-zh.md'>zh</a></span>&ensp;<span><abbr title='Need to be translated!'>en</abbr></span>&ensp;<span><a><abbr title='Need to be translated!'>jp</abbr></a></span></div>
+<div align='right'><span>Language:&ensp;</span><span><a href='README-zh.md'>zh</a></span>&ensp;<span><abbr title='Need to be translated!'>en</abbr></span>&ensp;<span><a href='README-jp.md'><abbr title='Need to be translated!'>jp</abbr></a></span></div>
 
 <div align="center">
     <a href="http://erajs.net">Homepage</a> |
     <a href="https://github.com/miswanting/Era.js/wiki">Doc</a> |
     <a href="https://github.com/miswanting/Era.js/projects">Roadmap</a> |
     <a href="https://github.com/miswanting/Era.js/issues">Support</a> |
-    <a href="https://github.com/miswanting/Era.js/issues">FAQ</a>
+    <a href="https://github.com/miswanting/Era.js/wiki/FAQ">FAQ</a>
 </div>
 
 
@@ -15,25 +15,25 @@
 
 ## Overview
 
->   Description Updated on: 200920
+>   Description Updated on: 210313
 
 <div align='center'><img src="ss.png" alt="screenshot" width="50%" /></div>
 
-Era.js is a next-generation cross-platform rich text game engine built by JavaScript + Python3, with Python3 as the game script. It is developed based on the Electron application platform and ~~Semantic UI style library.~~<sub>Deleted on 200326, <a href='Documents/en/FAQ.md'>Why?<a></sub> homemade style library.
+Era.js is a next-generation cross-platform rich text game engine built by JavaScript + Python3, with Python3 as the game script. It is developed based on the Electron application platform and Span Charm homemade style library.
 
 ## Notice
 
-Work In Heavy Progress. Ultra-Experimental.
+🚧 Work In Heavy Progress. Ultra-Experimental. 🚧
 
 ## Development Philosophy
 
-- make full use of HTML5 technology to create a gorgeous, neat, rich, full of design sense of the game front end;
-- carefully set up the API so that game developers can worry less about things that have nothing to do with content or gameplay;
-- all code cross-platform;
-- the development environment, packaging and deployment must be simple and reliable;
--friendly to secondary development;
-- in principle, do not cut off any functionality provided by the technology used.
-- use the latest technology.
+- Make full use of HTML5 technology to create a gorgeous, neat, rich, full of design sense of the game front end, only for text-based game;
+- Carefully set up the API so that game developers can worry less about things that have nothing to do with content or gameplay;
+- [WIP] All code cross-platform;
+- The development environment, packaging and deployment must be simple and reliable;
+- Be friendly to re-development;
+- In principle, do not cut off any functionality provided by the technology used.
+- Use the latest technology.
 
 ## Features
 
@@ -49,18 +49,18 @@ Work In Heavy Progress. Ultra-Experimental.
 ### Core
 
 - The front-end language：[JavaScript]()
-  - User Interface Framework: [Vue.js 2](https://vuejs.org/)
+  - User Interface Framework: [Vue.js 3](https://vuejs.org/)
   - Responsive style library: Span Charm(Homemade)
   - Packaging: [Electron Builder](https://www.electron.build/)
-- The Back-end language(Game Script): [Python 3](https://www.python.org/)
+- The Back-end language(& Game Script): [Python 3](https://www.python.org/)
   - Packaging: [cx_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
 ### Application Container for Desktop
 
--   Application Container: [Electron](https://electronjs.org/)
+-   [Electron](https://electronjs.org/)
 
 ### Application Container for Mobile
 
--   N/A
+-   [Flutter](https://flutter.dev/)
 
 ## Platform Support
 
@@ -73,11 +73,11 @@ Work In Heavy Progress. Ultra-Experimental.
 
 ## Directory Structure
 
--   Core: Legacy Core Code
--   Desktop Container: Application Container for Desktop
--   Mobile Container: Application Container for Mobile
--   SDK: Software Development Kit
+-   Assets: Accessory code improves engine usability
 -   docs: Documents
+-   Engine: Engine Folder
+-   SDK: Software Development Kit
+-   UtilityScripts: Tool scripts improve engine flow
 
 ## Thanks
 
