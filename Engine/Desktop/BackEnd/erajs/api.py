@@ -172,7 +172,7 @@ def footer(text: str, style: Optional[Dict[str, str]] = None):
     m.footer(text, style)
 
 
-def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):
+def msg(text: str, duration: float = 5, style: Optional[Dict[str, str]] = None):
     """
     # 设置窗口脚注
     """

@@ -38,8 +38,6 @@ export class StoreManager extends EventEmitter {
             state.loadText = pkg.data.value
           } else if (pkg.type === 'title') {
             state.title = pkg
-          } else if (pkg.type === 'msg') {
-            state.msgs.push(pkg)
           } else if (pkg.type === 'cls') {
             if (pkg.data.num === 0) {
               state.main.children.splice(0, state.main.children.length)
@@ -109,6 +107,16 @@ export class StoreManager extends EventEmitter {
           } else if (pkg.type === 'PLANET_GENERATED') {
             state.mapGenerated = true
           }
+        },
+        addMsg (state, msg) { state.msgs.push(msg) },
+        delMsg (state, msg) {
+          let targetIndex = 0
+          for (let i = 0; i < state.msgs.length; i++) {
+            if (state.msgs[i].data.hash === msg.data.hash) {
+              targetIndex = i
+            }
+          }
+          state.msgs.splice(targetIndex, 1)
         }
       },
       actions: {
@@ -140,6 +148,9 @@ export class StoreManager extends EventEmitter {
               window.cache.map.data[pkg.data.reflex[i]] = x
             })
             delete window.cache.map.raw
+          } else if (pkg.type === 'msg') {
+            commit('addMsg', pkg)
+            setTimeout(() => { commit('delMsg', pkg) }, pkg.data.duration * 1000)
           } else {
             commit('parsePackage', pkg)
           }

@@ -263,7 +263,7 @@ def footer(text: str, style: Optional[Dict[str, Any]] = None):
     e.push('footer', {'text': str(text)}, style)
 
 
-def msg(text: str, duration: float = 3, style: Optional[Dict[str, str]] = None):
+def msg(text: str, duration: float = 5, style: Optional[Dict[str, str]] = None):
     e.push('msg', {'text': str(text), 'duration': duration,
                    'hash': Tools.random_hash()}, style)
 
