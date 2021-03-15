@@ -67,12 +67,12 @@ export default {
     :hover
       background-color var(--hover-back)
 
-      .min
+      &.min
         color #0f0
 
-      .max
+      &.max
         color #ff0
 
-      .close
+      &.close
         color #f00
 </style>
