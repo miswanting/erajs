@@ -465,3 +465,7 @@ sleep = sleep
 # Experimental
 def dangerously_get_engine_core():
     return m.dangerously_get_engine_core()
+
+
+def graph(mode, data):
+    return m.graph(mode, data)

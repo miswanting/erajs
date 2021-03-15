@@ -2,6 +2,7 @@
 BlockLine(v-if="data.type === 'line'", :data="data") 
 BlockGrid(v-else-if="data.type === 'grid'", :data="data") 
 BlockDivider(v-else-if="data.type === 'divider'", :data="data") 
+BlockGraph(v-else-if="data.type === 'graph'", :data="data") 
 BlockImage(v-else-if="data.type === 'img-block'", :data="data") 
 div(v-else) {{ data }}
 </template>
@@ -10,6 +11,7 @@ import BlockLine from "./BlockLine.vue";
 import BlockGrid from "./BlockGrid.vue";
 import BlockDivider from "./BlockDivider.vue";
 import BlockImage from "./BlockImage.vue";
+import BlockGraph from "./BlockGraph.vue";
 export default {
   props: { data: Object },
   components: {
@@ -17,6 +19,7 @@ export default {
     BlockGrid,
     BlockDivider,
     BlockImage,
+    BlockGraph,
   },
 };
 </script>

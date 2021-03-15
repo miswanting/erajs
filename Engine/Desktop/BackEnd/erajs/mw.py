@@ -623,6 +623,10 @@ def Deprecated(func: Callable[[], Any]):
         print(f'API {func.__name__}() is unstable.')
         return func(*args, **kw)
     return wrapper
+
+
+def graph(mode, data):
+    e.push('graph', {'mode': mode, 'data': data})
 ######################################
 
 
