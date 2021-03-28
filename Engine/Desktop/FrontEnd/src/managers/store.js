@@ -76,6 +76,7 @@ export class StoreManager extends EventEmitter {
             'dropdown',
             'divider',
             'graph',
+            'zdog',
             'img-inline',
             'img-block'
           ].indexOf(pkg.type) !== -1) {

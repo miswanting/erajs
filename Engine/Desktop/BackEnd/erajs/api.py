@@ -469,3 +469,7 @@ def dangerously_get_engine_core():
 
 def graph(mode, data):
     return m.graph(mode, data)
+
+
+def zdog():
+    return m.zdog()

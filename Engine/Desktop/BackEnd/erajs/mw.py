@@ -627,6 +627,10 @@ def Deprecated(func: Callable[[], Any]):
 
 def graph(mode, data):
     e.push('graph', {'mode': mode, 'data': data})
+
+
+def zdog():
+    e.push('zdog')
 ######################################
 
 

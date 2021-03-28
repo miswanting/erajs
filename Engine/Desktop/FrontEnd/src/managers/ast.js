@@ -92,7 +92,7 @@ export class AST {
         this.addBlock(state)
       }
       this.getLastBlock(state).children.push(this.newElement(pkg.type, pkg.data, pkg.style))
-    } else if (['divider', 'img-block', 'graph'].indexOf(pkg.type) !== -1) {
+    } else if (['divider', 'img-block', 'graph', 'zdog'].indexOf(pkg.type) !== -1) {
       this.getLastPage(state).children.push(this.newElement(pkg.type, pkg.data, pkg.style))
     }
   }
