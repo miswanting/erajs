@@ -48,6 +48,9 @@ export default {
       display block
       background-color var(--default-back)
 
+      &:first-child
+        border-top-left-radius .3rem
+
   .title-bar
     flex-grow 1
     text-align center
@@ -63,6 +66,9 @@ export default {
     > div
       padding 0 .2rem
       background-color var(--default-back)
+
+      &:last-child
+        border-top-right-radius .3rem
 
     :hover
       background-color var(--hover-back)
