@@ -1,8 +1,9 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const WorkerPlugin = require('worker-plugin')
+const webpack = require('webpack')
 const Main = {
   entry: './src/index.js',
   mode: 'production',
@@ -57,6 +58,9 @@ const Renderer = {
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       title: 'Era.js'
+    }),
+    new webpack.DefinePlugin({
+      __VUE_PROD_DEVTOOLS__: true
     })
   ]
 }
