@@ -70,6 +70,7 @@ export default {
 .index
   flex-grow 1
   color var(--default-front)
+  // background-color var(--shadow-color)
   background-color var(--default-back)
   height -webkit-fill-available
   overflow-y auto
@@ -82,12 +83,14 @@ export default {
     border-radius 3px
 
   .page
-    margin .3rem
+    margin 1rem
     padding .3rem
     border 1px solid var(--hover-back)
-    border-radius .3rem
+    // border-radius .3rem
     position relative
 
+    // box-shadow 0 0 3px var(--shadow-color)
+    // transform skewX(-3deg)
     &.disabled
       .disable-mask
         position absolute
@@ -95,7 +98,7 @@ export default {
         right 0
         bottom 0
         left 0
-        backdrop-filter blur(1px)
+        backdrop-filter blur(1.5px)
         z-index 1
 
 footer
