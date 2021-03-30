@@ -1,7 +1,8 @@
-from typing import Any, Callable, Dict, List, Optional
 from time import sleep
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
 from . import mw as m
-from .mw import Experimental
+
 version = '0.2.0-α+201213'
 codename = 'Dark Elf'
 data = None
@@ -180,7 +181,7 @@ def msg(text: str, duration: float = 5, style: Optional[Dict[str, str]] = None):
 
 
 # Page
-def page(style: Optional[Dict[str, str]] = None, *exception_tags: List[str]):
+def page(style: Optional[Dict[str, str]] = None, *exception_tags: str):
     """
     # 生成新的空白页面
     """
@@ -195,11 +196,12 @@ def cls(num: int = 0):
 
 
 # Block
-def mode(type: Optional[str] = 'line', *arg: Any, **kw: Any):
+def mode(type: str = 'line', *arg: Any, **kw: Any):
     """
     # 设置新增控件排版模式
     在旧版排版模式会被page()重置，而现在不会了。
     """
+
     m.mode(type, *arg, **kw)
 
 
@@ -207,15 +209,15 @@ def divider(text: Optional[str] = None, style: Optional[Dict[str, str]] = None):
     """
     # 插入块级控件：分割线
     """
-    return m.divider(text, style)
+    m.divider(text, style)
 
 
 # Inline
-def heading(text: Optional[str] = None, rank: int = 1, style: Optional[Dict[str, str]] = None):
+def heading(text: Optional[str] = None, rank: int = 1, style: Optional[Dict[str, Any]] = None):
     """
     # 插入行内控件：标题
     """
-    return m.heading(text, rank, style)
+    m.heading(text, rank, style)
 
 
 h = heading
@@ -235,7 +237,7 @@ def button(text: Optional[str] = None, callback: Optional[Callable[[Any], None]]
     """
     # 插入行内控件：按钮
     """
-    return m.button(text, callback, *arg, **kw)
+    m.button(text, callback, *arg, **kw)
 
 
 b = button
@@ -245,7 +247,7 @@ def link(text: Optional[str] = None, callback: Optional[Callable[[], None]] = No
     """
     # 插入行内控件：链接
     """
-    return m.link(text, callback, style, *arg, **kw)
+    m.link(text, callback, style, *arg, **kw)
 
 
 l = link
@@ -272,7 +274,7 @@ def check(text: Optional[str] = None, callback: Optional[Callable[[bool], None]]
     return m.check(text, callback, default, style)
 
 
-def radio(text_list: List[str], callback: Optional[Callable[[int], None]] = None, default_index: int = 0, style: Optional[Dict[str, str]] = None) -> object:
+def radio(text_list: List[str], callback: Optional[Callable[[Dict[str, Union[str, int]]], None]] = None, default_index: int = 0, style: Optional[Dict[str, str]] = None) -> object:
     """
     # 插入行内控件：单选
     """

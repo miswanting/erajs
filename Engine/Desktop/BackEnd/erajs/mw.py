@@ -1,6 +1,6 @@
 import os
 import sys
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from semver import compare
 
@@ -118,9 +118,11 @@ def init(config: Optional[Dict[str, Any]]):
         for path in files:
             if os.path.splitext(path)[1].lower() == '.yml':
                 dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
-                e.cfg()[dot_path] = e.read(path)
-                e.info(f'│  ├─ Config [{dot_path}] Loaded.')
-                n += 1
+                config = e.cfg()
+                if config is not None:
+                    config[dot_path] = e.read(path)
+                    e.info(f'│  ├─ Config [{dot_path}] Loaded.')
+                    n += 1
         e.info(f'│  └─ {n} Configs Loaded!')
 
     def send_config():
@@ -144,10 +146,12 @@ def init(config: Optional[Dict[str, Any]]):
         e.push('set_loading_text', {'value': ''})
         for path in files:
             dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
-            e.dat()[dot_path] = e.read(path)
-            e.info(f'│  ├─ Data File [{dot_path}] Loaded.')
-            e.push('set_loading_text', {
-                   'value': f'Data File [{dot_path}] Loaded.'})
+            data = e.dat()
+            if data is not None:
+                data[dot_path] = e.read(path)
+                e.info(f'│  ├─ Data File [{dot_path}] Loaded.')
+                e.push('set_loading_text', {
+                    'value': f'Data File [{dot_path}] Loaded.'})
         e.info(f'│  └─ {len(files)} Data Files Loaded!')
 
     def register_resource_files():
@@ -179,8 +183,11 @@ def init(config: Optional[Dict[str, Any]]):
         e.push('set_loading_text', {'value': ''})
         # Config -> File System : Check Config Deletes
         metas = e.scan_mods()
-        configs = e.cfg('sys')['mods']
-        new_configs = []
+        sys_config = e.cfg('sys')
+        if sys_config is None:
+            return
+        configs = sys_config['mods']
+        new_configs: List[Dict[str, Any]] = []
         for config in configs:
             # Find If Config Item Exist.
             found = False
@@ -218,7 +225,7 @@ def init(config: Optional[Dict[str, Any]]):
                     new_config['description'] = metas[id]['description']
                 if 'dependencies' in metas[id]:
                     new_config['dependencies'] = metas[id]['dependencies']
-                e.cfg('sys')['mods'].append(new_config)
+                sys_config['mods'].append(new_config)
             e.write(os.path.join('config', 'sys.yml'), e.cfg('sys'))
         e.info(f'│  └─ {len(metas)} Mods Found!')
         # Load Mods
@@ -268,7 +275,7 @@ def msg(text: str, duration: float = 5, style: Optional[Dict[str, str]] = None):
                    'hash': Tools.random_hash()}, style)
 
 
-def page(style: Optional[Dict[str, str]] = None, *exception_tags: List[str]):
+def page(style: Optional[Dict[str, str]] = None, *exception_tags: str):
     e.remove_all_listeners(*exception_tags)
     e.push('page', None, style)
 
@@ -281,11 +288,11 @@ def mode(type: str, *arg: List[Any], **kw: Dict[str, Any]):
     e.push('mode', {'type': type, 'arg': arg, 'kw': kw})
 
 
-def divider(text: str, style: Dict[str, Any]):
+def divider(text: Optional[str], style: Optional[Dict[str, Any]]):
     e.push('divider', {'text': text}, style)
 
 
-def heading(text: str, rank: int, style: Dict[str, Any]):
+def heading(text: Optional[str], rank: int, style: Optional[Dict[str, Any]]):
     e.push('heading', {'text': str(text), 'rank': rank}, style)
 
 
@@ -312,9 +319,9 @@ def text(text: Optional[str] = None, wait: Optional[bool] = False, style: Option
         e.wait_for_unlock()
 
 
-def button(text: str, callback: Optional[Callable[[], None]], *arg: List[Any], **kw: Dict[str, Any]):
-    data = {
-        'text': str(text),
+def button(text: Optional[str], callback: Optional[Callable[[], None]], *arg: List[Any], **kw: Dict[str, Any]):
+    data: Dict[str, Any] = {
+        'text': text,
         'hash': Tools.random_hash()
     }
     data['disabled'] = False
@@ -333,16 +340,17 @@ def button(text: str, callback: Optional[Callable[[], None]], *arg: List[Any], *
         del kw['style']
     e.push('button', data, style)
 
-    def on_click(e):
+    def on_click(e: Dict[str, str]):
         if e['hash'] == data['hash']:
-            callback(*arg, **kw)
+            if callback is not None:
+                callback(*arg, **kw)
     e.on('BUTTON_CLICK', on_click)
     e.unlock()
 
 
-def link(text: str, callback: Optional[Callable[[], None]], style: Optional[Dict[str, Any]], *arg: List[Any], **kw: Dict[str, Any]):
-    data = {
-        'text': str(text),
+def link(text: Optional[str], callback: Optional[Callable[[], None]], style: Optional[Dict[str, Any]], *arg: List[Any], **kw: Dict[str, Any]):
+    data: Dict[str, Any] = {
+        'text': text,
         'hash': Tools.random_hash()
     }
     data['disabled'] = False
@@ -357,9 +365,10 @@ def link(text: str, callback: Optional[Callable[[], None]], style: Optional[Dict
         kw.pop('popup')
     e.push('link', data, style)
 
-    def on_click(e):
+    def on_click(e: Dict[str, Any]):
         if e['hash'] == data['hash']:
-            callback(*arg, **kw)
+            if callback is not None:
+                callback(*arg, **kw)
     e.on('LINK_CLICK', on_click)
     e.unlock()
 
@@ -380,7 +389,7 @@ def progress(now: float = 50, max: float = 100, min: float = 0, low: float = 20,
     }, style)
 
 
-def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[float], None]] = None, style: Optional[Dict[str, Any]] = None):
+def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[int], None]] = None, style: Optional[Dict[str, Any]] = None) -> Dict[str, int]:
     data = {
         'now': now,
         'max': max,
@@ -394,18 +403,19 @@ def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[float], None]]
     e.push('rate', data, style)
     node = {'value': now}
 
-    def on_click(e):
+    def on_click(e: Dict[str, Any]):
         # print(e)
         if e['hash'] == data['hash']:
             node['value'] = e['value']
-            callback(e['value'])
+            if callback is not None:
+                callback(e['value'])
     e.on('RATE_CLICK', on_click)
     return node
 
 
-def check(text: str, callback: Callable[[bool], None], default: bool, style: Dict[str, Any]):
+def check(text: Optional[str], callback: Optional[Callable[[bool], None]], default: bool, style: Optional[Dict[str, str]] = None) -> Dict[str, str]:
     data = {
-        'text': str(text),
+        'text': text,
         'default': default,
         'hash': Tools.random_hash()
     }
@@ -415,17 +425,18 @@ def check(text: str, callback: Callable[[bool], None], default: bool, style: Dic
     if style is None:
         style = {}
     e.push('check', data, style)
-    node = {'value': default}
+    node: Dict[str, Any] = {'value': default}
 
-    def on_click(e):
+    def on_click(e: Dict[str, bool]):
         if e['hash'] == data['hash']:
             node['value'] = e['value']
-            callback(e['value'])
+            if callback is not None:
+                callback(e['value'])
     e.on('CHECK_CHANGE', on_click)
     return node
 
 
-def radio(text_list: List[str], callback: Callable[[Dict[str, Tuple[int, str]]], None], default_index: int, style: Dict[str, Any]):
+def radio(text_list: List[str], callback: Optional[Callable[[Dict[str, Union[str, int]]], None]] = None, default_index: int = 0, style: Optional[Dict[str, str]] = None) -> Dict[str, Union[str, int]]:
     data = {
         'text_list': text_list,
         'default_index': default_index,
@@ -437,16 +448,17 @@ def radio(text_list: List[str], callback: Callable[[Dict[str, Tuple[int, str]]],
     if style is None:
         style = {}
     e.push('radio', data, style)
-    node = {
+    node: Dict[str, Union[str, int]] = {
         'index': default_index,
         'value': text_list[default_index]
     }
 
-    def on_click(e):
+    def on_click(e: Dict[str, Any]):
         if e['hash'] == data['hash']:
             node['index'] = e['index']
-            node['value'] = text_list[node['index']]
-            callback(node)
+            node['value'] = text_list[int(node['index'])]
+            if callback is not None:
+                callback(node)
     e.on('RADIO_CHANGE', on_click)
     return node
 
@@ -466,7 +478,7 @@ def input(callback: Callable[[str], None], default: str, is_area: bool, placehol
     e.push('input', data, style)
     node = {'value': default}
 
-    def on_click(e):
+    def on_click(e: Dict[str, Any]):
         if e['hash'] == data['hash']:
             node['value'] = e['value']
             callback(e['value'])
@@ -474,7 +486,7 @@ def input(callback: Callable[[str], None], default: str, is_area: bool, placehol
     return node
 
 
-def dropdown(text_list: List[str], callback: Optional[Callable[[], None]], default_index: int, search: bool, multiple: bool, placeholder: str, allowAdditions: bool, style: Dict[str, Any]):
+def dropdown(text_list: List[str], callback: Optional[Callable[[Dict[str, Any]], None]], default_index: int, search: bool, multiple: bool, placeholder: str, allowAdditions: bool, style: Dict[str, Any]):
     data = {
         'text_list': text_list,
         'default_index': default_index,
@@ -490,16 +502,17 @@ def dropdown(text_list: List[str], callback: Optional[Callable[[], None]], defau
     if style is None:
         style = {}
     e.push('dropdown', data, style)
-    node = {
+    node: Dict[str, Any] = {
         'index': default_index,
         'value': text_list[default_index]
     }
 
-    def on_click(e):
+    def on_click(e: Dict[str, Any]):
         if e['hash'] == data['hash']:
             node['index'] = e['index']
             node['value'] = text_list[node['index']]
-            callback(node)
+            if callback is not None:
+                callback(node)
     e.on('DROPDOWN_CHANGE', on_click)
     return node
 
@@ -524,15 +537,15 @@ def reset_style():
     pass
 
 
-def goto(ui_func, *arg, **kw):
+def goto(ui_func: Callable[[], None], *arg: Any, **kw: Any):
     e.goto(ui_func, *arg, **kw)
 
 
-def back(num: int = 1, *arg, **kw):
+def back(num: int = 1, *arg: Any, **kw: Any):
     e.back(num, *arg, **kw)
 
 
-def repeat(*arg, **kw):
+def repeat(*arg: Any, **kw: Any):
     e.repeat(*arg, **kw)
 
 
@@ -545,7 +558,7 @@ def append():
 
 
 def get_gui_stack():
-    pass
+    return e.get_gui_list()
 
 
 def dump_cfg():
@@ -588,15 +601,15 @@ def load(filename_without_ext: str = ''):
 
 
 def scan_save_file():
-    unsorted_list = []
-    sorted_list = []
+    unsorted_list: List[List[Union[str, Dict[str, Any]]]] = []
+    sorted_list: List[List[Union[str, Dict[str, Any]]]] = []
     save_file_path_list = e.scan('save')
     for save_file_path in save_file_path_list:
         filename_without_ext, ext = os.path.splitext(
             os.path.split(save_file_path)[1])
         if ext.lower() in ['.sav', '.save']:
             save_data = e.read(save_file_path)
-            meta_info = save_data['meta']
+            meta_info: Dict[str, Any] = save_data['meta']
             if filename_without_ext == 'quick':
                 sorted_list.append([filename_without_ext, meta_info])
             else:
@@ -606,7 +619,7 @@ def scan_save_file():
 
 
 def set_console_parser(parser_func: Callable[[str], Any]):
-    def on_console_input(pkg):
+    def on_console_input(pkg: Dict[str, Any]):
         e.push('console_output', {'value': parser_func(pkg['value'])})
     e.on('CONSOLE_INPUT', on_console_input)
 
@@ -635,7 +648,7 @@ def Deprecated(func: Callable[[], Any]):
     return wrapper
 
 
-def graph(mode, data):
+def graph(mode: str, data: Dict[str, Any]):
     e.push('graph', {'mode': mode, 'data': data})
 
 

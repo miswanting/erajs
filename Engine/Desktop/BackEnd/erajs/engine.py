@@ -1,6 +1,4 @@
-import copy
 import datetime
-import importlib
 import json
 import logging
 import os
@@ -9,9 +7,9 @@ import socket
 import sys
 import threading
 import time
-from typing import Any, Callable, ClassVar, Dict, List, Optional
+from importlib.util import module_from_spec, spec_from_file_location
+from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple
 
-from . import lib
 from .file_format_support import (cfg_file, csv_file, json_file, raw_file,
                                   save_file, text_file, yaml_file, zip_file)
 from .modules.dot_path import DotPath
@@ -24,6 +22,7 @@ class Tools:
         # 随机哈希值生成器
         返回随机生成的哈希字符串
         - level == n，返回长度为2n的字符串，在16^n个项目中随机，任意两个值相同的概率为1/16^n/2。
+        - 示例：U2S3T7F5
         """
         return secrets.token_hex(level).upper()
 
@@ -39,17 +38,7 @@ class Tools:
     def uuid():
         """
         # UUID生成器
-        - 示例：201231-030619-123456
-        """
-        timestamp = Tools.timestamp()
-        hash = '{:0>6d}'.format(secrets.randbelow(1000000))
-        uuid = '{}-{}'.format(timestamp, hash)
-        return uuid
-
-    @staticmethod
-    def deprecated():
-        """
-        # 弃用指示器
+        - 示例：201231-030619-123456-394527
         """
         timestamp = Tools.timestamp()
         hash = '{:0>6d}'.format(secrets.randbelow(1000000))
@@ -63,11 +52,7 @@ class Singleton:
     """
     __instance: ClassVar[Optional['Singleton']] = None
 
-    def __new__(
-        cls,
-        *args: List[Any],
-        **kw: Dict[Any, Any]
-    ):
+    def __new__(cls, *args: Any, **kw: Any):
         if not cls.__instance:
             cls.__instance = super(Singleton, cls).__new__(cls, *args, **kw)
         return cls.__instance
@@ -124,50 +109,44 @@ class DebugManager(Singleton):
 class EventManager(DebugManager):
     def __init__(self):
         super().__init__()
-        self.__data = {
-            'listeners': {}
-        }
+        self.__listeners: Dict[str, Any] = {}
 
-    def on(self, event_type: str, callback: Callable[[Any], Any], once: bool = False, tags: Optional[List[str]] = None):
-        listener = {
+    def on(self, event_type: str, callback: Callable[[Any], None], once: bool = False, tags: Optional[List[str]] = None):
+        listener: Dict[str, Any] = {
             'hash': Tools.random_hash(),
             'type': event_type,
             'callback': callback,
             'once': once,
             'tags': [] if tags is None else tags
         }
-        self.__data['listeners'][listener['hash']] = listener
+        self.__listeners[str(listener['hash'])] = listener
         return listener
 
-    def off(self, event_type: str, callback: Callable[[Any], Any]):
-        for key in list(self.__data['listeners'].keys()):
-            if self.__data['listeners'][key]['type'] == event_type and self.__data['listeners'][key]['callback'].__name__ == callback.__name__:
-                del self.__data['listeners'][key]
+    def off(self, event_type: str, callback: Callable[[Any], None]):
+        for key in list(self.__listeners.keys()):
+            if self.__listeners[key]['type'] == event_type and str(self.__listeners[key]['callback'].__name__) == callback.__name__:
+                del self.__listeners[key]
 
-    def emit(self, event_type: str, *arg: List[Any], **kw: Dict[Any, Any]):
-        for hash in list(self.__data['listeners'].keys()):
-            if hash in self.__data['listeners'] and self.__data['listeners'][hash]['type'] == event_type:
-                t = threading.Thread(
-                    target=self.__data['listeners'][hash]['callback'],
-                    args=arg,
-                    kwargs=kw
-                )
-                if self.__data['listeners'][hash]['once']:
-                    del self.__data['listeners'][hash]
+    def emit(self, event_type: str, *arg: Any, **kw: Any):
+        for hash in list(self.__listeners.keys()):
+            if hash in self.__listeners and self.__listeners[hash]['type'] == event_type:
+                t = threading.Thread(target=self.__listeners[hash]['callback'], args=arg, kwargs=kw)
+                if self.__listeners[hash]['once']:
+                    del self.__listeners[hash]
                 t.start()
 
-    def remove_all_listeners(self, *exception_tags: List[str]):
-        for key in list(self.__data['listeners'].keys()):
+    def remove_all_listeners(self, *exception_tags: str):
+        for key in list(self.__listeners.keys()):
             is_exception = False
-            for tag in self.__data['listeners'][key]['tags']:
+            for tag in self.__listeners[key]['tags']:
                 if tag in exception_tags:
                     is_exception = True
                     break
             if not is_exception:
-                del self.__data['listeners'][key]
+                del self.__listeners[key]
 
     def get_listener_list(self):
-        return self.__data['listeners']
+        return self.__listeners
 
 
 class LockManager(EventManager):
@@ -217,24 +196,29 @@ class LockManager(EventManager):
 class DataManager(LockManager):
     def __init__(self):
         super().__init__()
-        self.__data = {
-            'cfg': {},
-            'dat': {},
-            'sav': {
-                'meta': {},
-                'data': {}
-            },
-            'tmp': {},
-            'res': {}
+        self.__cfg: Dict[str, Any] = {}
+        self.__dat: Dict[str, Any] = {}
+        self.__sav: Dict[str, Dict[str, Any]] = {
+            'meta': {},
+            'data': {}
         }
+        self.__tmp: Dict[str, Any] = {}
+        self.__res: Dict[str, Any] = {}
 
     @property
     def data(self):
-        return self.__data
+        data: Dict[str, Any] = {
+            'cfg': self.__cfg,
+            'dat': self.__dat,
+            'sav': self.__sav,
+            'tmp': self.__tmp,
+            'res': self.__res,
+        }
+        return data
 
-    @data.setter
-    def data(self, value: Any):
-        self.__data = value
+    # @data.setter
+    # def data(self, value: Any):
+    #     self.__data = value
 
     def read(self, path: str):
         """
@@ -293,58 +277,58 @@ class DataManager(LockManager):
     def mount(self, dot_path: str, scope: str):
         pass
 
-    def cfg(self, dot_path: Optional[str] = None):
+    def cfg(self, dot_path: Optional[str] = None) -> Optional[Dict[str, str]]:
         """
         # CFG
         """
         if dot_path is None:
-            return self.__data['cfg']
-        elif dot_path in self.__data['cfg']:
-            return self.__data['cfg'][dot_path]
+            return self.__cfg
+        elif dot_path in self.__cfg:
+            return self.__cfg[dot_path]
         elif self.mount(dot_path, 'cfg'):
-            return self.__data['cfg'][dot_path]
+            return self.__cfg[dot_path]
         else:
             return None
 
-    def dat(self, dot_path: Optional[str] = None):
+    def dat(self, dot_path: Optional[str] = None) -> Optional[Dict[str, str]]:
         """
         # CFG
         """
         if dot_path is None:
-            return self.__data['dat']
-        elif dot_path in self.__data['dat']:
-            return self.__data['dat'][dot_path]
+            return self.__dat
+        elif dot_path in self.__dat:
+            return self.__dat[dot_path]
         elif self.mount(dot_path, 'dat'):
-            return self.__data['dat'][dot_path]
+            return self.__dat[dot_path]
         else:
             return None
 
-    def sav(self, dot_path: Optional[str] = None) -> Any:
+    def sav(self, dot_path: Optional[str] = None) -> Optional[Dict[str, str]]:
         """
         # CFG
         除非你需要操作存档信息，否则请不要占用“meta”点路径，因为sav('meta')是内置的存档信息保存点。
         """
         if dot_path is None:
-            return self.__data['sav']['data']
+            return self.__sav['data']
         elif dot_path == 'meta':
-            return self.__data['sav']['meta']
-        elif dot_path in self.__data['sav']['data']:
-            return self.__data['sav']['data'][dot_path]
+            return self.__sav['meta']
+        elif dot_path in self.__sav['data']:
+            return self.__sav['data'][dot_path]
         else:
             return None
 
-    def tmp(self, key: Optional[str] = None):
+    def tmp(self, key: Optional[str] = None) -> Dict[str, str]:
         """
         # TMP
         tmp
         """
         if key is None:
-            return self.__data['tmp']
-        elif key in self.__data['tmp']:
-            return self.__data['tmp'][key]
+            return self.__tmp
+        elif key in self.__tmp:
+            return self.__tmp[key]
         else:
-            self.__data['tmp'][key] = {}
-            return self.__data['tmp'][key]
+            self.__tmp[key] = {}
+            return self.__tmp[key]
 
 
 class NetManager(DataManager):
@@ -360,29 +344,29 @@ class NetManager(DataManager):
             'content_bytes': b''
         }
 
-    def send_msg(sock, msg):
-        # Prefix each message with a 4-byte length (network byte order)
-        msg = struct.pack('>I', len(msg)) + msg
-        sock.sendall(msg)
+    # def send_msg(sock, msg):
+    #     # Prefix each message with a 4-byte length (network byte order)
+    #     msg = struct.pack('>I', len(msg)) + msg
+    #     sock.sendall(msg)
 
-    def recv_msg(sock):
-        # Read message length and unpack it into an integer
-        raw_msglen = recvall(sock, 4)
-        if not raw_msglen:
-            return None
-        msglen = struct.unpack('>I', raw_msglen)[0]
-        # Read the message data
-        return recvall(sock, msglen)
+    # def recv_msg(sock):
+    #     # Read message length and unpack it into an integer
+    #     raw_msglen = recvall(sock, 4)
+    #     if not raw_msglen:
+    #         return None
+    #     msglen = struct.unpack('>I', raw_msglen)[0]
+    #     # Read the message data
+    #     return recvall(sock, msglen)
 
-    def recvall(sock, n):
-        # Helper function to recv n bytes or return None if EOF is hit
-        data = bytearray()
-        while len(data) < n:
-            packet = sock.recv(n - len(data))
-            if not packet:
-                return None
-            data.extend(packet)
-        return data
+    # def recvall(sock, n):
+    #     # Helper function to recv n bytes or return None if EOF is hit
+    #     data = bytearray()
+    #     while len(data) < n:
+    #         packet = sock.recv(n - len(data))
+    #         if not packet:
+    #             return None
+    #         data.extend(packet)
+    #     return data
 
     def connect(self, host: str = '127.0.0.1', port: int = 11994):
         def core():
@@ -449,16 +433,16 @@ class NetManager(DataManager):
 class UiManager(NetManager):
     def __init__(self):
         super().__init__()
-        self.__gui_list = []
+        self.__gui_list: List[Tuple[Any, ...]] = []
 
-    def register_entry(self, entry_func: Callable[[], None], *arg: List[Any], **kwargs: Dict[str, Any]):
+    def register_entry(self, entry_func: Callable[[], None], *arg: List[Any], **kwargs: Dict[str, str]):
         self.debug('Register Entry: {}'.format(entry_func.__name__))
         self.__entry: List[Any] = [entry_func, arg, kwargs]
 
     def get_entry_func(self):
         return self.__entry[0]
 
-    def push(self, type: str, data: Any, style: Dict[str, Any]):
+    def push(self, type: str, data: Any, style: Dict[str, str]):
         pkg: Dict[str, Any] = {
             'type': type,
             'data': data,
@@ -466,13 +450,13 @@ class UiManager(NetManager):
         }
         self.send(pkg)
 
-    def goto(self, ui_func: Callable[[], None], *arg: List[Any], **kw: Dict[str, Any]):
+    def goto(self, ui_func: Callable[[], None], *arg: Any, **kw: Dict[str, str]):
         self.debug('GOTO: Append [{}] to [{}] & run'.format(
             ui_func.__name__, self._show_gui_list()))
         self.__gui_list.append((ui_func, arg, kw))  # append_gui
         ui_func(*arg, **kw)
 
-    def back(self, num: int = 1, *arg: List[Any], **kw: Dict[str, Any]):
+    def back(self, num: int = 1, *arg: List[Any], **kw: Dict[str, str]):
         for _ in range(num):
             self.debug('BACK: Pop [{}] from [{}]'.format(
                 self.__gui_list[-1][0].__name__, self._show_gui_list()))
@@ -481,13 +465,13 @@ class UiManager(NetManager):
         self.__gui_list[-1][0](*self.__gui_list[-1][1],
                                **self.__gui_list[-1][2])  # repeat
 
-    def repeat(self, *arg: List[Any], **kw: Dict[str, Any]):
+    def repeat(self, *arg: List[Any], **kw: Dict[str, str]):
         self.debug('REPEAT: Run [{}] in [{}]'.format(
             self.__gui_list[-1][0].__name__, self._show_gui_list()))
         self.__gui_list[-1][0](*self.__gui_list[-1][1],
                                **self.__gui_list[-1][2])
 
-    def append_gui(self, func: Callable[[], None], *arg: List[Any], **kw: Dict[str, Any]):
+    def append_gui(self, func: Callable[[], None], *arg: List[Any], **kw: Dict[str, str]):
         self.debug('APPEND: Append [{}] to [{}]'.format(
             func.__name__, self._show_gui_list()))
         self.__gui_list.append((func, arg, kw))
@@ -504,13 +488,13 @@ class UiManager(NetManager):
                 self.__gui_list.pop()
 
     def get_gui_list(self):
-        gui_list = []
+        gui_list: List[str] = []
         for each in self.__gui_list:
             gui_list.append(each[0].__name__)
         return gui_list
 
     def _show_gui_list(self):
-        gui_list = []
+        gui_list: List[str] = []
         for each in self.__gui_list:
             gui_list.append(each[0].__name__)
         return ' → '.join(gui_list)
@@ -550,8 +534,8 @@ class ModManager(UiManager):
     def __init__(self):
         super().__init__()
 
-    def scan_mods(self) -> Dict[str, Any]:
-        mods = {}
+    def scan_mods(self) -> Dict[str, str]:
+        mods: Dict[str, str] = {}
         for entry_name in os.listdir('mods'):
             path = os.path.join('mods', entry_name)
             if os.path.isdir(path):
@@ -571,14 +555,20 @@ class ModManager(UiManager):
         return mods
 
     def load_mod(self, id: str):
-        configs = self.cfg('sys')['mods']
+        sys_config = self.cfg('sys')
+        if sys_config is None:
+            return
+        configs = sys_config['mods']
         config = configs[self.findModInCfg(id)]
         module = self.get_mod_module(config)
         if 'on_loaded' in dir(module):
             module.on_loaded()
 
     def enable_mod(self, id: str):
-        configs = self.cfg('sys')['mods']
+        sys_config = self.cfg('sys')
+        if sys_config is None:
+            return
+        configs = sys_config['mods']
         config = configs[self.findModInCfg(id)]
         config['enabled'] = True
         module = self.get_mod_module(config)
@@ -586,7 +576,10 @@ class ModManager(UiManager):
             module.on_enabled()
 
     def disable_mod(self, id: str):
-        configs = self.cfg('sys')['mods']
+        sys_config = self.cfg('sys')
+        if sys_config is None:
+            return
+        configs = sys_config['mods']
         config = configs[self.findModInCfg(id)]
         config['enabled'] = False
         self.write(os.path.join('config', 'sys.yml'), self.cfg('sys'))
@@ -594,19 +587,23 @@ class ModManager(UiManager):
         if 'on_disabled' in dir(module):
             module.on_disabled()
 
-    def get_mod_module(self, config: Dict[str, Any]):
+    def get_mod_module(self, config: Dict[str, str]):
         meta_path = os.path.join(config['path'], 'meta.yml')
         meta = self.read(meta_path)
         main_path = os.path.join(config['path'], meta['main'])
         modFolderName = os.path.split(config['path'])[1]
-        spec = importlib.util.spec_from_file_location(
+        spec = spec_from_file_location(
             f'mods.{modFolderName}.', main_path)
-        module = importlib.util.module_from_spec(spec)
+        module = module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
 
     def findModInCfg(self, id: str):
-        for i, cfg in enumerate(self.cfg('sys')['mods']):
+        sys_config = self.cfg('sys')
+        if sys_config is None:
+            return
+        configs = sys_config['mods']
+        for i, cfg in enumerate(configs):
             if id == cfg['id']:
                 return i
         return -1
@@ -620,5 +617,5 @@ class Engine(ModManager):
     def __init__(self):
         super().__init__()
 
-    def push(self, type: str, data: Optional[Dict[str, Any]] = None, style: Optional[Dict[str, Any]] = None):
+    def push(self, type: str, data: Optional[Dict[str, Any]] = None, style: Any = None):
         self.send({'type': type, 'data': data, 'style': style})
