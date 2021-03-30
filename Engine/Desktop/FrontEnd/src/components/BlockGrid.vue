@@ -3,7 +3,7 @@
   table
     tbody
       tr(v-for="row in rows")
-        td(v-for="column in row")
+        td(v-for="column in row", :style="{ width: widthText }")
           Inline(v-for="inline in column", :data="inline")
 </template>
 <script>
@@ -12,6 +12,9 @@ export default {
   props: { data: Object },
   components: { Inline },
   computed: {
+    widthText() {
+      return `${100 / this.data.data.column}%`;
+    },
     rows() {
       const columns = [];
       let column = [];
