@@ -13,7 +13,7 @@ export class StoreManager extends EventEmitter {
           style: {},
           title: { type: 'title', data: { text: 'Era.js' }, style: null },
           footer: { type: 'footer', data: { text: '@Miswanting' }, style: null },
-          maxPages: 10,
+          maxPages: 5,
           lastUi: '',
           ui: 'intro',
           msgs: [],
