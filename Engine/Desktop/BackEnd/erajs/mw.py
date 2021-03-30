@@ -639,8 +639,15 @@ def graph(mode, data):
     e.push('graph', {'mode': mode, 'data': data})
 
 
-def zdog():
-    e.push('zdog')
+def zdog(cmds: List[Tuple[str, str, Dict[str, Any]]]):
+    data = {'cmds': []}
+    for cmd in cmds:
+        data['cmds'].append({
+            'name': cmd[0],
+            'type': cmd[1],
+            'data': cmd[2]
+        })
+    e.push('zdog', data)
 ######################################
 
 

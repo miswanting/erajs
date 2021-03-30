@@ -471,5 +471,28 @@ def graph(mode, data):
     return m.graph(mode, data)
 
 
-def zdog():
-    return m.zdog()
+ZdogName = str
+ZdogType = str
+ZdogAttr = Dict[str, Any]
+
+
+def zdog(cmds: List[Tuple[ZdogName, ZdogType, ZdogAttr]]):
+    """
+    # Zdog
+    ## API
+    > https://zzz.dog/api
+    - Anchor 注册点
+    - TAU =2PI =360°
+    ## 基本形状
+    > https://zzz.dog/shapes
+    - Rect 矩形
+    - RoundedRect 圆角矩形
+    - Ellipse 椭圆形
+    - Polygon 多边形
+    - Shape
+    - Hemisphere 半球
+    - Cone 圆锥
+    - Cylinder 圆柱
+    - Box 立方体
+    """
+    return m.zdog(cmds)
