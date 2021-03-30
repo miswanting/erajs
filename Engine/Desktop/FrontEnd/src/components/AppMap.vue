@@ -97,7 +97,11 @@ export default {
       for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
           const node = data[key];
-          color.setRGB(node.color[0], node.color[1], node.color[2]);
+          color.setRGB(
+            node.color[0] / 256,
+            node.color[1] / 256,
+            node.color[2] / 256
+          );
           let pos = coordinates2XYZ(node.lon, node.lat);
           let cpi = positions.length / 3; // Center Point Index
           let normal = new THREE.Vector3(pos[0], pos[1], pos[2]);

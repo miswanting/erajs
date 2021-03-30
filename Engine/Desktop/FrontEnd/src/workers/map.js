@@ -77,7 +77,7 @@ function generatePlanet (n) {
     } else { // 深水
       [r, g, b] = [0, 81, 182]
     }
-    return [r / 255, g / 255, b / 255]
+    return [r, g, b]
     // return [Math.floor(r), Math.floor(g), Math.floor(b)]
   }
   /**
@@ -143,7 +143,7 @@ function generatePlanet (n) {
     return points
   }
   // 业务代码
-  const AreaQuantity = 50000
+  const AreaQuantity = 30000
   let ps = generatePointsUsingFibonacci(AreaQuantity)
   ps = randomizePoints(ps)
   ps = scratterPoints(ps, 3)
