@@ -364,10 +364,20 @@ def link(text: str, callback: Optional[Callable[[], None]], style: Optional[Dict
     e.unlock()
 
 
-def progress(now: float = 0, max: float = 100, style: Optional[List[Dict[str, Any]]] = None):
+def progress(now: float = 50, max: float = 100, min: float = 0, low: float = 20, high: float = 80, best: float = 100, duration: float = 0, start: float = 0, ease: str = 'linear', style: Optional[List[Dict[str, str]]] = None):
     if style is None:
         style = [{}, {}]
-    e.push('progress', {'now': now, 'max': max}, style)
+    e.push('progress', {
+        'now': now,
+        'max': max,
+        'min': min,
+        'low': low,
+        'high': high,
+        'best': best,
+        'duration': duration,
+        'from': start,
+        'ease': ease
+    }, style)
 
 
 def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[float], None]] = None, style: Optional[Dict[str, Any]] = None):

@@ -251,11 +251,11 @@ def link(text: Optional[str] = None, callback: Optional[Callable[[], None]] = No
 l = link
 
 
-def progress(now: float = 0, max: float = 100, style: Optional[List[Dict[str, str]]] = None):
+def progress(now: float = 50, max: float = 100, min: float = 0, low: float = 20, high: float = 80, best: float = 100, duration: float = 0, start: float = 0, ease: str = 'linear', style: Optional[List[Dict[str, str]]] = None):
     """
     # 插入行内控件：进度条
     """
-    return m.progress(now, max, style)
+    return m.progress(now, max, min, low, high, best, duration, start, ease, style)
 
 
 def rate(now: int = 0, max: int = 5, callback: Optional[Callable[[int], None]] = None, style: Optional[Dict[str, str]] = None) -> object:
