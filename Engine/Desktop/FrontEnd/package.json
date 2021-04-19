@@ -30,6 +30,7 @@
     "electron-is-dev": "latest",
     "gl-matrix": "latest",
     "html-webpack-plugin": "latest",
+    "i18next": "latest",
     "lodash": "latest",
     "normalize.css": "latest",
     "pug": "latest",
