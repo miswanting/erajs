@@ -1,0 +1,15 @@
+{
+  "name": "erajs-website-browser",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/miswanting/Era.js.git",
+  "author": "Miswanting",
+  "license": "GPL-3.0+",
+  "scripts": {
+    "setup": "yarn",
+    "dev": "yarn vite"
+  },
+  "devDependencies": {
+    "vite": "latest"
+  }
+}
