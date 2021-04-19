@@ -1,8 +1,8 @@
 <template lang="pug">
 span.check(
-  @click="click",
   :class="{ disabled: data.data.disabled }",
-  :style="data.style"
+  :style="data.style",
+  @click="click"
 ) 
   span.check-icon {{ value ? trueIcon : falseIcon }}
   span.check-text {{ data.data.text }}
@@ -40,26 +40,19 @@ export default {
 <style lang="stylus" scoped>
 .check
   cursor pointer
+  color var(--interactable-front)
   background-color var(--interactable-back)
 
   &:hover
-    color var(--hover-front)
-    background-color var(--hover-back)
+    filter brightness(1.1)
 
   &:active
-    color var(--active-front)
-    background-color var(--active-back)
+    filter brightness(1.2)
 
   &.disabled
     cursor default
-    color var(--disabled-front)
-    background-color var(--disabled-back)
+    filter brightness(.85)
 
-    &:hover
-      color var(--disabled-front)
-      background-color var(--disabled-back)
-
-    &:active
-      color var(--disabled-front)
-      background-color var(--disabled-back)
+    &:hover, &:active
+      filter brightness(.85)
 </style>

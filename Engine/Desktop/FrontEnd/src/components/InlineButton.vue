@@ -44,32 +44,31 @@ export default {
       this.$refs.button.addEventListener("mouseleave", this.hide);
     }
   },
+  unmounted() {
+    this.$refs.button.removeEventListener("mouseenter", this.show);
+    this.$refs.button.removeEventListener("mouseleave", this.hide);
+    this.tippy.unmount();
+    this.tippy.destroy();
+  },
 };
 </script>
 <style lang="stylus" scoped>
 .button
-  background-color var(--interactable-back)
-  margin 0px .1em
   cursor pointer
+  color var(--interactable-front)
+  background-color var(--interactable-back)
+  margin 0 .1rem
 
   &:hover
-    color var(--hover-front)
-    background-color var(--hover-back)
+    filter brightness(1.1)
 
   &:active
-    color var(--active-front)
-    background-color var(--active-back)
+    filter brightness(1.2)
 
   &.disabled
-    color var(--disabled-front)
-    background-color var(--disabled-back)
     cursor default
+    filter brightness(.85)
 
-    &:hover
-      color var(--disabled-front)
-      background-color var(--disabled-back)
-
-    &:active
-      color var(--disabled-front)
-      background-color var(--disabled-back)
+    &:hover, &:active
+      filter brightness(.85)
 </style>
