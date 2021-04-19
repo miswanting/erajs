@@ -1,0 +1,55 @@
+site_name: Era.js Game Engine Documents
+repo_name: miswanting/Era.js
+repo_url: https://github.com/miswanting/Era.js
+copyright: Copyright &copy; 2017 - 2021 Miswanting
+edit_uri: edit/main/Website/
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: red
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/miswanting
+      name: Find me on Github
+  alternate:
+    - name: English
+      link: /
+      lang: en
+    - name: 中文（简体）
+      link: /zh/
+      lang: zh
+    - name: 日本語
+      link: /ja/
+      lang: ja
+plugins:
+  - search:
+      prebuild_index: true
+  - git-revision-date
+  - git-revision-date-localized
+markdown_extensions:
+  - toc:
+      permalink: true
