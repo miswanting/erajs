@@ -4,13 +4,27 @@ import { AST } from './ast'
 import MapWorkerManager from './map'
 let toMain
 export class StoreManager extends EventEmitter {
-  constructor (net) {
+  constructor(net) {
     super()
     toMain = net
     this.store = createStore({
-      state () {
+      state() {
         return {
-          style: {},
+          staticStyle: {
+            '--static-front': '',
+            '--static-back': '',
+            '--disabled-front': '',
+            '--disabled-back': '',
+            '--default-front': '',
+            '--default-back': '',
+            '--interactable-front': '',
+            '--interactable-back': '',
+            '--hover-front': '',
+            '--hover-back': '',
+            '--active-front': '',
+            '--active-back': ''
+          },
+          stateStyle: {},
           title: { type: 'title', data: { text: 'Era.js' }, style: null },
           footer: { type: 'footer', data: { text: '@Miswanting' }, style: null },
           maxPages: 5,
@@ -31,7 +45,7 @@ export class StoreManager extends EventEmitter {
         }
       },
       mutations: {
-        parsePackage (state, pkg) {
+        parsePackage(state, pkg) {
           if (pkg.type === 'set_loading_title') {
             state.loadTitle = pkg.data.value
           } else if (pkg.type === 'set_loading_text') {
@@ -83,7 +97,7 @@ export class StoreManager extends EventEmitter {
             AST.push(state, pkg)
           }
         },
-        handleEvent (state, pkg) {
+        handleEvent(state, pkg) {
           if ([
             'MOUSE_CLICK',
             'KEY_UP',
@@ -109,8 +123,8 @@ export class StoreManager extends EventEmitter {
             state.mapGenerated = true
           }
         },
-        addMsg (state, msg) { state.msgs.push(msg) },
-        delMsg (state, msg) {
+        addMsg(state, msg) { state.msgs.push(msg) },
+        delMsg(state, msg) {
           let targetIndex = 0
           for (let i = 0; i < state.msgs.length; i++) {
             if (state.msgs[i].data.hash === msg.data.hash) {
@@ -121,7 +135,7 @@ export class StoreManager extends EventEmitter {
         }
       },
       actions: {
-        parsePackage ({ commit }, pkg) {
+        parsePackage({ commit }, pkg) {
           // console.log('Parse:', pkg)
           if (pkg.type === 'connection') {
             window.router.push('/idle')
@@ -160,11 +174,11 @@ export class StoreManager extends EventEmitter {
     })
   }
 
-  getVueStore () { return this.store }
-  parsePackage (pkg) { this.store.dispatch('parsePackage', pkg) }
+  getVueStore() { return this.store }
+  parsePackage(pkg) { this.store.dispatch('parsePackage', pkg) }
 }
 
-function generateMenu () {
+function generateMenu() {
   return [{
     label: '文件',
     submenu: [
