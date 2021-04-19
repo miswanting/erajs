@@ -3,6 +3,7 @@ repo_name: miswanting/Era.js
 repo_url: https://github.com/miswanting/Era.js
 copyright: Copyright &copy; 2017 - 2021 Miswanting
 edit_uri: edit/main/Website/
+dev_addr: 0.0.0.0:80
 theme:
   name: material
   language: zh
