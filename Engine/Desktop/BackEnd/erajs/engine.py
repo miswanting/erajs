@@ -194,75 +194,96 @@ class LockManager(EventManager):
 
 
 class DataManager(LockManager):
+    SCOPE_MAP = {
+        'config': 'cfg',
+        'data': 'dat',
+        'save': 'sav',
+        'res': 'res',
+        'mods': 'mod'
+    }
+
     def __init__(self):
         super().__init__()
+        self.__raw: Dict[str, Any] = {}
         self.__cfg: Dict[str, Any] = {}
         self.__dat: Dict[str, Any] = {}
         self.__sav: Dict[str, Dict[str, Any]] = {
             'meta': {},
             'data': {}
         }
-        self.__tmp: Dict[str, Any] = {}
         self.__res: Dict[str, Any] = {}
+        self.__tmp: Dict[str, Any] = {}
+        self.registry: Dict[str, str] = {}
 
-    @property
-    def data(self):
-        data: Dict[str, Any] = {
-            'cfg': self.__cfg,
-            'dat': self.__dat,
-            'sav': self.__sav,
-            'tmp': self.__tmp,
-            'res': self.__res,
-        }
-        return data
+    def register(self, path: str, mod_id: Optional[str] = None):
+        """
+        ['mod.era.items'] = \\mods\\EraLifeEraizationMod\\data\\items.yml
+        """
+        GDP = self.P2GDP(path, mod_id)
+        self.registry[GDP[0]] = path
+        return GDP
 
-    # @data.setter
-    # def data(self, value: Any):
-    #     self.__data = value
+    def get_registries(self, scope: str):
+        candidates: List[str] = []
+        for gdp in self.registry:
+            if gdp.split('.')[0] == scope:
+                candidates.append(gdp)
+        return candidates
+
+    def get_io_by_ext(self, ext: str):
+        if ext in ['.inf', '.ini', '.cfg', '.conf', '.config']:
+            return cfg_file
+        elif ext == '.csv':
+            return csv_file
+        elif ext == '.json':
+            return json_file
+        elif ext in ['.yml', '.yaml']:
+            return yaml_file
+        elif ext == '.zip':
+            return zip_file
+        elif ext == '.txt':
+            return text_file
+        elif ext in ['.save', '.sav']:
+            return save_file
+        else:
+            return raw_file
 
     def read(self, path: str):
         """
         # 读取文件到数据
         """
         ext = os.path.splitext(path)[1].lower()
-        data: Any = None
-        if ext in ['.inf', '.ini', '.cfg', '.conf', '.config']:
-            data = cfg_file.read(path)
-        elif ext == '.csv':
-            data = csv_file.read(path)
-        elif ext == '.json':
-            data = json_file.read(path)
-        elif ext in ['.yml', '.yaml']:
-            data = yaml_file.read(path)
-        elif ext == '.zip':
-            data = zip_file.read(path)
-        elif ext == '.txt':
-            data = text_file.read(path)
-        elif ext in ['.save', '.sav']:
-            data = save_file.read(path)
-        else:
-            data = raw_file.read(path)
-        return data
+        reader = self.get_io_by_ext(ext)
+        return reader.read(path)
 
     def write(self, path: str, data: Any = None):
         """
         # 写入数据到文件
         """
         ext = os.path.splitext(path)[1].lower()
-        if ext in ['.inf', '.ini', '.cfg', '.conf', '.config']:
-            cfg_file.write(path, data)
-        elif ext == '.csv':
-            csv_file.write(path, data)
-        elif ext == '.json':
-            json_file.write(path, data)
-        elif ext in ['.yml', '.yaml']:
-            yaml_file.write(path, data)
-        elif ext == '.zip':
-            zip_file.write(path, data)
-        elif ext == '.txt':
-            text_file.write(path, data)
-        elif ext in ['.save', '.sav']:
-            save_file.write(path, data)
+        writer = self.get_io_by_ext(ext)
+        writer.write(path, data)
+
+    def P2GDP(self, path: str, mod_id: Optional[str] = None):
+        pieces = path.replace('/', '\\').replace('\\', '.').split('.')
+        pieces[0] = self.SCOPE_MAP[pieces[0]]
+        if pieces[0] == 'mod' and mod_id is not None:
+            pieces[1] = mod_id
+        dot = '.'.join(pieces[0:-1])
+        ext = pieces[-1].lower()
+        return dot, ext
+
+    def GDP2DP(self, gdp: str):
+        pieces = gdp.split(".")
+        scope = pieces[0]
+        dp = '.'.join(pieces[1:])
+        return dp, scope
+
+    def DP2GDP(self, dp: str, scope: str, mod_id: Optional[str] = None):
+        if scope == 'mod' and mod_id is not None:
+            dp = '{}.{}'.format(mod_id, dp)
+        gdp = '{}.{}'.format(scope, dp)
+        return gdp
 
     def scan(self, path: str):
         """
@@ -274,46 +295,85 @@ class DataManager(LockManager):
                 files.append('{}\\{}'.format(dirpath, filename))
         return files
 
-    def mount(self, dot_path: str, scope: str):
-        pass
+    def mount(self, gdp: str):
+        if gdp in self.registry:
+            if gdp not in self.__raw:
+                self.__raw[gdp] = self.read(self.registry[gdp])
 
-    def cfg(self, dot_path: Optional[str] = None) -> Optional[Dict[str, str]]:
+    def umount(self, gdp: str):
+        if gdp in self.__raw:
+            del self.__raw[gdp]
+
+    def umount_all(self):
+        self.__raw.clear()
+
+    def mounted(self, gdp: str):
+        return gdp in self.__raw
+
+    def save(self, gdp: str):
+        if self.mounted(gdp):
+            self.write(self.registry[gdp], self.__raw[gdp])
+
+    def raw(self, gdp: str):
+        """
+        ('era.items', 'dat') = \\mods\\EraLifeEraizationMod\\data\\items.yml
+        """
+        if gdp in self.__raw:
+            return self.__raw[gdp]
+        elif gdp in self.registry:
+            self.mount(gdp)
+            return self.__raw[gdp]
+        return None
+
+    def cfg(self, dp: Optional[str] = None) -> Optional[Dict[str, str]]:
         """
         # CFG
         """
-        if dot_path is None:
+        if dp is None:
             return self.__cfg
-        elif dot_path in self.__cfg:
-            return self.__cfg[dot_path]
-        elif self.mount(dot_path, 'cfg'):
-            return self.__cfg[dot_path]
+        elif dp in self.__cfg:
+            return self.__cfg[dp]
         else:
-            return None
+            gdp = self.DP2GDP(dp, 'cfg')
+            if gdp in self.__raw:
+                self.__cfg[dp] = self.__raw[gdp]
+                return self.__cfg[dp]
+            elif gdp in self.registry:
+                if self.mount(gdp):
+                    self.__cfg[dp] = self.__raw[gdp]
+                    return self.__cfg[dp]
+        return None
 
-    def dat(self, dot_path: Optional[str] = None) -> Optional[Dict[str, str]]:
+    def dat(self, dp: Optional[str] = None) -> Optional[Dict[str, str]]:
         """
-        # CFG
+        # DAT
         """
-        if dot_path is None:
+        if dp is None:
             return self.__dat
-        elif dot_path in self.__dat:
-            return self.__dat[dot_path]
-        elif self.mount(dot_path, 'dat'):
-            return self.__dat[dot_path]
+        elif dp in self.__dat:
+            return self.__dat[dp]
         else:
-            return None
+            gdp = self.DP2GDP(dp, 'dat')
+            if gdp in self.__raw:
+                self.__dat[dp] = self.__raw[gdp]
+                return self.__dat[dp]
+            elif gdp in self.registry:
+                if self.mount(gdp):
+                    self.__dat[dp] = self.__raw[gdp]
+                    return self.__dat[dp]
+        return None
 
-    def sav(self, dot_path: Optional[str] = None) -> Optional[Dict[str, str]]:
+    def sav(self, dp: Optional[str] = None) -> Optional[Dict[str, str]]:
         """
-        # CFG
+        # SAV
         除非你需要操作存档信息，否则请不要占用“meta”点路径，因为sav('meta')是内置的存档信息保存点。
         """
-        if dot_path is None:
+        if dp is None:
             return self.__sav['data']
-        elif dot_path == 'meta':
+        elif dp == 'meta':
             return self.__sav['meta']
-        elif dot_path in self.__sav['data']:
-            return self.__sav['data'][dot_path]
+        elif dp in self.__sav['data']:
+            return self.__sav['data'][dp]
         else:
             return None
 
@@ -330,6 +390,20 @@ class DataManager(LockManager):
             self.__tmp[key] = {}
             return self.__tmp[key]
 
+    @property
+    def data(self):
+        """
+        Deprecated
+        """
+        data: Dict[str, Any] = {
+            'cfg': self.__cfg,
+            'dat': self.__dat,
+            'sav': self.__sav,
+            'tmp': self.__tmp,
+            'res': self.__res,
+        }
+        return data
+
 
 class NetManager(DataManager):
     def __init__(self):
@@ -343,30 +417,6 @@ class NetManager(DataManager):
             'length_bytes': '',
             'content_bytes': b''
         }
-
-    # def send_msg(sock, msg):
-    #     # Prefix each message with a 4-byte length (network byte order)
-    #     msg = struct.pack('>I', len(msg)) + msg
-    #     sock.sendall(msg)
-
-    # def recv_msg(sock):
-    #     # Read message length and unpack it into an integer
-    #     raw_msglen = recvall(sock, 4)
-    #     if not raw_msglen:
-    #         return None
-    #     msglen = struct.unpack('>I', raw_msglen)[0]
-    #     # Read the message data
-    #     return recvall(sock, msglen)
-
-    # def recvall(sock, n):
-    #     # Helper function to recv n bytes or return None if EOF is hit
-    #     data = bytearray()
-    #     while len(data) < n:
-    #         packet = sock.recv(n - len(data))
-    #         if not packet:
-    #             return None
-    #         data.extend(packet)
-    #     return data
 
     def connect(self, host: str = '127.0.0.1', port: int = 11994):
         def core():
@@ -553,6 +603,22 @@ class ModManager(UiManager):
                         )
                     mods[meta['id']] = meta
         return mods
+
+    def load_mod_data(self, id: str):
+        sys_config = self.cfg('sys')
+        if sys_config is None:
+            return
+        configs = sys_config['mods']
+        config = configs[self.findModInCfg(id)]
+        data_file_paths = self.scan(config['path'])
+        data_file_dot_paths = []
+        for path in data_file_paths:
+            path = path.replace('/', '\\')
+            if path.split('\\')[2] == 'data':
+                data_file_dot_paths.append(['{}.'.format(config['id'])+DotPath.path2dot('\\'.join(path.split('\\')[3:]))[0], path])
+                self.register(path)
+        for pair in data_file_dot_paths:
+            self.dat()[pair[0]] = self.read(pair[1])
 
     def load_mod(self, id: str):
         sys_config = self.cfg('sys')

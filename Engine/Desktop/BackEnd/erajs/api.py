@@ -135,6 +135,10 @@ def init(config: Optional[Dict[str, Any]] = None):
 
 
 # Data
+def raw(dot_path: str):
+    return m.raw(dot_path)
+
+
 def cfg(dot_path: Optional[str] = None):
     return m.cfg(dot_path)
 
@@ -366,11 +370,11 @@ def dump_cfg(dot_path: Optional[str] = None, ext: str = 'yaml') -> None:
     return m.write_cfg(dot_path, ext)
 
 
-def dump_dat(dot_path: Optional[str] = None, ext: str = 'json') -> None:
+def dump_dat(gdp: str, ext: str = 'yml') -> None:
     """
     # 保存静态数据
     """
-    return m.write_dat(dot_path, ext)
+    return m.dump_dat(gdp, ext)
 
 
 def save(filename_without_ext: Optional[str] = None, meta_info: Optional[Dict[str, str]] = None) -> None:

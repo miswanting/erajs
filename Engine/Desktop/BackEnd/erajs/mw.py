@@ -29,11 +29,17 @@ remove_all_listeners = e.remove_all_listeners
 
 
 # Data
+raw = e.raw
 cfg = e.cfg
 dat = e.dat
 sav = e.sav
 tmp = e.tmp
-
+mount = e.mount
+umount = e.umount
+umount_all = e.umount_all
+mounted = e.mounted
+reg = e.reg
+GDP2DP
 
 def entry(entry_func: Callable[[], None]):
     pass
@@ -105,25 +111,20 @@ def init(config: Optional[Dict[str, Any]]):
 
     def load_configs():
         e.info('├─ Scanning Configs...')
-        files = e.scan('config')
-        n = 0
-        for path in files:
-            if os.path.splitext(path)[1].lower() == '.yml':
-                dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
-                e.info(f'│  ├─ Config [{dot_path}] Found.')
-                n += 1
-        e.info(f'│  └─ {n} Configs Found!')
+        paths = e.scan('config')
+        for path in paths:
+            dp = e.GDP2DP(e.register(path)[0])[0]
+            e.info(f'│  ├─ Config [{dp}] Found.')
+        e.info(f'│  └─ {len(paths)} Configs Found!')
         e.info('├─ Loading Configs...')
         n = 0
-        for path in files:
-            if os.path.splitext(path)[1].lower() == '.yml':
-                dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
-                config = e.cfg()
-                if config is not None:
-                    config[dot_path] = e.read(path)
-                    e.info(f'│  ├─ Config [{dot_path}] Loaded.')
-                    n += 1
-        e.info(f'│  └─ {n} Configs Loaded!')
+        for gdp in e.get_registries('cfg'):
+            dp = e.GDP2DP(gdp)[0]
+            if e.cfg() is not None:
+                e.cfg()[dp] = e.read(e.registry[gdp])
+                e.info(f'│  ├─ Config [{dp}] Loaded.')
+                n += 1
+        e.info(f'│  └─ {len(paths)} Configs Loaded!')
 
     def send_config():
         e.info('├─ Sending Engine Config...')
@@ -134,48 +135,65 @@ def init(config: Optional[Dict[str, Any]]):
         e.info('├─ Scanning Data Files...')
         e.push('set_loading_title', {'value': 'Scanning Data Files...'})
         e.push('set_loading_text', {'value': ''})
-        files = e.scan('data')
-        for path in files:
-            dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
-            e.info(f'│  ├─ Data File [{dot_path}] Found.')
+        paths = e.scan('data')
+        for path in paths:
+            dp = e.GDP2DP(e.register(path)[0])[0]
+            e.info(f'│  ├─ Data File [{dp}] Found.')
             e.push('set_loading_text', {
-                   'value': f'Data File [{dot_path}] Found.'})
-        e.info(f'│  └─ {len(files)} Data Files Found!')
+                   'value': f'Data File [{dp}] Found.'})
+        # for path in paths:
+        #     dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
+        #     e.register(path)
+        #     e.info(f'│  ├─ Data File [{dot_path}] Found.')
+        #     e.push('set_loading_text', {
+        #            'value': f'Data File [{dot_path}] Found.'})
+        e.info(f'│  └─ {len(paths)} Data Files Found!')
         e.info('├─ Loading Data Files...')
         e.push('set_loading_title', {'value': 'Loading Data Files...'})
         e.push('set_loading_text', {'value': ''})
-        for path in files:
-            dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
-            data = e.dat()
-            if data is not None:
-                data[dot_path] = e.read(path)
-                e.info(f'│  ├─ Data File [{dot_path}] Loaded.')
+        for gdp in e.get_registries('dat'):
+            dp = e.GDP2DP(gdp)[0]
+            if e.dat() is not None:
+                e.dat()[dp] = e.read(e.registry[gdp])
+                e.info(f'│  ├─ Data File [{dp}] Loaded.')
                 e.push('set_loading_text', {
-                    'value': f'Data File [{dot_path}] Loaded.'})
-        e.info(f'│  └─ {len(files)} Data Files Loaded!')
+                    'value': f'Data File [{dp}] Loaded.'})
+        # for path in paths:
+        #     dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
+        #     data = e.dat()
+        #     if data is not None:
+        #         data[dot_path] = e.read(path)
+        #         e.info(f'│  ├─ Data File [{dot_path}] Loaded.')
+        #         e.push('set_loading_text', {
+        #             'value': f'Data File [{dot_path}] Loaded.'})
+        e.info(f'│  └─ {len(paths)} Data Files Loaded!')
 
     def register_resource_files():
+        """
+        """
         e.info('├─ Scanning Resource Files...')
         e.push('set_loading_title', {'value': 'Scanning Resource Files...'})
         e.push('set_loading_text', {'value': ''})
-        files = e.scan('res')
-        for path in files:
+        paths = e.scan('res')
+        for path in paths:
+
+            e.registry[DotPath.path2dot(path)] = path
             dot_path = '.'.join(DotPath.path2dot(path)[0].split('.')[1:])
             e.info(f'│  ├─ Resource File [{dot_path}] Found.')
             e.push('set_loading_text', {
                    'value': f'Resource File [{dot_path}] Found.'})
-        e.info(f'│  └─ {len(files)} Resource Files Found!')
+        e.info(f'│  └─ {len(paths)} Resource Files Found!')
         e.info('├─ Register Resource Files...')
         e.push('set_loading_title', {'value': 'Register Resource Files...'})
         e.push('set_loading_text', {'value': ''})
-        for path in files:
+        for path in paths:
             dp_pair = DotPath.path2dot(path)
             dot_path = '.'.join(dp_pair[0].split('.')[1:])
             e.data['res'][dot_path] = {'path': path, 'ext': dp_pair[1]}
             e.info(f'│  ├─ Resource File [{dot_path}] Registered.')
             e.push('set_loading_text', {
                    'value': f'Resource File [{dot_path}] Registered.'})
-        e.info(f'│  └─ {len(files)} Resource Files Registered!')
+        e.info(f'│  └─ {len(paths)} Resource Files Registered!')
 
     def load_mods():
         e.info('├─ Scanning Mods...')
@@ -239,6 +257,7 @@ def init(config: Optional[Dict[str, Any]]):
                     f'│  ├─ Mod [{config["name"] if "name" in config else config["id"]}] Loading...')
                 e.push('set_loading_text', {
                        'value': f'Mod [{config["name"] if "name" in config else config["id"]}] Loading...'})
+                e.load_mod_data(config['id'])
                 e.load_mod(config['id'])
                 n += 1
         e.info(f'│  └─ {n} Mods Loaded!')
@@ -254,6 +273,7 @@ def init(config: Optional[Dict[str, Any]]):
     load_data_files()
     register_resource_files()
     load_mods()
+    e.umount_all()
     e.push('loaded')
     e.info('Initialization Done!')
 
@@ -276,7 +296,7 @@ def msg(text: str, duration: float = 5, style: Optional[Dict[str, str]] = None):
 
 
 def page(style: Optional[Dict[str, str]] = None, *exception_tags: str):
-    e.remove_all_listeners(*exception_tags)
+    e.remove_all_listeners('sys', *exception_tags)
     e.push('page', None, style)
 
 
@@ -481,7 +501,8 @@ def input(callback: Callable[[str], None], default: str, is_area: bool, placehol
     def on_click(e: Dict[str, Any]):
         if e['hash'] == data['hash']:
             node['value'] = e['value']
-            callback(e['value'])
+            if callback:
+                callback(e['value'])
     e.on('INPUT_CHANGE', on_click)
     return node
 
@@ -565,8 +586,8 @@ def dump_cfg():
     pass
 
 
-def dump_dat():
-    pass
+def dump_dat(gdp: str, ext: str = 'yml'):
+    e.save(gdp)
 
 
 def save(filename_without_ext: str = '', meta_info: Optional[Dict[str, Any]] = None):
