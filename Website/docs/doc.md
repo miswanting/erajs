@@ -1,4 +1,4 @@
-# Welcome to Era.js Game Engine
+# Welcome to Era.js Documentation
 
 The following contents is a description of the development target.
 
