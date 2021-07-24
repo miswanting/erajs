@@ -4,10 +4,6 @@ repo_url: https://github.com/miswanting/Era.js
 copyright: Copyright &copy; 2017 - 2021 Miswanting
 edit_uri: edit/main/Website/
 dev_addr: 0.0.0.0:80
-nav:
-  - Home: index.md
-  - Downloads: download.md
-  - Documentation: doc.md
 theme:
   name: material
   language: en
@@ -56,6 +52,11 @@ plugins:
       prebuild_index: true
   - git-revision-date
   - git-revision-date-localized
+  - i18n:
+      default_language: en
+      languages:
+        en: English
+        fr: Français
 markdown_extensions:
   - toc:
       permalink: true
