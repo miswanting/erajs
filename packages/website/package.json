@@ -1,0 +1,33 @@
+{
+  "name": "@erajs/website",
+  "version": "0.3.0-alpha.220622",
+  "description": "Website for Era.js Game Engine.",
+  "main": "",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs",
+    "clean": "rimraf docs/.vuepress/dist docs/.vuepress/.cache docs/.vuepress/.temp node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/erajs.git"
+  },
+  "keywords": [
+    "website"
+  ],
+  "author": "Miswanting <miswantism@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miswanting/erajs/issues"
+  },
+  "homepage": "https://github.com/miswanting/erajs/packages/website#readme",
+  "private": true,
+  "devDependencies": {
+    "@vuepress/client": "2.0.0-beta.48",
+    "@vuepress/plugin-register-components": "2.0.0-beta.48",
+    "@vuepress/utils": "2.0.0-beta.48",
+    "vue": "^3.2.37",
+    "vuepress": "2.0.0-beta.48",
+    "vuepress-plugin-md-enhance": "2.0.0-beta.84"
+  }
+}
