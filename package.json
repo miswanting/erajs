@@ -4,8 +4,8 @@
   "description": "Era.js Game Engine.",
   "main": "",
   "scripts": {
-    "commit": "cz",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:website": "nr -C packages/website dev",
+    "commit": "cz"
   },
   "repository": {
     "type": "git",
