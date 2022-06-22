@@ -1,0 +1,12 @@
+{
+  "npm.packageManager": "pnpm",
+  "npm.exclude": [
+    "**/dependencies/**",
+    "**/packages/**",
+  ],
+  "rust-analyzer.linkedProjects": [
+    "packages/desktop/Cargo.toml"
+  ],
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "boundary",
+}

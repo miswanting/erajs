@@ -1,0 +1,40 @@
+{
+  "name": "erajs",
+  "version": "0.3.0-alpha.220622",
+  "description": "Era.js Game Engine.",
+  "main": "",
+  "scripts": {
+    "commit": "cz",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miswanting/erajs.git"
+  },
+  "keywords": [
+    "game engine"
+  ],
+  "author": "Miswanting <miswantism@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miswanting/erajs/issues"
+  },
+  "homepage": "https://github.com/miswanting/erajs#readme",
+  "private": true,
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.25.1",
+    "@antfu/ni": "^0.16.2",
+    "@types/rimraf": "^3.0.2",
+    "7zip-bin": "^5.2.0",
+    "commitizen": "^4.2.4",
+    "esno": "^0.16.3",
+    "execa": "^6.1.0",
+    "node-fetch": "^3.2.6",
+    "rimraf": "^3.0.2"
+  }
+}

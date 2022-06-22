@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "antfu.iconify",
+    "antfu.unocss",
+    "antfu.vite",
+    "dbaeumer.vscode-eslint",
+    "lokalise.i18n-ally",
+    "redhat.vscode-yaml",
+    "tauri-apps.tauri-vscode",
+    "vue.volar",
+    "rust-lang.rust-analyzer"
+  ]
+}
