@@ -1,0 +1,12 @@
+[submodule "dependencies/tauri-plugin-fs-extra"]
+	path = dependencies/tauri-plugin-fs-extra
+	url = https://github.com/tauri-apps/tauri-plugin-fs-extra
+[submodule "dependencies/tauri-plugin-fs-watch"]
+	path = dependencies/tauri-plugin-fs-watch
+	url = https://github.com/tauri-apps/tauri-plugin-fs-watch
+[submodule "dependencies/tauri-plugin-log"]
+	path = dependencies/tauri-plugin-log
+	url = https://github.com/tauri-apps/tauri-plugin-log
+[submodule "dependencies/tauricon"]
+	path = dependencies/tauricon
+	url = https://github.com/tauri-apps/tauricon
